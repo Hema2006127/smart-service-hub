@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>البنك الذكي - بوابة العملاء</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Tajawal',sans-serif;background:#0a0e1a;min-height:100vh;color:#e2e8f0}
+:root{--gold:#d4af37;--gold-light:#f5d76e;--gold-dim:rgba(212,175,55,0.15);--border:rgba(255,255,255,0.07);--surface:rgba(255,255,255,0.03)}
+
+header{background:rgba(10,14,26,0.95);border-bottom:1px solid rgba(212,175,55,0.15);padding:0 30px;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;backdrop-filter:blur(20px)}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-icon{width:40px;height:40px;background:linear-gradient(135deg,#d4af37,#f5d76e);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.brand h1{font-size:17px;font-weight:900;color:#f5d76e}
+.brand p{font-size:11px;color:rgba(255,255,255,0.3)}
+.staff-link a{color:rgba(212,175,55,0.5);font-size:13px;text-decoration:none;transition:color .2s}
+.staff-link a:hover{color:#f5d76e}
+
+main{max-width:900px;margin:0 auto;padding:40px 20px}
+
+.hero{text-align:center;margin-bottom:50px}
+.hero h2{font-size:32px;font-weight:900;color:#f5d76e;margin-bottom:12px}
+.hero p{color:rgba(255,255,255,0.4);font-size:16px}
+
+.tabs{display:flex;gap:0;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:16px;padding:6px;margin-bottom:36px}
+.tab{flex:1;padding:13px;text-align:center;border-radius:12px;cursor:pointer;font-size:15px;font-weight:700;color:rgba(255,255,255,0.4);transition:all .25s}
+.tab.active{background:linear-gradient(135deg,#d4af37,#f5d76e);color:#0a0e1a}
+
+.panel{display:none}.panel.active{display:block}
+
+/* Queue Panel */
+.branch-select-wrap{margin-bottom:28px}
+.branch-select-wrap label{display:block;color:rgba(255,255,255,0.5);font-size:13px;font-weight:700;margin-bottom:8px}
+select{width:100%;padding:14px 16px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:12px;color:#fff;font-family:'Tajawal',sans-serif;font-size:15px;outline:none;transition:all .3s;appearance:none;cursor:pointer}
+select:focus{border-color:rgba(212,175,55,0.5)}
+select option{background:#1a1e2e;color:#fff}
+
+.services-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;margin-bottom:28px}
+.service-card{background:var(--surface);border:2px solid var(--border);border-radius:16px;padding:20px 16px;text-align:center;cursor:pointer;transition:all .25s}
+.service-card:hover{border-color:rgba(212,175,55,0.3);background:var(--gold-dim)}
+.service-card.selected{border-color:#d4af37;background:var(--gold-dim)}
+.service-card .icon{font-size:28px;margin-bottom:10px}
+.service-card .name{font-size:13px;font-weight:700;color:#e2e8f0}
+.service-card .time{font-size:11px;color:rgba(255,255,255,0.35);margin-top:4px}
+
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
+.form-group label{display:block;color:rgba(255,255,255,0.5);font-size:13px;font-weight:700;margin-bottom:8px}
+.form-group input{width:100%;padding:13px 16px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:12px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none;transition:all .3s}
+.form-group input:focus{border-color:rgba(212,175,55,0.5);background:rgba(212,175,55,0.06)}
+.form-group input::placeholder{color:rgba(255,255,255,0.2)}
+
+.btn{padding:15px 30px;background:linear-gradient(135deg,#d4af37,#f5d76e);border:none;border-radius:12px;color:#0a0e1a;font-family:'Tajawal',sans-serif;font-size:16px;font-weight:900;cursor:pointer;transition:all .3s;width:100%}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(212,175,55,0.3)}
+
+/* Token Card */
+.token-result{background:linear-gradient(135deg,rgba(212,175,55,0.1),rgba(212,175,55,0.05));border:2px solid rgba(212,175,55,0.3);border-radius:24px;padding:40px;text-align:center;display:none;animation:popIn .4s ease}
+@keyframes popIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+.token-number{font-size:72px;font-weight:900;color:#f5d76e;line-height:1;margin-bottom:16px;letter-spacing:4px}
+.token-info p{color:rgba(255,255,255,0.5);font-size:14px;margin-bottom:6px}
+.token-info strong{color:#e2e8f0}
+.token-actions{margin-top:24px;display:flex;gap:12px;justify-content:center}
+.btn-outline{padding:12px 24px;background:transparent;border:1px solid rgba(212,175,55,0.3);border-radius:10px;color:#f5d76e;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-outline:hover{background:rgba(212,175,55,0.1)}
+
+/* Appointment Panel */
+.appt-form{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:32px}
+.appt-form h3{font-size:18px;font-weight:900;margin-bottom:24px;color:#f5d76e}
+
+/* Queue Status */
+.queue-status{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:24px;margin-top:24px}
+.queue-status h3{font-size:15px;font-weight:700;color:rgba(255,255,255,0.4);margin-bottom:16px}
+.serving-now{display:flex;align-items:center;gap:16px;padding:16px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:12px;margin-bottom:12px}
+.serving-badge{background:rgba(16,185,129,0.2);color:#34d399;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:700}
+.serving-token{font-size:28px;font-weight:900;color:#34d399}
+.waiting-count{color:rgba(255,255,255,0.4);font-size:13px}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:#1e1e30;border:1px solid var(--border);border-radius:12px;padding:14px 28px;font-size:14px;font-weight:700;z-index:9999;transition:transform .3s;min-width:260px;text-align:center}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.success{border-color:rgba(16,185,129,0.4);color:#34d399}
+.toast.error{border-color:rgba(239,68,68,0.4);color:#f87171}
+</style>
+</head>
+<body>
+
+<header>
+    <div class="brand">
+        <div class="brand-icon">🏦</div>
+        <div><h1>البنك الذكي</h1><p>بوابة العملاء</p></div>
+    </div>
+    <div class="staff-link"><a href="/login">دخول الموظفين ←</a></div>
+</header>
+
+<main>
+    <div class="hero">
+        <h2>أهلاً بك في البنك الذكي 🏦</h2>
+        <p>احجز موعدك أو خذ رقم انتظار بدون تعب</p>
+    </div>
+
+    <div class="tabs">
+        <div class="tab active" onclick="switchTab('queue',this)">🎫 رقم انتظار</div>
+        <div class="tab" onclick="switchTab('appt',this)">📅 حجز موعد</div>
+        <div class="tab" onclick="switchTab('status',this)">📺 حالة الطابور</div>
+    </div>
+
+    <!-- QUEUE PANEL -->
+    <div class="panel active" id="panel-queue">
+        <div id="queueForm">
+            <div class="branch-select-wrap">
+                <label>اختر الفرع</label>
+                <select id="qBranch">
+                    <option value="">⏳ جاري تحميل الفروع...</option>
+                </select>
+            </div>
+
+            <div class="form-group" style="margin-bottom:20px">
+                <label>اختر الخدمة</label>
+            </div>
+            <div class="services-grid" id="servicesGrid"></div>
+
+            <div class="form-row">
+                <div class="form-group"><label>اسمك (اختياري)</label><input type="text" id="qName" placeholder="مثال: محمد أحمد" /></div>
+                <div class="form-group"><label>رقم موبايلك (اختياري)</label><input type="text" id="qPhone" placeholder="01xxxxxxxxx" /></div>
+            </div>
+
+            <button class="btn" onclick="takeNumber()">🎫 خذ رقم انتظار</button>
+        </div>
+
+        <div class="token-result" id="tokenResult">
+            <div class="token-number" id="tokenNumber">B001</div>
+            <div class="token-info">
+                <p>الخدمة: <strong id="tokenService"></strong></p>
+                <p>موقعك في الطابور: <strong id="tokenPos"></strong></p>
+                <p>الوقت المتوقع: <strong id="tokenWait"></strong> دقيقة</p>
+            </div>
+            <div class="token-actions">
+                <button class="btn-outline" onclick="resetQueue()">← خذ رقم تاني</button>
+                <button class="btn" onclick="window.print()" style="width:auto">🖨️ طباعة</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- APPOINTMENT PANEL -->
+    <div class="panel" id="panel-appt">
+        <div class="appt-form">
+            <h3>📅 حجز موعد جديد</h3>
+            <div class="branch-select-wrap" style="margin-bottom:20px">
+                <label>الفرع</label>
+                <select id="aBranch">
+                    <option value="">⏳ جاري تحميل الفروع...</option>
+                </select>
+            </div>
+            <div class="branch-select-wrap" style="margin-bottom:20px">
+                <label>الخدمة</label>
+                <select id="aService">
+                    <option>فتح حساب جديد</option>
+                    <option>سحب / إيداع</option>
+                    <option>تحويل بنكي</option>
+                    <option>طلب بطاقة</option>
+                    <option>استفسار عام</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label>الاسم</label><input type="text" id="aName" placeholder="الاسم بالكامل" /></div>
+                <div class="form-group"><label>رقم الموبايل</label><input type="text" id="aPhone" placeholder="01xxxxxxxxx" /></div>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label>التاريخ</label><input type="date" id="aDate" /></div>
+                <div class="form-group"><label>الوقت</label>
+                    <select id="aTime" style="padding:13px 16px">
+                        <option>09:00</option><option>09:30</option><option>10:00</option><option>10:30</option>
+                        <option>11:00</option><option>11:30</option><option>12:00</option><option>13:00</option>
+                        <option>13:30</option><option>14:00</option><option>14:30</option><option>15:00</option>
+                    </select>
+                </div>
+            </div>
+            <button class="btn" onclick="bookAppointment()">📅 تأكيد الحجز</button>
+        </div>
+    </div>
+
+    <!-- STATUS PANEL -->
+    <div class="panel" id="panel-status">
+        <div class="branch-select-wrap" style="margin-bottom:20px">
+            <label>اختر الفرع لمتابعة الطابور</label>
+            <select id="sBranch" onchange="loadQueueStatus()">
+                    <option value="">⏳ جاري تحميل الفروع...</option>
+                </select>
+        </div>
+        <div id="queueStatusDisplay"></div>
+    </div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SERVICES_ICONS = ['🏦','💰','🔄','💳','💬'];
+let selectedService = null;
+
+async function loadBranches() {
+    try {
+        const res  = await fetch('/api/branches');
+        const data = await res.json();
+        const opts = data.map(b => `<option value="${b.id}">${b.name}</option>`).join('');
+        ['qBranch','aBranch','sBranch'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.innerHTML = opts;
+        });
+    } catch {
+        ['qBranch','aBranch','sBranch'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.innerHTML = '<option value="">تعذر تحميل الفروع</option>';
+        });
+    }
+}
+
+async function loadServices() {
+    try {
+        const res  = await fetch('/api/queue/services');
+        const data = await res.json();
+        const grid = document.getElementById('servicesGrid');
+        grid.innerHTML = data.map((s,i) => `
+            <div class="service-card" onclick="selectService(${s.id},'${s.name}',this)">
+                <div class="icon">${SERVICES_ICONS[i]||'🏦'}</div>
+                <div class="name">${s.name}</div>
+                <div class="time">⏱ ~${s.duration} دقيقة</div>
+            </div>
+        `).join('');
+    } catch {}
+}
+
+function selectService(id, name, el) {
+    selectedService = { id, name };
+    document.querySelectorAll('.service-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+}
+
+async function takeNumber() {
+    if (!selectedService) { showToast('من فضلك اختر الخدمة', 'error'); return; }
+    const branchId = document.getElementById('qBranch').value;
+    const name     = document.getElementById('qName').value.trim() || 'عميل';
+    try {
+        const res  = await fetch(`/api/queue/${branchId}`, {
+            method:'POST', headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({ name, serviceId: selectedService.id })
+        });
+        const data = await res.json();
+        if (data.success) {
+            document.getElementById('tokenNumber').textContent  = data.token;
+            document.getElementById('tokenService').textContent = selectedService.name;
+            document.getElementById('tokenPos').textContent     = data.position;
+            document.getElementById('tokenWait').textContent    = data.estimatedWait || (data.position * 8);
+            document.getElementById('queueForm').style.display  = 'none';
+            document.getElementById('tokenResult').style.display = 'block';
+        } else { showToast(data.error, 'error'); }
+    } catch { showToast('خطأ في الاتصال', 'error'); }
+}
+
+function resetQueue() {
+    selectedService = null;
+    document.getElementById('queueForm').style.display  = 'block';
+    document.getElementById('tokenResult').style.display = 'none';
+    document.querySelectorAll('.service-card').forEach(c => c.classList.remove('selected'));
+}
+
+async function bookAppointment() {
+    const customerName = document.getElementById('aName').value.trim();
+    const phone        = document.getElementById('aPhone').value.trim();
+    const service      = document.getElementById('aService').value;
+    const date         = document.getElementById('aDate').value;
+    const time         = document.getElementById('aTime').value;
+    const branchId     = document.getElementById('aBranch').value;
+
+    if (!customerName || !phone || !date) { showToast('من فضلك أدخل كل البيانات', 'error'); return; }
+
+    try {
+        const res  = await fetch('/api/appointments', {
+            method:'POST', headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({ customerName, phone, service, date, time, branchId })
+        });
+        const data = await res.json();
+        if (data.success) { showToast(data.message, 'success'); document.getElementById('aName').value=''; document.getElementById('aPhone').value=''; }
+        else { showToast(data.error, 'error'); }
+    } catch { showToast('خطأ في الاتصال', 'error'); }
+}
+
+async function loadQueueStatus() {
+    const branchId = document.getElementById('sBranch').value;
+    try {
+        const res  = await fetch(`/api/queue/${branchId}`);
+        const data = await res.json();
+        const serving = data.find(t => t.status==='serving');
+        const waiting = data.filter(t => t.status==='waiting');
+        const el = document.getElementById('queueStatusDisplay');
+        el.innerHTML = `
+            <div class="queue-status">
+                <h3>📺 حالة الطابور الآن</h3>
+                ${serving ? `<div class="serving-now">
+                    <span class="serving-badge">يُخدم الآن</span>
+                    <span class="serving-token">${serving.token}</span>
+                    <span>${serving.name} - ${serving.service}</span>
+                </div>` : '<p style="color:rgba(255,255,255,0.3);font-size:14px;margin-bottom:12px">لا يوجد عميل يُخدم الآن</p>'}
+                <p class="waiting-count">⏳ ${waiting.length} عميل في الانتظار</p>
+                ${waiting.slice(0,5).map(t=>`<div style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04);display:flex;justify-content:space-between"><span style="color:#e2e8f0;font-size:14px">${t.token} - ${t.name}</span><span style="color:rgba(255,255,255,0.35);font-size:13px">${t.service}</span></div>`).join('')}
+            </div>
+        `;
+    } catch { }
+}
+
+function switchTab(tab, el) {
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('panel-'+tab).classList.add('active');
+    if(tab==='status') loadQueueStatus();
+}
+
+function showToast(msg, type='success') {
+    const t = document.getElementById('toast');
+    t.textContent=msg; t.className=`toast ${type} show`;
+    setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// Set min date to today
+document.getElementById('aDate').min = new Date().toISOString().split('T')[0];
+document.getElementById('aDate').value = new Date().toISOString().split('T')[0];
+
+loadBranches();
+loadServices();
+</script>
+</body>
+</html>

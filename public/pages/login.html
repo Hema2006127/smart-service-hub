@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>البنك الذكي — دخول آمن</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+/* ─── التنسيق المطور ─── */
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --primary:#6366f1; --primary-hover:#4f46e5;
+  --bg-deep:#020617; --card-glass:rgba(15, 23, 42, 0.7);
+  --border:rgba(255,255,255,0.08); --text-main:#f8fafc;
+  --text-mute:#94a3b8;
+}
+
+body{
+  font-family:'Tajawal',sans-serif; background:var(--bg-deep);
+  min-height:100vh; display:flex; align-items:center; justify-content:center;
+  overflow:hidden; color:var(--text-main);
+}
+
+/* الخلفية الديناميكية */
+.bg-vibe{position:fixed; inset:0; z-index:0; overflow:hidden}
+.glow-orb{
+  position:absolute; width:600px; height:600px; border-radius:50%;
+  filter:blur(120px); opacity:0.15; animation:pulse 10s infinite alternate;
+}
+.orb-1{background:var(--primary); top:-200px; right:-100px}
+.orb-2{background:#ec4899; bottom:-200px; left:-100px; animation-delay: -5s}
+
+@keyframes pulse{ to{transform:translate(50px, 100px) scale(1.1)} }
+
+/* هيكل الكارت */
+.wrap{position:relative; z-index:10; width:100%; max-width:440px; padding:20px}
+.card{
+  background:var(--card-glass); backdrop-filter:blur(30px);
+  border:1px solid var(--border); border-radius:32px; padding:40px;
+  box-shadow:0 25px 50px -12px rgba(0,0,0,0.7);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* اللوجو */
+.logo{text-align:center; margin-bottom:32px}
+.logo-icon{
+  font-size:42px; display:block; margin-bottom:10px;
+  filter:drop-shadow(0 0 15px var(--primary));
+}
+.logo h1{font-size:26px; font-weight:900; background:linear-gradient(to bottom, #fff, #94a3b8); -webkit-background-clip:text; -webkit-text-fill-color:transparent}
+.logo p{font-size:11px; color:var(--primary); letter-spacing:4px; font-weight:700; margin-top:4px}
+
+/* التبديل بين الأدوار */
+.roles{
+  display:flex; background:rgba(0,0,0,0.3); padding:5px;
+  border-radius:18px; border:1px solid var(--border); margin-bottom:28px;
+}
+.role-btn{
+  flex:1; border:none; background:transparent; color:var(--text-mute);
+  padding:12px 5px; border-radius:14px; font-family:inherit; font-weight:600;
+  cursor:pointer; font-size:13px; transition:0.3s;
+}
+.role-btn.active{background:var(--primary); color:#fff; box-shadow:0 4px 15px rgba(99,102,241,0.4)}
+
+/* المدخلات */
+.form-group{margin-bottom:20px}
+.form-group label{display:block; font-size:12px; font-weight:700; color:var(--text-mute); margin-bottom:8px; margin-right:5px}
+.input-wrap{position:relative}
+.input-icon{position:absolute; right:15px; top:50%; transform:translateY(-50%); opacity:0.3; font-size:18px}
+input{
+  width:100%; padding:14px 45px 14px 15px; background:rgba(255,255,255,0.03);
+  border:1.5px solid var(--border); border-radius:16px; color:#fff;
+  font-family:inherit; outline:none; transition:0.3s;
+}
+input:focus{border-color:var(--primary); background:rgba(255,255,255,0.07); box-shadow:0 0 0 4px rgba(99,102,241,0.15)}
+
+/* الزر الأساسي */
+.btn-primary{
+  width:100%; padding:16px; background:var(--primary); color:#fff;
+  border:none; border-radius:18px; font-family:inherit; font-weight:800;
+  font-size:16px; cursor:pointer; transition:0.3s; margin-top:10px;
+  box-shadow:0 10px 25px -5px rgba(99,102,241,0.4);
+}
+.btn-primary:hover{background:var(--primary-hover); transform:translateY(-2px); box-shadow:0 15px 30px -5px rgba(99,102,241,0.5)}
+
+/* التنبيهات والروابط السفلى */
+.error{
+  background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.2);
+  color:#f87171; padding:12px; border-radius:14px; font-size:13px;
+  margin-top:15px; display:none; text-align:center;
+}
+.divider{display:flex; align-items:center; gap:10px; margin:25px 0}
+.divider::before, .divider::after{content:''; flex:1; height:1px; background:var(--border)}
+.divider span{font-size:10px; color:var(--text-mute); letter-spacing:1px}
+
+.hints{background:rgba(0,0,0,0.2); border-radius:20px; padding:15px; border:1px solid var(--border)}
+.hint-row{display:flex; justify-content:space-between; padding:8px 5px; font-size:12px; cursor:pointer; transition:0.2s}
+.hint-row:hover{color:var(--primary)}
+.hint-val{font-weight:700; color:var(--primary)}
+
+.customer-link{text-align:center; margin-top:20px}
+.customer-link a{color:var(--text-mute); text-decoration:none; font-size:13px; transition:0.2s}
+.customer-link a:hover{color:#fff}
+</style>
+</head>
+<body>
+
+<div class="bg-vibe">
+  <div class="glow-orb orb-1"></div>
+  <div class="glow-orb orb-2"></div>
+</div>
+
+<div class="wrap">
+<div class="card">
+  <div class="logo">
+    <span class="logo-icon">💠</span>
+    <h1>البنك الذكي</h1>
+    <p>SECURE TERMINAL</p>
+  </div>
+
+  <div class="roles">
+    <div class="role-btn active" onclick="fillCreds('admin','admin123',this)">المدير</div>
+    <div class="role-btn" onclick="fillCreds('manager1','manager123',this)">مشرف فرع</div>
+    <div class="role-btn" onclick="fillCreds('teller1','teller123',this)">موظف</div>
+  </div>
+
+  <div class="form-group">
+    <label>الهوية الرقمية</label>
+    <div class="input-wrap">
+      <span class="input-icon">👤</span>
+      <input type="text" id="username" placeholder="اسم المستخدم"/>
+    </div>
+  </div>
+  <div class="form-group">
+    <label>رمز الوصول</label>
+    <div class="input-wrap">
+      <span class="input-icon">🔑</span>
+      <input type="password" id="password" placeholder="كلمة المرور"/>
+    </div>
+  </div>
+
+  <button class="btn-primary" onclick="login()">دخول النظام</button>
+  <div class="error" id="error"></div>
+
+  <div class="divider"><span>بيانات محاكاة</span></div>
+
+  <div class="hints">
+    <div class="hint-row" onclick="fillCreds('admin','admin123')"><span>مدير النظام</span> <span class="hint-val">admin</span></div>
+    <div class="hint-row" onclick="fillCreds('manager1','manager123')"><span>مدير فرع</span> <span class="hint-val">manager1</span></div>
+  </div>
+
+  <div class="customer-link"><a href="/customer">الذهاب لبوابة العملاء ←</a></div>
+</div>
+</div>
+
+<script>
+/* السكربت الأصلي بدون تعديل في المنطق */
+document.addEventListener('keydown',e=>{if(e.key==='Enter')login()});
+function fillCreds(u,p,btn){
+  document.getElementById('username').value=u;
+  document.getElementById('password').value=p;
+  if(btn){document.querySelectorAll('.role-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+}
+async function login(){
+  const username=document.getElementById('username').value.trim();
+  const password=document.getElementById('password').value.trim();
+  const btn=document.querySelector('.btn-primary');
+  const err=document.getElementById('error');
+  err.style.display='none';
+  if(!username||!password){showErr('من فضلك أدخل بياناتك');return;}
+  btn.textContent='جاري التحقق...';btn.style.opacity='.7';
+  try{
+    const res=await fetch('/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username,password})});
+    const data=await res.json();
+    if(data.success)window.location.href=data.redirect||'/';
+    else showErr(data.error||'خطأ في تسجيل الدخول');
+  }catch{showErr('خطأ في الاتصال بالسيرفر');}
+  finally{btn.textContent='دخول النظام';btn.style.opacity='1';}
+}
+function showErr(msg){const e=document.getElementById('error');e.textContent=msg;e.style.display='block';}
+</script>
+</body>
+</html>

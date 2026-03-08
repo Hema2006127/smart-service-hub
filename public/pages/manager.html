@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>البنك الذكي - مدير الفرع</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Tajawal',sans-serif;background:#0a0e1a;min-height:100vh;color:#e2e8f0}
+:root{--gold:#d4af37;--gold-light:#f5d76e;--border:rgba(255,255,255,0.07);--surface:rgba(255,255,255,0.03)}
+
+nav{background:rgba(10,14,26,0.95);border-bottom:1px solid rgba(212,175,55,0.15);padding:0 28px;height:62px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;backdrop-filter:blur(20px)}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-icon{width:36px;height:36px;background:linear-gradient(135deg,#d4af37,#f5d76e);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.brand h1{font-size:16px;font-weight:900;color:#f5d76e}
+.brand p{font-size:11px;color:rgba(255,255,255,0.3)}
+.nav-right{display:flex;align-items:center;gap:12px}
+.user-tag{padding:5px 14px;background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.2);border-radius:20px;color:#a78bfa;font-size:12px;font-weight:700}
+.btn-logout{padding:7px 14px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171;border-radius:8px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:13px}
+
+main{max-width:1100px;margin:0 auto;padding:28px 20px}
+
+.tabs{display:flex;gap:0;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:14px;padding:5px;margin-bottom:28px;width:fit-content}
+.tab{padding:11px 24px;border-radius:10px;cursor:pointer;font-size:14px;font-weight:700;color:rgba(255,255,255,0.4);transition:all .2s;white-space:nowrap}
+.tab.active{background:linear-gradient(135deg,#d4af37,#f5d76e);color:#0a0e1a}
+
+.panel{display:none}.panel.active{display:block}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px;display:flex;align-items:center;gap:14px}
+.stat-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px}
+.si-gold{background:rgba(212,175,55,0.15)}.si-green{background:rgba(16,185,129,0.15)}.si-blue{background:rgba(59,130,246,0.15)}
+.stat-num{font-size:28px;font-weight:900;color:#f5d76e}
+.stat-label{font-size:12px;color:rgba(255,255,255,0.35);margin-top:2px}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:24px;margin-bottom:20px}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.card-title{font-size:16px;font-weight:900}
+
+.form-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;align-items:end}
+.form-group label{display:block;color:rgba(255,255,255,0.45);font-size:12px;font-weight:700;margin-bottom:6px}
+.form-group input,.form-group select{width:100%;padding:11px 14px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:10px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none;transition:all .2s}
+.form-group input:focus,.form-group select:focus{border-color:rgba(212,175,55,0.5)}
+.form-group input::placeholder{color:rgba(255,255,255,0.2)}
+.form-group select option{background:#1a1e2e}
+
+.btn{padding:11px 20px;border:none;border-radius:10px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;transition:all .2s}
+.btn-gold{background:linear-gradient(135deg,#d4af37,#f5d76e);color:#0a0e1a}
+.btn-gold:hover{transform:translateY(-1px);box-shadow:0 4px 15px rgba(212,175,55,0.3)}
+.btn-danger{background:rgba(239,68,68,0.15);color:#f87171;border:1px solid rgba(239,68,68,0.2);padding:7px 14px;font-size:13px}
+.btn-danger:hover{background:rgba(239,68,68,0.25)}
+.btn-confirm{padding:6px 12px;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.2);color:#34d399;border-radius:8px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700}
+
+table{width:100%;border-collapse:collapse}
+th{text-align:right;padding:11px 14px;font-size:12px;color:rgba(255,255,255,0.35);font-weight:700;border-bottom:1px solid var(--border)}
+td{padding:13px 14px;font-size:14px;border-bottom:1px solid rgba(255,255,255,0.03)}
+tr:hover td{background:rgba(255,255,255,0.02)}
+tr:last-child td{border:none}
+.td-actions{display:flex;gap:8px;justify-content:flex-end}
+
+.badge{padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700}
+.badge-confirmed{background:rgba(16,185,129,0.15);color:#34d399;border:1px solid rgba(16,185,129,0.2)}
+.badge-pending{background:rgba(245,158,11,0.15);color:#fbbf24;border:1px solid rgba(245,158,11,0.2)}
+
+.queue-live{background:linear-gradient(135deg,rgba(212,175,55,0.06),rgba(212,175,55,0.02));border:1px solid rgba(212,175,55,0.15);border-radius:16px;padding:20px}
+.queue-serving{display:flex;align-items:center;gap:14px;padding:14px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:12px;margin-bottom:14px}
+.q-token-big{font-size:32px;font-weight:900;color:#34d399}
+.q-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04)}
+.q-item:last-child{border:none}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:#1e1e30;border:1px solid var(--border);border-radius:12px;padding:14px 28px;font-size:14px;font-weight:700;z-index:9999;transition:transform .3s;min-width:240px;text-align:center}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.success{border-color:rgba(16,185,129,0.4);color:#34d399}
+.toast.error{border-color:rgba(239,68,68,0.4);color:#f87171}
+</style>
+</head>
+<body>
+
+<nav>
+    <div class="brand">
+        <div class="brand-icon">🏦</div>
+        <div><h1>البنك الذكي</h1><p id="branchName">الفرع</p></div>
+    </div>
+    <div class="nav-right">
+        <span class="user-tag" id="userName">مدير الفرع</span>
+        <button class="btn-logout" onclick="logout()">خروج</button>
+    </div>
+</nav>
+
+<main>
+    <div class="stats">
+        <div class="stat-card"><div class="stat-icon si-gold">🎫</div><div><div class="stat-num" id="sWaiting">-</div><div class="stat-label">في الانتظار</div></div></div>
+        <div class="stat-card"><div class="stat-icon si-blue">👥</div><div><div class="stat-num" id="sStaff">-</div><div class="stat-label">موظفين الفرع</div></div></div>
+        <div class="stat-card"><div class="stat-icon si-green">📅</div><div><div class="stat-num" id="sAppts">-</div><div class="stat-label">مواعيد اليوم</div></div></div>
+    </div>
+
+    <div class="tabs">
+        <div class="tab active" onclick="switchTab('queue',this)">🎫 الطابور</div>
+        <div class="tab" onclick="switchTab('appts',this)">📅 المواعيد</div>
+        <div class="tab" onclick="switchTab('staff',this)">👥 الموظفين</div>
+    </div>
+
+    <!-- Queue -->
+    <div class="panel active" id="panel-queue">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">🎫 الطابور الحالي</div>
+                <button class="btn btn-danger" onclick="resetQueue()">إعادة تعيين الطابور</button>
+            </div>
+            <div id="queueDisplay"><p style="color:rgba(255,255,255,0.3);text-align:center;padding:30px">⏳ جاري التحميل...</p></div>
+        </div>
+    </div>
+
+    <!-- Appointments -->
+    <div class="panel" id="panel-appts">
+        <div class="card">
+            <div class="card-title" style="margin-bottom:20px">📅 مواعيد الفرع</div>
+            <table><thead><tr><th>العميل</th><th>الموبايل</th><th>الخدمة</th><th>التاريخ</th><th>الوقت</th><th>الحالة</th><th style="text-align:left">إجراءات</th></tr></thead>
+            <tbody id="apptsTable"><tr><td colspan="7" style="text-align:center;padding:30px;color:rgba(255,255,255,0.3)">⏳</td></tr></tbody></table>
+        </div>
+    </div>
+
+    <!-- Staff -->
+    <div class="panel" id="panel-staff">
+        <div class="card">
+            <div class="card-header"><div class="card-title">➕ إضافة موظف جديد</div></div>
+            <div class="form-grid">
+                <div class="form-group"><label>الاسم</label><input type="text" id="stName" placeholder="الاسم الكامل" /></div>
+                <div class="form-group"><label>اسم المستخدم</label><input type="text" id="stUser" placeholder="username" /></div>
+                <div class="form-group" style="display:flex;align-items:flex-end;margin-top:0"><button class="btn btn-gold" onclick="addStaff()">إضافة</button></div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-title" style="margin-bottom:20px">موظفي الفرع</div>
+            <table><thead><tr><th>الاسم</th><th>المستخدم</th><th>الدور</th><th style="text-align:left">إجراءات</th></tr></thead>
+            <tbody id="staffTable"><tr><td colspan="4" style="text-align:center;padding:30px;color:rgba(255,255,255,0.3)">⏳</td></tr></tbody></table>
+        </div>
+    </div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let currentUser = null;
+
+async function init() {
+    try {
+        const res = await fetch('/api/me');
+        if(!res.ok){window.location.href='/login';return;}
+        currentUser = await res.json();
+        document.getElementById('userName').textContent = currentUser.name||currentUser.username;
+
+        // ← جيب اسم الفرع من الـ API بدل الـ hardcoded
+        try {
+            const bRes  = await fetch('/api/branches');
+            const branches = await bRes.json();
+            const branch = branches.find(b => b.id == currentUser.branchId);
+            document.getElementById('branchName').textContent = branch ? branch.name : 'الفرع';
+        } catch {
+            document.getElementById('branchName').textContent = 'الفرع';
+        }
+
+        loadQueue();
+        setInterval(loadQueue, 6000);
+    } catch { window.location.href='/login'; }
+}
+
+async function loadQueue() {
+    const branchId = currentUser?.branchId||1;
+    const data=await fetch(`/api/queue/${branchId}`).then(r=>r.json()).catch(()=>[]);
+    const serving=data.find(t=>t.status==='serving');
+    const waiting=data.filter(t=>t.status==='waiting');
+    document.getElementById('sWaiting').textContent=waiting.length;
+    const el=document.getElementById('queueDisplay');
+    let html='';
+    if(serving) html+=`<div class="queue-serving"><span style="background:rgba(16,185,129,0.2);color:#34d399;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:700">يُخدم الآن</span><span class="q-token-big">${serving.token}</span><span>${serving.name} - ${serving.service}</span></div>`;
+    if(!waiting.length){html+='<p style="color:rgba(255,255,255,0.3);text-align:center;padding:20px">الطابور فاضي ✅</p>';}
+    else{html+=`<div class="queue-live">${waiting.map((t,i)=>`<div class="q-item"><span style="color:rgba(212,175,55,0.6);font-weight:700;width:28px">${i+1}</span><span style="font-weight:900;width:60px;color:#f5d76e">${t.token}</span><span>${t.name}</span><span style="color:rgba(255,255,255,0.35);font-size:13px;margin-right:auto">${t.service}</span></div>`).join('')}</div>`;}
+    el.innerHTML=html;
+}
+
+async function resetQueue() {
+    if(!confirm('إعادة تعيين الطابور؟'))return;
+    const res=await fetch(`/api/queue/${currentUser?.branchId||1}/reset`,{method:'DELETE'});
+    const data=await res.json();
+    if(data.success){showToast(data.message,'success');loadQueue();}
+}
+
+async function loadAppts() {
+    const data=await fetch('/api/appointments').then(r=>r.json()).catch(()=>[]);
+    const today=new Date().toISOString().split('T')[0];
+    const todayA=data.filter(a=>a.date===today);
+    document.getElementById('sAppts').textContent=todayA.length;
+    const tb=document.getElementById('apptsTable');
+    if(!todayA.length){tb.innerHTML='<tr><td colspan="7" style="text-align:center;padding:30px;color:rgba(255,255,255,0.3)">لا توجد مواعيد اليوم</td></tr>';return;}
+    tb.innerHTML=todayA.map(a=>`
+        <tr>
+            <td style="font-weight:700">${a.customerName}</td>
+            <td style="color:rgba(255,255,255,0.5);font-size:13px">${a.phone}</td>
+            <td>${a.service}</td>
+            <td>${a.date}</td>
+            <td style="color:#f5d76e;font-weight:700">${a.time}</td>
+            <td><span class="badge badge-${a.status}">${a.status==='confirmed'?'مؤكد':'انتظار'}</span></td>
+            <td><div class="td-actions">${a.status==='pending'?`<button class="btn-confirm" onclick="confirmAppt(${a.id})">تأكيد</button>`:''}</div></td>
+        </tr>
+    `).join('');
+}
+
+async function confirmAppt(id){
+    const res=await fetch(`/api/appointments/${id}/status`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({status:'confirmed'})});
+    const data=await res.json();
+    if(data.success){showToast(data.message,'success');loadAppts();}
+}
+
+async function loadStaff() {
+    const data=await fetch('/api/staff').then(r=>r.json()).catch(()=>[]);
+    document.getElementById('sStaff').textContent=data.length;
+    const tb=document.getElementById('staffTable');
+    if(!data.length){tb.innerHTML='<tr><td colspan="4" style="text-align:center;padding:30px;color:rgba(255,255,255,0.3)">لا يوجد موظفين</td></tr>';return;}
+    tb.innerHTML=data.map(s=>`
+        <tr>
+            <td style="font-weight:700">${s.name}</td>
+            <td style="color:rgba(255,255,255,0.5)">${s.username}</td>
+            <td style="color:rgba(255,255,255,0.5)">${s.role==='teller'?'موظف فرع':'مدير فرع'}</td>
+            <td><div class="td-actions"><button class="btn btn-danger" onclick="deleteStaff(${s.id},'${s.name}')">🗑️</button></div></td>
+        </tr>
+    `).join('');
+}
+
+async function addStaff(){
+    const name=document.getElementById('stName').value.trim(),username=document.getElementById('stUser').value.trim();
+    if(!name||!username){showToast('أدخل كل البيانات','error');return;}
+    const res=await fetch('/api/staff',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,username,role:'teller',branchId:currentUser?.branchId||1})});
+    const data=await res.json();
+    if(data.success){showToast(data.message,'success');document.getElementById('stName').value='';document.getElementById('stUser').value='';loadStaff();}
+    else{showToast(data.error,'error');}
+}
+
+async function deleteStaff(id,name){
+    if(!confirm(`حذف موظف "${name}"؟`))return;
+    const res=await fetch(`/api/staff/${id}`,{method:'DELETE'});
+    const data=await res.json();
+    if(data.success){showToast(data.message,'success');loadStaff();}
+}
+
+function switchTab(tab,el){
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('panel-'+tab).classList.add('active');
+    if(tab==='appts')loadAppts();
+    else if(tab==='staff')loadStaff();
+    else loadQueue();
+}
+
+async function logout(){await fetch('/logout',{method:'POST'});window.location.href='/login';}
+
+function showToast(msg,type='success'){
+    const t=document.getElementById('toast');
+    t.textContent=msg;t.className=`toast ${type} show`;
+    setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+init();
+</script>
+</body>
+</html>

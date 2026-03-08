@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>البنك الذكي - شاشة الموظف</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Tajawal',sans-serif;background:#0a0e1a;min-height:100vh;color:#e2e8f0}
+:root{--gold:#d4af37;--gold-light:#f5d76e;--border:rgba(255,255,255,0.07);--surface:rgba(255,255,255,0.03)}
+
+nav{background:rgba(10,14,26,0.95);border-bottom:1px solid rgba(212,175,55,0.15);padding:0 24px;height:62px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;backdrop-filter:blur(20px)}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-icon{width:36px;height:36px;background:linear-gradient(135deg,#d4af37,#f5d76e);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.brand h1{font-size:16px;font-weight:900;color:#f5d76e}
+.nav-right{display:flex;align-items:center;gap:12px}
+.user-tag{padding:5px 14px;background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.2);border-radius:20px;color:#f5d76e;font-size:12px;font-weight:700}
+.btn-logout{padding:7px 14px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171;border-radius:8px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:13px}
+.btn-logout:hover{background:rgba(239,68,68,0.2)}
+
+main{max-width:1100px;margin:0 auto;padding:28px 20px}
+
+/* Current Serving */
+.serving-hero{background:linear-gradient(135deg,rgba(16,185,129,0.08),rgba(16,185,129,0.03));border:1px solid rgba(16,185,129,0.2);border-radius:24px;padding:36px;text-align:center;margin-bottom:24px}
+.serving-label{font-size:13px;font-weight:700;color:rgba(16,185,129,0.7);text-transform:uppercase;letter-spacing:2px;margin-bottom:12px}
+.serving-token-big{font-size:96px;font-weight:900;color:#34d399;line-height:1;margin-bottom:8px;letter-spacing:8px}
+.serving-name{font-size:20px;color:#e2e8f0;margin-bottom:4px}
+.serving-service{font-size:14px;color:rgba(255,255,255,0.4)}
+.serving-empty{font-size:18px;color:rgba(255,255,255,0.2);padding:20px 0}
+
+.btn-next{padding:18px 48px;background:linear-gradient(135deg,#d4af37,#f5d76e);border:none;border-radius:16px;color:#0a0e1a;font-family:'Tajawal',sans-serif;font-size:18px;font-weight:900;cursor:pointer;transition:all .3s;margin-top:20px;letter-spacing:.5px}
+.btn-next:hover{transform:translateY(-3px);box-shadow:0 10px 35px rgba(212,175,55,0.35)}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:24px}
+.card-title{font-size:15px;font-weight:900;color:rgba(255,255,255,0.6);margin-bottom:18px;display:flex;align-items:center;justify-content:space-between}
+.card-title span{font-size:12px;font-weight:400;color:rgba(255,255,255,0.3)}
+
+/* Queue List */
+.queue-item{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.04)}
+.queue-item:last-child{border:none}
+.q-pos{width:28px;height:28px;background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#f5d76e;flex-shrink:0}
+.q-token{font-size:16px;font-weight:900;color:#e2e8f0;width:60px;flex-shrink:0}
+.q-info{flex:1}
+.q-name{font-size:14px;font-weight:700}
+.q-service{font-size:12px;color:rgba(255,255,255,0.35);margin-top:2px}
+.q-time{font-size:11px;color:rgba(255,255,255,0.25)}
+.empty-queue{text-align:center;padding:30px;color:rgba(255,255,255,0.25);font-size:14px}
+
+/* Appointments */
+.appt-item{padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.04)}
+.appt-item:last-child{border:none}
+.appt-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.appt-name{font-size:14px;font-weight:700}
+.appt-time{font-size:13px;font-weight:700;color:#f5d76e}
+.appt-meta{font-size:12px;color:rgba(255,255,255,0.35)}
+.status-badge{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
+.status-confirmed{background:rgba(16,185,129,0.15);color:#34d399}
+.status-pending{background:rgba(245,158,11,0.15);color:#fbbf24}
+.btn-confirm{padding:5px 12px;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.2);color:#34d399;border-radius:8px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700}
+
+/* Stats bar */
+.stats{display:flex;gap:14px;margin-bottom:24px}
+.stat{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px;text-align:center}
+.stat-num{font-size:28px;font-weight:900;color:#f5d76e}
+.stat-label{font-size:11px;color:rgba(255,255,255,0.3);margin-top:4px}
+
+.btn-reset{padding:7px 14px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171;border-radius:8px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700}
+.btn-reset:hover{background:rgba(239,68,68,0.2)}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:#1e1e30;border:1px solid var(--border);border-radius:12px;padding:14px 28px;font-size:14px;font-weight:700;z-index:9999;transition:transform .3s;min-width:240px;text-align:center}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.success{border-color:rgba(16,185,129,0.4);color:#34d399}
+.toast.error{border-color:rgba(239,68,68,0.4);color:#f87171}
+</style>
+</head>
+<body>
+
+<nav>
+    <div class="brand">
+        <div class="brand-icon">🏦</div>
+        <div><h1>البنك الذكي</h1></div>
+    </div>
+    <div class="nav-right">
+        <span class="user-tag" id="userName">موظف الفرع</span>
+        <button class="btn-logout" onclick="logout()">خروج</button>
+    </div>
+</nav>
+
+<main>
+    <!-- Stats -->
+    <div class="stats">
+        <div class="stat"><div class="stat-num" id="statWaiting">0</div><div class="stat-label">في الانتظار</div></div>
+        <div class="stat"><div class="stat-num" id="statDone">0</div><div class="stat-label">تم خدمتهم</div></div>
+        <div class="stat"><div class="stat-num" id="statAppts">0</div><div class="stat-label">مواعيد اليوم</div></div>
+    </div>
+
+    <!-- Serving Now -->
+    <div class="serving-hero">
+        <div class="serving-label">يُخدم الآن</div>
+        <div id="servingDisplay"><div class="serving-empty">لا يوجد عميل حالياً</div></div>
+        <button class="btn-next" onclick="callNext()">استدعاء التالي ←</button>
+    </div>
+
+    <div class="grid2">
+        <!-- Queue -->
+        <div class="card">
+            <div class="card-title">
+                🎫 طابور الانتظار
+                <button class="btn-reset" onclick="resetQueue()">إعادة تعيين</button>
+            </div>
+            <div id="queueList"><div class="empty-queue">الطابور فاضي ✅</div></div>
+        </div>
+
+        <!-- Appointments -->
+        <div class="card">
+            <div class="card-title">📅 مواعيد اليوم <span id="apptDate"></span></div>
+            <div id="apptList"><div class="empty-queue">لا توجد مواعيد</div></div>
+        </div>
+    </div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let currentUser = null;
+let refreshTimer = null;
+
+async function init() {
+    try {
+        const res = await fetch('/api/me');
+        if(!res.ok){window.location.href='/login';return;}
+        currentUser = await res.json();
+        document.getElementById('userName').textContent = currentUser.name || currentUser.username;
+        document.getElementById('apptDate').textContent = new Date().toLocaleDateString('ar-EG');
+        loadAll();
+        refreshTimer = setInterval(loadAll, 5000); // refresh every 5s
+    } catch { window.location.href='/login'; }
+}
+
+async function loadAll() {
+    const branchId = currentUser?.branchId || 1;
+    await Promise.all([loadQueue(branchId), loadAppointments()]);
+}
+
+async function loadQueue(branchId) {
+    try {
+        const res  = await fetch(`/api/queue/${branchId}`);
+        const data = await res.json();
+        const serving = data.find(t=>t.status==='serving');
+        const waiting = data.filter(t=>t.status==='waiting');
+        const done    = data.filter(t=>t.status==='done');
+
+        document.getElementById('statWaiting').textContent = waiting.length;
+        document.getElementById('statDone').textContent    = done.length;
+
+        // Serving display
+        const sd = document.getElementById('servingDisplay');
+        if(serving){
+            sd.innerHTML=`<div class="serving-token-big">${serving.token}</div><div class="serving-name">${serving.name}</div><div class="serving-service">${serving.service}</div>`;
+        } else { sd.innerHTML='<div class="serving-empty">لا يوجد عميل حالياً - اضغط استدعاء</div>'; }
+
+        // Queue list
+        const ql = document.getElementById('queueList');
+        if(waiting.length===0){ ql.innerHTML='<div class="empty-queue">الطابور فاضي ✅</div>'; return; }
+        ql.innerHTML = waiting.map((t,i)=>`
+            <div class="queue-item">
+                <div class="q-pos">${i+1}</div>
+                <div class="q-token">${t.token}</div>
+                <div class="q-info">
+                    <div class="q-name">${t.name}</div>
+                    <div class="q-service">${t.service}</div>
+                </div>
+                <div class="q-time">${new Date(t.createdAt).toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'})}</div>
+            </div>
+        `).join('');
+    } catch {}
+}
+
+async function loadAppointments() {
+    try {
+        const res  = await fetch('/api/appointments');
+        const data = await res.json();
+        const today = new Date().toISOString().split('T')[0];
+        const todayAppts = data.filter(a=>a.date===today);
+        document.getElementById('statAppts').textContent = todayAppts.length;
+        const el = document.getElementById('apptList');
+        if(todayAppts.length===0){el.innerHTML='<div class="empty-queue">لا توجد مواعيد اليوم</div>';return;}
+        el.innerHTML = todayAppts.map(a=>`
+            <div class="appt-item">
+                <div class="appt-header">
+                    <span class="appt-name">${a.customerName}</span>
+                    <span class="appt-time">${a.time}</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px">
+                    <div class="appt-meta">${a.service} · ${a.phone}</div>
+                    <div style="display:flex;gap:8px;align-items:center">
+                        <span class="status-badge status-${a.status}">${a.status==='confirmed'?'مؤكد':'انتظار'}</span>
+                        ${a.status==='pending'?`<button class="btn-confirm" onclick="confirmAppt(${a.id})">تأكيد</button>`:''}
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    } catch {}
+}
+
+async function callNext() {
+    const branchId = currentUser?.branchId || 1;
+    try {
+        const res  = await fetch(`/api/queue/${branchId}/next`,{method:'PUT'});
+        const data = await res.json();
+        if(data.success){ showToast(data.message,'success'); loadQueue(branchId); }
+        else { showToast(data.error,'error'); }
+    } catch { showToast('خطأ في الاتصال','error'); }
+}
+
+async function resetQueue() {
+    const branchId = currentUser?.branchId || 1;
+    if(!confirm('هل تريد إعادة تعيين الطابور؟')) return;
+    try {
+        const res  = await fetch(`/api/queue/${branchId}/reset`,{method:'DELETE'});
+        const data = await res.json();
+        if(data.success){ showToast(data.message,'success'); loadQueue(branchId); }
+    } catch {}
+}
+
+async function confirmAppt(id) {
+    try {
+        const res  = await fetch(`/api/appointments/${id}/status`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({status:'confirmed'})});
+        const data = await res.json();
+        if(data.success){ showToast(data.message,'success'); loadAppointments(); }
+    } catch {}
+}
+
+async function logout() {
+    clearInterval(refreshTimer);
+    await fetch('/logout',{method:'POST'});
+    window.location.href='/login';
+}
+
+function showToast(msg,type='success'){
+    const t=document.getElementById('toast');
+    t.textContent=msg;t.className=`toast ${type} show`;
+    setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+init();
+</script>
+</body>
+</html>

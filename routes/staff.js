@@ -1,0 +1,40 @@
+const express = require('express');
+const router  = express.Router();
+const db      = require('../db');
+
+router.get('/', async (req, res) => {
+    const user = req.session?.user;
+    if (!user) return res.status(401).json({ error: 'غير مسجل' });
+    try {
+        const result = user.role === 'branch_manager'
+            ? await db.query('SELECT * FROM bank_users WHERE branch_id=$1 ORDER BY id', [user.branchId])
+            : await db.query('SELECT * FROM bank_users ORDER BY id');
+        res.json(result.rows.map(u => ({ ...u, password: undefined, branchId: u.branch_id })));
+    } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+router.post('/', async (req, res) => {
+    if (!['admin','branch_manager'].includes(req.session?.user?.role)) return res.json({ success: false, error: 'غير مصرح' });
+    const { name, username, role, branchId } = req.body;
+    if (!name || !username) return res.json({ success: false, error: 'كل الحقول مطلوبة' });
+    try {
+        const result = await db.query(
+            'INSERT INTO bank_users (name, username, password, role, branch_id) VALUES ($1,$2,$3,$4,$5) RETURNING *',
+            [name, username, 'teller123', role||'teller', branchId||null]
+        );
+        res.json({ success: true, message: 'تم إضافة الموظف ✅', member: result.rows[0] });
+    } catch (err) {
+        if (err.code === '23505') return res.json({ success: false, error: 'اسم المستخدم موجود بالفعل' });
+        res.json({ success: false, error: err.message });
+    }
+});
+
+router.delete('/:id', async (req, res) => {
+    if (!['admin','branch_manager'].includes(req.session?.user?.role)) return res.json({ success: false, error: 'غير مصرح' });
+    try {
+        await db.query('DELETE FROM bank_users WHERE id=$1', [req.params.id]);
+        res.json({ success: true, message: 'تم الحذف 🗑️' });
+    } catch (err) { res.json({ success: false, error: err.message }); }
+});
+
+module.exports = router;
