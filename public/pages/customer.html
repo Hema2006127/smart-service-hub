@@ -3,328 +3,1042 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>البنك الذكي - بوابة العملاء</title>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<title>البنك الذكي — بوابة العملاء</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
+/* ═══════════════════════════════════════
+   ROOT & RESET
+═══════════════════════════════════════ */
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Tajawal',sans-serif;background:#0a0e1a;min-height:100vh;color:#e2e8f0}
-:root{--gold:#d4af37;--gold-light:#f5d76e;--gold-dim:rgba(212,175,55,0.15);--border:rgba(255,255,255,0.07);--surface:rgba(255,255,255,0.03)}
+:root{
+  --ink:#0b1120;
+  --ink2:#1e2d45;
+  --blue:#1a56db;
+  --blue2:#3b82f6;
+  --blue3:#60a5fa;
+  --gold:#f59e0b;
+  --gold2:#fcd34d;
+  --green:#10b981;
+  --surface:rgba(255,255,255,0.04);
+  --border:rgba(255,255,255,0.08);
+  --text:#f1f5f9;
+  --muted:rgba(255,255,255,0.38);
+  --radius:18px;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Tajawal',sans-serif;
+  background:var(--ink);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+}
 
-header{background:rgba(10,14,26,0.95);border-bottom:1px solid rgba(212,175,55,0.15);padding:0 30px;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;backdrop-filter:blur(20px)}
-.brand{display:flex;align-items:center;gap:12px}
-.brand-icon{width:40px;height:40px;background:linear-gradient(135deg,#d4af37,#f5d76e);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px}
-.brand h1{font-size:17px;font-weight:900;color:#f5d76e}
-.brand p{font-size:11px;color:rgba(255,255,255,0.3)}
-.staff-link a{color:rgba(212,175,55,0.5);font-size:13px;text-decoration:none;transition:color .2s}
-.staff-link a:hover{color:#f5d76e}
+/* ═══════════════════════════════════════
+   ANIMATED BACKGROUND
+═══════════════════════════════════════ */
+.bg-canvas{
+  position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;
+}
+.bg-mesh{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 10% 20%, rgba(26,86,219,0.18) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 50% at 90% 80%, rgba(245,158,11,0.1) 0%,transparent 55%),
+    radial-gradient(ellipse 50% 40% at 50% 50%, rgba(16,185,129,0.06) 0%,transparent 60%);
+  animation:meshPulse 12s ease-in-out infinite alternate;
+}
+@keyframes meshPulse{
+  0%{transform:scale(1) rotate(0deg)}
+  100%{transform:scale(1.05) rotate(1deg)}
+}
+.bg-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(59,130,246,0.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(59,130,246,0.04) 1px,transparent 1px);
+  background-size:50px 50px;
+  animation:gridDrift 30s linear infinite;
+}
+@keyframes gridDrift{to{background-position:50px 50px}}
 
-main{max-width:900px;margin:0 auto;padding:40px 20px}
+/* Floating particles */
+.particle{
+  position:absolute;border-radius:50%;
+  animation:particleFloat linear infinite;
+  pointer-events:none;
+}
+@keyframes particleFloat{
+  0%{transform:translateY(100vh) rotate(0deg);opacity:0}
+  10%{opacity:1}
+  90%{opacity:1}
+  100%{transform:translateY(-100px) rotate(720deg);opacity:0}
+}
 
-.hero{text-align:center;margin-bottom:50px}
-.hero h2{font-size:32px;font-weight:900;color:#f5d76e;margin-bottom:12px}
-.hero p{color:rgba(255,255,255,0.4);font-size:16px}
+/* ═══════════════════════════════════════
+   LAYOUT: SPLIT
+═══════════════════════════════════════ */
+.page-wrap{
+  position:relative;z-index:1;
+  min-height:100vh;
+  display:grid;
+  grid-template-columns:1fr 420px;
+  grid-template-rows:auto 1fr;
+}
 
-.tabs{display:flex;gap:0;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:16px;padding:6px;margin-bottom:36px}
-.tab{flex:1;padding:13px;text-align:center;border-radius:12px;cursor:pointer;font-size:15px;font-weight:700;color:rgba(255,255,255,0.4);transition:all .25s}
-.tab.active{background:linear-gradient(135deg,#d4af37,#f5d76e);color:#0a0e1a}
+/* ═══════════════════════════════════════
+   HEADER
+═══════════════════════════════════════ */
+header{
+  grid-column:1/-1;
+  height:68px;
+  background:rgba(11,17,32,0.85);
+  backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;
+  justify-content:space-between;
+  padding:0 36px;
+  position:sticky;top:0;z-index:100;
+}
+.brand{display:flex;align-items:center;gap:14px}
+.brand-logo{
+  width:42px;height:42px;
+  background:linear-gradient(135deg,#1a56db,#3b82f6);
+  border-radius:13px;display:flex;align-items:center;
+  justify-content:center;font-size:20px;
+  box-shadow:0 4px 16px rgba(26,86,219,0.35);
+  position:relative;overflow:hidden;
+}
+.brand-logo::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.2),transparent);
+}
+.brand-name{font-size:17px;font-weight:900;color:#fff}
+.brand-sub{font-size:11px;color:var(--muted);margin-top:1px}
+.header-live{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(16,185,129,0.1);
+  border:1px solid rgba(16,185,129,0.2);
+  border-radius:30px;padding:7px 16px;
+}
+.live-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:#10b981;
+  animation:livePulse 1.5s ease-in-out infinite;
+}
+@keyframes livePulse{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,0.5)}50%{box-shadow:0 0 0 5px rgba(16,185,129,0)}}
+.live-text{font-size:12px;font-weight:700;color:#10b981}
+.staff-btn{
+  color:rgba(255,255,255,0.35);font-size:13px;
+  text-decoration:none;transition:.2s;
+}
+.staff-btn:hover{color:var(--blue3)}
 
-.panel{display:none}.panel.active{display:block}
+/* ═══════════════════════════════════════
+   LEFT: MAIN CONTENT
+═══════════════════════════════════════ */
+.main-content{
+  padding:40px 36px;
+  overflow-y:auto;
+  max-height:calc(100vh - 68px);
+}
 
-/* Queue Panel */
-.branch-select-wrap{margin-bottom:28px}
-.branch-select-wrap label{display:block;color:rgba(255,255,255,0.5);font-size:13px;font-weight:700;margin-bottom:8px}
-select{width:100%;padding:14px 16px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:12px;color:#fff;font-family:'Tajawal',sans-serif;font-size:15px;outline:none;transition:all .3s;appearance:none;cursor:pointer}
-select:focus{border-color:rgba(212,175,55,0.5)}
-select option{background:#1a1e2e;color:#fff}
+/* Hero */
+.hero{
+  margin-bottom:40px;
+  animation:slideIn .6s ease both;
+}
+@keyframes slideIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(26,86,219,0.12);
+  border:1px solid rgba(26,86,219,0.25);
+  border-radius:30px;padding:6px 14px;
+  margin-bottom:16px;
+}
+.hero-tag span{font-size:11px;font-weight:800;color:var(--blue3);letter-spacing:.5px}
+.hero h2{
+  font-size:36px;font-weight:900;line-height:1.2;
+  margin-bottom:10px;
+  background:linear-gradient(135deg,#fff 40%,rgba(255,255,255,0.5));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.hero h2 span{
+  background:linear-gradient(90deg,var(--blue3),var(--gold2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.hero p{font-size:15px;color:var(--muted);line-height:1.7}
 
-.services-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;margin-bottom:28px}
-.service-card{background:var(--surface);border:2px solid var(--border);border-radius:16px;padding:20px 16px;text-align:center;cursor:pointer;transition:all .25s}
-.service-card:hover{border-color:rgba(212,175,55,0.3);background:var(--gold-dim)}
-.service-card.selected{border-color:#d4af37;background:var(--gold-dim)}
-.service-card .icon{font-size:28px;margin-bottom:10px}
-.service-card .name{font-size:13px;font-weight:700;color:#e2e8f0}
-.service-card .time{font-size:11px;color:rgba(255,255,255,0.35);margin-top:4px}
+/* Tab Nav */
+.tab-nav{
+  display:flex;gap:6px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid var(--border);
+  border-radius:16px;padding:5px;
+  margin-bottom:32px;
+  animation:slideIn .6s .1s ease both;
+}
+.tab-btn{
+  flex:1;padding:12px 8px;
+  border:none;background:transparent;
+  color:var(--muted);font-family:inherit;font-size:14px;font-weight:700;
+  border-radius:12px;cursor:pointer;transition:.25s;
+  display:flex;align-items:center;justify-content:center;gap:7px;
+}
+.tab-btn.active{
+  background:linear-gradient(135deg,var(--blue),var(--blue2));
+  color:#fff;box-shadow:0 4px 16px rgba(26,86,219,0.3);
+}
+.tab-btn:not(.active):hover{background:var(--surface);color:var(--text)}
 
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
-.form-group label{display:block;color:rgba(255,255,255,0.5);font-size:13px;font-weight:700;margin-bottom:8px}
-.form-group input{width:100%;padding:13px 16px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:12px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none;transition:all .3s}
-.form-group input:focus{border-color:rgba(212,175,55,0.5);background:rgba(212,175,55,0.06)}
-.form-group input::placeholder{color:rgba(255,255,255,0.2)}
+/* Panel */
+.panel{display:none;animation:panelFade .35s ease both}
+.panel.active{display:block}
+@keyframes panelFade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
-.btn{padding:15px 30px;background:linear-gradient(135deg,#d4af37,#f5d76e);border:none;border-radius:12px;color:#0a0e1a;font-family:'Tajawal',sans-serif;font-size:16px;font-weight:900;cursor:pointer;transition:all .3s;width:100%}
-.btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(212,175,55,0.3)}
+/* Form elements */
+.field-label{
+  display:block;font-size:11px;font-weight:800;
+  color:var(--muted);margin-bottom:8px;letter-spacing:.6px;text-transform:uppercase;
+}
+.styled-select{
+  width:100%;padding:14px 16px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:13px;color:var(--text);
+  font-family:inherit;font-size:14px;outline:none;
+  transition:.25s;appearance:none;cursor:pointer;
+}
+.styled-select:focus{border-color:rgba(26,86,219,0.5);background:rgba(26,86,219,0.05);box-shadow:0 0 0 3px rgba(26,86,219,0.1)}
+.styled-select option{background:#1e2d45}
 
-/* Token Card */
-.token-result{background:linear-gradient(135deg,rgba(212,175,55,0.1),rgba(212,175,55,0.05));border:2px solid rgba(212,175,55,0.3);border-radius:24px;padding:40px;text-align:center;display:none;animation:popIn .4s ease}
-@keyframes popIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
-.token-number{font-size:72px;font-weight:900;color:#f5d76e;line-height:1;margin-bottom:16px;letter-spacing:4px}
-.token-info p{color:rgba(255,255,255,0.5);font-size:14px;margin-bottom:6px}
-.token-info strong{color:#e2e8f0}
-.token-actions{margin-top:24px;display:flex;gap:12px;justify-content:center}
-.btn-outline{padding:12px 24px;background:transparent;border:1px solid rgba(212,175,55,0.3);border-radius:10px;color:#f5d76e;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s}
-.btn-outline:hover{background:rgba(212,175,55,0.1)}
+.field-wrap{margin-bottom:20px}
 
-/* Appointment Panel */
-.appt-form{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:32px}
-.appt-form h3{font-size:18px;font-weight:900;margin-bottom:24px;color:#f5d76e}
+.styled-input{
+  width:100%;padding:14px 16px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:13px;color:var(--text);
+  font-family:inherit;font-size:14px;outline:none;transition:.25s;
+}
+.styled-input:focus{border-color:rgba(26,86,219,0.5);background:rgba(26,86,219,0.05);box-shadow:0 0 0 3px rgba(26,86,219,0.1)}
+.styled-input::placeholder{color:rgba(255,255,255,0.2)}
 
-/* Queue Status */
-.queue-status{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:24px;margin-top:24px}
-.queue-status h3{font-size:15px;font-weight:700;color:rgba(255,255,255,0.4);margin-bottom:16px}
-.serving-now{display:flex;align-items:center;gap:16px;padding:16px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:12px;margin-bottom:12px}
-.serving-badge{background:rgba(16,185,129,0.2);color:#34d399;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:700}
-.serving-token{font-size:28px;font-weight:900;color:#34d399}
-.waiting-count{color:rgba(255,255,255,0.4);font-size:13px}
+.row-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
 
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:#1e1e30;border:1px solid var(--border);border-radius:12px;padding:14px 28px;font-size:14px;font-weight:700;z-index:9999;transition:transform .3s;min-width:260px;text-align:center}
+/* Services Grid */
+.services-title{font-size:12px;font-weight:800;color:var(--muted);margin-bottom:12px;letter-spacing:.6px;text-transform:uppercase}
+.services-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
+  gap:12px;margin-bottom:24px;
+}
+.svc-card{
+  background:var(--surface);
+  border:1.5px solid var(--border);
+  border-radius:16px;padding:20px 14px;
+  text-align:center;cursor:pointer;transition:.28s;
+  position:relative;overflow:hidden;
+}
+.svc-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(26,86,219,0.08),transparent);
+  opacity:0;transition:.28s;
+}
+.svc-card:hover{border-color:rgba(96,165,250,0.35);transform:translateY(-3px)}
+.svc-card:hover::before{opacity:1}
+.svc-card.sel{
+  border-color:var(--blue2);
+  background:rgba(26,86,219,0.1);
+  box-shadow:0 0 0 3px rgba(26,86,219,0.12);
+  transform:translateY(-3px);
+}
+.svc-card.sel::before{opacity:1}
+.svc-icon{font-size:28px;margin-bottom:10px;display:block}
+.svc-name{font-size:13px;font-weight:700;color:var(--text)}
+.svc-time{font-size:11px;color:var(--muted);margin-top:4px}
+.svc-card.sel .svc-name{color:var(--blue3)}
+
+/* Primary Button */
+.btn-main{
+  width:100%;padding:16px;
+  background:linear-gradient(135deg,#1a56db,#3b82f6);
+  color:#fff;border:none;border-radius:14px;
+  font-family:inherit;font-weight:900;font-size:16px;
+  cursor:pointer;transition:.28s;
+  box-shadow:0 6px 20px rgba(26,86,219,0.3);
+  position:relative;overflow:hidden;
+}
+.btn-main::after{
+  content:'';position:absolute;
+  top:-50%;left:-50%;width:200%;height:200%;
+  background:linear-gradient(45deg,transparent,rgba(255,255,255,0.08),transparent);
+  transform:rotate(45deg) translateX(-100%);transition:.5s;
+}
+.btn-main:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(26,86,219,0.4)}
+.btn-main:hover::after{transform:rotate(45deg) translateX(100%)}
+
+/* Token Result Card */
+.token-card{
+  display:none;
+  background:linear-gradient(135deg,rgba(26,86,219,0.12),rgba(245,158,11,0.06));
+  border:1.5px solid rgba(26,86,219,0.25);
+  border-radius:24px;padding:48px 36px;
+  text-align:center;
+  animation:tokenPop .5s cubic-bezier(0.175,0.885,0.32,1.275) both;
+  position:relative;overflow:hidden;
+}
+.token-card::before{
+  content:'';position:absolute;
+  top:0;left:15%;right:15%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(96,165,250,0.4),transparent);
+}
+@keyframes tokenPop{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+.token-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.25);
+  border-radius:30px;padding:6px 16px;margin-bottom:20px;
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,0.2)}50%{box-shadow:0 0 0 8px rgba(16,185,129,0)}}
+.token-badge span{font-size:12px;font-weight:800;color:#10b981}
+.token-number{
+  font-size:88px;font-weight:900;
+  background:linear-gradient(135deg,#60a5fa,#fcd34d);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  line-height:1;margin-bottom:20px;letter-spacing:6px;
+}
+.token-details{display:flex;gap:20px;justify-content:center;margin-bottom:28px;flex-wrap:wrap}
+.token-detail{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:12px 20px;text-align:center;
+}
+.td-label{font-size:10px;color:var(--muted);font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:5px}
+.td-val{font-size:18px;font-weight:900;color:var(--text)}
+.td-val.blue{color:var(--blue3)}.td-val.gold{color:var(--gold2)}
+.token-actions{display:flex;gap:12px;justify-content:center}
+.btn-outline{
+  padding:12px 24px;background:transparent;
+  border:1px solid rgba(96,165,250,0.3);border-radius:12px;
+  color:var(--blue3);font-family:inherit;font-size:14px;font-weight:700;
+  cursor:pointer;transition:.22s;
+}
+.btn-outline:hover{background:rgba(96,165,250,0.08)}
+
+/* Appointment form */
+.appt-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:22px;padding:32px;
+}
+.appt-title{
+  display:flex;align-items:center;gap:10px;
+  font-size:17px;font-weight:900;margin-bottom:26px;
+}
+
+/* ═══════════════════════════════════════
+   RIGHT: LIVE PANEL
+═══════════════════════════════════════ */
+.live-panel{
+  background:rgba(11,17,32,0.6);
+  border-right:1px solid var(--border);
+  padding:32px 24px;
+  overflow-y:auto;
+  max-height:calc(100vh - 68px);
+  position:sticky;top:68px;
+}
+
+.live-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:24px;
+}
+.live-title{font-size:15px;font-weight:900;color:var(--text)}
+.live-refresh{
+  background:transparent;border:1px solid var(--border);
+  border-radius:9px;padding:6px 12px;color:var(--muted);
+  font-family:inherit;font-size:12px;cursor:pointer;transition:.2s;
+}
+.live-refresh:hover{border-color:var(--blue2);color:var(--blue3)}
+
+/* Branch select in live panel */
+.live-branch{margin-bottom:20px}
+
+/* Serving Now */
+.serving-card{
+  background:linear-gradient(135deg,rgba(16,185,129,0.1),rgba(16,185,129,0.05));
+  border:1px solid rgba(16,185,129,0.2);
+  border-radius:18px;padding:20px;
+  margin-bottom:16px;
+  position:relative;overflow:hidden;
+  transition:.3s;
+}
+.serving-card::before{
+  content:'';position:absolute;
+  top:0;left:10%;right:10%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(16,185,129,0.4),transparent);
+}
+.sc-label{
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(16,185,129,0.15);border-radius:20px;
+  padding:4px 12px;font-size:11px;font-weight:800;
+  color:#10b981;margin-bottom:12px;
+}
+.sc-dot{width:6px;height:6px;border-radius:50%;background:#10b981;animation:livePulse 1.5s infinite}
+.sc-token{
+  font-size:48px;font-weight:900;color:#10b981;
+  line-height:1;margin-bottom:8px;
+  text-shadow:0 0 30px rgba(16,185,129,0.3);
+}
+.sc-name{font-size:14px;color:rgba(255,255,255,0.6)}
+.sc-service{
+  display:inline-block;margin-top:8px;
+  background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.15);
+  border-radius:8px;padding:4px 10px;font-size:12px;color:rgba(16,185,129,0.8);
+}
+
+/* Queue list */
+.queue-section-title{
+  font-size:11px;font-weight:800;color:var(--muted);
+  letter-spacing:.6px;text-transform:uppercase;
+  margin-bottom:12px;display:flex;align-items:center;gap:8px;
+}
+.queue-count-badge{
+  background:rgba(26,86,219,0.15);border:1px solid rgba(26,86,219,0.2);
+  border-radius:20px;padding:2px 9px;font-size:11px;color:var(--blue3);
+}
+
+.queue-item{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 14px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:13px;margin-bottom:8px;
+  transition:.25s;
+  animation:queueIn .3s ease both;
+}
+@keyframes queueIn{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:translateX(0)}}
+.queue-item:hover{border-color:rgba(96,165,250,0.2);background:rgba(255,255,255,0.06)}
+.qi-pos{
+  width:28px;height:28px;border-radius:8px;
+  background:rgba(26,86,219,0.12);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:900;color:var(--blue3);
+  flex-shrink:0;
+}
+.qi-token{font-size:15px;font-weight:900;color:var(--text);min-width:44px}
+.qi-info{flex:1;min-width:0}
+.qi-name{font-size:13px;color:rgba(255,255,255,0.7);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qi-svc{font-size:11px;color:var(--muted);margin-top:2px}
+.qi-mine{
+  background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.25);
+}
+.qi-mine .qi-token{color:var(--gold2)}
+.mine-tag{
+  font-size:10px;font-weight:800;color:var(--gold);
+  background:rgba(245,158,11,0.12);border-radius:6px;
+  padding:2px 7px;flex-shrink:0;
+}
+
+/* Stats row */
+.stats-row{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;
+  margin-bottom:20px;
+}
+.stat-box{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:14px;padding:14px;text-align:center;
+}
+.stat-label{font-size:10px;color:var(--muted);font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px}
+.stat-val{font-size:24px;font-weight:900;color:var(--text)}
+.stat-val.b{color:var(--blue3)}.stat-val.g{color:#10b981}.stat-val.y{color:var(--gold2)}
+
+/* Empty state */
+.empty-state{
+  text-align:center;padding:32px 20px;
+  color:var(--muted);font-size:14px;
+}
+.empty-icon{font-size:36px;margin-bottom:10px;opacity:.4}
+
+/* ═══════════════════════════════════════
+   ALERT BANNER
+═══════════════════════════════════════ */
+.alert-banner{
+  display:none;position:fixed;top:0;left:0;right:0;z-index:9999;
+  background:linear-gradient(135deg,#1a56db,#3b82f6);
+  padding:18px 30px;text-align:center;
+  animation:bannerDrop .4s cubic-bezier(0.175,0.885,0.32,1.275) both;
+}
+@keyframes bannerDrop{from{transform:translateY(-100%)}to{transform:translateY(0)}}
+.alert-banner.show{display:block}
+.alert-main{font-size:20px;font-weight:900;color:#fff}
+.alert-sub{font-size:13px;color:rgba(255,255,255,0.7);margin-top:4px}
+.alert-banner.mine{background:linear-gradient(135deg,#d97706,#f59e0b)}
+
+/* Sound Toggle */
+.sound-btn{
+  position:fixed;bottom:24px;left:24px;z-index:500;
+  background:rgba(11,17,32,0.85);backdrop-filter:blur(12px);
+  border:1px solid var(--border);border-radius:50px;
+  padding:10px 18px;cursor:pointer;
+  display:flex;align-items:center;gap:8px;
+  font-family:inherit;font-size:12px;font-weight:700;
+  color:var(--muted);transition:.22s;
+}
+.sound-btn:hover{border-color:var(--blue2);color:var(--blue3)}
+
+/* Toast */
+.toast{
+  position:fixed;bottom:24px;left:50%;
+  transform:translateX(-50%) translateY(80px);
+  background:rgba(14,21,38,0.95);backdrop-filter:blur(16px);
+  border:1px solid var(--border);border-radius:14px;
+  padding:14px 28px;font-size:14px;font-weight:700;
+  z-index:9999;transition:transform .3s cubic-bezier(0.175,0.885,0.32,1.275);
+  min-width:260px;text-align:center;
+}
 .toast.show{transform:translateX(-50%) translateY(0)}
 .toast.success{border-color:rgba(16,185,129,0.4);color:#34d399}
 .toast.error{border-color:rgba(239,68,68,0.4);color:#f87171}
+
+/* ═══════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════ */
+@media(max-width:900px){
+  .page-wrap{grid-template-columns:1fr}
+  .live-panel{display:none}
+}
+@media(max-width:600px){
+  .main-content{padding:24px 16px}
+  .hero h2{font-size:26px}
+  .row-2{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
 
+<!-- Background -->
+<div class="bg-canvas">
+  <div class="bg-mesh"></div>
+  <div class="bg-grid"></div>
+  <div id="particles"></div>
+</div>
+
+<!-- Alert Banner -->
+<div class="alert-banner" id="alertBanner">
+  <div class="alert-main" id="alertMain">📢 الرقم B001 — يُرجى التوجه للكاونتر</div>
+  <div class="alert-sub" id="alertSub"></div>
+</div>
+
+<!-- Header -->
 <header>
-    <div class="brand">
-        <div class="brand-icon">🏦</div>
-        <div><h1>البنك الذكي</h1><p>بوابة العملاء</p></div>
+  <div class="brand">
+    <div class="brand-logo">🏦</div>
+    <div>
+      <div class="brand-name">البنك الذكي</div>
+      <div class="brand-sub">بوابة العملاء</div>
     </div>
-    <div class="staff-link"><a href="/login">دخول الموظفين ←</a></div>
+  </div>
+  <div class="header-live">
+    <div class="live-dot"></div>
+    <span class="live-text">مباشر</span>
+  </div>
+  <a href="/login" class="staff-btn">دخول الموظفين ←</a>
 </header>
 
-<main>
+<!-- Page Wrap -->
+<div class="page-wrap">
+
+  <!-- ══ LEFT: Main ══ -->
+  <div class="main-content">
+
+    <!-- Hero -->
     <div class="hero">
-        <h2>أهلاً بك في البنك الذكي 🏦</h2>
-        <p>احجز موعدك أو خذ رقم انتظار بدون تعب</p>
+      <div class="hero-tag">
+        <span>🏦 الخدمات المصرفية الذكية</span>
+      </div>
+      <h2>أهلاً بك،<br><span>ماذا تريد اليوم؟</span></h2>
+      <p>خذ رقم انتظار أو احجز موعدك في ثوانٍ — بدون تعب وبدون ازدحام</p>
     </div>
 
-    <div class="tabs">
-        <div class="tab active" onclick="switchTab('queue',this)">🎫 رقم انتظار</div>
-        <div class="tab" onclick="switchTab('appt',this)">📅 حجز موعد</div>
-        <div class="tab" onclick="switchTab('status',this)">📺 حالة الطابور</div>
+    <!-- Tab Nav -->
+    <div class="tab-nav">
+      <button class="tab-btn active" onclick="switchTab('queue',this)">
+        🎫 رقم انتظار
+      </button>
+      <button class="tab-btn" onclick="switchTab('appt',this)">
+        📅 حجز موعد
+      </button>
+      <button class="tab-btn" onclick="switchTab('status',this)">
+        📺 حالة الطابور
+      </button>
     </div>
 
-    <!-- QUEUE PANEL -->
+    <!-- ── Panel: Queue ── -->
     <div class="panel active" id="panel-queue">
-        <div id="queueForm">
-            <div class="branch-select-wrap">
-                <label>اختر الفرع</label>
-                <select id="qBranch">
-                    <option value="">⏳ جاري تحميل الفروع...</option>
-                </select>
-            </div>
-
-            <div class="form-group" style="margin-bottom:20px">
-                <label>اختر الخدمة</label>
-            </div>
-            <div class="services-grid" id="servicesGrid"></div>
-
-            <div class="form-row">
-                <div class="form-group"><label>اسمك (اختياري)</label><input type="text" id="qName" placeholder="مثال: محمد أحمد" /></div>
-                <div class="form-group"><label>رقم موبايلك (اختياري)</label><input type="text" id="qPhone" placeholder="01xxxxxxxxx" /></div>
-            </div>
-
-            <button class="btn" onclick="takeNumber()">🎫 خذ رقم انتظار</button>
+      <div id="queueForm">
+        <div class="field-wrap">
+          <label class="field-label">اختر الفرع</label>
+          <select class="styled-select" id="qBranch">
+            <option value="">⏳ جاري تحميل الفروع...</option>
+          </select>
         </div>
 
-        <div class="token-result" id="tokenResult">
-            <div class="token-number" id="tokenNumber">B001</div>
-            <div class="token-info">
-                <p>الخدمة: <strong id="tokenService"></strong></p>
-                <p>موقعك في الطابور: <strong id="tokenPos"></strong></p>
-                <p>الوقت المتوقع: <strong id="tokenWait"></strong> دقيقة</p>
-            </div>
-            <div class="token-actions">
-                <button class="btn-outline" onclick="resetQueue()">← خذ رقم تاني</button>
-                <button class="btn" onclick="window.print()" style="width:auto">🖨️ طباعة</button>
-            </div>
+        <div class="services-title">اختر الخدمة</div>
+        <div class="services-grid" id="servicesGrid">
+          <!-- Loaded dynamically -->
         </div>
+
+        <div class="row-2">
+          <div>
+            <label class="field-label">اسمك (اختياري)</label>
+            <input type="text" class="styled-input" id="qName" placeholder="مثال: محمد أحمد"/>
+          </div>
+          <div>
+            <label class="field-label">رقم موبايلك (اختياري)</label>
+            <input type="text" class="styled-input" id="qPhone" placeholder="01xxxxxxxxx"/>
+          </div>
+        </div>
+
+        <button class="btn-main" onclick="takeNumber()">🎫 خذ رقم انتظار الآن</button>
+      </div>
+
+      <!-- Token Result -->
+      <div class="token-card" id="tokenResult">
+        <div class="token-badge">
+          <div class="live-dot"></div>
+          <span>رقمك جاهز — في الانتظار</span>
+        </div>
+        <div class="token-number" id="tokenNumber">A001</div>
+        <div class="token-details">
+          <div class="token-detail">
+            <div class="td-label">الخدمة</div>
+            <div class="td-val" id="tokenService">—</div>
+          </div>
+          <div class="token-detail">
+            <div class="td-label">موقعك</div>
+            <div class="td-val blue" id="tokenPos">—</div>
+          </div>
+          <div class="token-detail">
+            <div class="td-label">الوقت المتوقع</div>
+            <div class="td-val gold"><span id="tokenWait">—</span> د</div>
+          </div>
+        </div>
+        <div class="token-actions">
+          <button class="btn-outline" onclick="resetQueue()">← خذ رقم تاني</button>
+          <button class="btn-main" onclick="window.print()" style="width:auto;padding:12px 24px">🖨️ طباعة</button>
+        </div>
+      </div>
     </div>
 
-    <!-- APPOINTMENT PANEL -->
+    <!-- ── Panel: Appointment ── -->
     <div class="panel" id="panel-appt">
-        <div class="appt-form">
-            <h3>📅 حجز موعد جديد</h3>
-            <div class="branch-select-wrap" style="margin-bottom:20px">
-                <label>الفرع</label>
-                <select id="aBranch">
-                    <option value="">⏳ جاري تحميل الفروع...</option>
-                </select>
-            </div>
-            <div class="branch-select-wrap" style="margin-bottom:20px">
-                <label>الخدمة</label>
-                <select id="aService">
-                    <option>فتح حساب جديد</option>
-                    <option>سحب / إيداع</option>
-                    <option>تحويل بنكي</option>
-                    <option>طلب بطاقة</option>
-                    <option>استفسار عام</option>
-                </select>
-            </div>
-            <div class="form-row">
-                <div class="form-group"><label>الاسم</label><input type="text" id="aName" placeholder="الاسم بالكامل" /></div>
-                <div class="form-group"><label>رقم الموبايل</label><input type="text" id="aPhone" placeholder="01xxxxxxxxx" /></div>
-            </div>
-            <div class="form-row">
-                <div class="form-group"><label>التاريخ</label><input type="date" id="aDate" /></div>
-                <div class="form-group"><label>الوقت</label>
-                    <select id="aTime" style="padding:13px 16px">
-                        <option>09:00</option><option>09:30</option><option>10:00</option><option>10:30</option>
-                        <option>11:00</option><option>11:30</option><option>12:00</option><option>13:00</option>
-                        <option>13:30</option><option>14:00</option><option>14:30</option><option>15:00</option>
-                    </select>
-                </div>
-            </div>
-            <button class="btn" onclick="bookAppointment()">📅 تأكيد الحجز</button>
+      <div class="appt-card">
+        <div class="appt-title">📅 حجز موعد جديد</div>
+        <div class="field-wrap">
+          <label class="field-label">الفرع</label>
+          <select class="styled-select" id="aBranch">
+            <option value="">⏳ جاري تحميل الفروع...</option>
+          </select>
         </div>
+        <div class="field-wrap">
+          <label class="field-label">الخدمة</label>
+          <select class="styled-select" id="aService">
+            <option>فتح حساب جديد</option>
+            <option>سحب / إيداع</option>
+            <option>تحويل بنكي</option>
+            <option>طلب بطاقة</option>
+            <option>استفسار عام</option>
+          </select>
+        </div>
+        <div class="row-2">
+          <div>
+            <label class="field-label">الاسم الكامل</label>
+            <input type="text" class="styled-input" id="aName" placeholder="الاسم بالكامل"/>
+          </div>
+          <div>
+            <label class="field-label">رقم الموبايل</label>
+            <input type="text" class="styled-input" id="aPhone" placeholder="01xxxxxxxxx"/>
+          </div>
+        </div>
+        <div class="row-2">
+          <div>
+            <label class="field-label">التاريخ</label>
+            <input type="date" class="styled-input" id="aDate"/>
+          </div>
+          <div>
+            <label class="field-label">الوقت</label>
+            <select class="styled-select" id="aTime">
+              <option>09:00</option><option>09:30</option><option>10:00</option>
+              <option>10:30</option><option>11:00</option><option>11:30</option>
+              <option>12:00</option><option>13:00</option><option>13:30</option>
+              <option>14:00</option><option>14:30</option><option>15:00</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn-main" onclick="bookAppointment()">📅 تأكيد الحجز</button>
+      </div>
     </div>
 
-    <!-- STATUS PANEL -->
+    <!-- ── Panel: Status (mobile only) ── -->
     <div class="panel" id="panel-status">
-        <div class="branch-select-wrap" style="margin-bottom:20px">
-            <label>اختر الفرع لمتابعة الطابور</label>
-            <select id="sBranch" onchange="loadQueueStatus()">
-                    <option value="">⏳ جاري تحميل الفروع...</option>
-                </select>
-        </div>
-        <div id="queueStatusDisplay"></div>
+      <div class="field-wrap">
+        <label class="field-label">اختر الفرع</label>
+        <select class="styled-select" id="sBranch" onchange="loadStatusPanel()">
+          <option value="">⏳ جاري تحميل الفروع...</option>
+        </select>
+      </div>
+      <div id="statusDisplay"></div>
     </div>
-</main>
+
+  </div><!-- /main-content -->
+
+  <!-- ══ RIGHT: Live Panel ══ -->
+  <div class="live-panel">
+    <div class="live-header">
+      <div class="live-title">📺 الطابور المباشر</div>
+      <button class="live-refresh" onclick="refreshLive()">↻ تحديث</button>
+    </div>
+
+    <!-- Branch select -->
+    <div class="live-branch">
+      <select class="styled-select" id="liveBranch" onchange="onLiveBranchChange()">
+        <option value="">⏳ جاري التحميل...</option>
+      </select>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-box">
+        <div class="stat-label">في الانتظار</div>
+        <div class="stat-val b" id="statWaiting">—</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">يُخدم الآن</div>
+        <div class="stat-val g" id="statServing">—</div>
+      </div>
+    </div>
+
+    <!-- Serving card -->
+    <div id="servingCard"></div>
+
+    <!-- Queue list -->
+    <div class="queue-section-title">
+      قائمة الانتظار
+      <span class="queue-count-badge" id="queueCountBadge">0</span>
+    </div>
+    <div id="queueList">
+      <div class="empty-state">
+        <div class="empty-icon">🎫</div>
+        الطابور فاضي الآن
+      </div>
+    </div>
+  </div>
+
+</div><!-- /page-wrap -->
+
+<!-- Sound toggle -->
+<button class="sound-btn" id="soundBtn" onclick="toggleSound()">
+  <span id="soundIcon">🔊</span>
+  <span id="soundLabel">الصوت شغال</span>
+</button>
 
 <div class="toast" id="toast"></div>
 
 <script>
-const SERVICES_ICONS = ['🏦','💰','🔄','💳','💬'];
-let selectedService = null;
+// ══════════════════════════════════════════
+// PARTICLES
+// ══════════════════════════════════════════
+function createParticles() {
+  const container = document.getElementById('particles');
+  const colors = ['rgba(96,165,250,0.4)','rgba(245,158,11,0.3)','rgba(16,185,129,0.3)'];
+  for (let i = 0; i < 18; i++) {
+    const p = document.createElement('div');
+    const size = Math.random() * 4 + 2;
+    p.className = 'particle';
+    p.style.cssText = `
+      width:${size}px;height:${size}px;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      left:${Math.random()*100}%;
+      animation-duration:${Math.random()*15+10}s;
+      animation-delay:${Math.random()*10}s;
+    `;
+    container.appendChild(p);
+  }
+}
+createParticles();
 
-async function loadBranches() {
-    try {
-        const res  = await fetch('/api/branches');
-        const data = await res.json();
-        const opts = data.map(b => `<option value="${b.id}">${b.name}</option>`).join('');
-        ['qBranch','aBranch','sBranch'].forEach(id => {
-            const el = document.getElementById(id);
-            if (el) el.innerHTML = opts;
-        });
-    } catch {
-        ['qBranch','aBranch','sBranch'].forEach(id => {
-            const el = document.getElementById(id);
-            if (el) el.innerHTML = '<option value="">تعذر تحميل الفروع</option>';
-        });
+// ══════════════════════════════════════════
+// SOUND SYSTEM
+// ══════════════════════════════════════════
+let soundEnabled = true;
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+function toggleSound() {
+  soundEnabled = !soundEnabled;
+  document.getElementById('soundIcon').textContent  = soundEnabled ? '🔊' : '🔇';
+  document.getElementById('soundLabel').textContent = soundEnabled ? 'الصوت شغال' : 'الصوت مكتوم';
+}
+
+function playBeep(times=2) {
+  if (!soundEnabled) return;
+  const freqs = [660, 880, 1100];
+  for (let i = 0; i < times; i++) {
+    setTimeout(() => {
+      const osc  = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain); gain.connect(audioCtx.destination);
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freqs[i % freqs.length], audioCtx.currentTime);
+      gain.gain.setValueAtTime(0.35, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
+      osc.start(audioCtx.currentTime);
+      osc.stop(audioCtx.currentTime + 0.5);
+    }, i * 600);
+  }
+}
+
+function speakArabic(text) {
+  if (!soundEnabled || !window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'ar-EG'; utter.rate = 0.85; utter.pitch = 1; utter.volume = 1;
+  const voices = window.speechSynthesis.getVoices();
+  const arabicVoice = voices.find(v => v.lang.startsWith('ar'));
+  if (arabicVoice) utter.voice = arabicVoice;
+  window.speechSynthesis.speak(utter);
+}
+
+function announceToken(token) {
+  playBeep(3);
+  setTimeout(() => speakArabic(`يُرجى تقدم العميل صاحب الرقم ${token} إلى الكاونتر`), 1200);
+  showBanner(token);
+}
+
+function showBanner(token) {
+  const banner = document.getElementById('alertBanner');
+  const isMine = myToken === token;
+  document.getElementById('alertMain').textContent = `📢 الرقم ${token} — يُرجى التوجه للكاونتر`;
+  document.getElementById('alertSub').textContent  = isMine ? '🎉 هذا رقمك! تفضل من فضلك' : '';
+  banner.className = 'alert-banner show' + (isMine ? ' mine' : '');
+  setTimeout(() => banner.classList.remove('show'), 7000);
+}
+
+// ══════════════════════════════════════════
+// STATE & POLLING
+// ══════════════════════════════════════════
+let selectedService = null;
+let myToken = null;
+let lastServingToken = null;
+let pollInterval = null;
+let branchesCache = [];
+
+const ICONS = ['🏦','💰','🔄','💳','💬','📋','🔐','📊'];
+
+async function startPolling(branchId) {
+  if (pollInterval) clearInterval(pollInterval);
+  await fetchLiveQueue(branchId);
+  pollInterval = setInterval(() => fetchLiveQueue(branchId), 5000);
+}
+
+async function fetchLiveQueue(branchId) {
+  if (!branchId) return;
+  try {
+    const data = await fetch(`/api/queue/${branchId}`).then(r => r.json());
+    const serving = data.find(t => t.status === 'serving');
+    const waiting = data.filter(t => t.status === 'waiting');
+
+    // Sound announcement
+    if (serving && serving.token !== lastServingToken) {
+      if (lastServingToken !== null) announceToken(serving.token);
+      lastServingToken = serving.token;
     }
+
+    renderLivePanel(serving, waiting);
+  } catch {}
+}
+
+function renderLivePanel(serving, waiting) {
+  // Stats
+  document.getElementById('statWaiting').textContent = waiting.length;
+  document.getElementById('statServing').textContent  = serving ? serving.token : '—';
+  document.getElementById('queueCountBadge').textContent = waiting.length;
+
+  // Serving card
+  const sc = document.getElementById('servingCard');
+  if (serving) {
+    sc.innerHTML = `
+      <div class="serving-card">
+        <div class="sc-label"><div class="sc-dot"></div>يُخدم الآن</div>
+        <div class="sc-token">${serving.token}</div>
+        <div class="sc-name">${serving.name}</div>
+        <div class="sc-service">${serving.service}</div>
+      </div>
+    `;
+  } else {
+    sc.innerHTML = '<div class="empty-state" style="padding:20px 0"><div class="empty-icon">⏳</div>لا يوجد عميل يُخدم الآن</div>';
+  }
+
+  // Queue list
+  const ql = document.getElementById('queueList');
+  if (!waiting.length) {
+    ql.innerHTML = '<div class="empty-state"><div class="empty-icon">🎫</div>الطابور فاضي الآن ✅</div>';
+    return;
+  }
+  ql.innerHTML = waiting.map((t, i) => {
+    const isMine = myToken === t.token;
+    return `
+      <div class="queue-item${isMine ? ' qi-mine' : ''}" style="animation-delay:${i*0.05}s">
+        <div class="qi-pos">${i+1}</div>
+        <div class="qi-token">${t.token}</div>
+        <div class="qi-info">
+          <div class="qi-name">${t.name}</div>
+          <div class="qi-svc">${t.service}</div>
+        </div>
+        ${isMine ? '<span class="mine-tag">رقمك ⭐</span>' : ''}
+      </div>
+    `;
+  }).join('');
+}
+
+// ══════════════════════════════════════════
+// INIT & LOADERS
+// ══════════════════════════════════════════
+async function loadBranches() {
+  try {
+    const data = await fetch('/api/branches').then(r => r.json());
+    branchesCache = data;
+    const opts = data.map(b => `<option value="${b.id}">${b.name}</option>`).join('');
+    ['qBranch','aBranch','sBranch','liveBranch'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = opts;
+    });
+    if (data.length) startPolling(data[0].id);
+  } catch {
+    ['qBranch','aBranch','sBranch','liveBranch'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = '<option value="">تعذر تحميل الفروع</option>';
+    });
+  }
 }
 
 async function loadServices() {
-    try {
-        const res  = await fetch('/api/queue/services');
-        const data = await res.json();
-        const grid = document.getElementById('servicesGrid');
-        grid.innerHTML = data.map((s,i) => `
-            <div class="service-card" onclick="selectService(${s.id},'${s.name}',this)">
-                <div class="icon">${SERVICES_ICONS[i]||'🏦'}</div>
-                <div class="name">${s.name}</div>
-                <div class="time">⏱ ~${s.duration} دقيقة</div>
-            </div>
-        `).join('');
-    } catch {}
+  try {
+    const data = await fetch('/api/queue/services').then(r => r.json());
+    document.getElementById('servicesGrid').innerHTML = data.map((s, i) => `
+      <div class="svc-card" onclick="selectService(${s.id},'${s.name}',this)">
+        <span class="svc-icon">${ICONS[i] || '🏦'}</span>
+        <div class="svc-name">${s.name}</div>
+        <div class="svc-time">⏱ ~${s.duration} دقيقة</div>
+      </div>
+    `).join('');
+  } catch {}
 }
 
 function selectService(id, name, el) {
-    selectedService = { id, name };
-    document.querySelectorAll('.service-card').forEach(c => c.classList.remove('selected'));
-    el.classList.add('selected');
+  selectedService = { id, name };
+  document.querySelectorAll('.svc-card').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
 }
 
+function onLiveBranchChange() {
+  const id = document.getElementById('liveBranch').value;
+  if (id) startPolling(id);
+}
+
+function refreshLive() {
+  const id = document.getElementById('liveBranch').value;
+  if (id) fetchLiveQueue(id);
+}
+
+async function loadStatusPanel() {
+  const branchId = document.getElementById('sBranch').value;
+  if (!branchId) return;
+  startPolling(branchId);
+  const data = await fetch(`/api/queue/${branchId}`).then(r => r.json()).catch(() => []);
+  const serving = data.find(t => t.status === 'serving');
+  const waiting = data.filter(t => t.status === 'waiting');
+  document.getElementById('statusDisplay').innerHTML = `
+    <div style="margin-top:16px">
+      ${serving ? `<div class="serving-card"><div class="sc-label"><div class="sc-dot"></div>يُخدم الآن</div><div class="sc-token">${serving.token}</div><div class="sc-name">${serving.name} — ${serving.service}</div></div>` : ''}
+      <div class="queue-section-title" style="margin-top:16px">قائمة الانتظار <span class="queue-count-badge">${waiting.length}</span></div>
+      ${waiting.map((t,i)=>`<div class="queue-item" style="animation-delay:${i*.05}s"><div class="qi-pos">${i+1}</div><div class="qi-token">${t.token}</div><div class="qi-info"><div class="qi-name">${t.name}</div><div class="qi-svc">${t.service}</div></div></div>`).join('')}
+    </div>
+  `;
+}
+
+// ══════════════════════════════════════════
+// ACTIONS
+// ══════════════════════════════════════════
 async function takeNumber() {
-    if (!selectedService) { showToast('من فضلك اختر الخدمة', 'error'); return; }
-    const branchId = document.getElementById('qBranch').value;
-    const name     = document.getElementById('qName').value.trim() || 'عميل';
-    try {
-        const res  = await fetch(`/api/queue/${branchId}`, {
-            method:'POST', headers:{'Content-Type':'application/json'},
-            body: JSON.stringify({ name, serviceId: selectedService.id })
-        });
-        const data = await res.json();
-        if (data.success) {
-            document.getElementById('tokenNumber').textContent  = data.token;
-            document.getElementById('tokenService').textContent = selectedService.name;
-            document.getElementById('tokenPos').textContent     = data.position;
-            document.getElementById('tokenWait').textContent    = data.estimatedWait || (data.position * 8);
-            document.getElementById('queueForm').style.display  = 'none';
-            document.getElementById('tokenResult').style.display = 'block';
-        } else { showToast(data.error, 'error'); }
-    } catch { showToast('خطأ في الاتصال', 'error'); }
+  if (!selectedService) { showToast('من فضلك اختر الخدمة', 'error'); return; }
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  const branchId = document.getElementById('qBranch').value;
+  const name = document.getElementById('qName').value.trim() || 'عميل';
+  try {
+    const data = await fetch(`/api/queue/${branchId}`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ name, serviceId: selectedService.id })
+    }).then(r => r.json());
+    if (data.success) {
+      myToken = data.token;
+      document.getElementById('tokenNumber').textContent  = data.token;
+      document.getElementById('tokenService').textContent = selectedService.name;
+      document.getElementById('tokenPos').textContent     = data.position;
+      document.getElementById('tokenWait').textContent    = data.estimatedWait || (data.position * 8);
+      document.getElementById('queueForm').style.display  = 'none';
+      document.getElementById('tokenResult').style.display = 'block';
+      startPolling(branchId);
+      showToast('تم! رقمك جاهز 🎫', 'success');
+    } else { showToast(data.error, 'error'); }
+  } catch { showToast('خطأ في الاتصال', 'error'); }
 }
 
 function resetQueue() {
-    selectedService = null;
-    document.getElementById('queueForm').style.display  = 'block';
-    document.getElementById('tokenResult').style.display = 'none';
-    document.querySelectorAll('.service-card').forEach(c => c.classList.remove('selected'));
+  selectedService = null; myToken = null;
+  document.getElementById('queueForm').style.display   = 'block';
+  document.getElementById('tokenResult').style.display  = 'none';
+  document.querySelectorAll('.svc-card').forEach(c => c.classList.remove('sel'));
 }
 
 async function bookAppointment() {
-    const customerName = document.getElementById('aName').value.trim();
-    const phone        = document.getElementById('aPhone').value.trim();
-    const service      = document.getElementById('aService').value;
-    const date         = document.getElementById('aDate').value;
-    const time         = document.getElementById('aTime').value;
-    const branchId     = document.getElementById('aBranch').value;
-
-    if (!customerName || !phone || !date) { showToast('من فضلك أدخل كل البيانات', 'error'); return; }
-
-    try {
-        const res  = await fetch('/api/appointments', {
-            method:'POST', headers:{'Content-Type':'application/json'},
-            body: JSON.stringify({ customerName, phone, service, date, time, branchId })
-        });
-        const data = await res.json();
-        if (data.success) { showToast(data.message, 'success'); document.getElementById('aName').value=''; document.getElementById('aPhone').value=''; }
-        else { showToast(data.error, 'error'); }
-    } catch { showToast('خطأ في الاتصال', 'error'); }
+  const customerName = document.getElementById('aName').value.trim();
+  const phone  = document.getElementById('aPhone').value.trim();
+  const service = document.getElementById('aService').value;
+  const date   = document.getElementById('aDate').value;
+  const time   = document.getElementById('aTime').value;
+  const branchId = document.getElementById('aBranch').value;
+  if (!customerName || !phone || !date) { showToast('من فضلك أدخل كل البيانات', 'error'); return; }
+  try {
+    const data = await fetch('/api/appointments', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ customerName, phone, service, date, time, branchId })
+    }).then(r => r.json());
+    if (data.success) {
+      showToast('تم الحجز بنجاح ✅', 'success');
+      document.getElementById('aName').value = '';
+      document.getElementById('aPhone').value = '';
+    } else { showToast(data.error, 'error'); }
+  } catch { showToast('خطأ في الاتصال', 'error'); }
 }
 
-async function loadQueueStatus() {
-    const branchId = document.getElementById('sBranch').value;
-    try {
-        const res  = await fetch(`/api/queue/${branchId}`);
-        const data = await res.json();
-        const serving = data.find(t => t.status==='serving');
-        const waiting = data.filter(t => t.status==='waiting');
-        const el = document.getElementById('queueStatusDisplay');
-        el.innerHTML = `
-            <div class="queue-status">
-                <h3>📺 حالة الطابور الآن</h3>
-                ${serving ? `<div class="serving-now">
-                    <span class="serving-badge">يُخدم الآن</span>
-                    <span class="serving-token">${serving.token}</span>
-                    <span>${serving.name} - ${serving.service}</span>
-                </div>` : '<p style="color:rgba(255,255,255,0.3);font-size:14px;margin-bottom:12px">لا يوجد عميل يُخدم الآن</p>'}
-                <p class="waiting-count">⏳ ${waiting.length} عميل في الانتظار</p>
-                ${waiting.slice(0,5).map(t=>`<div style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04);display:flex;justify-content:space-between"><span style="color:#e2e8f0;font-size:14px">${t.token} - ${t.name}</span><span style="color:rgba(255,255,255,0.35);font-size:13px">${t.service}</span></div>`).join('')}
-            </div>
-        `;
-    } catch { }
-}
-
+// ══════════════════════════════════════════
+// UI HELPERS
+// ══════════════════════════════════════════
 function switchTab(tab, el) {
-    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-    el.classList.add('active');
-    document.getElementById('panel-'+tab).classList.add('active');
-    if(tab==='status') loadQueueStatus();
+  document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('panel-' + tab).classList.add('active');
+  if (tab === 'status') loadStatusPanel();
 }
 
 function showToast(msg, type='success') {
-    const t = document.getElementById('toast');
-    t.textContent=msg; t.className=`toast ${type} show`;
-    setTimeout(()=>t.classList.remove('show'),3000);
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = `toast ${type} show`;
+  setTimeout(() => t.classList.remove('show'), 3200);
 }
 
-// Set min date to today
-document.getElementById('aDate').min = new Date().toISOString().split('T')[0];
+// Init
+window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+document.getElementById('aDate').min   = new Date().toISOString().split('T')[0];
 document.getElementById('aDate').value = new Date().toISOString().split('T')[0];
-
 loadBranches();
 loadServices();
 </script>

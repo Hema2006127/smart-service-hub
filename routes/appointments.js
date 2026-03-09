@@ -25,6 +25,23 @@ router.post('/', async (req, res) => {
     } catch (err) { res.json({ success: false, error: err.message }); }
 });
 
+// ✏️ تعديل بيانات موعد كاملة
+router.put('/:id', async (req, res) => {
+    if (!['admin','branch_manager','teller'].includes(req.session?.user?.role)) return res.json({ success: false, error: 'غير مصرح' });
+    const { customerName, phone, service, date, time, branchId, status } = req.body;
+    if (!customerName || !phone || !service || !date || !time)
+        return res.json({ success: false, error: 'كل الحقول مطلوبة' });
+    try {
+        const result = await db.query(
+            'UPDATE bank_appointments SET customer_name=$1, phone=$2, service=$3, date=$4, time=$5, branch_id=$6, status=$7 WHERE id=$8 RETURNING *',
+            [customerName, phone, service, date, time, branchId||null, status||'pending', req.params.id]
+        );
+        if (result.rows.length === 0) return res.json({ success: false, error: 'الموعد غير موجود' });
+        const a = result.rows[0];
+        res.json({ success: true, message: 'تم تعديل الموعد ✅', appointment: { ...a, customerName: a.customer_name, branchId: a.branch_id } });
+    } catch (err) { res.json({ success: false, error: err.message }); }
+});
+
 router.put('/:id/status', async (req, res) => {
     try {
         await db.query('UPDATE bank_appointments SET status=$1 WHERE id=$2', [req.body.status, req.params.id]);

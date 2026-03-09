@@ -9,7 +9,7 @@ CREATE TABLE Users (
 -- ===== إضافة مستخدم admin افتراضي =====
 INSERT INTO Users (Username, Password, Role) VALUES ('admin', 'admin123', 'admin');
 INSERT INTO Users (Username, Password, Role) VALUES ('viewer', 'viewer123', 'viewer');
-
+insert into Users (Username, Password, Role) values ('manager', 'manager123', 'manager');
 -- ===== جدول الفروع (لو مش موجود) =====
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Branches' AND xtype='U')
 CREATE TABLE Branches (

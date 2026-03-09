@@ -7,156 +7,113 @@
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --gold:#d4af37;--gold-light:#f5d76e;
-  --glass:rgba(255,255,255,0.04);--glass-border:rgba(255,255,255,0.08);
-  --surface:rgba(255,255,255,0.02);
-  --blur:blur(20px);--shadow:0 8px 32px rgba(0,0,0,0.4);
-}
-body{font-family:'Tajawal',sans-serif;background:#060b18;min-height:100vh;color:#e2e8f0;overflow-x:hidden}
+body{font-family:'Tajawal',sans-serif;background:#0a0e1a;min-height:100vh;color:#e2e8f0}
+:root{--gold:#d4af37;--gold-light:#f5d76e;--border:rgba(255,255,255,0.07);--surface:rgba(255,255,255,0.03)}
 
-/* BG */
-.bg-fixed{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-.orb{position:absolute;border-radius:50%;filter:blur(100px);opacity:.4}
-.orb1{width:700px;height:700px;background:rgba(212,175,55,0.08);top:-200px;right:-200px;animation:d1 18s ease-in-out infinite alternate}
-.orb2{width:600px;height:600px;background:rgba(59,130,246,0.07);bottom:-200px;left:-150px;animation:d2 14s ease-in-out infinite alternate}
-.orb3{width:400px;height:400px;background:rgba(139,92,246,0.06);top:40%;left:20%;animation:d1 10s ease-in-out infinite alternate}
-@keyframes d1{to{transform:translate(-70px,80px)}}
-@keyframes d2{to{transform:translate(80px,-70px)}}
-.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.013) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.013) 1px,transparent 1px);background-size:60px 60px}
+nav{background:rgba(10,14,26,0.95);border-bottom:1px solid rgba(212,175,55,0.15);padding:0 28px;height:62px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;backdrop-filter:blur(20px)}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-icon{width:36px;height:36px;background:linear-gradient(135deg,#d4af37,#f5d76e);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.brand h1{font-size:16px;font-weight:900;color:#f5d76e}
+.nav-right{display:flex;align-items:center;gap:12px}
+.user-tag{padding:5px 14px;background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.2);border-radius:20px;color:#f5d76e;font-size:12px;font-weight:700}
+.btn-logout{padding:7px 14px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171;border-radius:8px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:13px}
 
-/* Nav */
-nav{position:sticky;top:0;z-index:200;height:64px;background:rgba(6,11,24,0.75);border-bottom:1px solid rgba(255,255,255,0.06);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky}
-nav::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(212,175,55,0.25),transparent)}
-.brand{display:flex;align-items:center;gap:12px}
-.brand-icon{width:38px;height:38px;background:linear-gradient(135deg,#d4af37,#f5d76e);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 0 20px rgba(212,175,55,0.2);flex-shrink:0}
-.brand h1{font-size:15px;font-weight:900;color:#f5d76e;white-space:nowrap}
-.nav-right{display:flex;align-items:center;gap:10px}
-.user-tag{padding:6px 14px;background:rgba(212,175,55,0.08);border:1px solid rgba(212,175,55,0.15);border-radius:20px;color:#f5d76e;font-size:12px;font-weight:700}
-.btn-logout{padding:7px 16px;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.15);color:#f87171;border-radius:10px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:700;transition:all .2s}
-.btn-logout:hover{background:rgba(239,68,68,0.15);border-color:rgba(239,68,68,0.3)}
-
-/* Layout */
-.layout{display:flex;min-height:calc(100vh - 64px);position:relative;z-index:1}
+.layout{display:flex;min-height:calc(100vh - 62px)}
 
 /* Sidebar */
-.sidebar{
-  width:230px;flex-shrink:0;
-  background:rgba(255,255,255,0.02);
-  border-left:1px solid rgba(255,255,255,0.05);
-  padding:20px 0;
-  backdrop-filter:blur(10px);
-  position:sticky;top:64px;height:calc(100vh - 64px);
-}
-.sidebar-section{padding:8px 20px 6px;font-size:10px;font-weight:900;color:rgba(255,255,255,0.15);letter-spacing:2px;text-transform:uppercase;margin-top:8px}
-.nav-item{display:flex;align-items:center;gap:12px;padding:12px 20px;cursor:pointer;color:rgba(255,255,255,0.35);font-size:14px;font-weight:700;transition:all .2s;border-right:3px solid transparent;user-select:none}
-.nav-item:hover{background:rgba(255,255,255,0.03);color:rgba(255,255,255,0.65)}
-.nav-item.active{background:rgba(212,175,55,0.07);color:#f5d76e;border-right-color:#d4af37}
-.nav-icon{font-size:17px;width:22px;text-align:center;flex-shrink:0}
+.sidebar{width:220px;background:rgba(255,255,255,0.02);border-left:1px solid var(--border);padding:20px 0;flex-shrink:0}
+.nav-item{display:flex;align-items:center;gap:12px;padding:13px 20px;cursor:pointer;color:rgba(255,255,255,0.4);font-size:14px;font-weight:700;transition:all .2s;border-right:3px solid transparent}
+.nav-item:hover{background:rgba(255,255,255,0.03);color:rgba(255,255,255,0.7)}
+.nav-item.active{background:rgba(212,175,55,0.08);color:#f5d76e;border-right-color:#d4af37}
+.nav-icon{font-size:18px;width:24px;text-align:center}
 
 /* Content */
-.content{flex:1;padding:30px;overflow-y:auto;min-width:0}
-
-/* Section */
-.section{display:none;animation:fadeIn .3s ease}
-.section.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.section-title{font-size:20px;font-weight:900;color:#f5d76e;margin-bottom:26px;display:flex;align-items:center;gap:10px}
+.content{flex:1;padding:28px;overflow-y:auto}
 
 /* Stats */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
-.stat-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:18px;padding:20px;display:flex;align-items:center;gap:14px;backdrop-filter:var(--blur);transition:transform .2s,border-color .2s;position:relative;overflow:hidden}
-.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.07),transparent)}
-.stat-card:hover{transform:translateY(-2px);border-color:rgba(212,175,55,0.2)}
-.stat-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
-.si-gold{background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.15)}
-.si-green{background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.15)}
-.si-blue{background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.15)}
-.si-purple{background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.15)}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px;display:flex;align-items:center;gap:14px;transition:transform .2s}
+.stat-card:hover{transform:translateY(-2px)}
+.stat-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.si-gold{background:rgba(212,175,55,0.15)}.si-green{background:rgba(16,185,129,0.15)}.si-blue{background:rgba(59,130,246,0.15)}.si-purple{background:rgba(139,92,246,0.15)}
 .stat-num{font-size:28px;font-weight:900;color:#f5d76e}
-.stat-label{font-size:11px;color:rgba(255,255,255,0.3);margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+.stat-label{font-size:12px;color:rgba(255,255,255,0.35);margin-top:2px}
 
-/* Glass Card */
-.card{background:var(--glass);border:1px solid var(--glass-border);border-radius:20px;padding:24px;margin-bottom:20px;backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);box-shadow:var(--shadow),inset 0 1px 0 rgba(255,255,255,0.04);position:relative;overflow:hidden}
-.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.06),transparent)}
-.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px}
-.card-title{font-size:15px;font-weight:900;color:rgba(255,255,255,0.8)}
+/* Section */
+.section{display:none}.section.active{display:block}
+.section-title{font-size:20px;font-weight:900;color:#f5d76e;margin-bottom:24px}
+
+/* Card */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:24px;margin-bottom:20px}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.card-title{font-size:16px;font-weight:900}
 
 /* Form */
-.form-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;align-items:end}
-.form-group label{display:block;color:rgba(255,255,255,0.4);font-size:11px;font-weight:700;margin-bottom:7px;text-transform:uppercase;letter-spacing:.5px}
-.form-group input,.form-group select{width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:12px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none;transition:all .2s;appearance:none}
-.form-group input:focus,.form-group select:focus{border-color:rgba(212,175,55,0.4);background:rgba(212,175,55,0.04);box-shadow:0 0 0 3px rgba(212,175,55,0.06)}
-.form-group input::placeholder{color:rgba(255,255,255,0.18)}
-.form-group select option{background:#0d1425;color:#fff}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;align-items:end;margin-bottom:4px}
+.form-group label{display:block;color:rgba(255,255,255,0.45);font-size:12px;font-weight:700;margin-bottom:6px}
+.form-group input,.form-group select{width:100%;padding:11px 14px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:10px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none;transition:all .2s}
+.form-group input:focus,.form-group select:focus{border-color:rgba(212,175,55,0.5);background:rgba(212,175,55,0.06)}
+.form-group input::placeholder{color:rgba(255,255,255,0.2)}
+.form-group select option{background:#1a1e2e}
 
 /* Buttons */
-.btn{padding:11px 20px;border:none;border-radius:11px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;transition:all .2s;white-space:nowrap}
+.btn{padding:11px 20px;border:none;border-radius:10px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;transition:all .2s;white-space:nowrap}
 .btn-gold{background:linear-gradient(135deg,#d4af37,#f5d76e);color:#0a0e1a}
-.btn-gold:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(212,175,55,0.3)}
-.btn-danger{background:rgba(239,68,68,0.08);color:#f87171;border:1px solid rgba(239,68,68,0.15);padding:7px 14px;font-size:12px}
-.btn-danger:hover{background:rgba(239,68,68,0.15);border-color:rgba(239,68,68,0.3)}
-.btn-confirm{padding:6px 14px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.15);color:#34d399;border-radius:8px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700;transition:all .2s}
-.btn-confirm:hover{background:rgba(16,185,129,0.15)}
+.btn-gold:hover{transform:translateY(-1px);box-shadow:0 4px 15px rgba(212,175,55,0.3)}
+.btn-danger{background:rgba(239,68,68,0.15);color:#f87171;border:1px solid rgba(239,68,68,0.2);padding:7px 14px;font-size:13px}
+.btn-danger:hover{background:rgba(239,68,68,0.25)}
+.btn-edit{background:rgba(245,158,11,0.15);color:#fbbf24;border:1px solid rgba(245,158,11,0.2);padding:7px 14px;font-size:13px}
+.btn-edit:hover{background:rgba(245,158,11,0.25)}
 
 /* Search */
-.search-bar{position:relative;max-width:260px}
-.search-bar input{width:100%;padding:9px 14px 9px 38px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:11px;color:#fff;font-family:'Tajawal',sans-serif;font-size:13px;outline:none;transition:all .2s}
-.search-bar input:focus{border-color:rgba(212,175,55,0.3)}
-.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,0.25);font-size:14px;pointer-events:none}
+.search-bar{position:relative;max-width:280px}
+.search-bar input{width:100%;padding:9px 14px 9px 36px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:10px;color:#fff;font-family:'Tajawal',sans-serif;font-size:13px;outline:none}
+.search-bar input:focus{border-color:rgba(212,175,55,0.4)}
+.search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,0.3);font-size:15px}
 
 /* Table */
-.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
 table{width:100%;border-collapse:collapse}
-th{text-align:right;padding:11px 14px;font-size:11px;color:rgba(255,255,255,0.3);font-weight:700;border-bottom:1px solid rgba(255,255,255,0.05);text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+th{text-align:right;padding:11px 14px;font-size:12px;color:rgba(255,255,255,0.35);font-weight:700;border-bottom:1px solid var(--border);letter-spacing:.5px}
 td{padding:13px 14px;font-size:14px;border-bottom:1px solid rgba(255,255,255,0.03)}
 tr:hover td{background:rgba(255,255,255,0.02)}
 tr:last-child td{border:none}
 .td-actions{display:flex;gap:8px;justify-content:flex-end}
-.td-id{color:rgba(255,255,255,0.25);font-size:12px}
+.td-id{color:rgba(255,255,255,0.3);font-size:12px}
 
-/* Badges */
-.badge{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700}
-.badge-open,.badge-confirmed{background:rgba(16,185,129,0.1);color:#34d399;border:1px solid rgba(16,185,129,0.2)}
-.badge-closed,.badge-pending{background:rgba(239,68,68,0.1);color:#f87171;border:1px solid rgba(239,68,68,0.2)}
-.badge-admin{background:rgba(212,175,55,0.1);color:#f5d76e;border:1px solid rgba(212,175,55,0.2)}
-.badge-branch_manager,.badge-manager{background:rgba(139,92,246,0.1);color:#a78bfa;border:1px solid rgba(139,92,246,0.2)}
-.badge-teller{background:rgba(59,130,246,0.1);color:#60a5fa;border:1px solid rgba(59,130,246,0.2)}
+.badge{padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700}
+.badge-open{background:rgba(16,185,129,0.15);color:#34d399;border:1px solid rgba(16,185,129,0.2)}
+.badge-closed{background:rgba(239,68,68,0.15);color:#f87171;border:1px solid rgba(239,68,68,0.2)}
+.badge-admin{background:rgba(212,175,55,0.15);color:#f5d76e;border:1px solid rgba(212,175,55,0.2)}
+.badge-manager{background:rgba(139,92,246,0.15);color:#a78bfa;border:1px solid rgba(139,92,246,0.2)}
+.badge-teller{background:rgba(59,130,246,0.15);color:#60a5fa;border:1px solid rgba(59,130,246,0.2)}
 
-/* Quick activity */
-.activity-item{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.04)}
-.activity-item:last-child{border:none}
-.act-icon{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-
-/* Queue card */
-.branch-queue-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:16px;padding:20px;margin-bottom:16px;backdrop-filter:var(--blur)}
-.queue-serving{display:flex;align-items:center;gap:14px;padding:14px;background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.15);border-radius:12px;margin-bottom:12px}
-
-.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(120px);background:rgba(10,14,26,0.92);border:1px solid var(--glass-border);border-radius:14px;padding:14px 32px;font-size:14px;font-weight:700;z-index:9999;transition:transform .4s cubic-bezier(.16,1,.3,1);min-width:240px;text-align:center;backdrop-filter:var(--blur)}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:#1e1e30;border:1px solid var(--border);border-radius:12px;padding:14px 28px;font-size:14px;font-weight:700;z-index:9999;transition:transform .3s;min-width:240px;text-align:center}
 .toast.show{transform:translateX(-50%) translateY(0)}
-.toast.success{border-color:rgba(16,185,129,0.3);color:#34d399}
-.toast.error{border-color:rgba(239,68,68,0.3);color:#f87171}
+.toast.success{border-color:rgba(16,185,129,0.4);color:#34d399}
+.toast.error{border-color:rgba(239,68,68,0.4);color:#f87171}
 </style>
 </head>
 <body>
-<div class="bg-fixed"><div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div><div class="grid"></div></div>
 
 <nav>
-    <div class="brand"><div class="brand-icon">🏦</div><div><h1>البنك الذكي — لوحة الإدارة</h1></div></div>
-    <div class="nav-right"><span class="user-tag" id="userName">مدير النظام</span><button class="btn-logout" onclick="logout()">خروج</button></div>
+    <div class="brand"><div class="brand-icon">🏦</div><div><h1>البنك الذكي - لوحة الإدارة</h1></div></div>
+    <div class="nav-right">
+        <span class="user-tag" id="userName">مدير النظام</span>
+        <button class="btn-logout" onclick="logout()">خروج</button>
+    </div>
 </nav>
 
 <div class="layout">
+    <!-- Sidebar -->
     <div class="sidebar">
-        <div class="sidebar-section">القائمة الرئيسية</div>
         <div class="nav-item active" onclick="showSection('dashboard',this)"><span class="nav-icon">📊</span>لوحة التحكم</div>
         <div class="nav-item" onclick="showSection('branches',this)"><span class="nav-icon">🏢</span>الفروع</div>
         <div class="nav-item" onclick="showSection('staff',this)"><span class="nav-icon">👥</span>الموظفين</div>
-        <div class="sidebar-section">العمليات</div>
         <div class="nav-item" onclick="showSection('appointments',this)"><span class="nav-icon">📅</span>المواعيد</div>
         <div class="nav-item" onclick="showSection('queues',this)"><span class="nav-icon">🎫</span>الطوابير</div>
     </div>
 
+    <!-- Content -->
     <div class="content">
 
         <!-- DASHBOARD -->
@@ -169,25 +126,39 @@ tr:last-child td{border:none}
                 <div class="stat-card"><div class="stat-icon si-purple">🎫</div><div><div class="stat-num" id="s-queue">-</div><div class="stat-label">في الطوابير</div></div></div>
             </div>
 
+            <!-- Charts Row -->
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px">
+                <!-- Bar Chart - الفروع -->
                 <div class="card">
-                    <div class="card-header"><div class="card-title">🏢 أكتر فرع نشاطاً</div><span style="font-size:11px;color:rgba(255,255,255,0.25)">عدد العمليات الكلية</span></div>
-                    <div style="position:relative;height:260px"><canvas id="branchChart"></canvas></div>
+                    <div class="card-header">
+                        <div class="card-title">🏢 أكتر فرع نشاطاً</div>
+                        <span style="font-size:12px;color:rgba(255,255,255,0.3)">عدد العمليات الكلية</span>
+                    </div>
+                    <div style="position:relative;height:260px">
+                        <canvas id="branchChart"></canvas>
+                    </div>
                 </div>
+
+                <!-- Pie Chart - الموظفين -->
                 <div class="card">
-                    <div class="card-header"><div class="card-title">🏆 أحسن موظف</div><span style="font-size:11px;color:rgba(255,255,255,0.25)">عدد العملاء المخدومين</span></div>
-                    <div style="position:relative;height:260px"><canvas id="staffChart"></canvas></div>
+                    <div class="card-header">
+                        <div class="card-title">🏆 أحسن موظف</div>
+                        <span style="font-size:12px;color:rgba(255,255,255,0.3)">عدد العملاء المخدومين</span>
+                    </div>
+                    <div style="position:relative;height:260px">
+                        <canvas id="staffChart"></canvas>
+                    </div>
                 </div>
             </div>
 
             <div class="card">
-                <div class="card-header"><div class="card-title">⚡ دليل سريع</div></div>
-                <div>
-                    <div class="activity-item"><div class="act-icon si-gold">🏢</div><div><div style="font-size:14px;font-weight:700;margin-bottom:2px">إدارة الفروع</div><div style="font-size:12px;color:rgba(255,255,255,0.3)">أضف فروع جديدة أو عدّل البيانات</div></div></div>
-                    <div class="activity-item"><div class="act-icon si-blue">👥</div><div><div style="font-size:14px;font-weight:700;margin-bottom:2px">إدارة الموظفين</div><div style="font-size:12px;color:rgba(255,255,255,0.3)">تحكم في صلاحيات الفريق</div></div></div>
-                    <div class="activity-item"><div class="act-icon si-green">📅</div><div><div style="font-size:14px;font-weight:700;margin-bottom:2px">المواعيد</div><div style="font-size:12px;color:rgba(255,255,255,0.3)">تابع وأكد مواعيد العملاء</div></div></div>
-                    <div class="activity-item"><div class="act-icon si-purple">🎫</div><div><div style="font-size:14px;font-weight:700;margin-bottom:2px">الطوابير</div><div style="font-size:12px;color:rgba(255,255,255,0.3)">راقب حالة الطوابير في كل الفروع</div></div></div>
-                </div>
+                <div class="card-header"><div class="card-title">⚡ نشاط سريع</div></div>
+                <p style="color:rgba(255,255,255,0.35);font-size:14px;line-height:2">
+                    🏢 إدارة الفروع — أضف فروع جديدة أو عدّل البيانات<br>
+                    👥 إدارة الموظفين — تحكم في صلاحيات الفريق<br>
+                    📅 المواعيد — تابع وأكد مواعيد العملاء<br>
+                    🎫 الطوابير — راقب حالة الطوابير في كل الفروع
+                </p>
             </div>
         </div>
 
@@ -195,7 +166,7 @@ tr:last-child td{border:none}
         <div class="section" id="sec-branches">
             <div class="section-title">🏢 إدارة الفروع</div>
             <div class="card">
-                <div class="card-header"><div class="card-title">➕ إضافة فرع جديد</div></div>
+                <div class="card-header"><div class="card-title">➕ إضافة فرع</div></div>
                 <div class="form-grid">
                     <div class="form-group"><label>اسم الفرع</label><input type="text" id="bName" placeholder="فرع المعادي" /></div>
                     <div class="form-group"><label>الموقع</label><input type="text" id="bLocation" placeholder="القاهرة، المعادي" /></div>
@@ -205,11 +176,11 @@ tr:last-child td{border:none}
             </div>
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title">قائمة الفروع <span id="branchCount" style="color:rgba(255,255,255,0.25);font-size:13px;font-weight:400"></span></div>
+                    <div class="card-title">قائمة الفروع <span id="branchCount" style="color:rgba(255,255,255,0.3);font-size:13px;font-weight:400"></span></div>
                     <div class="search-bar"><span class="search-icon">🔍</span><input type="text" placeholder="بحث..." oninput="loadBranches(this.value)" /></div>
                 </div>
-                <div class="table-wrap"><table><thead><tr><th>#</th><th>الاسم</th><th>الموقع</th><th>التليفون</th><th>الحالة</th><th style="text-align:left">إجراءات</th></tr></thead>
-                <tbody id="branchesTable"><tr><td colspan="6" style="text-align:center;padding:30px;color:rgba(255,255,255,0.25)">⏳ جاري التحميل...</td></tr></tbody></table></div>
+                <table><thead><tr><th>#</th><th>الاسم</th><th>الموقع</th><th>التليفون</th><th>الحالة</th><th style="text-align:left">إجراءات</th></tr></thead>
+                <tbody id="branchesTable"><tr><td colspan="6" style="text-align:center;padding:30px;color:rgba(255,255,255,0.3)">⏳ جاري التحميل...</td></tr></tbody></table>
             </div>
         </div>
 
@@ -217,19 +188,23 @@ tr:last-child td{border:none}
         <div class="section" id="sec-staff">
             <div class="section-title">👥 إدارة الموظفين</div>
             <div class="card">
-                <div class="card-header"><div class="card-title">➕ إضافة موظف جديد</div></div>
+                <div class="card-header"><div class="card-title">➕ إضافة موظف</div></div>
                 <div class="form-grid">
                     <div class="form-group"><label>الاسم</label><input type="text" id="stName" placeholder="الاسم الكامل" /></div>
                     <div class="form-group"><label>اسم المستخدم</label><input type="text" id="stUser" placeholder="username" /></div>
-                    <div class="form-group"><label>الدور</label><select id="stRole"><option value="teller">موظف فرع (Teller)</option><option value="branch_manager">مدير فرع</option></select></div>
-                    <div class="form-group"><label>الفرع</label><select id="stBranch"><option value="">⏳ جاري التحميل...</option></select></div>
+                    <div class="form-group"><label>الدور</label>
+                        <select id="stRole"><option value="teller">موظف فرع (Teller)</option><option value="branch_manager">مدير فرع</option></select>
+                    </div>
+                    <div class="form-group"><label>الفرع</label>
+                        <select id="stBranch"><option value="">⏳ جاري التحميل...</option></select>
+                    </div>
                     <div class="form-group" style="display:flex;align-items:flex-end"><button class="btn btn-gold" onclick="addStaff()">إضافة</button></div>
                 </div>
             </div>
             <div class="card">
                 <div class="card-title" style="margin-bottom:18px">قائمة الموظفين</div>
-                <div class="table-wrap"><table><thead><tr><th>#</th><th>الاسم</th><th>المستخدم</th><th>الدور</th><th>الفرع</th><th style="text-align:left">إجراءات</th></tr></thead>
-                <tbody id="staffTable"><tr><td colspan="6" style="text-align:center;padding:30px;color:rgba(255,255,255,0.25)">⏳ جاري التحميل...</td></tr></tbody></table></div>
+                <table><thead><tr><th>#</th><th>الاسم</th><th>المستخدم</th><th>الدور</th><th>الفرع</th><th style="text-align:left">إجراءات</th></tr></thead>
+                <tbody id="staffTable"><tr><td colspan="6" style="text-align:center;padding:30px;color:rgba(255,255,255,0.3)">⏳ جاري التحميل...</td></tr></tbody></table>
             </div>
         </div>
 
@@ -237,8 +212,8 @@ tr:last-child td{border:none}
         <div class="section" id="sec-appointments">
             <div class="section-title">📅 المواعيد</div>
             <div class="card">
-                <div class="table-wrap"><table><thead><tr><th>#</th><th>العميل</th><th>الموبايل</th><th>الخدمة</th><th>التاريخ</th><th>الوقت</th><th>الفرع</th><th>الحالة</th><th style="text-align:left">إجراءات</th></tr></thead>
-                <tbody id="apptsTable"><tr><td colspan="9" style="text-align:center;padding:30px;color:rgba(255,255,255,0.25)">⏳ جاري التحميل...</td></tr></tbody></table></div>
+                <table><thead><tr><th>#</th><th>العميل</th><th>الموبايل</th><th>الخدمة</th><th>التاريخ</th><th>الوقت</th><th>الفرع</th><th>الحالة</th><th style="text-align:left">إجراءات</th></tr></thead>
+                <tbody id="apptsTable"><tr><td colspan="9" style="text-align:center;padding:30px;color:rgba(255,255,255,0.3)">⏳ جاري التحميل...</td></tr></tbody></table>
             </div>
         </div>
 
@@ -255,141 +230,246 @@ tr:last-child td{border:none}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script>
-const ROLE_NAMES={admin:'مدير النظام',branch_manager:'مدير فرع',teller:'موظف فرع'};
-let branchesCache=[],branchChartInst=null,staffChartInst=null;
+const ROLE_NAMES   = {admin:'مدير النظام',branch_manager:'مدير فرع',teller:'موظف فرع'};
+let branchesCache  = []; // ← بيتملى من الـ API
+let branchChartInst = null;
+let staffChartInst  = null;
 
-function getBranchName(id){const b=branchesCache.find(b=>b.id==id);return b?b.name:'-';}
+function getBranchName(id) {
+    const b = branchesCache.find(b => b.id == id);
+    return b ? b.name : '-';
+}
 
-async function loadCharts(){
-    try{
-        const stats=await fetch('/api/stats').then(r=>r.json());
-        const colors=['#d4af37','#34d399','#60a5fa','#a78bfa','#f87171','#fbbf24','#2dd4bf'];
-        const branchCtx=document.getElementById('branchChart')?.getContext('2d');
-        if(branchCtx){
-            if(branchChartInst)branchChartInst.destroy();
-            branchChartInst=new Chart(branchCtx,{type:'bar',data:{labels:stats.branchQueue.map(b=>b.name),datasets:[{label:'عدد العمليات',data:stats.branchQueue.map(b=>parseInt(b.total)),backgroundColor:stats.branchQueue.map((_,i)=>colors[i%colors.length]+'aa'),borderColor:stats.branchQueue.map((_,i)=>colors[i%colors.length]),borderWidth:2,borderRadius:8}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'rgba(255,255,255,0.45)',font:{family:'Tajawal'}},grid:{color:'rgba(255,255,255,0.04)'}},y:{ticks:{color:'rgba(255,255,255,0.45)'},grid:{color:'rgba(255,255,255,0.04)'},beginAtZero:true}}}});
+async function loadCharts() {
+    try {
+        const stats = await fetch('/api/stats').then(r => r.json());
+        const colors = ['#d4af37','#34d399','#60a5fa','#a78bfa','#f87171','#fbbf24','#2dd4bf'];
+
+        // Bar Chart — أكتر فرع نشاطاً
+        const branchCtx = document.getElementById('branchChart')?.getContext('2d');
+        if (branchCtx) {
+            if (branchChartInst) branchChartInst.destroy();
+            branchChartInst = new Chart(branchCtx, {
+                type: 'bar',
+                data: {
+                    labels: stats.branchQueue.map(b => b.name),
+                    datasets: [{
+                        label: 'عدد العمليات',
+                        data: stats.branchQueue.map(b => parseInt(b.total)),
+                        backgroundColor: stats.branchQueue.map((_,i) => colors[i % colors.length] + 'cc'),
+                        borderColor:     stats.branchQueue.map((_,i) => colors[i % colors.length]),
+                        borderWidth: 2, borderRadius: 8,
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { ticks: { color: 'rgba(255,255,255,0.5)', font: { family: 'Tajawal' } }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                        y: { ticks: { color: 'rgba(255,255,255,0.5)' }, grid: { color: 'rgba(255,255,255,0.05)' }, beginAtZero: true }
+                    }
+                }
+            });
         }
-        const staffCanvas=document.getElementById('staffChart');
-        if(staffCanvas){
-            const topStaff=stats.topStaff.filter(s=>parseInt(s.served)>0);
-            if(!topStaff.length){staffCanvas.parentElement.innerHTML='<p style="color:rgba(255,255,255,0.25);text-align:center;padding:80px 0;font-size:14px">لا توجد بيانات بعد</p>';}
-            else{
-                if(staffChartInst)staffChartInst.destroy();
-                staffChartInst=new Chart(staffCanvas.getContext('2d'),{type:'doughnut',data:{labels:topStaff.map(s=>s.name),datasets:[{data:topStaff.map(s=>parseInt(s.served)),backgroundColor:topStaff.map((_,i)=>colors[i%colors.length]+'aa'),borderColor:topStaff.map((_,i)=>colors[i%colors.length]),borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:'rgba(255,255,255,0.55)',font:{family:'Tajawal',size:12},padding:12}},tooltip:{callbacks:{label:ctx=>` ${ctx.label}: ${ctx.raw} عميل`}}}}});
+
+        // Doughnut Chart — أحسن موظف
+        const staffCanvas = document.getElementById('staffChart');
+        if (staffCanvas) {
+            const topStaff = stats.topStaff.filter(s => parseInt(s.served) > 0);
+            if (topStaff.length === 0) {
+                staffCanvas.parentElement.innerHTML = '<p style="color:rgba(255,255,255,0.3);text-align:center;padding:80px 0;font-size:14px">لا توجد بيانات بعد</p>';
+            } else {
+                if (staffChartInst) staffChartInst.destroy();
+                staffChartInst = new Chart(staffCanvas.getContext('2d'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: topStaff.map(s => s.name),
+                        datasets: [{
+                            data: topStaff.map(s => parseInt(s.served)),
+                            backgroundColor: topStaff.map((_,i) => colors[i % colors.length] + 'cc'),
+                            borderColor:     topStaff.map((_,i) => colors[i % colors.length]),
+                            borderWidth: 2,
+                        }]
+                    },
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'bottom', labels: { color: 'rgba(255,255,255,0.6)', font: { family: 'Tajawal', size: 12 }, padding: 12 } },
+                            tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.raw} عميل` } }
+                        }
+                    }
+                });
             }
         }
-    }catch(e){console.error('Charts:',e);}
+    } catch(e) { console.error('Charts error:', e); }
 }
 
-async function init(){
-    try{
-        const res=await fetch('/api/me');
+async function init() {
+    try {
+        const res = await fetch('/api/me');
         if(!res.ok){window.location.href='/login';return;}
-        const user=await res.json();
-        document.getElementById('userName').textContent=user.name||user.username;
-        await loadBranches();
+        const user = await res.json();
+        document.getElementById('userName').textContent = user.name || user.username;
+        await loadBranches(); // ← حمّل الفروع أول حاجة عشان الـ cache يتملى
         loadDashboard();
-    }catch{window.location.href='/login';}
+    } catch { window.location.href='/login'; }
 }
 
-async function loadDashboard(){
-    const [branches,staff,appts]=await Promise.all([fetch('/api/branches').then(r=>r.json()).catch(()=>[]),fetch('/api/staff').then(r=>r.json()).catch(()=>[]),fetch('/api/appointments').then(r=>r.json()).catch(()=>[])]);
-    document.getElementById('s-branches').textContent=branches.length;
-    document.getElementById('s-staff').textContent=staff.length;
-    document.getElementById('s-appts').textContent=appts.length;
-    let qTotal=0;
-    for(const b of branches){const q=await fetch(`/api/queue/${b.id}`).then(r=>r.json()).catch(()=>[]);qTotal+=q.filter(t=>t.status==='waiting').length;}
-    document.getElementById('s-queue').textContent=qTotal;
+async function loadDashboard() {
+    const [branches,staff,appts] = await Promise.all([
+        fetch('/api/branches').then(r=>r.json()).catch(()=>[]),
+        fetch('/api/staff').then(r=>r.json()).catch(()=>[]),
+        fetch('/api/appointments').then(r=>r.json()).catch(()=>[]),
+    ]);
+    document.getElementById('s-branches').textContent = branches.length;
+    document.getElementById('s-staff').textContent    = staff.length;
+    document.getElementById('s-appts').textContent    = appts.length;
+
+    // Count queue
+    let qTotal = 0;
+    for(const b of branches){
+        const q = await fetch(`/api/queue/${b.id}`).then(r=>r.json()).catch(()=>[]);
+        qTotal += q.filter(t=>t.status==='waiting').length;
+    }
+    document.getElementById('s-queue').textContent = qTotal;
+
+    // تحميل الشارت
     loadCharts();
 }
 
-async function loadBranches(search=''){
-    const url=search?`/api/branches?search=${encodeURIComponent(search)}`:'/api/branches';
-    const data=await fetch(url).then(r=>r.json()).catch(()=>[]);
-    if(!search){branchesCache=data;document.getElementById('stBranch').innerHTML=data.map(b=>`<option value="${b.id}">${b.name}</option>`).join('');}
-    document.getElementById('branchCount').textContent=`(${data.length})`;
-    const tb=document.getElementById('branchesTable');
-    if(!data.length){tb.innerHTML='<tr><td colspan="6" style="text-align:center;padding:30px;color:rgba(255,255,255,0.25)">لا توجد نتائج</td></tr>';return;}
-    tb.innerHTML=data.map(b=>`<tr><td class="td-id">${b.id}</td><td style="font-weight:700">${b.name}</td><td>${b.location}</td><td>${b.phone}</td><td><span class="badge badge-${b.status==='open'?'open':'closed'}">${b.status==='open'?'مفتوح':'مغلق'}</span></td><td><div class="td-actions"><button class="btn btn-danger" onclick="deleteBranch(${b.id},'${b.name}')">🗑️ حذف</button></div></td></tr>`).join('');
+async function loadBranches(search='') {
+    const url  = search ? `/api/branches?search=${encodeURIComponent(search)}` : '/api/branches';
+    const data = await fetch(url).then(r=>r.json()).catch(()=>[]);
+    if(!search) {
+        // حفظ الفروع في الـ cache وملء الـ select
+        branchesCache = data;
+        document.getElementById('stBranch').innerHTML = data.map(b=>`<option value="${b.id}">${b.name}</option>`).join('');
+    }
+    document.getElementById('branchCount').textContent = `(${data.length})`;
+    const tb = document.getElementById('branchesTable');
+    if(!data.length){tb.innerHTML='<tr><td colspan="6" style="text-align:center;padding:30px;color:rgba(255,255,255,0.3)">لا توجد نتائج</td></tr>';return;}
+    tb.innerHTML = data.map(b=>`
+        <tr>
+            <td class="td-id">${b.id}</td>
+            <td style="font-weight:700">${b.name}</td>
+            <td>${b.location}</td>
+            <td>${b.phone}</td>
+            <td><span class="badge badge-${b.status==='open'?'open':'closed'}">${b.status==='open'?'مفتوح':'مغلق'}</span></td>
+            <td><div class="td-actions">
+                <button class="btn btn-edit" onclick="openEditBranch(${b.id},'${b.name}','${b.location}','${b.phone}','${b.status||`open`}')">✏️ تعديل</button>
+                <button class="btn btn-danger" onclick="deleteBranch(${b.id},'${b.name}')">🗑️ حذف</button>
+            </div></td>
+        </tr>
+    `).join('');
 }
 
-async function addBranch(){
+async function addBranch() {
     const name=document.getElementById('bName').value.trim(),location=document.getElementById('bLocation').value.trim(),phone=document.getElementById('bPhone').value.trim();
     if(!name||!location||!phone){showToast('أدخل كل البيانات','error');return;}
-    const data=await fetch('/api/branches',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,location,phone})}).then(r=>r.json());
+    const res=await fetch('/api/branches',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,location,phone})});
+    const data=await res.json();
     if(data.success){showToast(data.message,'success');document.getElementById('bName').value='';document.getElementById('bLocation').value='';document.getElementById('bPhone').value='';loadBranches();}
-    else showToast(data.error,'error');
+    else{showToast(data.error,'error');}
 }
 
-async function deleteBranch(id,name){
+async function deleteBranch(id,name) {
     if(!confirm(`حذف فرع "${name}"؟`))return;
-    const data=await fetch(`/api/branches/${id}`,{method:'DELETE'}).then(r=>r.json());
-    if(data.success){showToast(data.message,'success');loadBranches();}else showToast(data.error,'error');
+    const res=await fetch(`/api/branches/${id}`,{method:'DELETE'});
+    const data=await res.json();
+    if(data.success){showToast(data.message,'success');loadBranches();}
+    else{showToast(data.error,'error');}
 }
 
-async function loadStaff(){
+async function loadStaff() {
     const data=await fetch('/api/staff').then(r=>r.json()).catch(()=>[]);
     const tb=document.getElementById('staffTable');
-    if(!data.length){tb.innerHTML='<tr><td colspan="6" style="text-align:center;padding:30px;color:rgba(255,255,255,0.25)">لا يوجد موظفين</td></tr>';return;}
-    tb.innerHTML=data.map(s=>`<tr><td class="td-id">${s.id}</td><td style="font-weight:700">${s.name}</td><td style="color:rgba(255,255,255,0.45)">${s.username}</td><td><span class="badge badge-${s.role}">${ROLE_NAMES[s.role]||s.role}</span></td><td>${getBranchName(s.branchId)}</td><td><div class="td-actions"><button class="btn btn-danger" onclick="deleteStaff(${s.id},'${s.name}')">🗑️ حذف</button></div></td></tr>`).join('');
+    if(!data.length){tb.innerHTML='<tr><td colspan="6" style="text-align:center;padding:30px;color:rgba(255,255,255,0.3)">لا يوجد موظفين</td></tr>';return;}
+    tb.innerHTML=data.map(s=>`
+        <tr>
+            <td class="td-id">${s.id}</td>
+            <td style="font-weight:700">${s.name}</td>
+            <td style="color:rgba(255,255,255,0.5)">${s.username}</td>
+            <td><span class="badge badge-${s.role}">${ROLE_NAMES[s.role]||s.role}</span></td>
+            <td>${getBranchName(s.branchId)}</td>
+            <td><div class="td-actions"><button class="btn btn-edit" onclick="openEditStaff(${s.id},'${s.name}','${s.username}','${s.role}',${s.branchId||'null'})">✏️ تعديل</button><button class="btn btn-danger" onclick="deleteStaff(${s.id},'${s.name}')">🗑️ حذف</button></div></td>
+        </tr>
+    `).join('');
 }
 
-async function addStaff(){
+async function addStaff() {
     const name=document.getElementById('stName').value.trim(),username=document.getElementById('stUser').value.trim(),role=document.getElementById('stRole').value,branchId=document.getElementById('stBranch').value;
     if(!name||!username){showToast('أدخل كل البيانات','error');return;}
-    const data=await fetch('/api/staff',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,username,role,branchId})}).then(r=>r.json());
+    const res=await fetch('/api/staff',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,username,role,branchId})});
+    const data=await res.json();
     if(data.success){showToast(data.message,'success');document.getElementById('stName').value='';document.getElementById('stUser').value='';loadStaff();}
-    else showToast(data.error,'error');
+    else{showToast(data.error,'error');}
 }
 
-async function deleteStaff(id,name){
+async function deleteStaff(id,name) {
     if(!confirm(`حذف موظف "${name}"؟`))return;
-    const data=await fetch(`/api/staff/${id}`,{method:'DELETE'}).then(r=>r.json());
+    const res=await fetch(`/api/staff/${id}`,{method:'DELETE'});
+    const data=await res.json();
     if(data.success){showToast(data.message,'success');loadStaff();}
+    else{showToast(data.error,'error');}
 }
 
-async function loadAppointments(){
+async function loadAppointments() {
     const data=await fetch('/api/appointments').then(r=>r.json()).catch(()=>[]);
     const tb=document.getElementById('apptsTable');
-    if(!data.length){tb.innerHTML='<tr><td colspan="9" style="text-align:center;padding:30px;color:rgba(255,255,255,0.25)">لا توجد مواعيد</td></tr>';return;}
-    tb.innerHTML=data.map(a=>`<tr><td class="td-id">${a.id}</td><td style="font-weight:700">${a.customerName}</td><td style="color:rgba(255,255,255,0.4);font-size:13px">${a.phone}</td><td>${a.service}</td><td>${a.date}</td><td style="color:#f5d76e;font-weight:700">${a.time}</td><td>${getBranchName(a.branchId)}</td><td><span class="badge badge-${a.status==='confirmed'?'confirmed':'pending'}">${a.status==='confirmed'?'مؤكد':'انتظار'}</span></td><td><div class="td-actions"><button class="btn btn-danger" onclick="deleteAppt(${a.id})">🗑️</button></div></td></tr>`).join('');
+    if(!data.length){tb.innerHTML='<tr><td colspan="9" style="text-align:center;padding:30px;color:rgba(255,255,255,0.3)">لا توجد مواعيد</td></tr>';return;}
+    tb.innerHTML=data.map(a=>`
+        <tr>
+            <td class="td-id">${a.id}</td>
+            <td style="font-weight:700">${a.customerName}</td>
+            <td style="color:rgba(255,255,255,0.5);font-size:13px">${a.phone}</td>
+            <td>${a.service}</td>
+            <td>${a.date}</td>
+            <td style="color:#f5d76e;font-weight:700">${a.time}</td>
+            <td>${getBranchName(a.branchId)}</td>
+            <td><span class="badge badge-${a.status==='confirmed'?'open':'closed'}">${a.status==='confirmed'?'مؤكد':'انتظار'}</span></td>
+            <td><div class="td-actions"><button class="btn btn-edit" onclick="openEditAppt(${a.id},'${a.customerName}','${a.phone}','${a.service}','${a.date}','${a.time}',${a.branchId||'null'},'${a.status}')">✏️ تعديل</button><button class="btn btn-danger" onclick="deleteAppt(${a.id})">🗑️</button></div></td>
+        </tr>
+    `).join('');
 }
 
-async function deleteAppt(id){
-    const data=await fetch(`/api/appointments/${id}`,{method:'DELETE'}).then(r=>r.json());
+async function deleteAppt(id) {
+    const res=await fetch(`/api/appointments/${id}`,{method:'DELETE'});
+    const data=await res.json();
     if(data.success){showToast(data.message,'success');loadAppointments();}
 }
 
-async function loadQueues(){
-    const branches=await fetch('/api/branches').then(r=>r.json()).catch(()=>[]);
+async function loadQueues() {
+    // جيب الفروع من الـ API بدل الـ hardcoded
+    const branches = await fetch('/api/branches').then(r=>r.json()).catch(()=>[]);
     const el=document.getElementById('queuesDisplay');
     let html='';
     for(const b of branches){
         const q=await fetch(`/api/queue/${b.id}`).then(r=>r.json()).catch(()=>[]);
         const serving=q.find(t=>t.status==='serving');
         const waiting=q.filter(t=>t.status==='waiting');
-        html+=`<div class="branch-queue-card">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-                <div style="font-size:15px;font-weight:900">${b.name}</div>
+        html+=`<div class="card" style="margin-bottom:16px">
+            <div class="card-header">
+                <div class="card-title">${b.name}</div>
                 <div style="display:flex;gap:10px;align-items:center">
-                    <span style="color:rgba(255,255,255,0.3);font-size:13px">${waiting.length} في الانتظار</span>
+                    <span style="color:rgba(255,255,255,0.35);font-size:13px">${waiting.length} في الانتظار</span>
                     <button class="btn btn-danger" onclick="resetBranchQueue(${b.id})">إعادة تعيين</button>
                 </div>
             </div>
-            ${serving?`<div class="queue-serving"><span style="background:rgba(16,185,129,0.15);color:#34d399;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;border:1px solid rgba(16,185,129,0.2)">يُخدم الآن</span><span style="font-size:20px;font-weight:900;color:#34d399;margin:0 8px">${serving.token}</span><span>${serving.name} - ${serving.service}</span></div>`:''}
-            ${waiting.length?waiting.map((t,i)=>`<div style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04);display:flex;gap:12px;align-items:center"><span style="color:rgba(212,175,55,0.6);font-weight:700;width:28px">${i+1}</span><span style="font-weight:700;width:60px">${t.token}</span><span>${t.name}</span><span style="color:rgba(255,255,255,0.3);font-size:13px;margin-right:auto">${t.service}</span></div>`).join(''):'<p style="color:rgba(255,255,255,0.2);font-size:14px">الطابور فاضي ✅</p>'}
+            ${serving?`<div style="padding:12px 16px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:10px;margin-bottom:12px;display:flex;gap:12px;align-items:center"><span style="background:rgba(16,185,129,0.2);color:#34d399;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700">يُخدم الآن</span><span style="font-size:20px;font-weight:900;color:#34d399">${serving.token}</span><span>${serving.name} - ${serving.service}</span></div>`:''}
+            ${waiting.length?waiting.map((t,i)=>`<div style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04);display:flex;gap:12px;align-items:center"><span style="color:rgba(212,175,55,0.6);font-weight:700;width:30px">${i+1}</span><span style="font-weight:700;width:60px">${t.token}</span><span>${t.name}</span><span style="color:rgba(255,255,255,0.35);font-size:13px;margin-right:auto">${t.service}</span></div>`).join(''):'<p style="color:rgba(255,255,255,0.25);font-size:14px">الطابور فاضي ✅</p>'}
         </div>`;
     }
-    el.innerHTML=html||'<p style="color:rgba(255,255,255,0.25)">لا توجد بيانات</p>';
+    el.innerHTML=html||'<p style="color:rgba(255,255,255,0.3)">لا توجد بيانات</p>';
 }
 
-async function resetBranchQueue(branchId){
+async function resetBranchQueue(branchId) {
     if(!confirm('إعادة تعيين الطابور؟'))return;
-    const data=await fetch(`/api/queue/${branchId}/reset`,{method:'DELETE'}).then(r=>r.json());
+    const res=await fetch(`/api/queue/${branchId}/reset`,{method:'DELETE'});
+    const data=await res.json();
     if(data.success){showToast(data.message,'success');loadQueues();}
 }
 
-function showSection(sec,el){
+function showSection(sec, el) {
     document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
     document.getElementById('sec-'+sec).classList.add('active');
@@ -402,8 +482,192 @@ function showSection(sec,el){
 }
 
 async function logout(){await fetch('/logout',{method:'POST'});window.location.href='/login';}
-function showToast(msg,type='success'){const t=document.getElementById('toast');t.textContent=msg;t.className=`toast ${type} show`;setTimeout(()=>t.classList.remove('show'),3000);}
+
+function showToast(msg,type='success'){
+    const t=document.getElementById('toast');
+    t.textContent=msg;t.className=`toast ${type} show`;
+    setTimeout(()=>t.classList.remove('show'),3000);
+}
+
 init();
+</script>
+<!-- ═══════════════ MODALS ═══════════════ -->
+
+<!-- Modal: تعديل فرع -->
+<div id="modalBranch" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.6);backdrop-filter:blur(6px);align-items:center;justify-content:center">
+  <div style="background:#0d1425;border:1px solid rgba(96,165,250,0.2);border-radius:20px;padding:32px;width:480px;max-width:95vw;position:relative;box-shadow:0 24px 60px rgba(0,0,0,0.5)">
+    <div style="position:absolute;top:0;left:20%;right:20%;height:1px;background:linear-gradient(90deg,transparent,rgba(96,165,250,0.4),transparent)"></div>
+    <h3 style="font-size:18px;font-weight:900;margin-bottom:24px;color:#60a5fa">✏️ تعديل بيانات الفرع</h3>
+    <input type="hidden" id="editBranchId">
+    <div style="display:grid;gap:14px">
+      <div><label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase">اسم الفرع</label><input type="text" id="editBranchName" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:11px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none"></div>
+      <div><label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase">الموقع</label><input type="text" id="editBranchLocation" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:11px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none"></div>
+      <div><label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase">التليفون</label><input type="text" id="editBranchPhone" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:11px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none"></div>
+      <div><label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase">الحالة</label>
+        <select id="editBranchStatus" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:11px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none;appearance:none">
+          <option value="open">مفتوح</option><option value="closed">مغلق</option>
+        </select>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:24px;justify-content:flex-end">
+      <button onclick="closeModal('modalBranch')" style="padding:10px 22px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:rgba(255,255,255,0.6);font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;cursor:pointer">إلغاء</button>
+      <button onclick="saveBranch()" style="padding:10px 28px;background:linear-gradient(135deg,#1d4ed8,#3b82f6);border:none;border-radius:10px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:900;cursor:pointer;box-shadow:0 4px 15px rgba(37,99,235,0.3)">حفظ التعديل</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: تعديل موظف -->
+<div id="modalStaff" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.6);backdrop-filter:blur(6px);align-items:center;justify-content:center">
+  <div style="background:#0d1425;border:1px solid rgba(96,165,250,0.2);border-radius:20px;padding:32px;width:480px;max-width:95vw;position:relative;box-shadow:0 24px 60px rgba(0,0,0,0.5)">
+    <div style="position:absolute;top:0;left:20%;right:20%;height:1px;background:linear-gradient(90deg,transparent,rgba(96,165,250,0.4),transparent)"></div>
+    <h3 style="font-size:18px;font-weight:900;margin-bottom:24px;color:#60a5fa">✏️ تعديل بيانات الموظف</h3>
+    <input type="hidden" id="editStaffId">
+    <div style="display:grid;gap:14px">
+      <div><label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase">الاسم</label><input type="text" id="editStaffName" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:11px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none"></div>
+      <div><label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase">اسم المستخدم</label><input type="text" id="editStaffUsername" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:11px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none"></div>
+      <div><label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase">الدور</label>
+        <select id="editStaffRole" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:11px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none;appearance:none">
+          <option value="teller">موظف فرع</option><option value="branch_manager">مدير فرع</option><option value="admin">مدير النظام</option>
+        </select>
+      </div>
+      <div><label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase">الفرع</label>
+        <select id="editStaffBranch" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:11px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none;appearance:none">
+          <option value="">بدون فرع</option>
+        </select>
+      </div>
+      <div><label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase">كلمة السر الجديدة (اتركها فاضية لو مش عايز تغيرها)</label><input type="password" id="editStaffPassword" placeholder="••••••••" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:11px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none"></div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:24px;justify-content:flex-end">
+      <button onclick="closeModal('modalStaff')" style="padding:10px 22px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:rgba(255,255,255,0.6);font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;cursor:pointer">إلغاء</button>
+      <button onclick="saveStaff()" style="padding:10px 28px;background:linear-gradient(135deg,#1d4ed8,#3b82f6);border:none;border-radius:10px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:900;cursor:pointer;box-shadow:0 4px 15px rgba(37,99,235,0.3)">حفظ التعديل</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: تعديل موعد -->
+<div id="modalAppt" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.6);backdrop-filter:blur(6px);align-items:center;justify-content:center">
+  <div style="background:#0d1425;border:1px solid rgba(96,165,250,0.2);border-radius:20px;padding:32px;width:520px;max-width:95vw;position:relative;box-shadow:0 24px 60px rgba(0,0,0,0.5)">
+    <div style="position:absolute;top:0;left:20%;right:20%;height:1px;background:linear-gradient(90deg,transparent,rgba(96,165,250,0.4),transparent)"></div>
+    <h3 style="font-size:18px;font-weight:900;margin-bottom:24px;color:#60a5fa">✏️ تعديل الموعد</h3>
+    <input type="hidden" id="editApptId">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div style="grid-column:1/-1"><label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase">اسم العميل</label><input type="text" id="editApptName" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:11px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none"></div>
+      <div><label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase">الموبايل</label><input type="text" id="editApptPhone" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:11px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none"></div>
+      <div><label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase">الخدمة</label>
+        <select id="editApptService" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:11px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none;appearance:none">
+          <option>فتح حساب جديد</option><option>سحب / إيداع</option><option>تحويل بنكي</option><option>طلب بطاقة</option><option>استفسار عام</option>
+        </select>
+      </div>
+      <div><label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase">التاريخ</label><input type="date" id="editApptDate" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:11px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none"></div>
+      <div><label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase">الوقت</label>
+        <select id="editApptTime" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:11px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none;appearance:none">
+          <option>09:00</option><option>09:30</option><option>10:00</option><option>10:30</option><option>11:00</option><option>11:30</option><option>12:00</option><option>13:00</option><option>13:30</option><option>14:00</option><option>14:30</option><option>15:00</option>
+        </select>
+      </div>
+      <div><label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase">الحالة</label>
+        <select id="editApptStatus" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:11px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none;appearance:none">
+          <option value="pending">انتظار</option><option value="confirmed">مؤكد</option>
+        </select>
+      </div>
+      <div style="grid-column:1/-1"><label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase">الفرع</label>
+        <select id="editApptBranch" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:11px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none;appearance:none">
+          <option value="">اختر الفرع</option>
+        </select>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:24px;justify-content:flex-end">
+      <button onclick="closeModal('modalAppt')" style="padding:10px 22px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:rgba(255,255,255,0.6);font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;cursor:pointer">إلغاء</button>
+      <button onclick="saveAppt()" style="padding:10px 28px;background:linear-gradient(135deg,#1d4ed8,#3b82f6);border:none;border-radius:10px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:900;cursor:pointer;box-shadow:0 4px 15px rgba(37,99,235,0.3)">حفظ التعديل</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Modal helpers ──
+function openModal(id){ document.getElementById(id).style.display='flex'; }
+function closeModal(id){ document.getElementById(id).style.display='none'; }
+document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closeModal('modalBranch');closeModal('modalStaff');closeModal('modalAppt'); }});
+
+// ── Edit Branch ──
+function openEditBranch(id,name,location,phone,status){
+  document.getElementById('editBranchId').value=id;
+  document.getElementById('editBranchName').value=name;
+  document.getElementById('editBranchLocation').value=location;
+  document.getElementById('editBranchPhone').value=phone;
+  document.getElementById('editBranchStatus').value=status||'open';
+  openModal('modalBranch');
+}
+async function saveBranch(){
+  const id=document.getElementById('editBranchId').value;
+  const name=document.getElementById('editBranchName').value.trim();
+  const location=document.getElementById('editBranchLocation').value.trim();
+  const phone=document.getElementById('editBranchPhone').value.trim();
+  const status=document.getElementById('editBranchStatus').value;
+  if(!name||!location||!phone){showToast('أدخل كل البيانات','error');return;}
+  const data=await fetch(`/api/branches/${id}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,location,phone,status})}).then(r=>r.json());
+  if(data.success){showToast(data.message,'success');closeModal('modalBranch');loadBranches();}
+  else showToast(data.error,'error');
+}
+
+// ── Edit Staff ──
+function openEditStaff(id,name,username,role,branchId){
+  document.getElementById('editStaffId').value=id;
+  document.getElementById('editStaffName').value=name;
+  document.getElementById('editStaffUsername').value=username;
+  document.getElementById('editStaffRole').value=role;
+  document.getElementById('editStaffPassword').value='';
+  // ملء select الفروع
+  const sel=document.getElementById('editStaffBranch');
+  sel.innerHTML='<option value="">بدون فرع</option>'+branchesCache.map(b=>`<option value="${b.id}">${b.name}</option>`).join('');
+  sel.value=branchId||'';
+  openModal('modalStaff');
+}
+async function saveStaff(){
+  const id=document.getElementById('editStaffId').value;
+  const name=document.getElementById('editStaffName').value.trim();
+  const username=document.getElementById('editStaffUsername').value.trim();
+  const role=document.getElementById('editStaffRole').value;
+  const branchId=document.getElementById('editStaffBranch').value||null;
+  const password=document.getElementById('editStaffPassword').value;
+  if(!name||!username){showToast('أدخل كل البيانات','error');return;}
+  const data=await fetch(`/api/staff/${id}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,username,role,branchId,password})}).then(r=>r.json());
+  if(data.success){showToast(data.message,'success');closeModal('modalStaff');loadStaff();}
+  else showToast(data.error,'error');
+}
+
+// ── Edit Appointment ──
+function openEditAppt(id,customerName,phone,service,date,time,branchId,status){
+  document.getElementById('editApptId').value=id;
+  document.getElementById('editApptName').value=customerName;
+  document.getElementById('editApptPhone').value=phone;
+  document.getElementById('editApptDate').value=date;
+  document.getElementById('editApptStatus').value=status||'pending';
+  // ملء select الفروع
+  const sel=document.getElementById('editApptBranch');
+  sel.innerHTML='<option value="">اختر الفرع</option>'+branchesCache.map(b=>`<option value="${b.id}">${b.name}</option>`).join('');
+  sel.value=branchId||'';
+  // الخدمة
+  const svcSel=document.getElementById('editApptService');
+  for(let opt of svcSel.options){ if(opt.value===service){ opt.selected=true; break; } }
+  // الوقت
+  const timeSel=document.getElementById('editApptTime');
+  for(let opt of timeSel.options){ if(opt.value===time){ opt.selected=true; break; } }
+  openModal('modalAppt');
+}
+async function saveAppt(){
+  const id=document.getElementById('editApptId').value;
+  const customerName=document.getElementById('editApptName').value.trim();
+  const phone=document.getElementById('editApptPhone').value.trim();
+  const service=document.getElementById('editApptService').value;
+  const date=document.getElementById('editApptDate').value;
+  const time=document.getElementById('editApptTime').value;
+  const branchId=document.getElementById('editApptBranch').value||null;
+  const status=document.getElementById('editApptStatus').value;
+  if(!customerName||!phone||!date){showToast('أدخل كل البيانات','error');return;}
+  const data=await fetch(`/api/appointments/${id}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({customerName,phone,service,date,time,branchId,status})}).then(r=>r.json());
+  if(data.success){showToast(data.message,'success');closeModal('modalAppt');loadAppointments();}
+  else showToast(data.error,'error');
+}
 </script>
 </body>
 </html>
