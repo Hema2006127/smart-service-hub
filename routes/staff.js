@@ -29,6 +29,32 @@ router.post('/', async (req, res) => {
     }
 });
 
+// ✏️ تعديل بيانات موظف (الاسم / الدور / الفرع / كلمة السر)
+router.put('/:id', async (req, res) => {
+    if (!['admin','branch_manager'].includes(req.session?.user?.role)) return res.json({ success: false, error: 'غير مصرح' });
+    const { name, username, role, branchId, password } = req.body;
+    if (!name || !username) return res.json({ success: false, error: 'الاسم واسم المستخدم مطلوبان' });
+    try {
+        let result;
+        if (password && password.trim() !== '') {
+            result = await db.query(
+                'UPDATE bank_users SET name=$1, username=$2, role=$3, branch_id=$4, password=$5 WHERE id=$6 RETURNING *',
+                [name, username, role||'teller', branchId||null, password, req.params.id]
+            );
+        } else {
+            result = await db.query(
+                'UPDATE bank_users SET name=$1, username=$2, role=$3, branch_id=$4 WHERE id=$5 RETURNING *',
+                [name, username, role||'teller', branchId||null, req.params.id]
+            );
+        }
+        if (result.rows.length === 0) return res.json({ success: false, error: 'الموظف غير موجود' });
+        res.json({ success: true, message: 'تم التعديل ✅', member: { ...result.rows[0], password: undefined } });
+    } catch (err) {
+        if (err.code === '23505') return res.json({ success: false, error: 'اسم المستخدم موجود بالفعل' });
+        res.json({ success: false, error: err.message });
+    }
+});
+
 router.delete('/:id', async (req, res) => {
     if (!['admin','branch_manager'].includes(req.session?.user?.role)) return res.json({ success: false, error: 'غير مصرح' });
     try {
