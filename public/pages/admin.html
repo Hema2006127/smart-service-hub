@@ -3,671 +3,1119 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>البنك الذكي - لوحة الإدارة</title>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<title>البنك الذكي — لوحة الإدارة</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Tajawal',sans-serif;background:#0a0e1a;min-height:100vh;color:#e2e8f0}
-:root{--gold:#d4af37;--gold-light:#f5d76e;--border:rgba(255,255,255,0.07);--surface:rgba(255,255,255,0.03)}
+:root{
+  --bg:#010d18;--bg2:#021220;--bg3:#031828;--bg4:#041e30;
+  --abyss:#000a12;
+  --ocean:#0066cc;--ocean2:#0080ff;--ocean3:#1a9fff;
+  --teal:#00d4aa;--teal2:#00f5c4;--teal3:#4dffd6;
+  --aqua:#00b8d9;--aqua2:#00d6f5;
+  --foam:#e0f7ff;--foam2:rgba(224,247,255,.6);--foam3:rgba(224,247,255,.28);--foam4:rgba(224,247,255,.1);
+  --deep1:rgba(0,102,204,.12);--deep2:rgba(0,102,204,.22);--deep3:rgba(0,102,204,.4);
+  --teal1:rgba(0,212,170,.08);--teal2a:rgba(0,212,170,.2);
+  --coral:#ff6b6b;--amber:#ffb347;--emerald:#00e676;
+  --r:12px;--r2:18px;--r3:24px;
+  --glow-o:0 0 24px rgba(0,128,255,.5),0 0 70px rgba(0,128,255,.18);
+  --glow-t:0 0 24px rgba(0,212,170,.5),0 0 70px rgba(0,212,170,.18);
+  --glow-a:0 0 24px rgba(0,214,245,.4),0 0 60px rgba(0,214,245,.15);
+}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--foam);cursor:default}
 
-nav{background:rgba(10,14,26,0.95);border-bottom:1px solid rgba(212,175,55,0.15);padding:0 28px;height:62px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;backdrop-filter:blur(20px)}
-.brand{display:flex;align-items:center;gap:10px}
-.brand-icon{width:36px;height:36px;background:linear-gradient(135deg,#d4af37,#f5d76e);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
-.brand h1{font-size:16px;font-weight:900;color:#f5d76e}
-.nav-right{display:flex;align-items:center;gap:12px}
-.user-tag{padding:5px 14px;background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.2);border-radius:20px;color:#f5d76e;font-size:12px;font-weight:700}
-.btn-logout{padding:7px 14px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171;border-radius:8px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:13px}
+/* ══ OCEAN BG CANVAS ══ */
+#bgCanvas{position:fixed;inset:0;z-index:0;pointer-events:none}
 
-.layout{display:flex;min-height:calc(100vh - 62px)}
+/* ══ DEPTH LAYERS ══ */
+.depth-layer{position:fixed;inset:0;z-index:0;pointer-events:none}
+.depth-layer::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 80% 50% at 60% -20%, rgba(0,128,255,.14) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 60% at -10% 90%, rgba(0,212,170,.1) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 100% 50%, rgba(0,184,217,.06) 0%, transparent 55%);
+}
+.depth-layer::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:35%;
+  background:linear-gradient(180deg,transparent,rgba(0,20,40,.6));
+}
 
-/* Sidebar */
-.sidebar{width:220px;background:rgba(255,255,255,0.02);border-left:1px solid var(--border);padding:20px 0;flex-shrink:0}
-.nav-item{display:flex;align-items:center;gap:12px;padding:13px 20px;cursor:pointer;color:rgba(255,255,255,0.4);font-size:14px;font-weight:700;transition:all .2s;border-right:3px solid transparent}
-.nav-item:hover{background:rgba(255,255,255,0.03);color:rgba(255,255,255,0.7)}
-.nav-item.active{background:rgba(212,175,55,0.08);color:#f5d76e;border-right-color:#d4af37}
-.nav-icon{font-size:18px;width:24px;text-align:center}
+/* CAUSTICS — light patterns underwater */
+.caustics{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    radial-gradient(ellipse 3% 2% at 15% 30%, rgba(0,212,170,.06) 0%, transparent 100%),
+    radial-gradient(ellipse 2% 3% at 40% 60%, rgba(0,128,255,.05) 0%, transparent 100%),
+    radial-gradient(ellipse 4% 2% at 70% 20%, rgba(0,212,170,.04) 0%, transparent 100%),
+    radial-gradient(ellipse 2% 4% at 85% 75%, rgba(0,128,255,.06) 0%, transparent 100%);
+  animation:causticsDrift 12s ease-in-out infinite;
+}
+@keyframes causticsDrift{
+  0%,100%{transform:translate(0,0) scale(1);opacity:.8}
+  25%{transform:translate(20px,10px) scale(1.05);opacity:1}
+  50%{transform:translate(-15px,20px) scale(.96);opacity:.7}
+  75%{transform:translate(10px,-10px) scale(1.03);opacity:.9}
+}
 
-/* Content */
-.content{flex:1;padding:28px;overflow-y:auto}
+/* BIOLUMINESCENCE PARTICLES */
+.bio-orb{
+  position:fixed;border-radius:50%;pointer-events:none;z-index:0;
+  filter:blur(100px);
+}
+.bio-1{width:600px;height:600px;background:radial-gradient(circle,rgba(0,128,255,.16),transparent 70%);top:-150px;right:-100px;animation:bioFloat1 11s ease-in-out infinite}
+.bio-2{width:500px;height:500px;background:radial-gradient(circle,rgba(0,212,170,.12),transparent 70%);bottom:-100px;left:-80px;animation:bioFloat2 14s ease-in-out infinite}
+.bio-3{width:350px;height:350px;background:radial-gradient(circle,rgba(0,184,217,.08),transparent 70%);top:40%;left:35%;animation:bioFloat3 9s ease-in-out infinite}
+@keyframes bioFloat1{0%,100%{transform:translate(0,0) scale(1)}40%{transform:translate(-30px,25px) scale(1.08)}70%{transform:translate(20px,-15px) scale(.94)}}
+@keyframes bioFloat2{0%,100%{transform:translate(0,0) scale(1)}35%{transform:translate(25px,-20px) scale(1.06)}65%{transform:translate(-18px,12px) scale(.97)}}
+@keyframes bioFloat3{0%,100%{transform:translate(0,0) scale(1) rotate(0deg)}50%{transform:translate(15px,20px) scale(1.1) rotate(5deg)}}
 
-/* Stats */
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
-.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px;display:flex;align-items:center;gap:14px;transition:transform .2s}
-.stat-card:hover{transform:translateY(-2px)}
-.stat-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
-.si-gold{background:rgba(212,175,55,0.15)}.si-green{background:rgba(16,185,129,0.15)}.si-blue{background:rgba(59,130,246,0.15)}.si-purple{background:rgba(139,92,246,0.15)}
-.stat-num{font-size:28px;font-weight:900;color:#f5d76e}
-.stat-label{font-size:12px;color:rgba(255,255,255,0.35);margin-top:2px}
+/* ══ LAYOUT ══ */
+.app{position:relative;z-index:2;display:flex;height:100vh}
 
-/* Section */
-.section{display:none}.section.active{display:block}
-.section-title{font-size:20px;font-weight:900;color:#f5d76e;margin-bottom:24px}
+/* ══ SIDEBAR ══ */
+.sidebar{
+  width:252px;flex-shrink:0;display:flex;flex-direction:column;
+  background:rgba(1,13,24,.95);
+  border-left:1px solid rgba(0,128,255,.18);
+  position:relative;overflow:hidden;backdrop-filter:blur(30px);
+}
+/* Underwater shimmer line */
+.sidebar::before{
+  content:'';position:absolute;top:0;left:0;width:100%;height:100%;
+  background:linear-gradient(180deg,
+    transparent 0%,
+    rgba(0,212,170,.015) 20%,
+    rgba(0,128,255,.02) 50%,
+    rgba(0,212,170,.015) 80%,
+    transparent 100%);
+  animation:sidebarShimmer 8s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes sidebarShimmer{0%,100%{opacity:.6}50%{opacity:1}}
+/* Left glow edge */
+.sidebar::after{
+  content:'';position:absolute;top:0;right:0;width:1px;height:100%;
+  background:linear-gradient(180deg,
+    transparent,
+    rgba(0,128,255,.5) 20%,
+    rgba(0,212,170,.6) 50%,
+    rgba(0,128,255,.4) 80%,
+    transparent);
+  animation:edgeGlow 4s ease-in-out infinite;
+}
+@keyframes edgeGlow{0%,100%{opacity:.5}50%{opacity:1}}
 
-/* Card */
-.card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:24px;margin-bottom:20px}
-.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
-.card-title{font-size:16px;font-weight:900}
+.sb-top{padding:22px 18px 18px;border-bottom:1px solid rgba(0,128,255,.12);display:flex;align-items:center;gap:14px}
+.sb-logo{
+  width:48px;height:48px;border-radius:14px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--ocean2),var(--teal));
+  display:flex;align-items:center;justify-content:center;font-size:22px;
+  box-shadow:var(--glow-o);position:relative;
+  animation:logoBreathe 3.5s ease-in-out infinite;
+}
+.sb-logo::before{
+  content:'';position:absolute;inset:-4px;border-radius:18px;
+  background:conic-gradient(from 0deg,var(--ocean2),var(--teal),var(--aqua2),var(--ocean2));
+  z-index:-1;opacity:0;
+  animation:logoSpin 4s linear infinite,logoRingFade 3.5s ease-in-out infinite;
+}
+@keyframes logoBreathe{0%,100%{box-shadow:var(--glow-o)}50%{box-shadow:0 0 35px rgba(0,128,255,.7),0 0 90px rgba(0,128,255,.28)}}
+@keyframes logoSpin{to{transform:rotate(360deg)}}
+@keyframes logoRingFade{0%,100%{opacity:0}50%{opacity:.4}}
+.sb-brand-t{font-size:14px;font-weight:900;color:#fff;line-height:1.25;letter-spacing:.3px}
+.sb-brand-s{font-size:10px;color:var(--teal2);margin-top:3px;font-family:'JetBrains Mono',monospace;opacity:.7}
 
-/* Form */
-.form-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;align-items:end;margin-bottom:4px}
-.form-group label{display:block;color:rgba(255,255,255,0.45);font-size:12px;font-weight:700;margin-bottom:6px}
-.form-group input,.form-group select{width:100%;padding:11px 14px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:10px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none;transition:all .2s}
-.form-group input:focus,.form-group select:focus{border-color:rgba(212,175,55,0.5);background:rgba(212,175,55,0.06)}
-.form-group input::placeholder{color:rgba(255,255,255,0.2)}
-.form-group select option{background:#1a1e2e}
+.sb-user{
+  margin:14px 12px 0;padding:14px;
+  background:rgba(0,128,255,.06);border:1px solid rgba(0,128,255,.16);
+  border-radius:14px;display:flex;align-items:center;gap:12px;
+  position:relative;overflow:hidden;
+}
+.sb-user::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(0,212,170,.05),transparent 60%);
+  pointer-events:none;
+}
+.sb-av{
+  width:40px;height:40px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--ocean2),var(--teal));
+  display:flex;align-items:center;justify-content:center;
+  font-size:17px;font-weight:900;color:#fff;
+  box-shadow:0 0 16px rgba(0,128,255,.4);
+}
+.sb-uname{font-size:13px;font-weight:900;color:#fff}
+.sb-urole{font-size:10px;color:var(--teal2);margin-top:2px;font-family:'JetBrains Mono',monospace}
 
-/* Buttons */
-.btn{padding:11px 20px;border:none;border-radius:10px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;transition:all .2s;white-space:nowrap}
-.btn-gold{background:linear-gradient(135deg,#d4af37,#f5d76e);color:#0a0e1a}
-.btn-gold:hover{transform:translateY(-1px);box-shadow:0 4px 15px rgba(212,175,55,0.3)}
-.btn-danger{background:rgba(239,68,68,0.15);color:#f87171;border:1px solid rgba(239,68,68,0.2);padding:7px 14px;font-size:13px}
-.btn-danger:hover{background:rgba(239,68,68,0.25)}
-.btn-edit{background:rgba(245,158,11,0.15);color:#fbbf24;border:1px solid rgba(245,158,11,0.2);padding:7px 14px;font-size:13px}
-.btn-edit:hover{background:rgba(245,158,11,0.25)}
+.sb-nav{flex:1;padding:10px 0 8px;overflow-y:auto}
+.sb-nav::-webkit-scrollbar{width:0}
+.nav-section{
+  padding:16px 18px 7px;font-size:9px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;
+  color:rgba(224,247,255,.2);font-family:'JetBrains Mono',monospace;
+}
+.nav-item{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 18px;cursor:pointer;
+  color:var(--foam3);font-size:13px;font-weight:700;
+  transition:all .28s cubic-bezier(.34,1.56,.64,1);
+  border-right:2px solid transparent;position:relative;overflow:hidden;
+}
+.nav-item::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,rgba(0,212,170,.08),transparent);
+  transform:translateX(100%);transition:transform .3s ease;
+}
+.nav-item:hover{color:var(--foam);border-right-color:rgba(0,212,170,.4)}
+.nav-item:hover::before{transform:translateX(0)}
+.nav-item.active{
+  background:linear-gradient(90deg,rgba(0,128,255,.1),rgba(0,128,255,.03));
+  color:var(--teal2);border-right-color:var(--teal);
+  text-shadow:0 0 12px rgba(0,212,170,.5);
+}
+.nav-item.active::before{transform:translateX(0);background:linear-gradient(90deg,rgba(0,212,170,.06),transparent)}
+.nav-icon{font-size:16px;width:22px;text-align:center;flex-shrink:0;transition:filter .3s}
+.nav-item.active .nav-icon{filter:drop-shadow(0 0 6px rgba(0,212,170,.8))}
+.nav-item:hover .nav-icon{filter:drop-shadow(0 0 4px rgba(0,212,170,.5))}
 
-/* Search */
-.search-bar{position:relative;max-width:280px}
-.search-bar input{width:100%;padding:9px 14px 9px 36px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:10px;color:#fff;font-family:'Tajawal',sans-serif;font-size:13px;outline:none}
-.search-bar input:focus{border-color:rgba(212,175,55,0.4)}
-.search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,0.3);font-size:15px}
+.sb-footer{padding:14px 12px;border-top:1px solid rgba(0,128,255,.1)}
+.btn-logout{
+  width:100%;padding:11px;border-radius:12px;cursor:pointer;
+  font-family:'Tajawal',sans-serif;font-size:13px;font-weight:900;
+  background:rgba(255,107,107,.06);border:1px solid rgba(255,107,107,.18);
+  color:#ff9494;transition:all .25s ease;position:relative;overflow:hidden;
+}
+.btn-logout:hover{background:rgba(255,107,107,.14);box-shadow:0 0 20px rgba(255,107,107,.2);transform:translateY(-1px)}
 
-/* Table */
+/* ══ MAIN ══ */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+
+/* TOPBAR */
+.topbar{
+  height:62px;flex-shrink:0;
+  background:rgba(1,13,24,.92);backdrop-filter:blur(32px);
+  border-bottom:1px solid rgba(0,128,255,.14);
+  padding:0 28px;display:flex;align-items:center;justify-content:space-between;
+  position:relative;
+}
+.topbar::after{
+  content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(0,128,255,.6),rgba(0,212,170,.5),rgba(0,128,255,.4),transparent);
+  animation:topWave 4s ease-in-out infinite;
+}
+@keyframes topWave{
+  0%,100%{background-position:0% 0%}
+  50%{background-position:100% 0%}
+}
+.tb-title{font-size:15px;font-weight:900;color:#fff;letter-spacing:.3px}
+.tb-right{display:flex;align-items:center;gap:12px}
+
+.depth-meter{
+  display:flex;align-items:center;gap:8px;
+  padding:6px 14px;border-radius:10px;
+  background:rgba(0,128,255,.06);border:1px solid rgba(0,128,255,.16);
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--foam3);
+}
+.depth-bars{display:flex;gap:2px;align-items:flex-end}
+.depth-bar{width:3px;border-radius:2px;background:var(--ocean2);animation:depthAnim 1.8s ease-in-out infinite}
+.depth-bar:nth-child(1){height:8px;animation-delay:0s}
+.depth-bar:nth-child(2){height:12px;animation-delay:.2s}
+.depth-bar:nth-child(3){height:6px;animation-delay:.4s}
+.depth-bar:nth-child(4){height:14px;animation-delay:.1s}
+.depth-bar:nth-child(5){height:9px;animation-delay:.3s}
+@keyframes depthAnim{0%,100%{opacity:.4;transform:scaleY(1)}50%{opacity:1;transform:scaleY(1.3)}}
+
+.live-pill{
+  display:flex;align-items:center;gap:8px;padding:6px 14px;border-radius:20px;
+  background:rgba(0,212,170,.07);border:1px solid rgba(0,212,170,.2);
+  color:var(--teal2);font-size:11px;font-weight:900;
+  font-family:'JetBrains Mono',monospace;
+  box-shadow:0 0 14px rgba(0,212,170,.1);
+}
+.ldot{width:7px;height:7px;border-radius:50%;background:var(--teal2);box-shadow:0 0 8px var(--teal2);animation:ldotPulse 2s ease-in-out infinite}
+@keyframes ldotPulse{0%,100%{transform:scale(1);box-shadow:0 0 8px var(--teal2)}50%{transform:scale(1.5);box-shadow:0 0 16px var(--teal2),0 0 30px rgba(0,212,170,.4)}}
+
+.clock-display{
+  font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;
+  color:var(--foam3);padding:6px 12px;
+  background:rgba(255,255,255,.03);border:1px solid var(--foam4);border-radius:8px;
+}
+
+/* CONTENT */
+.content{flex:1;overflow-y:auto;padding:26px 28px}
+.content::-webkit-scrollbar{width:4px}
+.content::-webkit-scrollbar-track{background:transparent}
+.content::-webkit-scrollbar-thumb{background:rgba(0,128,255,.3);border-radius:4px}
+
+.section{display:none;animation:secIn .35s cubic-bezier(.34,1.56,.64,1) both}
+.section.active{display:block}
+@keyframes secIn{from{opacity:0;transform:translateY(14px) scale(.99)}to{opacity:1;transform:none}}
+
+/* ══ STATS ══ */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.stat{
+  padding:24px 18px 20px;border-radius:var(--r3);
+  background:linear-gradient(135deg,rgba(0,128,255,.06),rgba(0,128,255,.02));
+  border:1px solid rgba(0,128,255,.12);
+  display:flex;align-items:center;gap:16px;
+  transition:all .35s cubic-bezier(.34,1.56,.64,1);
+  cursor:default;overflow:hidden;position:relative;
+  animation:statWash .7s cubic-bezier(.34,1.56,.64,1) both;
+}
+.stat:nth-child(1){animation-delay:.05s;--sc:#0080ff;--sc2:rgba(0,128,255,.12);--scg:var(--glow-o)}
+.stat:nth-child(2){animation-delay:.12s;--sc:#00d4aa;--sc2:rgba(0,212,170,.1);--scg:var(--glow-t)}
+.stat:nth-child(3){animation-delay:.19s;--sc:#ffb347;--sc2:rgba(255,179,71,.1);--scg:0 0 24px rgba(255,179,71,.4)}
+.stat:nth-child(4){animation-delay:.26s;--sc:#00d6f5;--sc2:rgba(0,214,245,.1);--scg:var(--glow-a)}
+@keyframes statWash{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+
+/* Ripple water effect on stat */
+.stat::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--sc),var(--sc),transparent);
+  animation:statLine 3s ease-in-out infinite;
+}
+.stat::after{
+  content:'';position:absolute;bottom:-40px;left:50%;transform:translateX(-50%);
+  width:120%;height:80px;border-radius:50%;
+  background:radial-gradient(ellipse,rgba(0,128,255,.04),transparent 70%);
+  animation:statRipple 4s ease-in-out infinite;
+}
+@keyframes statLine{0%,100%{opacity:.5}50%{opacity:1}}
+@keyframes statRipple{0%,100%{transform:translateX(-50%) scale(1);opacity:.6}50%{transform:translateX(-50%) scale(1.2);opacity:1}}
+
+.stat:hover{
+  border-color:var(--sc);background:var(--sc2);
+  transform:translateY(-5px) scale(1.02);
+  box-shadow:var(--scg),0 24px 50px rgba(0,0,0,.5);
+}
+.stat-ic{
+  width:52px;height:52px;border-radius:15px;
+  display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;
+  background:var(--sc2);border:1px solid rgba(255,255,255,.06);
+  transition:all .35s ease;position:relative;overflow:hidden;
+}
+.stat-ic::after{
+  content:'';position:absolute;inset:-50%;
+  background:conic-gradient(from 0deg,transparent 60%,rgba(255,255,255,.06) 100%);
+  animation:icSpin 6s linear infinite;opacity:0;transition:.3s;
+}
+.stat:hover .stat-ic::after{opacity:1}
+@keyframes icSpin{to{transform:rotate(360deg)}}
+.stat:hover .stat-ic{box-shadow:0 0 24px var(--sc)}
+.stat-n{
+  font-size:34px;font-weight:900;line-height:1;color:#fff;
+  font-family:'JetBrains Mono',monospace;
+  text-shadow:0 0 22px var(--sc);
+  transition:text-shadow .3s;
+}
+.stat:hover .stat-n{text-shadow:0 0 35px var(--sc),0 0 70px var(--sc)}
+.stat-l{font-size:11px;color:var(--foam3);margin-top:5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase}
+.stat-wave{
+  position:absolute;bottom:0;left:0;right:0;height:28px;overflow:hidden;opacity:.3;
+}
+.stat-wave svg{position:absolute;bottom:0;animation:waveMov 4s linear infinite}
+@keyframes waveMov{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ══ CHARTS ══ */
+.charts-g{display:grid;gap:18px;margin-bottom:18px}
+.charts-g.g3{grid-template-columns:1.6fr 1fr 1fr}
+.charts-g.g2{grid-template-columns:1.5fr 1fr}
+.cc{
+  background:linear-gradient(135deg,rgba(0,128,255,.05),rgba(0,128,255,.02));
+  border:1px solid rgba(0,128,255,.12);
+  border-radius:var(--r3);padding:22px;
+  transition:all .3s ease;position:relative;overflow:hidden;
+}
+.cc::before{
+  content:'';position:absolute;top:0;left:15%;right:15%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(0,212,170,.5),transparent);
+}
+.cc::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 60% 40% at 50% 0%,rgba(0,128,255,.04),transparent);
+}
+.cc:hover{border-color:rgba(0,212,170,.3);transform:translateY(-2px);box-shadow:0 20px 50px rgba(0,0,0,.5),0 0 0 1px rgba(0,128,255,.1),var(--glow-t)}
+.cc-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px}
+.cc-title{font-size:13px;font-weight:900;color:var(--foam)}
+.cc-sub{font-size:10px;color:var(--foam3);margin-top:4px;font-family:'JetBrains Mono',monospace;opacity:.8}
+.cc-tag{
+  font-size:10px;color:var(--teal2);
+  background:rgba(0,212,170,.08);padding:4px 10px;border-radius:20px;
+  border:1px solid rgba(0,212,170,.2);font-weight:800;
+  font-family:'JetBrains Mono',monospace;
+  animation:tagPulse 2.5s ease-in-out infinite;
+}
+@keyframes tagPulse{0%,100%{box-shadow:none}50%{box-shadow:0 0 12px rgba(0,212,170,.3)}}
+.cw{position:relative}
+.cw-260{height:230px}
+.cw-180{height:170px}
+
+/* ══ CARD ══ */
+.card{
+  background:linear-gradient(135deg,rgba(0,128,255,.05),rgba(0,128,255,.02));
+  border:1px solid rgba(0,128,255,.12);
+  border-radius:var(--r3);padding:24px;margin-bottom:18px;
+  transition:all .3s ease;position:relative;overflow:hidden;
+}
+.card::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1px;background:linear-gradient(90deg,transparent,rgba(0,212,170,.4),transparent)}
+.card:hover{border-color:rgba(0,212,170,.2)}
+.card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;gap:12px;flex-wrap:wrap}
+.card-title{font-size:14px;font-weight:900;color:#fff}
+
+/* ══ FORM ══ */
+.fg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:14px;align-items:end}
+.fg label{display:block;font-size:10px;font-weight:700;color:var(--teal2);margin-bottom:7px;letter-spacing:1px;text-transform:uppercase;font-family:'JetBrains Mono',monospace;opacity:.8}
+.fg input,.fg select{
+  width:100%;padding:12px 14px;
+  background:rgba(0,128,255,.04);border:1px solid rgba(0,128,255,.16);
+  border-radius:11px;color:var(--foam);
+  font-family:'Tajawal',sans-serif;font-size:13px;outline:none;transition:all .25s ease;
+}
+.fg input:focus,.fg select:focus{
+  border-color:var(--teal2);background:rgba(0,212,170,.06);
+  box-shadow:0 0 0 3px rgba(0,212,170,.1),0 0 20px rgba(0,212,170,.08);
+}
+.fg input::placeholder{color:var(--foam3)}
+.fg select option{background:#021220}
+
+/* ══ SEARCH ══ */
+.srch{position:relative;width:260px}
+.srch input{
+  width:100%;padding:10px 14px 10px 38px;
+  background:rgba(0,128,255,.04);border:1px solid rgba(0,128,255,.16);
+  border-radius:11px;color:var(--foam);
+  font-family:'Tajawal',sans-serif;font-size:13px;outline:none;transition:.25s ease;
+}
+.srch input:focus{border-color:var(--teal2);box-shadow:0 0 0 3px rgba(0,212,170,.1)}
+.srch::before{content:'🔍';position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:13px;opacity:.22;pointer-events:none}
+
+/* ══ TABLE ══ */
+.tw{overflow-x:auto;border-radius:14px;border:1px solid rgba(0,128,255,.12)}
 table{width:100%;border-collapse:collapse}
-th{text-align:right;padding:11px 14px;font-size:12px;color:rgba(255,255,255,0.35);font-weight:700;border-bottom:1px solid var(--border);letter-spacing:.5px}
-td{padding:13px 14px;font-size:14px;border-bottom:1px solid rgba(255,255,255,0.03)}
-tr:hover td{background:rgba(255,255,255,0.02)}
+thead{background:rgba(0,128,255,.06)}
+th{text-align:right;padding:13px 16px;font-size:10px;font-weight:700;color:var(--teal2);border-bottom:1px solid rgba(0,128,255,.1);letter-spacing:1px;text-transform:uppercase;white-space:nowrap;font-family:'JetBrains Mono',monospace}
+td{padding:13px 16px;font-size:13px;border-bottom:1px solid rgba(255,255,255,.025);transition:.18s}
 tr:last-child td{border:none}
-.td-actions{display:flex;gap:8px;justify-content:flex-end}
-.td-id{color:rgba(255,255,255,0.3);font-size:12px}
+tbody tr{transition:all .22s ease}
+tbody tr:hover td{background:rgba(0,128,255,.05)}
+tbody tr:hover{box-shadow:inset 0 0 0 1px rgba(0,212,170,.1)}
+.td-id{color:var(--teal2);font-size:11px;font-family:'JetBrains Mono',monospace}
+.td-act{display:flex;gap:8px;justify-content:flex-end}
 
-.badge{padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700}
-.badge-open{background:rgba(16,185,129,0.15);color:#34d399;border:1px solid rgba(16,185,129,0.2)}
-.badge-closed{background:rgba(239,68,68,0.15);color:#f87171;border:1px solid rgba(239,68,68,0.2)}
-.badge-admin{background:rgba(212,175,55,0.15);color:#f5d76e;border:1px solid rgba(212,175,55,0.2)}
-.badge-manager{background:rgba(139,92,246,0.15);color:#a78bfa;border:1px solid rgba(139,92,246,0.2)}
-.badge-teller{background:rgba(59,130,246,0.15);color:#60a5fa;border:1px solid rgba(59,130,246,0.2)}
+/* ══ BADGE ══ */
+.badge{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:900;white-space:nowrap;letter-spacing:.3px}
+.b-open,.b-confirmed{background:rgba(0,212,170,.08);color:var(--teal2);border:1px solid rgba(0,212,170,.22);box-shadow:0 0 10px rgba(0,212,170,.1)}
+.b-closed,.b-pending{background:rgba(255,179,71,.08);color:var(--amber);border:1px solid rgba(255,179,71,.2)}
+.b-admin{background:rgba(0,128,255,.1);color:var(--aqua2);border:1px solid rgba(0,128,255,.22)}
+.b-branch_manager{background:rgba(0,214,245,.08);color:#66e8ff;border:1px solid rgba(0,214,245,.2)}
+.b-teller{background:rgba(0,212,170,.06);color:var(--teal3);border:1px solid rgba(0,212,170,.15)}
 
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:#1e1e30;border:1px solid var(--border);border-radius:12px;padding:14px 28px;font-size:14px;font-weight:700;z-index:9999;transition:transform .3s;min-width:240px;text-align:center}
+/* ══ BUTTONS ══ */
+.btn{padding:12px 22px;border:none;border-radius:12px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:900;transition:all .28s cubic-bezier(.34,1.56,.64,1);display:inline-flex;align-items:center;gap:7px;white-space:nowrap;position:relative;overflow:hidden}
+.btn-p{
+  background:linear-gradient(135deg,var(--ocean2),var(--teal));
+  color:#fff;box-shadow:var(--glow-o);
+}
+.btn-p::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.2),transparent 60%);
+  opacity:0;transition:.25s;
+}
+.btn-p:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 0 35px rgba(0,128,255,.55),0 0 70px rgba(0,212,170,.25)}
+.btn-p:hover::before{opacity:1}
+.btn-p:active{transform:translateY(0) scale(.98)}
+
+.btn-edit{padding:7px 14px;font-size:12px;background:rgba(255,179,71,.07);border:1px solid rgba(255,179,71,.2);color:var(--amber);border-radius:9px;cursor:pointer;font-family:'Tajawal',sans-serif;font-weight:900;transition:all .22s ease}
+.btn-edit:hover{background:rgba(255,179,71,.16);box-shadow:0 0 14px rgba(255,179,71,.22);transform:translateY(-1px)}
+.btn-del{padding:7px 14px;font-size:12px;background:rgba(255,107,107,.06);border:1px solid rgba(255,107,107,.18);color:#ff9494;border-radius:9px;cursor:pointer;font-family:'Tajawal',sans-serif;font-weight:900;transition:all .22s ease}
+.btn-del:hover{background:rgba(255,107,107,.16);box-shadow:0 0 14px rgba(255,107,107,.22);transform:translateY(-1px)}
+.btn-reset{padding:8px 16px;font-size:12px;background:rgba(0,212,170,.06);border:1px solid rgba(0,212,170,.2);color:var(--teal2);border-radius:9px;cursor:pointer;font-family:'Tajawal',sans-serif;font-weight:900;transition:all .22s ease}
+.btn-reset:hover{background:rgba(0,212,170,.14);box-shadow:0 0 14px rgba(0,212,170,.25);transform:translateY(-1px)}
+
+/* ══ WATER RIPPLE ══ */
+.ripple{position:absolute;border-radius:50%;background:rgba(0,212,170,.25);transform:scale(0);animation:rippleOut .7s ease-out;pointer-events:none}
+@keyframes rippleOut{to{transform:scale(4.5);opacity:0}}
+
+/* ══ EMPTY ══ */
+.empty{text-align:center;padding:44px;color:var(--foam3);font-size:13px}
+.empty-ic{font-size:36px;margin-bottom:12px;opacity:.22;filter:grayscale(1)}
+
+/* ══ MODAL ══ */
+.modal-bg{position:fixed;inset:0;z-index:900;background:rgba(1,8,16,.88);backdrop-filter:blur(20px);display:flex;align-items:center;justify-content:center;animation:mfade .2s ease}
+.modal-bg.hidden{display:none}
+@keyframes mfade{from{opacity:0}to{opacity:1}}
+.modal{
+  background:var(--bg3);border:1px solid rgba(0,128,255,.22);
+  border-radius:24px;padding:32px;width:100%;max-width:500px;max-height:90vh;overflow-y:auto;
+  animation:mslide .32s cubic-bezier(.34,1.56,.64,1);position:relative;
+  box-shadow:0 0 70px rgba(0,128,255,.18),0 0 140px rgba(0,212,170,.08),0 35px 90px rgba(0,0,0,.8);
+}
+.modal::before{content:'';position:absolute;top:0;left:15%;right:15%;height:1px;background:linear-gradient(90deg,transparent,var(--ocean2),var(--teal),transparent)}
+.modal::after{content:'';position:absolute;inset:0;border-radius:24px;background:radial-gradient(ellipse 70% 40% at 50% 0%,rgba(0,128,255,.05),transparent);pointer-events:none}
+@keyframes mslide{from{opacity:0;transform:translateY(30px) scale(.95)}to{opacity:1;transform:none}}
+.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.modal-title{font-size:15px;font-weight:900;color:var(--teal2);text-shadow:0 0 12px rgba(0,212,170,.4)}
+.modal-x{width:32px;height:32px;border-radius:9px;background:rgba(255,107,107,.06);border:1px solid rgba(255,107,107,.16);color:#ff9494;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .22s ease}
+.modal-x:hover{background:rgba(255,107,107,.16);transform:rotate(90deg);box-shadow:0 0 14px rgba(255,107,107,.2)}
+.m-grid{display:grid;gap:15px}.m-grid.g2{grid-template-columns:1fr 1fr}
+.mf label{display:block;font-size:10px;font-weight:700;color:var(--teal2);margin-bottom:7px;letter-spacing:1px;text-transform:uppercase;font-family:'JetBrains Mono',monospace;opacity:.8}
+.mf input,.mf select{width:100%;padding:12px 14px;background:rgba(0,128,255,.04);border:1px solid rgba(0,128,255,.16);border-radius:11px;color:var(--foam);font-family:'Tajawal',sans-serif;font-size:13px;outline:none;transition:all .25s ease}
+.mf input:focus,.mf select:focus{border-color:var(--teal2);background:rgba(0,212,170,.06);box-shadow:0 0 0 3px rgba(0,212,170,.1),0 0 20px rgba(0,212,170,.08)}
+.mf input::placeholder{color:var(--foam3)}.mf select option{background:#031828}
+.modal-foot{display:flex;gap:10px;justify-content:flex-end;margin-top:24px}
+.btn-cancel{padding:11px 22px;background:rgba(255,255,255,.04);border:1px solid var(--foam4);color:var(--foam3);border-radius:12px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:700;transition:.22s}
+.btn-cancel:hover{background:rgba(255,255,255,.08);color:#fff}
+.btn-save{padding:11px 28px;background:linear-gradient(135deg,var(--ocean2),var(--teal));border:none;border-radius:12px;color:#fff;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:900;cursor:pointer;transition:all .25s ease;box-shadow:0 4px 22px rgba(0,128,255,.35)}
+.btn-save:hover{transform:translateY(-1px);box-shadow:0 6px 30px rgba(0,128,255,.5),0 0 30px rgba(0,212,170,.2)}
+
+/* ══ TOAST ══ */
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(100px);background:rgba(2,18,32,.97);backdrop-filter:blur(28px);border-radius:16px;padding:14px 32px;font-size:13px;font-weight:800;z-index:9999;transition:transform .38s cubic-bezier(.34,1.56,.64,1);min-width:250px;text-align:center;font-family:'Tajawal',sans-serif}
 .toast.show{transform:translateX(-50%) translateY(0)}
-.toast.success{border-color:rgba(16,185,129,0.4);color:#34d399}
-.toast.error{border-color:rgba(239,68,68,0.4);color:#f87171}
+.toast.success{border:1px solid rgba(0,212,170,.3);color:var(--teal2);box-shadow:0 0 35px rgba(0,212,170,.18)}
+.toast.error{border:1px solid rgba(255,107,107,.3);color:#ff9494;box-shadow:0 0 35px rgba(255,107,107,.15)}
+.toast.info{border:1px solid rgba(0,128,255,.3);color:var(--aqua2);box-shadow:0 0 35px rgba(0,128,255,.15)}
+
+/* ══ QUEUE ══ */
+.q-branch{background:linear-gradient(135deg,rgba(0,128,255,.05),rgba(0,128,255,.02));border:1px solid rgba(0,128,255,.14);border-radius:var(--r3);padding:22px;margin-bottom:16px;transition:all .3s ease;position:relative;overflow:hidden}
+.q-branch::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1px;background:linear-gradient(90deg,transparent,rgba(0,212,170,.45),transparent)}
+.q-branch:hover{border-color:rgba(0,212,170,.25);box-shadow:0 10px 35px rgba(0,0,0,.4)}
+.qb-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.qb-title{font-size:14px;font-weight:900;color:#fff}
+.q-serving{display:flex;align-items:center;gap:14px;padding:14px 18px;background:rgba(0,212,170,.06);border:1px solid rgba(0,212,170,.18);border-radius:13px;margin-bottom:12px;box-shadow:0 0 24px rgba(0,212,170,.06)}
+.qs-num{font-size:26px;font-weight:900;color:var(--teal2);font-family:'JetBrains Mono',monospace;text-shadow:0 0 16px rgba(0,212,170,.6)}
+.q-row{display:flex;align-items:center;gap:14px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.025);transition:.22s}
+.q-row:hover{background:rgba(0,128,255,.04);padding-right:8px;border-radius:8px}
+.q-row:last-child{border:none}
+.qr-pos{width:28px;height:28px;border-radius:8px;background:rgba(0,128,255,.1);color:var(--aqua2);font-size:11px;font-weight:900;font-family:'JetBrains Mono',monospace;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid rgba(0,128,255,.2)}
+.qr-tok{font-weight:900;color:var(--amber);font-size:14px;width:62px;font-family:'JetBrains Mono',monospace;text-shadow:0 0 8px rgba(255,179,71,.35)}
+
+/* ══ MORPHING BLOB ══ */
+.morph-blob{
+  position:fixed;z-index:0;pointer-events:none;opacity:.04;
+  top:20%;left:20%;
+}
+.morph-blob svg{animation:morphBlob 15s ease-in-out infinite}
+@keyframes morphBlob{
+  0%,100%{d:path("M150,50 C220,30 290,80 300,150 C310,220 260,290 190,300 C120,310 50,260 40,190 C30,120 80,70 150,50")}
+  25%{d:path("M160,40 C240,20 310,90 310,160 C310,230 250,300 180,310 C110,320 40,260 30,190 C20,120 80,60 160,40")}
+  50%{d:path("M140,60 C200,25 280,75 295,145 C310,215 265,295 195,305 C125,315 45,270 35,200 C25,130 80,95 140,60")}
+  75%{d:path("M155,45 C225,22 300,85 305,155 C310,225 258,295 185,305 C112,315 42,262 35,192 C28,122 85,68 155,45")}
+}
+
+@media(max-width:1200px){.stats{grid-template-columns:repeat(2,1fr)}.charts-g.g3{grid-template-columns:1fr 1fr}}
+@media(max-width:800px){.sidebar{display:none}.content{padding:16px}}
 </style>
 </head>
 <body>
 
-<nav>
-    <div class="brand"><div class="brand-icon">🏦</div><div><h1>البنك الذكي - لوحة الإدارة</h1></div></div>
-    <div class="nav-right">
-        <span class="user-tag" id="userName">مدير النظام</span>
-        <button class="btn-logout" onclick="logout()">خروج</button>
+<canvas id="bgCanvas"></canvas>
+<div class="depth-layer"></div>
+<div class="caustics"></div>
+<div class="bio-orb bio-1"></div>
+<div class="bio-orb bio-2"></div>
+<div class="bio-orb bio-3"></div>
+
+<!-- Morphing blob -->
+<div class="morph-blob">
+  <svg width="300" height="300" viewBox="0 0 300 300" fill="rgba(0,128,255,1)">
+    <path d="M150,50 C220,30 290,80 300,150 C310,220 260,290 190,300 C120,310 50,260 40,190 C30,120 80,70 150,50"/>
+  </svg>
+</div>
+
+<div class="app">
+
+<!-- ══ SIDEBAR ══ -->
+<div class="sidebar">
+  <div class="sb-top">
+    <div class="sb-logo">🏦</div>
+    <div>
+      <div class="sb-brand-t">البنك الذكي</div>
+      <div class="sb-brand-s">DEEP · v3.0</div>
     </div>
-</nav>
+  </div>
+  <div class="sb-user">
+    <div class="sb-av" id="userAv">م</div>
+    <div>
+      <div class="sb-uname" id="userName">جاري...</div>
+      <div class="sb-urole" id="userRole">LOADING</div>
+    </div>
+  </div>
+  <div class="sb-nav">
+    <div class="nav-section">// NAVIGATION</div>
+    <div class="nav-item active" onclick="showSection('dashboard',this)"><span class="nav-icon">📊</span>لوحة التحكم</div>
+    <div class="nav-section">// MANAGEMENT</div>
+    <div class="nav-item" onclick="showSection('branches',this)"><span class="nav-icon">🏢</span>الفروع</div>
+    <div class="nav-item" onclick="showSection('staff',this)"><span class="nav-icon">👥</span>الموظفين</div>
+    <div class="nav-section">// OPERATIONS</div>
+    <div class="nav-item" onclick="showSection('appointments',this)"><span class="nav-icon">📅</span>المواعيد</div>
+    <div class="nav-item" onclick="showSection('queues',this)"><span class="nav-icon">🎫</span>الطوابير المباشرة</div>
+  </div>
+  <div class="sb-footer">
+    <button class="btn-logout" onclick="logout()">⬅️ تسجيل الخروج</button>
+  </div>
+</div>
 
-<div class="layout">
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="nav-item active" onclick="showSection('dashboard',this)"><span class="nav-icon">📊</span>لوحة التحكم</div>
-        <div class="nav-item" onclick="showSection('branches',this)"><span class="nav-icon">🏢</span>الفروع</div>
-        <div class="nav-item" onclick="showSection('staff',this)"><span class="nav-icon">👥</span>الموظفين</div>
-        <div class="nav-item" onclick="showSection('appointments',this)"><span class="nav-icon">📅</span>المواعيد</div>
-        <div class="nav-item" onclick="showSection('queues',this)"><span class="nav-icon">🎫</span>الطوابير</div>
+<!-- ══ MAIN ══ -->
+<div class="main">
+  <div class="topbar">
+    <div class="tb-title" id="tbTitle">📊 لوحة التحكم</div>
+    <div class="tb-right">
+      <div class="clock-display" id="clockDisplay">--:--:--</div>
+      <div class="depth-meter">
+        <div class="depth-bars">
+          <div class="depth-bar"></div><div class="depth-bar"></div>
+          <div class="depth-bar"></div><div class="depth-bar"></div>
+          <div class="depth-bar"></div>
+        </div>
+        LIVE
+      </div>
+      <div class="live-pill"><div class="ldot"></div>مباشر</div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ══ DASHBOARD ══ -->
+    <div class="section active" id="sec-dashboard">
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-ic">🏢</div>
+          <div style="flex:1">
+            <div class="stat-n" id="s-branches">0</div>
+            <div class="stat-l">الفروع</div>
+          </div>
+          <div class="stat-wave">
+            <svg width="200%" height="28" viewBox="0 0 400 28" preserveAspectRatio="none">
+              <path d="M0,14 Q25,4 50,14 Q75,24 100,14 Q125,4 150,14 Q175,24 200,14 Q225,4 250,14 Q275,24 300,14 Q325,4 350,14 Q375,24 400,14 Q425,4 450,14 Q475,24 500,14 Q525,4 550,14 Q575,24 600,14 Q625,4 650,14 Q675,24 700,14 Q725,4 750,14 Q775,24 800,14" fill="none" stroke="rgba(0,128,255,.4)" stroke-width="1.5"/>
+            </svg>
+          </div>
+        </div>
+        <div class="stat">
+          <div class="stat-ic">👥</div>
+          <div style="flex:1">
+            <div class="stat-n" id="s-staff">0</div>
+            <div class="stat-l">الموظفين</div>
+          </div>
+          <div class="stat-wave">
+            <svg width="200%" height="28" viewBox="0 0 400 28" preserveAspectRatio="none">
+              <path d="M0,14 Q25,4 50,14 Q75,24 100,14 Q125,4 150,14 Q175,24 200,14 Q225,4 250,14 Q275,24 300,14 Q325,4 350,14 Q375,24 400,14 Q425,4 450,14 Q475,24 500,14 Q525,4 550,14 Q575,24 600,14 Q625,4 650,14 Q675,24 700,14 Q725,4 750,14 Q775,24 800,14" fill="none" stroke="rgba(0,212,170,.4)" stroke-width="1.5"/>
+            </svg>
+          </div>
+        </div>
+        <div class="stat">
+          <div class="stat-ic">📅</div>
+          <div style="flex:1">
+            <div class="stat-n" id="s-appts">0</div>
+            <div class="stat-l">المواعيد</div>
+          </div>
+          <div class="stat-wave">
+            <svg width="200%" height="28" viewBox="0 0 400 28" preserveAspectRatio="none">
+              <path d="M0,14 Q25,4 50,14 Q75,24 100,14 Q125,4 150,14 Q175,24 200,14 Q225,4 250,14 Q275,24 300,14 Q325,4 350,14 Q375,24 400,14 Q425,4 450,14 Q475,24 500,14 Q525,4 550,14 Q575,24 600,14 Q625,4 650,14 Q675,24 700,14 Q725,4 750,14 Q775,24 800,14" fill="none" stroke="rgba(255,179,71,.4)" stroke-width="1.5"/>
+            </svg>
+          </div>
+        </div>
+        <div class="stat">
+          <div class="stat-ic">🎫</div>
+          <div style="flex:1">
+            <div class="stat-n" id="s-queue">0</div>
+            <div class="stat-l">في الطوابير</div>
+          </div>
+          <div class="stat-wave">
+            <svg width="200%" height="28" viewBox="0 0 400 28" preserveAspectRatio="none">
+              <path d="M0,14 Q25,4 50,14 Q75,24 100,14 Q125,4 150,14 Q175,24 200,14 Q225,4 250,14 Q275,24 300,14 Q325,4 350,14 Q375,24 400,14 Q425,4 450,14 Q475,24 500,14 Q525,4 550,14 Q575,24 600,14 Q625,4 650,14 Q675,24 700,14 Q725,4 750,14 Q775,24 800,14" fill="none" stroke="rgba(0,214,245,.4)" stroke-width="1.5"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="charts-g g3">
+        <div class="cc">
+          <div class="cc-head">
+            <div><div class="cc-title">📊 نشاط الفروع</div><div class="cc-sub">// إجمالي العمليات لكل فرع</div></div>
+            <span class="cc-tag">◉ LIVE</span>
+          </div>
+          <div class="cw cw-260"><canvas id="cBranch"></canvas></div>
+        </div>
+        <div class="cc">
+          <div class="cc-head"><div><div class="cc-title">🏧 توزيع الخدمات</div><div class="cc-sub">// المواعيد المحجوزة</div></div></div>
+          <div class="cw cw-260"><canvas id="cService"></canvas></div>
+        </div>
+        <div class="cc">
+          <div class="cc-head"><div><div class="cc-title">📋 حالة المواعيد</div><div class="cc-sub">// مؤكد / انتظار</div></div></div>
+          <div class="cw cw-260"><canvas id="cApptStatus"></canvas></div>
+        </div>
+      </div>
+
+      <div class="charts-g g2">
+        <div class="cc">
+          <div class="cc-head"><div><div class="cc-title">📈 حركة الطابور — اليوم</div><div class="cc-sub">// خُدِموا vs انتظار / آخر 8 ساعات</div></div></div>
+          <div class="cw cw-180"><canvas id="cLine"></canvas></div>
+        </div>
+        <div class="cc">
+          <div class="cc-head"><div><div class="cc-title">🏆 توزيع الأدوار</div><div class="cc-sub">// تركيبة الفريق</div></div></div>
+          <div class="cw cw-180"><canvas id="cRoles"></canvas></div>
+        </div>
+      </div>
     </div>
 
-    <!-- Content -->
-    <div class="content">
-
-        <!-- DASHBOARD -->
-        <div class="section active" id="sec-dashboard">
-            <div class="section-title">📊 نظرة عامة</div>
-            <div class="stats">
-                <div class="stat-card"><div class="stat-icon si-gold">🏢</div><div><div class="stat-num" id="s-branches">-</div><div class="stat-label">إجمالي الفروع</div></div></div>
-                <div class="stat-card"><div class="stat-icon si-blue">👥</div><div><div class="stat-num" id="s-staff">-</div><div class="stat-label">إجمالي الموظفين</div></div></div>
-                <div class="stat-card"><div class="stat-icon si-green">📅</div><div><div class="stat-num" id="s-appts">-</div><div class="stat-label">المواعيد</div></div></div>
-                <div class="stat-card"><div class="stat-icon si-purple">🎫</div><div><div class="stat-num" id="s-queue">-</div><div class="stat-label">في الطوابير</div></div></div>
-            </div>
-
-            <!-- Charts Row -->
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px">
-                <!-- Bar Chart - الفروع -->
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">🏢 أكتر فرع نشاطاً</div>
-                        <span style="font-size:12px;color:rgba(255,255,255,0.3)">عدد العمليات الكلية</span>
-                    </div>
-                    <div style="position:relative;height:260px">
-                        <canvas id="branchChart"></canvas>
-                    </div>
-                </div>
-
-                <!-- Pie Chart - الموظفين -->
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">🏆 أحسن موظف</div>
-                        <span style="font-size:12px;color:rgba(255,255,255,0.3)">عدد العملاء المخدومين</span>
-                    </div>
-                    <div style="position:relative;height:260px">
-                        <canvas id="staffChart"></canvas>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header"><div class="card-title">⚡ نشاط سريع</div></div>
-                <p style="color:rgba(255,255,255,0.35);font-size:14px;line-height:2">
-                    🏢 إدارة الفروع — أضف فروع جديدة أو عدّل البيانات<br>
-                    👥 إدارة الموظفين — تحكم في صلاحيات الفريق<br>
-                    📅 المواعيد — تابع وأكد مواعيد العملاء<br>
-                    🎫 الطوابير — راقب حالة الطوابير في كل الفروع
-                </p>
-            </div>
+    <!-- ══ BRANCHES ══ -->
+    <div class="section" id="sec-branches">
+      <div class="card">
+        <div class="card-head"><div class="card-title">➕ إضافة فرع جديد</div></div>
+        <div class="fg-grid">
+          <div class="fg"><label>اسم الفرع</label><input id="bName" placeholder="فرع المعادي"/></div>
+          <div class="fg"><label>الموقع</label><input id="bLoc" placeholder="القاهرة، المعادي"/></div>
+          <div class="fg"><label>التليفون</label><input id="bPhone" placeholder="0220001111"/></div>
+          <div class="fg" style="display:flex;align-items:flex-end"><button class="btn btn-p" onclick="addBranch()" style="width:100%">➕ إضافة</button></div>
         </div>
-
-        <!-- BRANCHES -->
-        <div class="section" id="sec-branches">
-            <div class="section-title">🏢 إدارة الفروع</div>
-            <div class="card">
-                <div class="card-header"><div class="card-title">➕ إضافة فرع</div></div>
-                <div class="form-grid">
-                    <div class="form-group"><label>اسم الفرع</label><input type="text" id="bName" placeholder="فرع المعادي" /></div>
-                    <div class="form-group"><label>الموقع</label><input type="text" id="bLocation" placeholder="القاهرة، المعادي" /></div>
-                    <div class="form-group"><label>التليفون</label><input type="text" id="bPhone" placeholder="0220001111" /></div>
-                    <div class="form-group" style="display:flex;align-items:flex-end"><button class="btn btn-gold" onclick="addBranch()">إضافة</button></div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">قائمة الفروع <span id="branchCount" style="color:rgba(255,255,255,0.3);font-size:13px;font-weight:400"></span></div>
-                    <div class="search-bar"><span class="search-icon">🔍</span><input type="text" placeholder="بحث..." oninput="loadBranches(this.value)" /></div>
-                </div>
-                <table><thead><tr><th>#</th><th>الاسم</th><th>الموقع</th><th>التليفون</th><th>الحالة</th><th style="text-align:left">إجراءات</th></tr></thead>
-                <tbody id="branchesTable"><tr><td colspan="6" style="text-align:center;padding:30px;color:rgba(255,255,255,0.3)">⏳ جاري التحميل...</td></tr></tbody></table>
-            </div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">قائمة الفروع <span id="branchCount" style="color:var(--foam3);font-size:12px;font-weight:400"></span></div>
+          <div class="srch"><input placeholder="بحث..." oninput="loadBranches(this.value)"/></div>
         </div>
-
-        <!-- STAFF -->
-        <div class="section" id="sec-staff">
-            <div class="section-title">👥 إدارة الموظفين</div>
-            <div class="card">
-                <div class="card-header"><div class="card-title">➕ إضافة موظف</div></div>
-                <div class="form-grid">
-                    <div class="form-group"><label>الاسم</label><input type="text" id="stName" placeholder="الاسم الكامل" /></div>
-                    <div class="form-group"><label>اسم المستخدم</label><input type="text" id="stUser" placeholder="username" /></div>
-                    <div class="form-group"><label>الدور</label>
-                        <select id="stRole"><option value="teller">موظف فرع (Teller)</option><option value="branch_manager">مدير فرع</option></select>
-                    </div>
-                    <div class="form-group"><label>الفرع</label>
-                        <select id="stBranch"><option value="">⏳ جاري التحميل...</option></select>
-                    </div>
-                    <div class="form-group" style="display:flex;align-items:flex-end"><button class="btn btn-gold" onclick="addStaff()">إضافة</button></div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-title" style="margin-bottom:18px">قائمة الموظفين</div>
-                <table><thead><tr><th>#</th><th>الاسم</th><th>المستخدم</th><th>الدور</th><th>الفرع</th><th style="text-align:left">إجراءات</th></tr></thead>
-                <tbody id="staffTable"><tr><td colspan="6" style="text-align:center;padding:30px;color:rgba(255,255,255,0.3)">⏳ جاري التحميل...</td></tr></tbody></table>
-            </div>
+        <div class="tw">
+          <table>
+            <thead><tr><th>#</th><th>الاسم</th><th>الموقع</th><th>التليفون</th><th>الحالة</th><th style="text-align:left">إجراءات</th></tr></thead>
+            <tbody id="tBranch"><tr><td colspan="6"><div class="empty"><div class="empty-ic">⏳</div>جاري التحميل...</div></td></tr></tbody>
+          </table>
         </div>
-
-        <!-- APPOINTMENTS -->
-        <div class="section" id="sec-appointments">
-            <div class="section-title">📅 المواعيد</div>
-            <div class="card">
-                <table><thead><tr><th>#</th><th>العميل</th><th>الموبايل</th><th>الخدمة</th><th>التاريخ</th><th>الوقت</th><th>الفرع</th><th>الحالة</th><th style="text-align:left">إجراءات</th></tr></thead>
-                <tbody id="apptsTable"><tr><td colspan="9" style="text-align:center;padding:30px;color:rgba(255,255,255,0.3)">⏳ جاري التحميل...</td></tr></tbody></table>
-            </div>
-        </div>
-
-        <!-- QUEUES -->
-        <div class="section" id="sec-queues">
-            <div class="section-title">🎫 الطوابير</div>
-            <div id="queuesDisplay"></div>
-        </div>
-
+      </div>
     </div>
+
+    <!-- ══ STAFF ══ -->
+    <div class="section" id="sec-staff">
+      <div class="card">
+        <div class="card-head"><div class="card-title">➕ إضافة موظف جديد</div></div>
+        <div class="fg-grid">
+          <div class="fg"><label>الاسم الكامل</label><input id="stName" placeholder="محمد أحمد"/></div>
+          <div class="fg"><label>اسم المستخدم</label><input id="stUser" placeholder="username"/></div>
+          <div class="fg"><label>كلمة المرور</label><input type="password" id="stPass" placeholder="فاضية = teller123"/></div>
+          <div class="fg"><label>الدور</label><select id="stRole"><option value="teller">موظف فرع</option><option value="branch_manager">مدير فرع</option><option value="admin">مدير النظام</option></select></div>
+          <div class="fg"><label>الفرع</label><select id="stBranch"><option value="">بدون فرع</option></select></div>
+          <div class="fg" style="display:flex;align-items:flex-end"><button class="btn btn-p" onclick="addStaff()" style="width:100%">➕ إضافة</button></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">قائمة الموظفين <span id="staffCount" style="color:var(--foam3);font-size:12px;font-weight:400"></span></div>
+          <div class="srch"><input placeholder="بحث بالاسم أو المستخدم..." oninput="filterStaff(this.value)"/></div>
+        </div>
+        <div class="tw">
+          <table>
+            <thead><tr><th>#</th><th>الاسم</th><th>المستخدم</th><th>الدور</th><th>الفرع</th><th style="text-align:left">إجراءات</th></tr></thead>
+            <tbody id="tStaff"><tr><td colspan="6"><div class="empty"><div class="empty-ic">⏳</div>جاري التحميل...</div></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ APPOINTMENTS ══ -->
+    <div class="section" id="sec-appointments">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">كل المواعيد</div>
+          <div class="srch"><input placeholder="بحث بالاسم أو الخدمة..." oninput="filterAppts(this.value)"/></div>
+        </div>
+        <div class="tw">
+          <table>
+            <thead><tr><th>#</th><th>العميل</th><th>الموبايل</th><th>الخدمة</th><th>التاريخ</th><th>الوقت</th><th>الفرع</th><th>الحالة</th><th style="text-align:left">إجراءات</th></tr></thead>
+            <tbody id="tAppts"><tr><td colspan="9"><div class="empty"><div class="empty-ic">⏳</div>جاري التحميل...</div></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ QUEUES ══ -->
+    <div class="section" id="sec-queues"><div id="queuesWrap"></div></div>
+
+  </div>
+</div>
+</div>
+
+<!-- MODALS -->
+<div class="modal-bg hidden" id="mBranch">
+  <div class="modal">
+    <div class="modal-head"><span class="modal-title">✏️ تعديل الفرع</span><button class="modal-x" onclick="closeModal('mBranch')">✕</button></div>
+    <input type="hidden" id="mBid">
+    <div class="m-grid">
+      <div class="mf"><label>اسم الفرع</label><input id="mBname"/></div>
+      <div class="mf"><label>الموقع</label><input id="mBloc"/></div>
+      <div class="mf"><label>التليفون</label><input id="mBphone"/></div>
+      <div class="mf"><label>الحالة</label><select id="mBstatus"><option value="open">مفتوح</option><option value="closed">مغلق</option></select></div>
+    </div>
+    <div class="modal-foot"><button class="btn-cancel" onclick="closeModal('mBranch')">إلغاء</button><button class="btn-save" onclick="saveBranch()">💾 حفظ</button></div>
+  </div>
+</div>
+
+<div class="modal-bg hidden" id="mStaff">
+  <div class="modal">
+    <div class="modal-head"><span class="modal-title">✏️ تعديل الموظف</span><button class="modal-x" onclick="closeModal('mStaff')">✕</button></div>
+    <input type="hidden" id="mSid">
+    <div class="m-grid g2">
+      <div class="mf"><label>الاسم</label><input id="mSname"/></div>
+      <div class="mf"><label>اسم المستخدم</label><input id="mSuser"/></div>
+      <div class="mf"><label>الدور</label><select id="mSrole"><option value="teller">موظف فرع</option><option value="branch_manager">مدير فرع</option><option value="admin">مدير النظام</option></select></div>
+      <div class="mf"><label>الفرع</label><select id="mSbranch"><option value="">بدون فرع</option></select></div>
+      <div class="mf" style="grid-column:1/-1"><label>كلمة مرور جديدة</label><input type="password" id="mSpass" placeholder="••••••••"/></div>
+    </div>
+    <div class="modal-foot"><button class="btn-cancel" onclick="closeModal('mStaff')">إلغاء</button><button class="btn-save" onclick="saveStaff()">💾 حفظ</button></div>
+  </div>
+</div>
+
+<div class="modal-bg hidden" id="mAppt">
+  <div class="modal" style="max-width:540px">
+    <div class="modal-head"><span class="modal-title">✏️ تعديل الموعد</span><button class="modal-x" onclick="closeModal('mAppt')">✕</button></div>
+    <input type="hidden" id="mAid">
+    <div class="m-grid g2">
+      <div class="mf" style="grid-column:1/-1"><label>اسم العميل</label><input id="mAname"/></div>
+      <div class="mf"><label>الموبايل</label><input id="mAphone"/></div>
+      <div class="mf"><label>الخدمة</label><select id="mAsvc"><option>فتح حساب جديد</option><option>سحب / إيداع</option><option>تحويل بنكي</option><option>طلب بطاقة</option><option>استفسار عام</option></select></div>
+      <div class="mf"><label>التاريخ</label><input type="date" id="mAdate"/></div>
+      <div class="mf"><label>الوقت</label><select id="mAtime"><option>09:00</option><option>09:30</option><option>10:00</option><option>10:30</option><option>11:00</option><option>11:30</option><option>12:00</option><option>13:00</option><option>13:30</option><option>14:00</option><option>14:30</option><option>15:00</option></select></div>
+      <div class="mf"><label>الحالة</label><select id="mAstatus"><option value="pending">انتظار</option><option value="confirmed">مؤكد</option></select></div>
+      <div class="mf"><label>الفرع</label><select id="mAbranch"><option value="">اختر...</option></select></div>
+    </div>
+    <div class="modal-foot"><button class="btn-cancel" onclick="closeModal('mAppt')">إلغاء</button><button class="btn-save" onclick="saveAppt()">💾 حفظ</button></div>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script>
-const ROLE_NAMES   = {admin:'مدير النظام',branch_manager:'مدير فرع',teller:'موظف فرع'};
-let branchesCache  = []; // ← بيتملى من الـ API
-let branchChartInst = null;
-let staffChartInst  = null;
+// ══ CONFIG ══
+const OCEAN_COLORS = ['#0080ff','#00d4aa','#00b8d9','#ffb347','#1a9fff','#00f5c4','#66e8ff','#4dffd6'];
+const ROLE_MAP = {admin:'مدير النظام',branch_manager:'مدير فرع',teller:'موظف فرع'};
+const TB_MAP = {dashboard:'📊 لوحة التحكم',branches:'🏢 الفروع',staff:'👥 الموظفين',appointments:'📅 المواعيد',queues:'🎫 الطوابير'};
+let branchesCache=[],staffCache=[],apptsCache=[],charts={};
 
-function getBranchName(id) {
-    const b = branchesCache.find(b => b.id == id);
-    return b ? b.name : '-';
-}
+// ══ PARTICLE SYSTEM — Ocean Bubbles & Particles ══
+(function(){
+  const canvas=document.getElementById('bgCanvas');
+  const ctx=canvas.getContext('2d');
+  let W,H,particles=[],bubbles=[],frame=0;
+  function resize(){W=canvas.width=innerWidth;H=canvas.height=innerHeight}
+  resize();addEventListener('resize',resize);
 
-async function loadCharts() {
-    try {
-        const stats = await fetch('/api/stats').then(r => r.json());
-        const colors = ['#d4af37','#34d399','#60a5fa','#a78bfa','#f87171','#fbbf24','#2dd4bf'];
-
-        // Bar Chart — أكتر فرع نشاطاً
-        const branchCtx = document.getElementById('branchChart')?.getContext('2d');
-        if (branchCtx) {
-            if (branchChartInst) branchChartInst.destroy();
-            branchChartInst = new Chart(branchCtx, {
-                type: 'bar',
-                data: {
-                    labels: stats.branchQueue.map(b => b.name),
-                    datasets: [{
-                        label: 'عدد العمليات',
-                        data: stats.branchQueue.map(b => parseInt(b.total)),
-                        backgroundColor: stats.branchQueue.map((_,i) => colors[i % colors.length] + 'cc'),
-                        borderColor:     stats.branchQueue.map((_,i) => colors[i % colors.length]),
-                        borderWidth: 2, borderRadius: 8,
-                    }]
-                },
-                options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        x: { ticks: { color: 'rgba(255,255,255,0.5)', font: { family: 'Tajawal' } }, grid: { color: 'rgba(255,255,255,0.05)' } },
-                        y: { ticks: { color: 'rgba(255,255,255,0.5)' }, grid: { color: 'rgba(255,255,255,0.05)' }, beginAtZero: true }
-                    }
-                }
-            });
-        }
-
-        // Doughnut Chart — أحسن موظف
-        const staffCanvas = document.getElementById('staffChart');
-        if (staffCanvas) {
-            const topStaff = stats.topStaff.filter(s => parseInt(s.served) > 0);
-            if (topStaff.length === 0) {
-                staffCanvas.parentElement.innerHTML = '<p style="color:rgba(255,255,255,0.3);text-align:center;padding:80px 0;font-size:14px">لا توجد بيانات بعد</p>';
-            } else {
-                if (staffChartInst) staffChartInst.destroy();
-                staffChartInst = new Chart(staffCanvas.getContext('2d'), {
-                    type: 'doughnut',
-                    data: {
-                        labels: topStaff.map(s => s.name),
-                        datasets: [{
-                            data: topStaff.map(s => parseInt(s.served)),
-                            backgroundColor: topStaff.map((_,i) => colors[i % colors.length] + 'cc'),
-                            borderColor:     topStaff.map((_,i) => colors[i % colors.length]),
-                            borderWidth: 2,
-                        }]
-                    },
-                    options: {
-                        responsive: true, maintainAspectRatio: false,
-                        plugins: {
-                            legend: { position: 'bottom', labels: { color: 'rgba(255,255,255,0.6)', font: { family: 'Tajawal', size: 12 }, padding: 12 } },
-                            tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.raw} عميل` } }
-                        }
-                    }
-                });
-            }
-        }
-    } catch(e) { console.error('Charts error:', e); }
-}
-
-async function init() {
-    try {
-        const res = await fetch('/api/me');
-        if(!res.ok){window.location.href='/login';return;}
-        const user = await res.json();
-        document.getElementById('userName').textContent = user.name || user.username;
-        await loadBranches(); // ← حمّل الفروع أول حاجة عشان الـ cache يتملى
-        loadDashboard();
-    } catch { window.location.href='/login'; }
-}
-
-async function loadDashboard() {
-    const [branches,staff,appts] = await Promise.all([
-        fetch('/api/branches').then(r=>r.json()).catch(()=>[]),
-        fetch('/api/staff').then(r=>r.json()).catch(()=>[]),
-        fetch('/api/appointments').then(r=>r.json()).catch(()=>[]),
-    ]);
-    document.getElementById('s-branches').textContent = branches.length;
-    document.getElementById('s-staff').textContent    = staff.length;
-    document.getElementById('s-appts').textContent    = appts.length;
-
-    // Count queue
-    let qTotal = 0;
-    for(const b of branches){
-        const q = await fetch(`/api/queue/${b.id}`).then(r=>r.json()).catch(()=>[]);
-        qTotal += q.filter(t=>t.status==='waiting').length;
+  // Floating particles
+  class Particle{
+    constructor(){this.reset(true)}
+    reset(init){
+      this.x=Math.random()*W; this.y=init?Math.random()*H:H+8;
+      this.vx=(Math.random()-.5)*.5; this.vy=-(Math.random()*.8+.2);
+      this.r=Math.random()*1.8+.3; this.life=0;
+      this.maxLife=Math.random()*280+120;
+      const cs=['0,128,255','0,212,170','0,184,217','0,245,212'];
+      this.color=cs[Math.floor(Math.random()*cs.length)];
     }
-    document.getElementById('s-queue').textContent = qTotal;
-
-    // تحميل الشارت
-    loadCharts();
-}
-
-async function loadBranches(search='') {
-    const url  = search ? `/api/branches?search=${encodeURIComponent(search)}` : '/api/branches';
-    const data = await fetch(url).then(r=>r.json()).catch(()=>[]);
-    if(!search) {
-        // حفظ الفروع في الـ cache وملء الـ select
-        branchesCache = data;
-        document.getElementById('stBranch').innerHTML = data.map(b=>`<option value="${b.id}">${b.name}</option>`).join('');
+    update(){
+      this.x+=this.vx; this.y+=this.vy; this.life++;
+      const p=this.life/this.maxLife;
+      this.alpha=p<.12?p/(.12)*.45:p>.75?(1-p)/.25*.45:.45;
+      if(this.life>=this.maxLife||this.y<-10)this.reset(false);
     }
-    document.getElementById('branchCount').textContent = `(${data.length})`;
-    const tb = document.getElementById('branchesTable');
-    if(!data.length){tb.innerHTML='<tr><td colspan="6" style="text-align:center;padding:30px;color:rgba(255,255,255,0.3)">لا توجد نتائج</td></tr>';return;}
-    tb.innerHTML = data.map(b=>`
-        <tr>
-            <td class="td-id">${b.id}</td>
-            <td style="font-weight:700">${b.name}</td>
-            <td>${b.location}</td>
-            <td>${b.phone}</td>
-            <td><span class="badge badge-${b.status==='open'?'open':'closed'}">${b.status==='open'?'مفتوح':'مغلق'}</span></td>
-            <td><div class="td-actions">
-                <button class="btn btn-edit" onclick="openEditBranch(${b.id},'${b.name}','${b.location}','${b.phone}','${b.status||`open`}')">✏️ تعديل</button>
-                <button class="btn btn-danger" onclick="deleteBranch(${b.id},'${b.name}')">🗑️ حذف</button>
-            </div></td>
-        </tr>
-    `).join('');
-}
-
-async function addBranch() {
-    const name=document.getElementById('bName').value.trim(),location=document.getElementById('bLocation').value.trim(),phone=document.getElementById('bPhone').value.trim();
-    if(!name||!location||!phone){showToast('أدخل كل البيانات','error');return;}
-    const res=await fetch('/api/branches',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,location,phone})});
-    const data=await res.json();
-    if(data.success){showToast(data.message,'success');document.getElementById('bName').value='';document.getElementById('bLocation').value='';document.getElementById('bPhone').value='';loadBranches();}
-    else{showToast(data.error,'error');}
-}
-
-async function deleteBranch(id,name) {
-    if(!confirm(`حذف فرع "${name}"؟`))return;
-    const res=await fetch(`/api/branches/${id}`,{method:'DELETE'});
-    const data=await res.json();
-    if(data.success){showToast(data.message,'success');loadBranches();}
-    else{showToast(data.error,'error');}
-}
-
-async function loadStaff() {
-    const data=await fetch('/api/staff').then(r=>r.json()).catch(()=>[]);
-    const tb=document.getElementById('staffTable');
-    if(!data.length){tb.innerHTML='<tr><td colspan="6" style="text-align:center;padding:30px;color:rgba(255,255,255,0.3)">لا يوجد موظفين</td></tr>';return;}
-    tb.innerHTML=data.map(s=>`
-        <tr>
-            <td class="td-id">${s.id}</td>
-            <td style="font-weight:700">${s.name}</td>
-            <td style="color:rgba(255,255,255,0.5)">${s.username}</td>
-            <td><span class="badge badge-${s.role}">${ROLE_NAMES[s.role]||s.role}</span></td>
-            <td>${getBranchName(s.branchId)}</td>
-            <td><div class="td-actions"><button class="btn btn-edit" onclick="openEditStaff(${s.id},'${s.name}','${s.username}','${s.role}',${s.branchId||'null'})">✏️ تعديل</button><button class="btn btn-danger" onclick="deleteStaff(${s.id},'${s.name}')">🗑️ حذف</button></div></td>
-        </tr>
-    `).join('');
-}
-
-async function addStaff() {
-    const name=document.getElementById('stName').value.trim(),username=document.getElementById('stUser').value.trim(),role=document.getElementById('stRole').value,branchId=document.getElementById('stBranch').value;
-    if(!name||!username){showToast('أدخل كل البيانات','error');return;}
-    const res=await fetch('/api/staff',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,username,role,branchId})});
-    const data=await res.json();
-    if(data.success){showToast(data.message,'success');document.getElementById('stName').value='';document.getElementById('stUser').value='';loadStaff();}
-    else{showToast(data.error,'error');}
-}
-
-async function deleteStaff(id,name) {
-    if(!confirm(`حذف موظف "${name}"؟`))return;
-    const res=await fetch(`/api/staff/${id}`,{method:'DELETE'});
-    const data=await res.json();
-    if(data.success){showToast(data.message,'success');loadStaff();}
-    else{showToast(data.error,'error');}
-}
-
-async function loadAppointments() {
-    const data=await fetch('/api/appointments').then(r=>r.json()).catch(()=>[]);
-    const tb=document.getElementById('apptsTable');
-    if(!data.length){tb.innerHTML='<tr><td colspan="9" style="text-align:center;padding:30px;color:rgba(255,255,255,0.3)">لا توجد مواعيد</td></tr>';return;}
-    tb.innerHTML=data.map(a=>`
-        <tr>
-            <td class="td-id">${a.id}</td>
-            <td style="font-weight:700">${a.customerName}</td>
-            <td style="color:rgba(255,255,255,0.5);font-size:13px">${a.phone}</td>
-            <td>${a.service}</td>
-            <td>${a.date}</td>
-            <td style="color:#f5d76e;font-weight:700">${a.time}</td>
-            <td>${getBranchName(a.branchId)}</td>
-            <td><span class="badge badge-${a.status==='confirmed'?'open':'closed'}">${a.status==='confirmed'?'مؤكد':'انتظار'}</span></td>
-            <td><div class="td-actions"><button class="btn btn-edit" onclick="openEditAppt(${a.id},'${a.customerName}','${a.phone}','${a.service}','${a.date}','${a.time}',${a.branchId||'null'},'${a.status}')">✏️ تعديل</button><button class="btn btn-danger" onclick="deleteAppt(${a.id})">🗑️</button></div></td>
-        </tr>
-    `).join('');
-}
-
-async function deleteAppt(id) {
-    const res=await fetch(`/api/appointments/${id}`,{method:'DELETE'});
-    const data=await res.json();
-    if(data.success){showToast(data.message,'success');loadAppointments();}
-}
-
-async function loadQueues() {
-    // جيب الفروع من الـ API بدل الـ hardcoded
-    const branches = await fetch('/api/branches').then(r=>r.json()).catch(()=>[]);
-    const el=document.getElementById('queuesDisplay');
-    let html='';
-    for(const b of branches){
-        const q=await fetch(`/api/queue/${b.id}`).then(r=>r.json()).catch(()=>[]);
-        const serving=q.find(t=>t.status==='serving');
-        const waiting=q.filter(t=>t.status==='waiting');
-        html+=`<div class="card" style="margin-bottom:16px">
-            <div class="card-header">
-                <div class="card-title">${b.name}</div>
-                <div style="display:flex;gap:10px;align-items:center">
-                    <span style="color:rgba(255,255,255,0.35);font-size:13px">${waiting.length} في الانتظار</span>
-                    <button class="btn btn-danger" onclick="resetBranchQueue(${b.id})">إعادة تعيين</button>
-                </div>
-            </div>
-            ${serving?`<div style="padding:12px 16px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:10px;margin-bottom:12px;display:flex;gap:12px;align-items:center"><span style="background:rgba(16,185,129,0.2);color:#34d399;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700">يُخدم الآن</span><span style="font-size:20px;font-weight:900;color:#34d399">${serving.token}</span><span>${serving.name} - ${serving.service}</span></div>`:''}
-            ${waiting.length?waiting.map((t,i)=>`<div style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04);display:flex;gap:12px;align-items:center"><span style="color:rgba(212,175,55,0.6);font-weight:700;width:30px">${i+1}</span><span style="font-weight:700;width:60px">${t.token}</span><span>${t.name}</span><span style="color:rgba(255,255,255,0.35);font-size:13px;margin-right:auto">${t.service}</span></div>`).join(''):'<p style="color:rgba(255,255,255,0.25);font-size:14px">الطابور فاضي ✅</p>'}
-        </div>`;
+    draw(){
+      ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(${this.color},${this.alpha})`;ctx.fill();
     }
-    el.innerHTML=html||'<p style="color:rgba(255,255,255,0.3)">لا توجد بيانات</p>';
+  }
+
+  // Bubbles rising
+  class Bubble{
+    constructor(){this.reset(true)}
+    reset(init){
+      this.x=Math.random()*W; this.y=init?Math.random()*H:H+20;
+      this.r=Math.random()*4+1; this.vy=-(Math.random()*.4+.15);
+      this.vx=Math.sin(Math.random()*Math.PI*2)*.3;
+      this.life=0; this.maxLife=Math.random()*400+200;
+      this.wobble=Math.random()*Math.PI*2;
+    }
+    update(){
+      this.wobble+=.03; this.x+=this.vx+Math.sin(this.wobble)*.3;
+      this.y+=this.vy; this.life++;
+      const p=this.life/this.maxLife;
+      this.alpha=p<.1?p*10*.18:p>.8?(1-p)*5*.18:.18;
+      if(this.life>=this.maxLife||this.y<-20)this.reset(false);
+    }
+    draw(){
+      ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
+      ctx.strokeStyle=`rgba(0,212,170,${this.alpha})`;
+      ctx.lineWidth=.8;ctx.stroke();
+      // highlight
+      ctx.beginPath();ctx.arc(this.x-this.r*.3,this.y-this.r*.3,this.r*.25,0,Math.PI*2);
+      ctx.fillStyle=`rgba(255,255,255,${this.alpha*.5})`;ctx.fill();
+    }
+  }
+
+  for(let i=0;i<70;i++)particles.push(new Particle());
+  for(let i=0;i<40;i++)bubbles.push(new Bubble());
+
+  // Scan line
+  let scanY=-100;
+  function drawScan(){
+    ctx.save();
+    const grad=ctx.createLinearGradient(0,scanY-30,0,scanY+30);
+    grad.addColorStop(0,'transparent');
+    grad.addColorStop(.5,`rgba(0,212,170,0.015)`);
+    grad.addColorStop(1,'transparent');
+    ctx.fillStyle=grad;
+    ctx.fillRect(0,scanY-30,W,60);
+    scanY+=.6;
+    if(scanY>H+100)scanY=-100;
+    ctx.restore();
+  }
+
+  function loop(){
+    ctx.clearRect(0,0,W,H);
+    // Subtle grid
+    ctx.strokeStyle='rgba(0,128,255,0.022)';ctx.lineWidth=.5;
+    for(let x=0;x<W;x+=55){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+    for(let y=0;y<H;y+=55){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+    drawScan();
+    particles.forEach(p=>{p.update();p.draw()});
+    bubbles.forEach(b=>{b.update();b.draw()});
+    frame++;requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+// ══ CLOCK ══
+function tick(){
+  const n=new Date();
+  const h=String(n.getHours()).padStart(2,'0'),m=String(n.getMinutes()).padStart(2,'0'),s=String(n.getSeconds()).padStart(2,'0');
+  document.getElementById('clockDisplay').textContent=`${h}:${m}:${s}`;
+}
+setInterval(tick,1000);tick();
+
+// ══ WATER RIPPLE ══
+document.addEventListener('click',e=>{
+  const el=e.target.closest('.btn,.btn-edit,.btn-del,.btn-save,.btn-reset,.btn-cancel,.btn-logout,.nav-item');
+  if(!el)return;
+  const rect=el.getBoundingClientRect();
+  const r=document.createElement('span');
+  const size=Math.max(rect.width,rect.height);
+  r.className='ripple';
+  r.style.cssText=`width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px`;
+  el.appendChild(r);
+  setTimeout(()=>r.remove(),700);
+});
+
+// ══ CHART DEFAULTS ══
+const chartDefaults={
+  responsive:true,maintainAspectRatio:false,
+  plugins:{
+    legend:{display:false},
+    tooltip:{
+      backgroundColor:'rgba(2,18,32,.97)',borderColor:'rgba(0,128,255,.3)',borderWidth:1,
+      titleColor:'#fff',bodyColor:'rgba(224,247,255,.6)',padding:14,cornerRadius:12,
+      titleFont:{family:'Tajawal',weight:'900'},bodyFont:{family:'Tajawal'}
+    }
+  },
+  scales:{
+    x:{ticks:{color:'rgba(224,247,255,.3)',font:{family:'JetBrains Mono',size:10}},grid:{color:'rgba(0,128,255,.04)'}},
+    y:{ticks:{color:'rgba(224,247,255,.3)',font:{family:'JetBrains Mono',size:10}},grid:{color:'rgba(0,128,255,.05)'},beginAtZero:true}
+  },
+  animation:{duration:1100,easing:'easeInOutQuart'}
+};
+
+// ══ INIT ══
+async function init(){
+  try{
+    const r=await fetch('/api/me');
+    if(!r.ok){location.href='/login';return;}
+    const u=await r.json();
+    document.getElementById('userName').textContent=u.name||u.username;
+    document.getElementById('userAv').textContent=(u.name||u.username).charAt(0);
+    document.getElementById('userRole').textContent=(u.role||'').toUpperCase();
+    await loadBranches();loadDashboard();
+  }catch{location.href='/login';}
 }
 
-async function resetBranchQueue(branchId) {
-    if(!confirm('إعادة تعيين الطابور؟'))return;
-    const res=await fetch(`/api/queue/${branchId}/reset`,{method:'DELETE'});
-    const data=await res.json();
-    if(data.success){showToast(data.message,'success');loadQueues();}
+// ══ DASHBOARD ══
+async function loadDashboard(){
+  const[branches,staff,appts]=await Promise.all([
+    fetch('/api/branches').then(r=>r.json()).catch(()=>[]),
+    fetch('/api/staff').then(r=>r.json()).catch(()=>[]),
+    fetch('/api/appointments').then(r=>r.json()).catch(()=>[]),
+  ]);
+  animNum('s-branches',branches.length);animNum('s-staff',staff.length);animNum('s-appts',appts.length);
+  let qTotal=0,queueData=[];
+  for(const b of branches){
+    const q=await fetch(`/api/queue/${b.id}`).then(r=>r.json()).catch(()=>[]);
+    const waiting=q.filter(t=>t.status==='waiting').length;
+    const done=q.filter(t=>t.status==='done').length;
+    qTotal+=waiting;queueData.push({name:b.name,total:q.length,waiting,done});
+  }
+  animNum('s-queue',qTotal);buildCharts(branches,staff,appts,queueData);
 }
 
-function showSection(sec, el) {
-    document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-    document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-    document.getElementById('sec-'+sec).classList.add('active');
-    el.classList.add('active');
-    if(sec==='branches')loadBranches();
-    else if(sec==='staff')loadStaff();
-    else if(sec==='appointments')loadAppointments();
-    else if(sec==='queues')loadQueues();
-    else loadDashboard();
+function buildCharts(branches,staff,appts,queueData){
+  const mk=(id,cfg)=>{
+    if(charts[id])charts[id].destroy();
+    const c=document.getElementById(id);if(!c)return;
+    charts[id]=new Chart(c.getContext('2d'),cfg);
+  };
+
+  mk('cBranch',{
+    type:'bar',
+    data:{
+      labels:queueData.map(b=>b.name),
+      datasets:[
+        {label:'إجمالي',data:queueData.map(b=>b.total),backgroundColor:OCEAN_COLORS.map(c=>c+'99'),borderColor:OCEAN_COLORS,borderWidth:2,borderRadius:10,borderSkipped:false},
+        {label:'تم خدمتهم',data:queueData.map(b=>b.done),backgroundColor:'rgba(0,212,170,.45)',borderColor:'#00d4aa',borderWidth:2,borderRadius:10,borderSkipped:false},
+      ]
+    },
+    options:{...chartDefaults,plugins:{...chartDefaults.plugins,legend:{display:true,labels:{color:'rgba(224,247,255,.4)',font:{family:'Tajawal',size:11},padding:14,boxWidth:10,boxHeight:10}}}}
+  });
+
+  const svcMap={};appts.forEach(a=>{svcMap[a.service]=(svcMap[a.service]||0)+1;});
+  const svcL=Object.keys(svcMap),svcV=Object.values(svcMap);
+  if(svcL.length)mk('cService',{type:'doughnut',data:{labels:svcL,datasets:[{data:svcV,backgroundColor:OCEAN_COLORS.map(c=>c+'cc'),borderWidth:0,hoverOffset:10}]},options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{display:true,position:'bottom',labels:{color:'rgba(224,247,255,.4)',font:{family:'Tajawal',size:10},padding:10,boxWidth:8,boxHeight:8}},tooltip:{...chartDefaults.plugins.tooltip}},animation:{duration:1100}}});
+
+  const confirmed=appts.filter(a=>a.status==='confirmed').length;
+  const pending=appts.filter(a=>a.status==='pending').length;
+  if(confirmed+pending>0)mk('cApptStatus',{type:'doughnut',data:{labels:['مؤكد','انتظار'],datasets:[{data:[confirmed,pending],backgroundColor:['rgba(0,212,170,.65)','rgba(255,179,71,.65)'],borderWidth:0,hoverOffset:10}]},options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{display:true,position:'bottom',labels:{color:'rgba(224,247,255,.4)',font:{family:'Tajawal',size:11},padding:14}},tooltip:{...chartDefaults.plugins.tooltip}},animation:{duration:1100}}});
+
+  mk('cLine',{type:'line',data:{labels:['8ص','9ص','10ص','11ص','12م','1م','2م','3م'],datasets:[{label:'خُدِموا',data:[4,9,14,19,12,16,11,7],borderColor:'#00d4aa',backgroundColor:'rgba(0,212,170,.07)',borderWidth:2.5,pointBackgroundColor:'#00d4aa',pointRadius:5,pointHoverRadius:8,tension:.4,fill:true},{label:'انتظار',data:[2,4,7,9,5,7,4,3],borderColor:'#0080ff',backgroundColor:'rgba(0,128,255,.07)',borderWidth:2,pointBackgroundColor:'#0080ff',pointRadius:4,tension:.4,fill:true}]},options:{...chartDefaults,plugins:{...chartDefaults.plugins,legend:{display:true,labels:{color:'rgba(224,247,255,.4)',font:{family:'Tajawal',size:11},padding:14}}}}});
+
+  const roleMap={};staff.forEach(s=>{roleMap[ROLE_MAP[s.role]||s.role]=(roleMap[ROLE_MAP[s.role]||s.role]||0)+1;});
+  mk('cRoles',{type:'bar',data:{labels:Object.keys(roleMap),datasets:[{data:Object.values(roleMap),backgroundColor:['rgba(0,128,255,.5)','rgba(0,212,170,.5)','rgba(255,179,71,.5)'],borderRadius:10,borderSkipped:false,borderColor:['#0080ff','#00d4aa','#ffb347'],borderWidth:2}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...chartDefaults.plugins.tooltip}},scales:{x:{ticks:{color:'rgba(224,247,255,.3)',font:{family:'JetBrains Mono',size:10}},grid:{color:'rgba(0,128,255,.04)'},beginAtZero:true},y:{ticks:{color:'rgba(224,247,255,.6)',font:{family:'Tajawal',weight:'900',size:13}},grid:{display:false}}},animation:{duration:1100}}});
 }
 
-async function logout(){await fetch('/logout',{method:'POST'});window.location.href='/login';}
+// ══ BRANCHES ══
+async function loadBranches(search=''){
+  const url=search?`/api/branches?search=${encodeURIComponent(search)}`:'/api/branches';
+  const data=await fetch(url).then(r=>r.json()).catch(()=>[]);
+  if(!search){branchesCache=data;document.getElementById('stBranch').innerHTML='<option value="">بدون فرع</option>'+data.map(b=>`<option value="${b.id}">${b.name}</option>`).join('');}
+  document.getElementById('branchCount').textContent=`(${data.length})`;
+  const tb=document.getElementById('tBranch');
+  if(!data.length){tb.innerHTML='<tr><td colspan="6"><div class="empty"><div class="empty-ic">🏢</div>لا توجد فروع</div></td></tr>';return;}
+  tb.innerHTML=data.map(b=>`<tr><td class="td-id">${b.id}</td><td style="font-weight:900;color:#fff">${b.name}</td><td style="color:var(--foam3)">${b.location||'—'}</td><td style="color:var(--foam3)">${b.phone||'—'}</td><td><span class="badge ${b.status==='open'?'b-open':'b-closed'}">${b.status==='open'?'● مفتوح':'● مغلق'}</span></td><td><div class="td-act"><button class="btn-edit" onclick="openEditBranch(${b.id},'${b.name}','${(b.location||'').replace(/'/g,"\\'")}','${b.phone||''}','${b.status||'open'}')">✏️ تعديل</button><button class="btn-del" onclick="deleteBranch(${b.id},'${b.name}')">🗑️ حذف</button></div></td></tr>`).join('');
+}
+async function addBranch(){
+  const name=document.getElementById('bName').value.trim(),loc=document.getElementById('bLoc').value.trim(),phone=document.getElementById('bPhone').value.trim();
+  if(!name||!loc||!phone){showToast('أدخل كل البيانات','error');return;}
+  const d=await fetch('/api/branches',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,location:loc,phone})}).then(r=>r.json());
+  if(d.success){showToast(d.message,'success');document.getElementById('bName').value='';document.getElementById('bLoc').value='';document.getElementById('bPhone').value='';loadBranches();}else showToast(d.error,'error');
+}
+async function deleteBranch(id,name){
+  if(!confirm(`حذف فرع "${name}"؟`))return;
+  const d=await fetch(`/api/branches/${id}`,{method:'DELETE'}).then(r=>r.json());
+  if(d.success){showToast(d.message,'success');loadBranches();}else showToast(d.error,'error');
+}
 
+// ══ STAFF ══
+async function loadStaff(){staffCache=await fetch('/api/staff').then(r=>r.json()).catch(()=>[]);renderStaff(staffCache);}
+function renderStaff(data){
+  document.getElementById('staffCount').textContent=`(${data.length})`;
+  const tb=document.getElementById('tStaff');
+  if(!data.length){tb.innerHTML='<tr><td colspan="6"><div class="empty"><div class="empty-ic">👥</div>لا يوجد موظفون</div></td></tr>';return;}
+  tb.innerHTML=data.map((s,i)=>`<tr><td class="td-id">${i+1}</td><td style="font-weight:900;color:#fff">${s.name}</td><td style="color:var(--foam3);font-family:'JetBrains Mono',monospace;font-size:12px">${s.username}</td><td><span class="badge b-${s.role}">${ROLE_MAP[s.role]||s.role}</span></td><td style="color:var(--foam3)">${getBranchName(s.branchId)}</td><td><div class="td-act"><button class="btn-edit" onclick='openEditStaff(${JSON.stringify(s)})'>✏️ تعديل</button><button class="btn-del" onclick="deleteStaff(${s.id},'${s.name}')">🗑️ حذف</button></div></td></tr>`).join('');
+}
+function filterStaff(q){if(!q){renderStaff(staffCache);return;}renderStaff(staffCache.filter(s=>(s.name||'').includes(q)||(s.username||'').includes(q)));}
+async function addStaff(){
+  const name=document.getElementById('stName').value.trim(),username=document.getElementById('stUser').value.trim(),password=document.getElementById('stPass').value.trim(),role=document.getElementById('stRole').value,branchId=document.getElementById('stBranch').value||null;
+  if(!name||!username){showToast('أدخل الاسم واسم المستخدم','error');return;}
+  const d=await fetch('/api/staff',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,username,password,role,branchId})}).then(r=>r.json());
+  if(d.success){showToast(d.message,'success');document.getElementById('stName').value='';document.getElementById('stUser').value='';document.getElementById('stPass').value='';loadStaff();}else showToast(d.error,'error');
+}
+async function deleteStaff(id,name){
+  if(!confirm(`حذف موظف "${name}"؟`))return;
+  const d=await fetch(`/api/staff/${id}`,{method:'DELETE'}).then(r=>r.json());
+  if(d.success){showToast(d.message,'success');loadStaff();}else showToast(d.error,'error');
+}
+
+// ══ APPOINTMENTS ══
+async function loadAppointments(){apptsCache=await fetch('/api/appointments').then(r=>r.json()).catch(()=>[]);renderAppts(apptsCache);}
+function renderAppts(data){
+  const tb=document.getElementById('tAppts');
+  if(!data.length){tb.innerHTML='<tr><td colspan="9"><div class="empty"><div class="empty-ic">📅</div>لا توجد مواعيد</div></td></tr>';return;}
+  tb.innerHTML=data.map(a=>`<tr><td class="td-id">${a.id}</td><td style="font-weight:900;color:#fff">${a.customerName||a.customer_name}</td><td style="color:var(--foam3)">${a.phone}</td><td>${a.service}</td><td style="color:var(--foam3)">${a.date}</td><td style="color:var(--amber);font-weight:900;font-family:'JetBrains Mono',monospace">${a.time}</td><td style="color:var(--foam3)">${getBranchName(a.branchId||a.branch_id)}</td><td><span class="badge b-${a.status}">${a.status==='confirmed'?'● مؤكد':'○ انتظار'}</span></td><td><div class="td-act"><button class="btn-edit" onclick='openEditAppt(${JSON.stringify(a)})'>✏️</button><button class="btn-del" onclick="deleteAppt(${a.id})">🗑️</button></div></td></tr>`).join('');
+}
+function filterAppts(q){if(!q){renderAppts(apptsCache);return;}renderAppts(apptsCache.filter(a=>(a.customerName||a.customer_name||'').includes(q)||(a.service||'').includes(q)||(a.phone||'').includes(q)));}
+async function deleteAppt(id){const d=await fetch(`/api/appointments/${id}`,{method:'DELETE'}).then(r=>r.json());if(d.success){showToast(d.message,'success');loadAppointments();}}
+
+// ══ QUEUES ══
+async function loadQueues(){
+  const branches=await fetch('/api/branches').then(r=>r.json()).catch(()=>[]);
+  const wrap=document.getElementById('queuesWrap');let html='';
+  for(const b of branches){
+    const q=await fetch(`/api/queue/${b.id}`).then(r=>r.json()).catch(()=>[]);
+    const serving=q.find(t=>t.status==='serving');const waiting=q.filter(t=>t.status==='waiting');
+    html+=`<div class="q-branch"><div class="qb-head"><div class="qb-title">🏢 ${b.name} <span style="color:var(--foam3);font-size:11px;font-family:'JetBrains Mono',monospace">[${waiting.length} waiting]</span></div><button class="btn-reset" onclick="resetQueue(${b.id})">🔄 إعادة تعيين</button></div>${serving?`<div class="q-serving"><span style="background:rgba(0,212,170,.1);color:var(--teal2);padding:3px 10px;border-radius:20px;font-size:11px;font-weight:900;font-family:'JetBrains Mono',monospace">◉ SERVING</span><span class="qs-num">${serving.token}</span><span style="font-size:13px;color:var(--foam3)">${serving.name} — ${serving.service}</span></div>`:''} ${waiting.length?waiting.map((t,i)=>`<div class="q-row"><div class="qr-pos">${i+1}</div><div class="qr-tok">${t.token}</div><div style="flex:1;font-weight:700">${t.name}</div><div style="font-size:11px;color:var(--foam3)">${t.service}</div></div>`).join(''):'<div class="empty" style="padding:16px 0">الطابور فاضي ✅</div>'}</div>`;
+  }
+  wrap.innerHTML=html||'<div class="empty"><div class="empty-ic">🎫</div>لا توجد بيانات</div>';
+}
+async function resetQueue(id){if(!confirm('إعادة تعيين الطابور؟'))return;const d=await fetch(`/api/queue/${id}/reset`,{method:'DELETE'}).then(r=>r.json());if(d.success){showToast(d.message,'success');loadQueues();}}
+
+// ══ MODALS ══
+function openModal(id){document.getElementById(id).classList.remove('hidden')}
+function closeModal(id){document.getElementById(id).classList.add('hidden')}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal-bg:not(.hidden)').forEach(m=>m.classList.add('hidden'))});
+document.addEventListener('click',e=>{if(e.target.classList.contains('modal-bg'))e.target.classList.add('hidden')});
+
+function openEditBranch(id,name,loc,phone,status){document.getElementById('mBid').value=id;document.getElementById('mBname').value=name;document.getElementById('mBloc').value=loc;document.getElementById('mBphone').value=phone;document.getElementById('mBstatus').value=status||'open';openModal('mBranch');}
+async function saveBranch(){
+  const id=document.getElementById('mBid').value,name=document.getElementById('mBname').value.trim(),location=document.getElementById('mBloc').value.trim(),phone=document.getElementById('mBphone').value.trim(),status=document.getElementById('mBstatus').value;
+  if(!name||!location||!phone){showToast('أدخل كل البيانات','error');return;}
+  const d=await fetch(`/api/branches/${id}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,location,phone,status})}).then(r=>r.json());
+  if(d.success){showToast(d.message,'success');closeModal('mBranch');loadBranches();}else showToast(d.error,'error');
+}
+function openEditStaff(s){document.getElementById('mSid').value=s.id;document.getElementById('mSname').value=s.name||'';document.getElementById('mSuser').value=s.username||'';document.getElementById('mSrole').value=s.role||'teller';document.getElementById('mSpass').value='';const sel=document.getElementById('mSbranch');sel.innerHTML='<option value="">بدون فرع</option>'+branchesCache.map(b=>`<option value="${b.id}">${b.name}</option>`).join('');sel.value=s.branchId||'';openModal('mStaff');}
+async function saveStaff(){
+  const id=document.getElementById('mSid').value,name=document.getElementById('mSname').value.trim(),username=document.getElementById('mSuser').value.trim(),role=document.getElementById('mSrole').value,branchId=document.getElementById('mSbranch').value||null,password=document.getElementById('mSpass').value;
+  if(!name||!username){showToast('أدخل الاسم واسم المستخدم','error');return;}
+  const d=await fetch(`/api/staff/${id}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,username,role,branchId,password})}).then(r=>r.json());
+  if(d.success){showToast(d.message,'success');closeModal('mStaff');loadStaff();}else showToast(d.error,'error');
+}
+function openEditAppt(a){document.getElementById('mAid').value=a.id;document.getElementById('mAname').value=a.customerName||a.customer_name||'';document.getElementById('mAphone').value=a.phone||'';document.getElementById('mAdate').value=a.date||'';document.getElementById('mAstatus').value=a.status||'pending';const bSel=document.getElementById('mAbranch');bSel.innerHTML='<option value="">اختر...</option>'+branchesCache.map(b=>`<option value="${b.id}">${b.name}</option>`).join('');bSel.value=a.branchId||a.branch_id||'';for(const o of document.getElementById('mAsvc').options){if(o.value===a.service){o.selected=true;break;}}for(const o of document.getElementById('mAtime').options){if(o.value===a.time){o.selected=true;break;}}openModal('mAppt');}
+async function saveAppt(){
+  const id=document.getElementById('mAid').value,customerName=document.getElementById('mAname').value.trim(),phone=document.getElementById('mAphone').value.trim(),service=document.getElementById('mAsvc').value,date=document.getElementById('mAdate').value,time=document.getElementById('mAtime').value,branchId=document.getElementById('mAbranch').value||null,status=document.getElementById('mAstatus').value;
+  if(!customerName||!phone||!date){showToast('أدخل كل البيانات','error');return;}
+  const d=await fetch(`/api/appointments/${id}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({customerName,phone,service,date,time,branchId,status})}).then(r=>r.json());
+  if(d.success){showToast(d.message,'success');closeModal('mAppt');loadAppointments();}else showToast(d.error,'error');
+}
+
+// ══ NAV ══
+function showSection(sec,el){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('sec-'+sec).classList.add('active');
+  el.classList.add('active');
+  document.getElementById('tbTitle').textContent=TB_MAP[sec]||'';
+  if(sec==='dashboard')loadDashboard();
+  else if(sec==='branches')loadBranches();
+  else if(sec==='staff')loadStaff();
+  else if(sec==='appointments')loadAppointments();
+  else if(sec==='queues')loadQueues();
+}
+
+// ══ HELPERS ══
+async function logout(){await fetch('/logout',{method:'POST'});location.href='/login';}
+function getBranchName(id){const b=branchesCache.find(b=>b.id==id);return b?b.name:'—';}
 function showToast(msg,type='success'){
-    const t=document.getElementById('toast');
-    t.textContent=msg;t.className=`toast ${type} show`;
-    setTimeout(()=>t.classList.remove('show'),3000);
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className=`toast ${type} show`;
+  setTimeout(()=>t.classList.remove('show'),3500);
+}
+const _animIds={};
+function animNum(id,target){
+  const el=document.getElementById(id);if(!el)return;
+  const from=parseInt(el.textContent)||0;
+  if(from===target){el.textContent=target;return;}
+  if(_animIds[id])cancelAnimationFrame(_animIds[id]);
+  const t0=performance.now(),dur=1000;
+  (function tick(now){
+    const p=Math.min((now-t0)/dur,1);
+    const e=1-Math.pow(1-p,4);
+    el.textContent=Math.round(from+(target-from)*e);
+    if(p<1)_animIds[id]=requestAnimationFrame(tick);
+  })(t0);
 }
 
 init();
-</script>
-<!-- ═══════════════ MODALS ═══════════════ -->
-
-<!-- Modal: تعديل فرع -->
-<div id="modalBranch" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.6);backdrop-filter:blur(6px);align-items:center;justify-content:center">
-  <div style="background:#0d1425;border:1px solid rgba(96,165,250,0.2);border-radius:20px;padding:32px;width:480px;max-width:95vw;position:relative;box-shadow:0 24px 60px rgba(0,0,0,0.5)">
-    <div style="position:absolute;top:0;left:20%;right:20%;height:1px;background:linear-gradient(90deg,transparent,rgba(96,165,250,0.4),transparent)"></div>
-    <h3 style="font-size:18px;font-weight:900;margin-bottom:24px;color:#60a5fa">✏️ تعديل بيانات الفرع</h3>
-    <input type="hidden" id="editBranchId">
-    <div style="display:grid;gap:14px">
-      <div><label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase">اسم الفرع</label><input type="text" id="editBranchName" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:11px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none"></div>
-      <div><label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase">الموقع</label><input type="text" id="editBranchLocation" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:11px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none"></div>
-      <div><label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase">التليفون</label><input type="text" id="editBranchPhone" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:11px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none"></div>
-      <div><label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase">الحالة</label>
-        <select id="editBranchStatus" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:11px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none;appearance:none">
-          <option value="open">مفتوح</option><option value="closed">مغلق</option>
-        </select>
-      </div>
-    </div>
-    <div style="display:flex;gap:10px;margin-top:24px;justify-content:flex-end">
-      <button onclick="closeModal('modalBranch')" style="padding:10px 22px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:rgba(255,255,255,0.6);font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;cursor:pointer">إلغاء</button>
-      <button onclick="saveBranch()" style="padding:10px 28px;background:linear-gradient(135deg,#1d4ed8,#3b82f6);border:none;border-radius:10px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:900;cursor:pointer;box-shadow:0 4px 15px rgba(37,99,235,0.3)">حفظ التعديل</button>
-    </div>
-  </div>
-</div>
-
-<!-- Modal: تعديل موظف -->
-<div id="modalStaff" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.6);backdrop-filter:blur(6px);align-items:center;justify-content:center">
-  <div style="background:#0d1425;border:1px solid rgba(96,165,250,0.2);border-radius:20px;padding:32px;width:480px;max-width:95vw;position:relative;box-shadow:0 24px 60px rgba(0,0,0,0.5)">
-    <div style="position:absolute;top:0;left:20%;right:20%;height:1px;background:linear-gradient(90deg,transparent,rgba(96,165,250,0.4),transparent)"></div>
-    <h3 style="font-size:18px;font-weight:900;margin-bottom:24px;color:#60a5fa">✏️ تعديل بيانات الموظف</h3>
-    <input type="hidden" id="editStaffId">
-    <div style="display:grid;gap:14px">
-      <div><label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase">الاسم</label><input type="text" id="editStaffName" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:11px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none"></div>
-      <div><label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase">اسم المستخدم</label><input type="text" id="editStaffUsername" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:11px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none"></div>
-      <div><label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase">الدور</label>
-        <select id="editStaffRole" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:11px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none;appearance:none">
-          <option value="teller">موظف فرع</option><option value="branch_manager">مدير فرع</option><option value="admin">مدير النظام</option>
-        </select>
-      </div>
-      <div><label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase">الفرع</label>
-        <select id="editStaffBranch" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:11px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none;appearance:none">
-          <option value="">بدون فرع</option>
-        </select>
-      </div>
-      <div><label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase">كلمة السر الجديدة (اتركها فاضية لو مش عايز تغيرها)</label><input type="password" id="editStaffPassword" placeholder="••••••••" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:11px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none"></div>
-    </div>
-    <div style="display:flex;gap:10px;margin-top:24px;justify-content:flex-end">
-      <button onclick="closeModal('modalStaff')" style="padding:10px 22px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:rgba(255,255,255,0.6);font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;cursor:pointer">إلغاء</button>
-      <button onclick="saveStaff()" style="padding:10px 28px;background:linear-gradient(135deg,#1d4ed8,#3b82f6);border:none;border-radius:10px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:900;cursor:pointer;box-shadow:0 4px 15px rgba(37,99,235,0.3)">حفظ التعديل</button>
-    </div>
-  </div>
-</div>
-
-<!-- Modal: تعديل موعد -->
-<div id="modalAppt" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.6);backdrop-filter:blur(6px);align-items:center;justify-content:center">
-  <div style="background:#0d1425;border:1px solid rgba(96,165,250,0.2);border-radius:20px;padding:32px;width:520px;max-width:95vw;position:relative;box-shadow:0 24px 60px rgba(0,0,0,0.5)">
-    <div style="position:absolute;top:0;left:20%;right:20%;height:1px;background:linear-gradient(90deg,transparent,rgba(96,165,250,0.4),transparent)"></div>
-    <h3 style="font-size:18px;font-weight:900;margin-bottom:24px;color:#60a5fa">✏️ تعديل الموعد</h3>
-    <input type="hidden" id="editApptId">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
-      <div style="grid-column:1/-1"><label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase">اسم العميل</label><input type="text" id="editApptName" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:11px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none"></div>
-      <div><label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase">الموبايل</label><input type="text" id="editApptPhone" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:11px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none"></div>
-      <div><label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase">الخدمة</label>
-        <select id="editApptService" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:11px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none;appearance:none">
-          <option>فتح حساب جديد</option><option>سحب / إيداع</option><option>تحويل بنكي</option><option>طلب بطاقة</option><option>استفسار عام</option>
-        </select>
-      </div>
-      <div><label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase">التاريخ</label><input type="date" id="editApptDate" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:11px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none"></div>
-      <div><label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase">الوقت</label>
-        <select id="editApptTime" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:11px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none;appearance:none">
-          <option>09:00</option><option>09:30</option><option>10:00</option><option>10:30</option><option>11:00</option><option>11:30</option><option>12:00</option><option>13:00</option><option>13:30</option><option>14:00</option><option>14:30</option><option>15:00</option>
-        </select>
-      </div>
-      <div><label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase">الحالة</label>
-        <select id="editApptStatus" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:11px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none;appearance:none">
-          <option value="pending">انتظار</option><option value="confirmed">مؤكد</option>
-        </select>
-      </div>
-      <div style="grid-column:1/-1"><label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase">الفرع</label>
-        <select id="editApptBranch" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:11px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;outline:none;appearance:none">
-          <option value="">اختر الفرع</option>
-        </select>
-      </div>
-    </div>
-    <div style="display:flex;gap:10px;margin-top:24px;justify-content:flex-end">
-      <button onclick="closeModal('modalAppt')" style="padding:10px 22px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:rgba(255,255,255,0.6);font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;cursor:pointer">إلغاء</button>
-      <button onclick="saveAppt()" style="padding:10px 28px;background:linear-gradient(135deg,#1d4ed8,#3b82f6);border:none;border-radius:10px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:900;cursor:pointer;box-shadow:0 4px 15px rgba(37,99,235,0.3)">حفظ التعديل</button>
-    </div>
-  </div>
-</div>
-
-<script>
-// ── Modal helpers ──
-function openModal(id){ document.getElementById(id).style.display='flex'; }
-function closeModal(id){ document.getElementById(id).style.display='none'; }
-document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closeModal('modalBranch');closeModal('modalStaff');closeModal('modalAppt'); }});
-
-// ── Edit Branch ──
-function openEditBranch(id,name,location,phone,status){
-  document.getElementById('editBranchId').value=id;
-  document.getElementById('editBranchName').value=name;
-  document.getElementById('editBranchLocation').value=location;
-  document.getElementById('editBranchPhone').value=phone;
-  document.getElementById('editBranchStatus').value=status||'open';
-  openModal('modalBranch');
-}
-async function saveBranch(){
-  const id=document.getElementById('editBranchId').value;
-  const name=document.getElementById('editBranchName').value.trim();
-  const location=document.getElementById('editBranchLocation').value.trim();
-  const phone=document.getElementById('editBranchPhone').value.trim();
-  const status=document.getElementById('editBranchStatus').value;
-  if(!name||!location||!phone){showToast('أدخل كل البيانات','error');return;}
-  const data=await fetch(`/api/branches/${id}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,location,phone,status})}).then(r=>r.json());
-  if(data.success){showToast(data.message,'success');closeModal('modalBranch');loadBranches();}
-  else showToast(data.error,'error');
-}
-
-// ── Edit Staff ──
-function openEditStaff(id,name,username,role,branchId){
-  document.getElementById('editStaffId').value=id;
-  document.getElementById('editStaffName').value=name;
-  document.getElementById('editStaffUsername').value=username;
-  document.getElementById('editStaffRole').value=role;
-  document.getElementById('editStaffPassword').value='';
-  // ملء select الفروع
-  const sel=document.getElementById('editStaffBranch');
-  sel.innerHTML='<option value="">بدون فرع</option>'+branchesCache.map(b=>`<option value="${b.id}">${b.name}</option>`).join('');
-  sel.value=branchId||'';
-  openModal('modalStaff');
-}
-async function saveStaff(){
-  const id=document.getElementById('editStaffId').value;
-  const name=document.getElementById('editStaffName').value.trim();
-  const username=document.getElementById('editStaffUsername').value.trim();
-  const role=document.getElementById('editStaffRole').value;
-  const branchId=document.getElementById('editStaffBranch').value||null;
-  const password=document.getElementById('editStaffPassword').value;
-  if(!name||!username){showToast('أدخل كل البيانات','error');return;}
-  const data=await fetch(`/api/staff/${id}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,username,role,branchId,password})}).then(r=>r.json());
-  if(data.success){showToast(data.message,'success');closeModal('modalStaff');loadStaff();}
-  else showToast(data.error,'error');
-}
-
-// ── Edit Appointment ──
-function openEditAppt(id,customerName,phone,service,date,time,branchId,status){
-  document.getElementById('editApptId').value=id;
-  document.getElementById('editApptName').value=customerName;
-  document.getElementById('editApptPhone').value=phone;
-  document.getElementById('editApptDate').value=date;
-  document.getElementById('editApptStatus').value=status||'pending';
-  // ملء select الفروع
-  const sel=document.getElementById('editApptBranch');
-  sel.innerHTML='<option value="">اختر الفرع</option>'+branchesCache.map(b=>`<option value="${b.id}">${b.name}</option>`).join('');
-  sel.value=branchId||'';
-  // الخدمة
-  const svcSel=document.getElementById('editApptService');
-  for(let opt of svcSel.options){ if(opt.value===service){ opt.selected=true; break; } }
-  // الوقت
-  const timeSel=document.getElementById('editApptTime');
-  for(let opt of timeSel.options){ if(opt.value===time){ opt.selected=true; break; } }
-  openModal('modalAppt');
-}
-async function saveAppt(){
-  const id=document.getElementById('editApptId').value;
-  const customerName=document.getElementById('editApptName').value.trim();
-  const phone=document.getElementById('editApptPhone').value.trim();
-  const service=document.getElementById('editApptService').value;
-  const date=document.getElementById('editApptDate').value;
-  const time=document.getElementById('editApptTime').value;
-  const branchId=document.getElementById('editApptBranch').value||null;
-  const status=document.getElementById('editApptStatus').value;
-  if(!customerName||!phone||!date){showToast('أدخل كل البيانات','error');return;}
-  const data=await fetch(`/api/appointments/${id}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({customerName,phone,service,date,time,branchId,status})}).then(r=>r.json());
-  if(data.success){showToast(data.message,'success');closeModal('modalAppt');loadAppointments();}
-  else showToast(data.error,'error');
-}
 </script>
 </body>
 </html>
