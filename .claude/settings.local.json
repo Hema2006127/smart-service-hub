@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node migrate-v2.js)",
+      "Bash(node -e \"require\\(''''dotenv''''\\).config\\(\\); const app = require\\(''''./server''''\\); \")",
+      "Bash(node -e \":*)"
+    ]
+  }
+}

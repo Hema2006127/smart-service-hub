@@ -315,8 +315,23 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
 .toast.error{border-color:rgba(255,107,107,.3);color:#ff9494}
 .toast.info{border-color:rgba(0,128,255,.3);color:var(--blue2)}
 
-@media(max-width:1100px){.page-wrap{grid-template-columns:300px 1fr 280px}}
-@media(max-width:860px){.page-wrap{grid-template-columns:1fr};.live-col,.game-col{display:none}}
+/* ══ RESPONSIVE — Mobile-first: 320 | 480 | 768 | 1024 | 1440 ══ */
+
+/* ── <1100px: shrink side columns ── */
+@media(max-width:1099px){
+  .page-wrap{grid-template-columns:260px 1fr 240px}
+}
+
+/* ── <860px: single column, hide decorative columns ── */
+@media(max-width:859px){
+  .page-wrap{grid-template-columns:1fr}
+  .live-col,.game-col{display:none}
+}
+
+/* ── <480px: tighten all spacing ── */
+@media(max-width:479px){
+  .toast{min-width:220px;max-width:92vw;padding:10px 18px;font-size:12px}
+}
 </style>
 </head>
 <body>
@@ -366,7 +381,11 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
     <div id="headerClock"></div>
     <div class="header-live"><div class="live-dot"></div><span class="live-text">LIVE</span></div>
   </div>
-  <a href="/login" class="staff-btn">دخول الموظفين ←</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <button onclick="toggleLang()" id="langBtn" style="padding:6px 14px;background:rgba(0,128,255,.12);border:1px solid rgba(0,128,255,.25);border-radius:20px;color:#33b3ff;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer">EN</button>
+    <a href="/display" target="_blank" style="padding:6px 14px;background:rgba(0,212,170,.1);border:1px solid rgba(0,212,170,.2);border-radius:20px;color:#00d4aa;font-family:inherit;font-size:12px;font-weight:700;text-decoration:none">📺 شاشة العرض</a>
+    <a href="/login" class="staff-btn">دخول الموظفين ←</a>
+  </div>
 </header>
 
 <div class="page-wrap">
@@ -421,6 +440,24 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
           <div><label class="field-label">اسمك (اختياري)</label><input type="text" class="styled-input" id="qName" placeholder="محمد أحمد"/></div>
           <div><label class="field-label">موبايلك (اختياري)</label><input type="text" class="styled-input" id="qPhone" placeholder="01xxxxxxxxx"/></div>
         </div>
+        <!-- Priority Selector -->
+        <div class="field-wrap" style="margin-top:14px">
+          <label class="field-label" id="lbl-priority">الأولوية</label>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px">
+            <label style="cursor:pointer;text-align:center;padding:10px 6px;border:1px solid rgba(0,128,255,.2);border-radius:12px;background:rgba(0,128,255,.05);font-size:12px;font-weight:700;transition:.2s" id="prio-normal">
+              <input type="radio" name="priority" value="normal" checked style="display:none"> 👤 عادي
+            </label>
+            <label style="cursor:pointer;text-align:center;padding:10px 6px;border:1px solid rgba(0,128,255,.2);border-radius:12px;background:rgba(0,128,255,.05);font-size:12px;font-weight:700;transition:.2s" id="prio-elderly">
+              <input type="radio" name="priority" value="elderly" style="display:none"> 👴 كبير سن
+            </label>
+            <label style="cursor:pointer;text-align:center;padding:10px 6px;border:1px solid rgba(0,128,255,.2);border-radius:12px;background:rgba(0,128,255,.05);font-size:12px;font-weight:700;transition:.2s" id="prio-disabled">
+              <input type="radio" name="priority" value="disabled" style="display:none"> ♿ إعاقة
+            </label>
+            <label style="cursor:pointer;text-align:center;padding:10px 6px;border:1px solid rgba(212,175,55,.3);border-radius:12px;background:rgba(212,175,55,.06);font-size:12px;font-weight:700;transition:.2s" id="prio-vip">
+              <input type="radio" name="priority" value="vip" style="display:none"> ⭐ VIP
+            </label>
+          </div>
+        </div>
         <button class="btn-main" onclick="takeNumber()">🎫 خذ رقم انتظار الآن</button>
       </div>
       <div class="token-card" id="tokenResult">
@@ -431,10 +468,30 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
           <div class="token-detail"><div class="td-label">موقعك</div><div class="td-val blue" id="tokenPos">—</div></div>
           <div class="token-detail"><div class="td-label">وقت متوقع</div><div class="td-val gold"><span id="tokenWait">—</span> د</div></div>
         </div>
+        <!-- QR Code -->
+        <div id="qrCodeWrap" style="text-align:center;margin:16px 0;display:none">
+          <div style="font-size:11px;color:rgba(216,240,255,.4);margin-bottom:8px">امسح الكود لمتابعة رقمك</div>
+          <div id="qrCode" style="display:inline-block;background:#fff;padding:8px;border-radius:10px"></div>
+        </div>
         <div class="token-actions">
           <button class="btn-outline" onclick="resetQueue()">← رقم جديد</button>
           <button class="btn-main" onclick="window.print()" style="width:auto;padding:10px 18px">🖨️ طباعة</button>
         </div>
+      </div>
+
+      <!-- Rating Panel (shown after service) -->
+      <div id="ratingPanel" style="display:none;margin-top:16px;background:rgba(0,128,255,.05);border:1px solid rgba(0,128,255,.18);border-radius:18px;padding:22px;text-align:center">
+        <div style="font-size:16px;font-weight:900;margin-bottom:6px">كيف كانت تجربتك؟ ⭐</div>
+        <div style="font-size:12px;color:rgba(216,240,255,.5);margin-bottom:16px">تقييمك يساعدنا على تحسين خدمتنا</div>
+        <div style="display:flex;justify-content:center;gap:10px;margin-bottom:14px">
+          <span class="star-btn" data-val="1" onclick="setRating(1)" style="font-size:30px;cursor:pointer;transition:.2s;filter:grayscale(1)">⭐</span>
+          <span class="star-btn" data-val="2" onclick="setRating(2)" style="font-size:30px;cursor:pointer;transition:.2s;filter:grayscale(1)">⭐</span>
+          <span class="star-btn" data-val="3" onclick="setRating(3)" style="font-size:30px;cursor:pointer;transition:.2s;filter:grayscale(1)">⭐</span>
+          <span class="star-btn" data-val="4" onclick="setRating(4)" style="font-size:30px;cursor:pointer;transition:.2s;filter:grayscale(1)">⭐</span>
+          <span class="star-btn" data-val="5" onclick="setRating(5)" style="font-size:30px;cursor:pointer;transition:.2s;filter:grayscale(1)">⭐</span>
+        </div>
+        <textarea id="ratingComment" placeholder="تعليقك (اختياري)..." style="width:100%;background:rgba(0,0,0,.3);border:1px solid rgba(0,128,255,.2);border-radius:10px;color:#fff;font-family:inherit;font-size:13px;padding:10px;resize:none;height:70px;margin-bottom:12px"></textarea>
+        <button class="btn-main" onclick="submitRating()" style="padding:10px 28px;width:auto">إرسال التقييم</button>
       </div>
     </div>
 
@@ -519,6 +576,94 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
 <div class="toast" id="toast"></div>
 
 <script>
+// ══ LANGUAGE ══════════════════════════════════════════════════════════════════
+const LANG = {
+  ar: {
+    takeNum: '🎫 خذ رقم انتظار الآن', bookAppt: '📅 تأكيد الحجز',
+    selectService: 'من فضلك اختر الخدمة', fillData: 'من فضلك أدخل كل البيانات',
+    booked: 'تم الحجز بنجاح ✅', connError: 'خطأ في الاتصال',
+    priority: 'الأولوية', normal: '👤 عادي', elderly: '👴 كبير سن',
+    disabled: '♿ إعاقة', vip: '⭐ VIP'
+  },
+  en: {
+    takeNum: '🎫 Take Queue Number', bookAppt: '📅 Book Appointment',
+    selectService: 'Please select a service', fillData: 'Please fill all required fields',
+    booked: 'Appointment booked ✅', connError: 'Connection error',
+    priority: 'Priority', normal: '👤 Normal', elderly: '👴 Elderly',
+    disabled: '♿ Disabled', vip: '⭐ VIP'
+  }
+};
+let currentLang = 'ar';
+function toggleLang() {
+  currentLang = currentLang === 'ar' ? 'en' : 'ar';
+  document.getElementById('langBtn').textContent = currentLang === 'ar' ? 'EN' : 'عر';
+  document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+  document.documentElement.lang = currentLang;
+  const L = LANG[currentLang];
+  const takeBtn = document.querySelector('[onclick="takeNumber()"]');
+  if (takeBtn) takeBtn.textContent = L.takeNum;
+  const bookBtn = document.querySelector('[onclick="bookAppointment()"]');
+  if (bookBtn) bookBtn.textContent = L.bookAppt;
+  const lp = document.getElementById('lbl-priority');
+  if (lp) lp.textContent = L.priority;
+  document.getElementById('prio-normal').childNodes[1].textContent = ' ' + L.normal;
+  document.getElementById('prio-elderly').childNodes[1].textContent = ' ' + L.elderly;
+  document.getElementById('prio-disabled').childNodes[1].textContent = ' ' + L.disabled;
+  document.getElementById('prio-vip').childNodes[1].textContent = ' ' + L.vip;
+}
+
+// Priority radio highlight
+document.addEventListener('change', e => {
+  if (e.target.name === 'priority') {
+    document.querySelectorAll('[id^="prio-"]').forEach(l => l.style.opacity = '0.6');
+    e.target.parentElement.style.opacity = '1';
+    e.target.parentElement.style.borderColor = 'rgba(0,212,170,.5)';
+  }
+});
+
+// ══ RATING ════════════════════════════════════════════════════════════════════
+let selectedRating = 0;
+let ratingQueueId  = null;
+let ratingBranchId = null;
+let ratingToken    = null;
+let ratingService  = null;
+
+function setRating(val) {
+  selectedRating = val;
+  document.querySelectorAll('.star-btn').forEach((s, i) => {
+    s.style.filter = i < val ? 'grayscale(0) drop-shadow(0 0 6px gold)' : 'grayscale(1)';
+  });
+}
+
+async function submitRating() {
+  if (!selectedRating) { showToast('من فضلك اختر تقييم', 'error'); return; }
+  const comment = document.getElementById('ratingComment').value.trim();
+  try {
+    const res = await fetch('/api/ratings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ branchId: ratingBranchId, rating: selectedRating, comment, service: ratingService, token: ratingToken, queueId: ratingQueueId })
+    });
+    const data = await res.json();
+    if (data.success) {
+      document.getElementById('ratingPanel').innerHTML = '<div style="font-size:40px;margin-bottom:10px">🙏</div><div style="font-size:16px;font-weight:900">شكراً على تقييمك!</div>';
+      showToast('شكراً! تم إرسال تقييمك', 'success');
+    }
+  } catch { showToast('خطأ في إرسال التقييم', 'error'); }
+}
+
+// ══ QR CODE ═══════════════════════════════════════════════════════════════════
+function generateQR(token, service, position) {
+  try {
+    const text = encodeURIComponent(`رقمك: ${token} | ${service} | موقع: ${position}`);
+    const url  = `https://api.qrserver.com/v1/create-qr-code/?data=${text}&size=130x130&margin=4`;
+    const wrap = document.getElementById('qrCodeWrap');
+    const el   = document.getElementById('qrCode');
+    el.innerHTML = `<img src="${url}" alt="QR" style="border-radius:6px;display:block" width="130" height="130" onerror="this.parentElement.parentElement.style.display='none'">`;
+    wrap.style.display = 'block';
+  } catch (_) {}
+}
+
 // ══════════════════════════════════════
 // ANIMATIONS: CLOCK
 // ══════════════════════════════════════
@@ -685,13 +830,41 @@ function showBanner(tok){const b=document.getElementById('alertBanner'),isMine=m
 let selectedService=null,myToken=null,lastServingToken=null,pollInterval=null;
 const ICONS=['🏦','💰','🔄','💳','💬','📋','🔐','📊'];
 
-async function startPolling(id){if(pollInterval)clearInterval(pollInterval);await fetchLive(id);pollInterval=setInterval(()=>fetchLive(id),5000)}
+let sseSource=null;
+async function startPolling(id){
+  if(pollInterval)clearInterval(pollInterval);
+  await fetchLive(id);
+  pollInterval=setInterval(()=>fetchLive(id),8000);
+  // SSE real-time
+  if(sseSource){sseSource.close();}
+  sseSource=new EventSource(`/api/events/${id}`);
+  sseSource.onmessage=(e)=>{
+    try{
+      const d=JSON.parse(e.data);
+      if(d.type==='now_serving'){fetchLive(id);}
+      if(d.type==='new_ticket'){fetchLive(id);}
+      // Show rating panel when our token is served
+      if(myToken&&d.type==='now_serving'&&d.token===myToken){
+        setTimeout(()=>{
+          const rp=document.getElementById('ratingPanel');
+          if(rp)rp.style.display='block';
+        },2000);
+      }
+    }catch{}
+  };
+  sseSource.onerror=()=>{};
+}
 async function fetchLive(id){
   if(!id)return;
   try{
     const data=await fetch(`/api/queue/${id}`).then(r=>r.json());
     const serving=data.find(t=>t.status==='serving'),waiting=data.filter(t=>t.status==='waiting');
     if(serving&&serving.token!==lastServingToken){if(lastServingToken!==null)announceToken(serving.token);lastServingToken=serving.token}
+    // Show rating if my token is now serving
+    if(myToken&&serving&&serving.token===myToken){
+      const rp=document.getElementById('ratingPanel');
+      if(rp&&rp.style.display==='none')setTimeout(()=>rp.style.display='block',1500);
+    }
     renderLive(serving,waiting);
   }catch{}
 }
@@ -741,16 +914,42 @@ async function loadStatusPanel(){
   document.getElementById('statusDisplay').innerHTML=`<div style="margin-top:14px">${serving?`<div class="serving-card"><div class="sc-label"><div class="sc-dot"></div>يُخدم الآن</div><div class="sc-token">${serving.token}</div><div class="sc-name">${serving.name} — ${serving.service}</div></div>`:''}<div class="q-title" style="margin-top:14px">قائمة الانتظار <span class="q-badge">${waiting.length}</span></div>${waiting.map((t,i)=>`<div class="queue-item" style="animation-delay:${i*.04}s"><div class="qi-pos">${i+1}</div><div class="qi-token">${t.token}</div><div class="qi-info"><div class="qi-name">${t.name}</div><div class="qi-svc">${t.service}</div></div></div>`).join('')}</div>`;
 }
 async function takeNumber(){
-  if(!selectedService){showToast('من فضلك اختر الخدمة','error');return}
+  if(!selectedService){showToast(LANG[currentLang].selectService,'error');return}
   if(audioCtx.state==='suspended')audioCtx.resume();
-  const branchId=document.getElementById('qBranch').value,name=document.getElementById('qName').value.trim()||'عميل';
+  const branchId=document.getElementById('qBranch').value;
+  const name=document.getElementById('qName').value.trim()||'عميل';
+  const phone=document.getElementById('qPhone').value.trim();
+  const priority=document.querySelector('input[name="priority"]:checked')?.value||'normal';
   try{
-    const data=await fetch(`/api/queue/${branchId}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,serviceId:selectedService.id})}).then(r=>r.json());
-    if(data.success){myToken=data.token;document.getElementById('tokenNumber').textContent=data.token;document.getElementById('tokenService').textContent=selectedService.name;document.getElementById('tokenPos').textContent=data.position;document.getElementById('tokenWait').textContent=data.estimatedWait||(data.position*8);document.getElementById('queueForm').style.display='none';document.getElementById('tokenResult').style.display='block';startPolling(branchId);showToast('تم! رقمك جاهز 🎫','success')}
-    else showToast(data.error,'error');
-  }catch{showToast('خطأ في الاتصال','error')}
+    const data=await fetch(`/api/queue/${branchId}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,phone,serviceId:selectedService.id,priority})}).then(r=>r.json());
+    if(data.success){
+      myToken=data.token;
+      ratingQueueId=data.queueId;
+      ratingBranchId=branchId;
+      ratingToken=data.token;
+      ratingService=selectedService.name;
+      document.getElementById('tokenNumber').textContent=data.token;
+      document.getElementById('tokenService').textContent=selectedService.name;
+      document.getElementById('tokenPos').textContent=data.position;
+      document.getElementById('tokenWait').textContent=data.estimatedWait||(data.position*8);
+      document.getElementById('queueForm').style.display='none';
+      document.getElementById('tokenResult').style.display='block';
+      // Generate QR code
+      generateQR(data.token, selectedService.name, data.position);
+      startPolling(branchId);
+      showToast('تم! رقمك جاهز 🎫','success');
+    } else showToast(data.error,'error');
+  }catch{showToast(LANG[currentLang].connError,'error')}
 }
-function resetQueue(){selectedService=null;myToken=null;document.getElementById('queueForm').style.display='block';document.getElementById('tokenResult').style.display='none';document.querySelectorAll('.svc-card').forEach(c=>c.classList.remove('sel'))}
+function resetQueue(){
+  selectedService=null;myToken=null;ratingQueueId=null;selectedRating=0;
+  document.getElementById('queueForm').style.display='block';
+  document.getElementById('tokenResult').style.display='none';
+  document.getElementById('ratingPanel').style.display='none';
+  document.getElementById('qrCodeWrap').style.display='none';
+  document.getElementById('qrCode').innerHTML='';
+  document.querySelectorAll('.svc-card').forEach(c=>c.classList.remove('sel'));
+}
 async function bookAppointment(){
   const customerName=document.getElementById('aName').value.trim(),phone=document.getElementById('aPhone').value.trim(),service=document.getElementById('aService').value,date=document.getElementById('aDate').value,time=document.getElementById('aTime').value,branchId=document.getElementById('aBranch').value;
   if(!customerName||!phone||!date){showToast('من فضلك أدخل كل البيانات','error');return}

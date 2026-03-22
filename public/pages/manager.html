@@ -261,9 +261,54 @@ tbody tr:hover td{background:rgba(255,255,255,.025)}
 .toast.error{border-color:rgba(239,68,68,.4);color:#f87171}
 .toast.info{border-color:rgba(59,130,246,.4);color:var(--blue4)}
 
-/* ══ RESPONSIVE ══ */
-@media(max-width:1100px){.ql{grid-template-columns:1fr}.stats-row{grid-template-columns:repeat(3,1fr)}.ag2,.ag3{grid-template-columns:1fr}}
-@media(max-width:720px){.stats-row{grid-template-columns:1fr 1fr}.nav-center{display:none}nav{padding:0 18px}main{padding:22px 16px}}
+/* ══ RESPONSIVE — Mobile-first: 320 | 480 | 768 | 1024 | 1440 ══ */
+
+/* ── <1100px: collapse side-by-side layouts ── */
+@media(max-width:1099px){
+  .ql{grid-template-columns:1fr}
+  .stats-row{grid-template-columns:repeat(3,1fr)}
+  .ag2,.ag3{grid-template-columns:1fr}
+  nav{padding:0 22px}
+}
+
+/* ── <768px: tablet portrait ── */
+@media(max-width:767px){
+  nav{
+    height:auto;min-height:56px;
+    padding:8px 16px;flex-wrap:wrap;
+    align-items:center;gap:0;row-gap:6px;
+  }
+  .brand{flex:1;order:1}
+  .brand-logo{width:38px;height:38px;border-radius:11px}
+  .brand-name{font-size:14px}
+  .nav-center{order:3;width:100%;justify-content:center}
+  .nav-right{order:2;gap:6px}
+  main{padding:16px 14px}
+  .stats-row{grid-template-columns:1fr 1fr}
+}
+
+/* ── <480px: small phones ── */
+@media(max-width:479px){
+  nav{padding:8px 12px}
+  .brand-logo{width:34px;height:34px;font-size:17px;border-radius:9px}
+  .brand-name{font-size:12px}
+  .brand-sub{font-size:9px}
+  .ntab{padding:7px 10px;font-size:12px;gap:4px}
+  main{padding:12px 10px}
+  .stats-row{gap:8px}
+  .toast{min-width:220px;max-width:92vw;font-size:13px}
+}
+
+/* ── <420px: hide tab text, show icon only ── */
+@media(max-width:420px){
+  .ntab span:not(.ntab-badge){display:none}
+}
+
+/* ── <330px: extreme small ── */
+@media(max-width:330px){
+  .brand-name,.brand-sub{display:none}
+  main{padding:10px 8px}
+}
 </style>
 </head>
 <body>
@@ -286,10 +331,12 @@ tbody tr:hover td{background:rgba(255,255,255,.025)}
   </div>
 
   <div class="nav-center">
-    <button class="ntab active" onclick="switchTab('queue',this)">🎫 الطابور</button>
+    <button class="ntab active" onclick="switchTab('queue',this)">⬆️ الحالات المُحالة</button>
     <button class="ntab" onclick="switchTab('appts',this)">📅 المواعيد</button>
     <button class="ntab" onclick="switchTab('staff',this)">👥 الموظفين</button>
     <button class="ntab" onclick="switchTab('analytics',this)">📊 التحليلات</button>
+    <button class="ntab" onclick="switchTab('ratings',this)">⭐ التقييمات</button>
+    <button class="ntab" onclick="switchTab('schedule',this)">📆 الجداول</button>
   </div>
 
   <div class="nav-right">
@@ -339,64 +386,28 @@ tbody tr:hover td{background:rgba(255,255,255,.025)}
     </div>
   </div>
 
-  <!-- ══ QUEUE PANEL ══ -->
+  <!-- ══ ESCALATED CASES PANEL ══ -->
   <div class="panel active" id="panel-queue">
-    <div class="ql">
-      <div>
-        <div class="card">
-          <div class="ch">
-            <div class="ct">📺 الطابور المباشر <span class="cb" id="liveTag">● مباشر</span></div>
-            <button class="btn b-reset" onclick="resetQueue()">🔄 إعادة تعيين</button>
-          </div>
-
-          <div class="serving-card">
-            <div class="s-lbl"><div class="s-dot"></div>يُخدم الآن</div>
-            <div class="s-tk" id="sToken">—</div>
-            <div class="s-det" id="sDet">لا يوجد عميل يُخدم حالياً</div>
-          </div>
-
-          <div class="q-hdr">
-            <span style="font-size:13px;font-weight:700;color:var(--m1)">قائمة الانتظار</span>
-            <span class="q-badge" id="wBadge">0</span>
-          </div>
-          <div id="qList"><div class="empty"><div class="empty-ico">⏳</div>جاري تحميل الطابور...</div></div>
-        </div>
+    <div class="card">
+      <div class="ch">
+        <div class="ct">⬆️ الحالات المُحالة من الموظفين <span class="cb" id="escalatedBadge">0</span></div>
+        <button class="btn b-blue" style="font-size:13px;padding:9px 18px" onclick="loadQueue()">↻ تحديث</button>
       </div>
+      <div id="escalatedEmpty" class="empty" style="display:none">
+        <div class="empty-ico">✅</div>
+        لا توجد حالات مُحالة حالياً — كل شيء تحت السيطرة
+      </div>
+      <div id="escalatedList"></div>
+    </div>
 
-      <div>
-        <div class="sb-card">
-          <div class="sb-ttl">إحصائيات اليوم</div>
-          <div class="sg">
-            <div class="sbox"><div class="sv" style="color:var(--gold2)" id="tdS">—</div><div class="sl">خُدِموا</div></div>
-            <div class="sbox"><div class="sv" style="color:var(--blue4)" id="tdW">—</div><div class="sl">انتظار</div></div>
-            <div class="sbox"><div class="sv" style="color:#10b981" id="tdA">—</div><div class="sl">مواعيد</div></div>
-            <div class="sbox"><div class="sv" style="color:var(--purple)" id="tdSt">—</div><div class="sl">موظفون</div></div>
-          </div>
-        </div>
-
-        <div class="sb-card">
-          <div class="sb-ttl">توزيع الخدمات</div>
-          <div class="chart-wrap"><canvas id="svcChart"></canvas></div>
-        </div>
-
-        <div class="sb-card">
-          <div class="sb-ttl">أداء الفرع</div>
-          <div class="perf-row">
-            <span class="perf-label">الاستجابة</span>
-            <div class="perf-track"><div class="perf-fill" style="width:0%;background:linear-gradient(90deg,#10b981,#34d399)" id="pf1"></div></div>
-            <span class="perf-pct" style="color:#10b981" id="pp1">0%</span>
-          </div>
-          <div class="perf-row">
-            <span class="perf-label">الرضا</span>
-            <div class="perf-track"><div class="perf-fill" style="width:0%;background:linear-gradient(90deg,#3b82f6,#60a5fa)" id="pf2"></div></div>
-            <span class="perf-pct" style="color:#60a5fa" id="pp2">0%</span>
-          </div>
-          <div class="perf-row" style="margin-bottom:0">
-            <span class="perf-label">الإنجاز</span>
-            <div class="perf-track"><div class="perf-fill" style="width:0%;background:linear-gradient(90deg,#f59e0b,#fbbf24)" id="pf3"></div></div>
-            <span class="perf-pct" style="color:#fbbf24" id="pp3">0%</span>
-          </div>
-        </div>
+    <div class="card" style="margin-top:0">
+      <div class="ch"><div class="ct">📊 إحصائيات الفرع السريعة</div></div>
+      <div class="sg">
+        <div class="sbox"><div class="sv" style="color:var(--gold2)" id="tdS">—</div><div class="sl">خُدِموا</div></div>
+        <div class="sbox"><div class="sv" style="color:var(--blue4)" id="tdW">—</div><div class="sl">انتظار</div></div>
+        <div class="sbox"><div class="sv" style="color:#ef4444" id="tdEsc">—</div><div class="sl">مُحالة</div></div>
+        <div class="sbox"><div class="sv" style="color:var(--purple)" id="tdSt">—</div><div class="sl">موظفون</div></div>
+        <span id="tdA" style="display:none"></span>
       </div>
     </div>
   </div>
@@ -477,6 +488,43 @@ tbody tr:hover td{background:rgba(255,255,255,.025)}
     <div class="card">
       <div class="ch"><div class="ct">📝 سجل النشاط</div></div>
       <div id="actFeed"></div>
+    </div>
+  </div>
+
+  <!-- ══ RATINGS PANEL ══ -->
+  <div class="panel" id="panel-ratings">
+    <div class="card">
+      <div class="ch">
+        <div class="ct">⭐ تقييمات العملاء</div>
+        <div style="display:flex;gap:8px">
+          <button onclick="exportMgrData('ratings')" style="padding:6px 14px;background:rgba(26,86,219,.15);border:1px solid rgba(26,86,219,.3);border-radius:8px;color:#60a5fa;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer">📥 تصدير CSV</button>
+          <button onclick="loadMgrRatings()" style="padding:6px 14px;background:rgba(26,86,219,.15);border:1px solid rgba(26,86,219,.3);border-radius:8px;color:#60a5fa;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer">↻ تحديث</button>
+        </div>
+      </div>
+      <div id="mgrRatingSummary" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:18px"></div>
+      <div id="mgrRatingsList"></div>
+    </div>
+  </div>
+
+  <!-- ══ SCHEDULE PANEL ══ -->
+  <div class="panel" id="panel-schedule">
+    <div class="card">
+      <div class="ch">
+        <div class="ct">📆 جداول الموظفين</div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <select id="mgrSchedMonth" onchange="loadMgrSchedule()" style="padding:6px 10px;background:rgba(0,0,0,.4);border:1px solid rgba(26,86,219,.2);border-radius:8px;color:#fff;font-family:inherit;font-size:12px">
+            <option value="1">يناير</option><option value="2">فبراير</option><option value="3">مارس</option>
+            <option value="4">أبريل</option><option value="5">مايو</option><option value="6">يونيو</option>
+            <option value="7">يوليو</option><option value="8">أغسطس</option><option value="9">سبتمبر</option>
+            <option value="10">أكتوبر</option><option value="11">نوفمبر</option><option value="12">ديسمبر</option>
+          </select>
+          <select id="mgrSchedYear" onchange="loadMgrSchedule()" style="padding:6px 10px;background:rgba(0,0,0,.4);border:1px solid rgba(26,86,219,.2);border-radius:8px;color:#fff;font-family:inherit;font-size:12px">
+            <option value="2025">2025</option><option value="2026">2026</option><option value="2027">2027</option>
+          </select>
+        </div>
+      </div>
+      <div id="mgrScheduleSummary" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:16px"></div>
+      <div id="mgrScheduleTable" style="overflow-x:auto"></div>
     </div>
   </div>
 
@@ -567,58 +615,107 @@ async function init(){
       document.getElementById('branchName').textContent=b?b.name:'الفرع';
     }catch{document.getElementById('branchName').textContent='الفرع';}
     await loadQueue();
-    setInterval(loadQueue,5000);
+    setInterval(loadQueue,10000);
     loadStaffCount();
+    subscribeSSE(me.branchId||1);
     setTimeout(()=>{animPerf('pf1','pp1',78);animPerf('pf2','pp2',85);},700);
   }catch{location.href='/login';}
 }
 
 // ════════════════════════════════════════
-// QUEUE
+// SSE
+// ════════════════════════════════════════
+let _sse=null;
+function subscribeSSE(branchId){
+  if(_sse)_sse.close();
+  _sse=new EventSource(`/api/events/${branchId}`);
+  _sse.onmessage=(e)=>{
+    try{
+      const d=JSON.parse(e.data);
+      if(d.type==='escalated'){
+        loadQueue();
+        showToast(`⬆️ حالة مُحالة: ${d.token} — ${d.service}`,'info');
+        addNotif(`حالة مُحالة من الموظف: ${d.name} (${d.service})`,'#ef4444');
+      } else if(['ticket_done','sendback'].includes(d.type)){
+        loadQueue();
+      }
+    }catch{}
+  };
+  _sse.onerror=()=>setTimeout(()=>subscribeSSE(branchId),5000);
+}
+
+function addNotif(text,color){
+  const list=document.getElementById('notifList');
+  const item=document.createElement('div');
+  item.className='np-item';
+  item.innerHTML=`<div class="np-dot" style="background:${color}"></div><div><div class="np-text">${text}</div><div class="np-time">الآن</div></div>`;
+  list.prepend(item);
+  document.getElementById('notifDot').style.display='block';
+}
+
+// ════════════════════════════════════════
+// ESCALATED CASES (Manager View)
 // ════════════════════════════════════════
 async function loadQueue(){
   const bid=me?.branchId||1;
   try{
-    const data=await fetch(`/api/queue/${bid}`).then(r=>r.json());
-    const serving=data.find(t=>t.status==='serving');
-    const waiting=data.filter(t=>t.status==='waiting');
-    const served=data.filter(t=>t.status==='served');
-
+    // Load full queue for stats
+    const all=await fetch(`/api/queue/${bid}`).then(r=>r.json());
+    const waiting=all.filter(t=>t.status==='waiting');
+    const served=all.filter(t=>t.status==='done');
     animN('sWait',waiting.length);animN('sServed',served.length);
     animN('tdS',served.length);animN('tdW',waiting.length);
-    document.getElementById('wBadge').textContent=waiting.length;
 
     const avg=waiting.length?Math.min(3+waiting.length*2,20):0;
     animN('sAvg',avg);
 
-    const total=served.length+waiting.length;
-    animPerf('pf3','pp3',total?Math.round(served.length/total*100):0);
+    // Load escalated cases
+    const escalated=await fetch(`/api/queue/${bid}/escalated`).then(r=>r.json());
+    animN('tdEsc',escalated.length);
+    document.getElementById('escalatedBadge').textContent=escalated.length;
 
-    if(serving){
-      document.getElementById('sToken').textContent=serving.token;
-      document.getElementById('sDet').innerHTML=`<strong style="color:rgba(255,255,255,.85)">${serving.name}</strong> — ${serving.service}`;
-    }else{
-      document.getElementById('sToken').textContent='—';
-      document.getElementById('sDet').textContent='لا يوجد عميل يُخدم حالياً';
-    }
+    const listEl=document.getElementById('escalatedList');
+    const emptyEl=document.getElementById('escalatedEmpty');
 
-    const ql=document.getElementById('qList');
-    if(!waiting.length){
-      ql.innerHTML='<div class="empty"><div class="empty-ico">✅</div>الطابور فاضي الآن</div>';
-    }else{
-      ql.innerHTML=waiting.map((t,i)=>`
-        <div class="qi" style="animation-delay:${i*.04}s">
-          <div class="qi-pos">${i+1}</div>
-          <div class="qi-tk">${t.token}</div>
+    if(!escalated.length){
+      emptyEl.style.display='block';
+      listEl.innerHTML='';
+    } else {
+      emptyEl.style.display='none';
+      listEl.innerHTML=escalated.map((t,i)=>`
+        <div class="qi" style="border-color:rgba(239,68,68,.25);background:rgba(239,68,68,.04);animation-delay:${i*.04}s;margin-bottom:10px;padding:16px">
+          <div style="width:44px;height:44px;border-radius:12px;background:rgba(239,68,68,.12);color:#f87171;font-size:13px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0">⬆️</div>
           <div style="flex:1">
-            <div class="qi-nm">${t.name}</div>
-            <div class="qi-sv">${t.service}</div>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+              <span style="font-size:18px;font-weight:900;color:var(--gold2)">${t.token}</span>
+              <span style="font-size:14px;font-weight:700">${t.name}</span>
+              <span style="font-size:11px;background:rgba(239,68,68,.12);color:#f87171;border:1px solid rgba(239,68,68,.2);padding:2px 9px;border-radius:20px;font-weight:700">مُحالة</span>
+            </div>
+            <div style="font-size:12px;color:var(--m1)">${t.service} · ${new Date(t.created_at).toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'})}</div>
           </div>
-          <div class="qi-eta">~${(i+1)*3} د</div>
+          <div style="display:flex;gap:8px;flex-shrink:0">
+            <button class="btn b-green-sm" onclick="resolveCase(${t.id})">✅ حل الحالة</button>
+            <button class="btn b-red-sm" onclick="sendBack(${t.id})">↩️ إرجاع للموظف</button>
+          </div>
         </div>`).join('');
     }
-    buildSvcChart(data);
   }catch(e){console.error(e);}
+}
+
+async function resolveCase(id){
+  try{
+    const d=await fetch(`/api/queue/${id}/resolve`,{method:'PUT'}).then(r=>r.json());
+    if(d.success){showToast('✅ '+d.message,'success');loadQueue();}
+    else showToast(d.error||'خطأ','error');
+  }catch{showToast('خطأ في الاتصال','error');}
+}
+
+async function sendBack(id){
+  try{
+    const d=await fetch(`/api/queue/${id}/sendback`,{method:'PUT'}).then(r=>r.json());
+    if(d.success){showToast('↩️ '+d.message,'success');loadQueue();}
+    else showToast(d.error||'خطأ','error');
+  }catch{showToast('خطأ في الاتصال','error');}
 }
 
 async function resetQueue(){
@@ -630,60 +727,55 @@ async function resetQueue(){
   }catch{showToast('خطأ في الاتصال','error');}
 }
 
-function buildSvcChart(data){
-  const counts={};
-  data.forEach(t=>{if(t.service)counts[t.service]=(counts[t.service]||0)+1;});
-  const labels=Object.keys(counts),vals=Object.values(counts);
-  const canvas=document.getElementById('svcChart');
-  if(!canvas)return;
-  if(svcChartInst){svcChartInst.destroy();svcChartInst=null;}
-  if(!labels.length){canvas.getContext('2d').clearRect(0,0,canvas.width,canvas.height);return;}
-  svcChartInst=new Chart(canvas.getContext('2d'),{
-    type:'doughnut',
-    data:{labels,datasets:[{data:vals,backgroundColor:COLORS.slice(0,labels.length),borderWidth:0,hoverOffset:7}]},
-    options:{responsive:true,maintainAspectRatio:false,cutout:'68%',
-      plugins:{
-        legend:{position:'bottom',labels:{color:'rgba(255,255,255,.5)',font:{family:'Tajawal',size:10,weight:'700'},padding:10,boxWidth:9,boxHeight:9}},
-        tooltip:{backgroundColor:'rgba(10,18,34,.96)',borderColor:'rgba(255,255,255,.1)',borderWidth:1,titleColor:'#fff',bodyColor:'rgba(255,255,255,.6)',padding:12,cornerRadius:10}
-      },
-      animation:{animateRotate:true,duration:900,easing:'easeInOutQuart'}
-    }
-  });
-}
-
 // ════════════════════════════════════════
 // APPOINTMENTS
 // ════════════════════════════════════════
 async function loadAppts(){
   try{
     const all=await fetch('/api/appointments').then(r=>r.json());
-    const today=new Date().toISOString().split('T')[0];
-    _apptData=all.filter(a=>a.date===today);
+    const today=new Date().toLocaleDateString('en-CA');
+    _apptData=all.filter(a=>{const d=a.date?String(a.date).split('T')[0]:'';return d===today;});
     renderAppts(_apptData);
     const pend=_apptData.filter(a=>a.status==='pending').length;
     const conf=_apptData.filter(a=>a.status==='confirmed').length;
+    const esc=_apptData.filter(a=>a.status==='escalated').length;
     animN('sAppts',_apptData.length);animN('tdA',_apptData.length);
     document.getElementById('pendCnt').textContent=`${pend} انتظار`;
-    document.getElementById('confCnt').textContent=`${conf} مؤكد`;
+    document.getElementById('confCnt').textContent=`${conf} مؤكد${esc?` · ${esc} مُحال`:''}`;
+    if(esc)showToast(`⬆️ ${esc} موعد مُحال من الموظفين`,'info');
   }catch{showToast('خطأ في تحميل المواعيد','error');}
 }
 
 function renderAppts(data){
   const tb=document.getElementById('appTb');
   if(!data.length){tb.innerHTML='<tr><td colspan="7"><div class="empty"><div class="empty-ico">📅</div>لا توجد مواعيد</div></td></tr>';return;}
-  tb.innerHTML=data.map((a,i)=>`
-    <tr style="animation:qIn .3s ${i*.04}s ease both">
-      <td style="font-weight:700">${a.customerName}</td>
+  const slMap={pending:'⏳ انتظار',confirmed:'✓ مؤكد',in_progress:'🟢 جاري',completed:'✅ مكتمل',escalated:'⬆️ مُحال'};
+  const scMap={pending:'b-pend',confirmed:'b-ok',in_progress:'b-tl',completed:'b-ok',escalated:'b-mg'};
+  tb.innerHTML=data.map((a,i)=>{
+    const isEsc=a.status==='escalated';
+    const rowStyle=isEsc?'background:rgba(139,92,246,.04)':'';
+    return `<tr style="animation:qIn .3s ${i*.04}s ease both;${rowStyle}">
+      <td style="font-weight:700">${isEsc?'⬆️ ':''} ${a.customerName}</td>
       <td style="color:var(--m1);font-size:12px">${a.phone}</td>
       <td>${a.service}</td>
       <td style="color:var(--m1);font-size:12px">${a.date}</td>
       <td><span style="color:var(--gold2);font-weight:800">${a.time}</span></td>
-      <td><span class="badge ${a.status==='confirmed'?'b-ok':'b-pend'}">${a.status==='confirmed'?'✓ مؤكد':'⏳ انتظار'}</span></td>
+      <td><span class="badge ${scMap[a.status]||'b-pend'}">${slMap[a.status]||a.status}</span></td>
       <td><div class="tda">
         <button class="btn b-red-sm" style="padding:6px 10px" onclick='openEditAppt(${JSON.stringify(a)})'>✏️</button>
         ${a.status==='pending'?`<button class="btn b-green-sm" onclick="confirmAppt(${a.id})">✓ تأكيد</button>`:''}
+        ${isEsc?`<button class="btn b-green-sm" onclick="resolveAppt(${a.id})">✅ حل</button>`:''}
       </div></td>
-    </tr>`).join('');
+    </tr>`;
+  }).join('');
+}
+
+async function resolveAppt(id){
+  try{
+    const d=await fetch(`/api/appointments/${id}/status`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({status:'completed'})}).then(r=>r.json());
+    if(d.success){showToast('✅ تم حل الحالة','success');loadAppts();}
+    else showToast(d.error,'error');
+  }catch{showToast('خطأ','error');}
 }
 
 function filterAppts(){
@@ -894,6 +986,8 @@ function switchTab(tab,el){
   if(tab==='appts')loadAppts();
   else if(tab==='staff')loadStaff();
   else if(tab==='analytics')loadAnalytics();
+  else if(tab==='ratings'){loadMgrRatings();}
+  else if(tab==='schedule'){initMgrSchedMonth();loadMgrSchedule();}
   else loadQueue();
 }
 
@@ -931,6 +1025,84 @@ function animPerf(fillId,pctId,target){
 // BOOT
 // ════════════════════════════════════════
 init();
+
+// ══ MANAGER RATINGS ══════════════════════════════════════════════════════════
+async function loadMgrRatings() {
+  try {
+    const data = await fetch('/api/ratings').then(r => r.json());
+    const sum = document.getElementById('mgrRatingSummary');
+    if (data.summary && data.summary.length) {
+      sum.innerHTML = data.summary.map(s => `
+        <div style="background:rgba(26,86,219,.08);border:1px solid rgba(26,86,219,.15);border-radius:12px;padding:14px">
+          <div style="font-size:11px;color:var(--m1);margin-bottom:6px">${s.branch_name||'الفرع'}</div>
+          <div style="font-size:28px;font-weight:900;color:var(--gold2)">${s.avg_rating||'—'} ⭐</div>
+          <div style="font-size:11px;color:var(--m1);margin-top:4px">${s.total} تقييم</div>
+        </div>`).join('');
+    } else { sum.innerHTML = '<div style="color:var(--m1)">لا توجد تقييمات</div>'; }
+    const list = document.getElementById('mgrRatingsList');
+    if (data.ratings && data.ratings.length) {
+      list.innerHTML = data.ratings.slice(0, 30).map(r => `
+        <div style="display:flex;align-items:center;gap:12px;padding:10px;background:rgba(255,255,255,.03);border-radius:10px;margin-bottom:6px;border:1px solid var(--b1)">
+          <div style="font-size:20px;font-weight:900;color:var(--gold2);width:36px">${r.rating}⭐</div>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:700">${r.service||'—'}</div>
+            <div style="font-size:11px;color:var(--m1)">${new Date(r.created_at).toLocaleDateString('ar-EG')}</div>
+            ${r.comment?`<div style="font-size:12px;color:var(--m2);margin-top:3px">"${r.comment}"</div>`:''}
+          </div>
+        </div>`).join('');
+    } else { list.innerHTML = '<div style="color:var(--m1)">لا توجد تقييمات</div>'; }
+  } catch(err) { console.error(err); }
+}
+
+// ══ MANAGER SCHEDULE ═════════════════════════════════════════════════════════
+function initMgrSchedMonth() {
+  const now = new Date();
+  document.getElementById('mgrSchedMonth').value = now.getMonth() + 1;
+  document.getElementById('mgrSchedYear').value  = now.getFullYear();
+}
+async function loadMgrSchedule() {
+  const month = document.getElementById('mgrSchedMonth').value;
+  const year  = document.getElementById('mgrSchedYear').value;
+  try {
+    const [sched, summary] = await Promise.all([
+      fetch(`/api/schedule?month=${month}&year=${year}`).then(r => r.json()),
+      fetch('/api/schedule/summary').then(r => r.json())
+    ]);
+    const sumEl = document.getElementById('mgrScheduleSummary');
+    sumEl.innerHTML = summary.map(s => `
+      <div style="background:rgba(26,86,219,.07);border:1px solid var(--b1);border-radius:12px;padding:12px">
+        <div style="font-size:13px;font-weight:700;margin-bottom:8px">${s.name}</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <span style="padding:2px 8px;background:rgba(16,185,129,.15);color:#34d399;border-radius:8px;font-size:11px">✅ ${s.working_days} عمل</span>
+          <span style="padding:2px 8px;background:rgba(245,158,11,.15);color:#fbbf24;border-radius:8px;font-size:11px">🏖️ ${s.leave_days} إجازة</span>
+          <span style="padding:2px 8px;background:rgba(239,68,68,.15);color:#f87171;border-radius:8px;font-size:11px">🤒 ${s.sick_days} مرض</span>
+        </div>
+      </div>`).join('');
+    const tbl = document.getElementById('mgrScheduleTable');
+    if (!sched.length) { tbl.innerHTML = '<div style="color:var(--m1);padding:20px">لا توجد بيانات</div>'; return; }
+    const statusStyle = {working:'background:rgba(16,185,129,.2);color:#34d399',leave:'background:rgba(245,158,11,.2);color:#fbbf24',sick:'background:rgba(239,68,68,.2);color:#f87171',holiday:'background:rgba(139,92,246,.2);color:#a78bfa'};
+    const statusLabel = {working:'عمل',leave:'إجازة',sick:'مريض',holiday:'عطلة'};
+    tbl.innerHTML = `<table style="width:100%;border-collapse:collapse">
+      <thead><tr style="font-size:11px;color:var(--m1)">
+        <th style="padding:8px;text-align:right">الموظف</th>
+        <th style="padding:8px">التاريخ</th>
+        <th style="padding:8px">الحالة</th>
+        <th style="padding:8px">ملاحظة</th>
+      </tr></thead>
+      <tbody>${sched.map(s => `
+        <tr style="border-top:1px solid var(--b1)">
+          <td style="padding:9px;font-size:13px;font-weight:700">${s.staff_name||'—'}</td>
+          <td style="padding:9px;font-size:12px">${s.date}</td>
+          <td style="padding:9px"><span style="padding:3px 10px;border-radius:8px;font-size:11px;font-weight:700;${statusStyle[s.status]||''}">${statusLabel[s.status]||s.status}</span></td>
+          <td style="padding:9px;font-size:11px;color:var(--m1)">${s.note||'—'}</td>
+        </tr>`).join('')}
+      </tbody></table>`;
+  } catch(err) { console.error(err); }
+}
+
+function exportMgrData(type) {
+  window.open(`/api/stats/export?type=${type}`, '_blank');
+}
 </script>
 </body>
 </html>

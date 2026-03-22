@@ -5,9 +5,16 @@ const db      = require('../db');
 router.get('/', async (req, res) => {
     const user = req.session?.user;
     try {
-        const result = (user?.role === 'branch_manager' || user?.role === 'teller')
-            ? await db.query('SELECT * FROM bank_appointments WHERE branch_id=$1 ORDER BY date, time', [user.branchId])
-            : await db.query('SELECT * FROM bank_appointments ORDER BY date, time');
+        let result;
+        const isStaff = user?.role === 'branch_manager' || user?.role === 'teller';
+        if (isStaff && user.branchId) {
+            result = await db.query(
+                'SELECT * FROM bank_appointments WHERE branch_id=$1 ORDER BY date, time',
+                [user.branchId]
+            );
+        } else {
+            result = await db.query('SELECT * FROM bank_appointments ORDER BY date, time');
+        }
         res.json(result.rows.map(a => ({ ...a, customerName: a.customer_name, branchId: a.branch_id })));
     } catch (err) { res.status(500).json({ error: err.message }); }
 });

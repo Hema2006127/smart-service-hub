@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>شاشة العرض - البنك الذكي</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--gold:#d4af37;--green:#10b981;--blue:#3b82f6;--red:#ef4444}
+body{font-family:'Tajawal',sans-serif;background:#060c19;color:#fff;min-height:100vh;overflow:hidden;position:relative}
+
+/* Animated background */
+.bg{position:fixed;inset:0;z-index:0;pointer-events:none}
+.bg-orb{position:absolute;border-radius:50%;filter:blur(120px);animation:orb 20s ease-in-out infinite alternate}
+.bg-orb:nth-child(1){width:700px;height:700px;top:-200px;right:-100px;background:radial-gradient(circle,rgba(26,86,219,.15),transparent 70%)}
+.bg-orb:nth-child(2){width:600px;height:600px;bottom:-150px;left:-100px;background:radial-gradient(circle,rgba(212,175,55,.08),transparent 70%);animation-delay:-10s}
+@keyframes orb{0%{transform:scale(1)}100%{transform:scale(1.15) translate(20px,15px)}}
+
+.page{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column}
+
+/* Header */
+header{padding:20px 48px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.07)}
+.logo{display:flex;align-items:center;gap:14px}
+.logo-icon{width:52px;height:52px;background:linear-gradient(135deg,#d4af37,#f5d76e);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px}
+.logo-text h1{font-size:22px;font-weight:900;color:#f5d76e}
+.logo-text p{font-size:12px;color:rgba(255,255,255,.4);margin-top:2px}
+.header-right{text-align:left}
+.clock{font-size:36px;font-weight:900;color:#f5d76e;font-variant-numeric:tabular-nums}
+.date{font-size:13px;color:rgba(255,255,255,.4);text-align:center;margin-top:2px}
+
+/* Main content */
+main{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:0;padding:0}
+
+/* Now Serving */
+.now-serving{background:rgba(16,185,129,.04);border-right:1px solid rgba(16,185,129,.12);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 40px;text-align:center;position:relative;overflow:hidden}
+.now-serving::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:500px;height:500px;background:radial-gradient(circle,rgba(16,185,129,.05),transparent 70%);animation:pulse 4s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.15)}}
+.now-serving-label{font-size:14px;font-weight:700;color:rgba(16,185,129,.7);letter-spacing:4px;text-transform:uppercase;margin-bottom:20px}
+.token-display{font-size:130px;font-weight:900;color:#34d399;line-height:1;letter-spacing:12px;text-shadow:0 0 60px rgba(52,211,153,.4);margin-bottom:16px;transition:all .5s ease;position:relative;z-index:1}
+.token-display.flash{animation:flash .6s ease}
+@keyframes flash{0%,100%{opacity:1}50%{opacity:.2;transform:scale(1.05)}}
+.serving-name{font-size:28px;font-weight:700;color:#e2e8f0;margin-bottom:6px;position:relative;z-index:1}
+.serving-service{font-size:16px;color:rgba(255,255,255,.4);position:relative;z-index:1}
+.serving-empty{font-size:20px;color:rgba(255,255,255,.2)}
+
+/* Queue List */
+.queue-panel{padding:32px 36px;overflow-y:auto;max-height:calc(100vh - 100px)}
+.queue-title{font-size:16px;font-weight:900;color:rgba(255,255,255,.5);letter-spacing:3px;text-transform:uppercase;margin-bottom:24px;display:flex;align-items:center;gap:10px}
+.queue-title span{background:rgba(212,175,55,.15);color:#f5d76e;padding:4px 12px;border-radius:20px;font-size:13px;letter-spacing:0;font-weight:900}
+
+.queue-item{display:flex;align-items:center;gap:16px;padding:16px 18px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:16px;margin-bottom:10px;transition:all .3s}
+.queue-item:first-child{background:rgba(212,175,55,.08);border-color:rgba(212,175,55,.2)}
+.q-num{width:36px;height:36px;background:rgba(255,255,255,.05);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:rgba(255,255,255,.4);flex-shrink:0}
+.queue-item:first-child .q-num{background:rgba(212,175,55,.2);color:#f5d76e}
+.q-token{font-size:22px;font-weight:900;color:#e2e8f0;width:80px;flex-shrink:0}
+.queue-item:first-child .q-token{color:#f5d76e}
+.q-info{flex:1}
+.q-name{font-size:15px;font-weight:700;color:#e2e8f0}
+.q-service{font-size:12px;color:rgba(255,255,255,.35);margin-top:3px}
+.q-wait{font-size:12px;color:rgba(255,255,255,.25);text-align:left}
+
+/* Priority badge */
+.priority-badge{padding:2px 8px;border-radius:10px;font-size:10px;font-weight:900}
+.priority-vip{background:rgba(212,175,55,.2);color:#f5d76e}
+.priority-elderly,.priority-disabled{background:rgba(59,130,246,.2);color:#93c5fd}
+
+/* Footer ticker */
+footer{background:rgba(0,0,0,.4);border-top:1px solid rgba(255,255,255,.06);padding:12px 0;overflow:hidden}
+.ticker-wrap{overflow:hidden;white-space:nowrap}
+.ticker-text{display:inline-block;animation:ticker 30s linear infinite;font-size:14px;color:rgba(255,255,255,.35);padding-left:100%}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
+
+/* Branch selector */
+.branch-select{position:fixed;top:16px;left:16px;z-index:200;background:rgba(10,18,34,.95);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:8px 12px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="bg"><div class="bg-orb"></div><div class="bg-orb"></div></div>
+
+<select class="branch-select" id="branchSelect" onchange="changeBranch(this.value)">
+    <option value="">اختر الفرع...</option>
+</select>
+
+<div class="page">
+    <header>
+        <div class="logo">
+            <div class="logo-icon">🏦</div>
+            <div class="logo-text">
+                <h1>البنك الذكي</h1>
+                <p id="branchName">شاشة عرض الطابور</p>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="clock" id="clock">00:00:00</div>
+            <div class="date" id="dateDisplay"></div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Now Serving -->
+        <div class="now-serving">
+            <div class="now-serving-label">يُخدم الآن</div>
+            <div class="token-display" id="tokenDisplay">---</div>
+            <div class="serving-name" id="servingName">في انتظار العملاء</div>
+            <div class="serving-service" id="servingService"></div>
+        </div>
+
+        <!-- Queue List -->
+        <div class="queue-panel">
+            <div class="queue-title">
+                🎫 قائمة الانتظار
+                <span id="queueCount">0</span>
+            </div>
+            <div id="queueList">
+                <div style="text-align:center;padding:40px;color:rgba(255,255,255,.2)">الطابور فارغ ✅</div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="ticker-wrap">
+            <div class="ticker-text" id="tickerText">
+                مرحباً بكم في البنك الذكي 🏦 — نسعى دائماً لتقديم أفضل خدمة ممكنة — وقت الدوام: 9 صباحاً حتى 3 مساءً — شكراً لثقتكم
+            </div>
+        </div>
+    </footer>
+</div>
+
+<script>
+let currentBranch = null;
+let eventSource   = null;
+
+// ── Clock ──────────────────────────────────────────────────────────────────────
+function updateClock() {
+    const now  = new Date();
+    document.getElementById('clock').textContent = now.toLocaleTimeString('ar-EG', { hour12: false });
+    document.getElementById('dateDisplay').textContent = now.toLocaleDateString('ar-EG', {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+    });
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// ── Load Branches ──────────────────────────────────────────────────────────────
+async function loadBranches() {
+    try {
+        const res  = await fetch('/api/branches');
+        const data = await res.json();
+        const sel  = document.getElementById('branchSelect');
+        data.forEach(b => {
+            const opt   = document.createElement('option');
+            opt.value   = b.id;
+            opt.textContent = b.name;
+            sel.appendChild(opt);
+        });
+        // Auto-select first branch
+        if (data.length > 0) {
+            sel.value = data[0].id;
+            changeBranch(data[0].id);
+        }
+    } catch {}
+}
+
+// ── Change Branch ─────────────────────────────────────────────────────────────
+function changeBranch(branchId) {
+    if (!branchId) return;
+    currentBranch = branchId;
+    if (eventSource) eventSource.close();
+    loadQueue(branchId);
+    subscribeSSE(branchId);
+}
+
+// ── Load Queue ─────────────────────────────────────────────────────────────────
+async function loadQueue(branchId) {
+    try {
+        const res  = await fetch(`/api/queue/${branchId}`);
+        const data = await res.json();
+
+        // Branch name
+        const branchSel = document.getElementById('branchSelect');
+        const selectedOpt = branchSel.options[branchSel.selectedIndex];
+        if (selectedOpt && selectedOpt.value) {
+            document.getElementById('branchName').textContent = selectedOpt.textContent;
+        }
+
+        const serving = data.find(t => t.status === 'serving');
+        const waiting = data.filter(t => t.status === 'waiting');
+
+        // Now serving
+        if (serving) {
+            setServing(serving.token, serving.name, serving.service);
+        } else {
+            document.getElementById('tokenDisplay').textContent = '---';
+            document.getElementById('servingName').textContent   = 'في انتظار العملاء';
+            document.getElementById('servingService').textContent = '';
+        }
+
+        // Queue list
+        document.getElementById('queueCount').textContent = waiting.length;
+        const ql = document.getElementById('queueList');
+        if (waiting.length === 0) {
+            ql.innerHTML = '<div style="text-align:center;padding:40px;color:rgba(255,255,255,.2)">الطابور فارغ ✅</div>';
+            return;
+        }
+        ql.innerHTML = waiting.map((t, i) => {
+            const pClass = t.priority > 2 ? 'priority-vip' : t.priority > 1 ? 'priority-elderly' : '';
+            const pLabel = t.priority > 2 ? 'VIP' : t.priority > 1 ? 'أولوية' : '';
+            return `
+            <div class="queue-item">
+                <div class="q-num">${i + 1}</div>
+                <div class="q-token">${t.token}</div>
+                <div class="q-info">
+                    <div class="q-name">${t.name} ${pLabel ? `<span class="priority-badge ${pClass}">${pLabel}</span>` : ''}</div>
+                    <div class="q-service">${t.service}</div>
+                </div>
+                <div class="q-wait">~${(i + 1) * 8} د</div>
+            </div>`;
+        }).join('');
+    } catch {}
+}
+
+function setServing(token, name, service) {
+    const el = document.getElementById('tokenDisplay');
+    el.classList.remove('flash');
+    void el.offsetWidth;
+    el.classList.add('flash');
+    el.textContent = token;
+    document.getElementById('servingName').textContent    = name;
+    document.getElementById('servingService').textContent = service;
+}
+
+// ── SSE Real-time ─────────────────────────────────────────────────────────────
+function subscribeSSE(branchId) {
+    eventSource = new EventSource(`/api/events/${branchId}`);
+    eventSource.onmessage = (e) => {
+        try {
+            const data = JSON.parse(e.data);
+            if (data.type === 'now_serving') {
+                setServing(data.token, data.name, data.service);
+                playChime();
+            }
+            if (data.type === 'queue_empty') {
+                document.getElementById('tokenDisplay').textContent = '---';
+                document.getElementById('servingName').textContent   = 'في انتظار العملاء';
+                document.getElementById('servingService').textContent = '';
+            }
+            if (['new_ticket','now_serving','queue_reset','queue_empty'].includes(data.type)) {
+                loadQueue(branchId);
+            }
+        } catch {}
+    };
+    eventSource.onerror = () => {
+        setTimeout(() => subscribeSSE(branchId), 5000);
+    };
+}
+
+// ── Chime Sound ───────────────────────────────────────────────────────────────
+function playChime() {
+    try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        [523.25, 659.25, 783.99].forEach((freq, i) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.frequency.value = freq;
+            osc.type = 'sine';
+            gain.gain.setValueAtTime(0, ctx.currentTime + i * 0.2);
+            gain.gain.linearRampToValueAtTime(0.3, ctx.currentTime + i * 0.2 + 0.05);
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.2 + 0.5);
+            osc.start(ctx.currentTime + i * 0.2);
+            osc.stop(ctx.currentTime + i * 0.2 + 0.5);
+        });
+    } catch {}
+}
+
+loadBranches();
+</script>
+</body>
+</html>
