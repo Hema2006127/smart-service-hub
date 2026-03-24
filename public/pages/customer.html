@@ -332,7 +332,68 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
 @media(max-width:479px){
   .toast{min-width:220px;max-width:92vw;padding:10px 18px;font-size:12px}
 }
+
+/* ══ THEME TOGGLE BUTTON ══ */
+.theme-btn{padding:6px 14px;background:rgba(255,200,50,.12);border:1px solid rgba(255,200,50,.3);border-radius:20px;color:#ffb347;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;transition:.2s;white-space:nowrap}
+.theme-btn:hover{background:rgba(255,200,50,.22);border-color:rgba(255,200,50,.5)}
+
+/* ══ LIGHT THEME ══ */
+html[data-theme="light"] body{background:#eef5fb;color:#0a1628}
+html[data-theme="light"] #bgLayer::before{opacity:.04}
+html[data-theme="light"] #bgLayer::after{opacity:.04}
+html[data-theme="light"] #blobSvg{opacity:.06}
+html[data-theme="light"] #scanLine{opacity:.15}
+html[data-theme="light"] header{background:rgba(240,248,255,.97);border-bottom-color:rgba(0,100,200,.15)}
+html[data-theme="light"] .brand-name{color:#0a1628}
+html[data-theme="light"] .brand-sub{color:#0060cc}
+html[data-theme="light"] #headerClock{color:#0a1628}
+html[data-theme="light"] .staff-btn{color:#0060cc}
+html[data-theme="light"] .live-col{background:rgba(240,248,255,.92);border-color:rgba(0,100,200,.12)}
+html[data-theme="light"] .live-title{color:#0a1628}
+html[data-theme="light"] .live-refresh{color:#0a1628;border-color:rgba(0,100,200,.2)}
+html[data-theme="light"] .live-refresh:hover{border-color:#0080ff;color:#0060cc}
+html[data-theme="light"] .stat-box{background:rgba(255,255,255,.82);border-color:rgba(0,100,200,.12)}
+html[data-theme="light"] .stat-label{color:rgba(10,22,40,.5)}
+html[data-theme="light"] .serving-card{background:rgba(235,255,250,.85);border-color:rgba(0,190,150,.25)}
+html[data-theme="light"] .sc-name{color:rgba(10,22,40,.7)}
+html[data-theme="light"] .q-title{color:rgba(10,22,40,.5)}
+html[data-theme="light"] .queue-item{background:rgba(255,255,255,.72);border-color:rgba(0,100,200,.12)}
+html[data-theme="light"] .queue-item:hover{background:rgba(240,248,255,.95)}
+html[data-theme="light"] .qi-token{color:#0a1628}
+html[data-theme="light"] .qi-name{color:rgba(10,22,40,.75)}
+html[data-theme="light"] .qi-svc{color:rgba(10,22,40,.5)}
+html[data-theme="light"] .qi-pos{background:rgba(255,255,255,.6);color:#0060cc;border-color:rgba(0,100,200,.15)}
+html[data-theme="light"] .hero h2{color:#0a1628}
+html[data-theme="light"] .hero p{color:rgba(10,22,40,.6)}
+html[data-theme="light"] .hero-tag{background:rgba(0,100,200,.06);border-color:rgba(0,100,200,.15)}
+html[data-theme="light"] .hero-tag span{color:#0060cc}
+html[data-theme="light"] .currency-section{background:rgba(255,255,255,.72);border-color:rgba(0,100,200,.12)}
+html[data-theme="light"] .cs-title{color:#0a1628}
+html[data-theme="light"] .cs-date{color:rgba(10,22,40,.5)}
+html[data-theme="light"] .tab-btn{background:rgba(255,255,255,.7);border-color:rgba(0,100,200,.12);color:rgba(10,22,40,.6)}
+html[data-theme="light"] .tab-btn.active{background:linear-gradient(135deg,#0060cc,#00a080);color:#fff;border-color:transparent}
+html[data-theme="light"] .panel{background:rgba(255,255,255,.65);border-color:rgba(0,100,200,.1)}
+html[data-theme="light"] .field-label{color:rgba(10,22,40,.6)}
+html[data-theme="light"] .styled-select{background:rgba(255,255,255,.85);border-color:rgba(0,100,200,.2);color:#0a1628}
+html[data-theme="light"] .styled-input{background:rgba(255,255,255,.85);border-color:rgba(0,100,200,.2);color:#0a1628}
+html[data-theme="light"] .styled-input::placeholder{color:rgba(10,22,40,.3)}
+html[data-theme="light"] .services-title{color:rgba(10,22,40,.6)}
+html[data-theme="light"] .svc-card{background:rgba(255,255,255,.72);border-color:rgba(0,100,200,.15);color:#0a1628}
+html[data-theme="light"] .svc-card:hover{background:rgba(240,248,255,.95)}
+html[data-theme="light"] .svc-name{color:#0a1628}
+html[data-theme="light"] .appt-card{background:rgba(255,255,255,.72);border-color:rgba(0,100,200,.12)}
+html[data-theme="light"] .appt-title{color:#0a1628}
+html[data-theme="light"] .game-col{background:rgba(235,245,255,.88);border-color:rgba(0,100,200,.12)}
+html[data-theme="light"] .game-col-title{color:#0a1628}
+html[data-theme="light"] .gsi-label{color:rgba(10,22,40,.5)}
+html[data-theme="light"] .game-msg{color:rgba(10,22,40,.6)}
+html[data-theme="light"] .gt-btn{color:rgba(10,22,40,.55)}
+html[data-theme="light"] .gt-btn.active{color:#fff}
+html[data-theme="light"] .empty-state{color:rgba(10,22,40,.5)}
+html[data-theme="light"] .sound-btn{background:rgba(240,248,255,.92);border-color:rgba(0,100,200,.18);color:#0a1628}
+html[data-theme="light"] .toast{background:rgba(255,255,255,.97);color:#0a1628;border:1px solid rgba(0,100,200,.15);box-shadow:0 4px 20px rgba(0,60,140,.12)}
 </style>
+<script>document.documentElement.setAttribute('data-theme',localStorage.getItem('nexbank-theme')||'dark')</script>
 </head>
 <body>
 
@@ -382,6 +443,7 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
     <div class="header-live"><div class="live-dot"></div><span class="live-text">LIVE</span></div>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()"><span id="themeIcon">☀️</span> <span id="themeLabel">فاتح</span></button>
     <button onclick="toggleLang()" id="langBtn" style="padding:6px 14px;background:rgba(0,128,255,.12);border:1px solid rgba(0,128,255,.25);border-radius:20px;color:#33b3ff;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer">EN</button>
     <a href="/display" target="_blank" style="padding:6px 14px;background:rgba(0,212,170,.1);border:1px solid rgba(0,212,170,.2);border-radius:20px;color:#00d4aa;font-family:inherit;font-size:12px;font-weight:700;text-decoration:none">📺 شاشة العرض</a>
     <a href="/login" class="staff-btn">دخول الموظفين ←</a>
@@ -1232,6 +1294,22 @@ function switchGame(g){
   if(g==='snake'&&snake.length===0)startSnake();
   if(g==='flappy'){if(!fRunning&&!fStarted)startFlappy();else if(!fStarted){startFlappy()}}
 }
+
+// ══ THEME ══
+function toggleTheme(){
+  const h=document.documentElement;
+  const next=h.getAttribute('data-theme')==='light'?'dark':'light';
+  h.setAttribute('data-theme',next);
+  localStorage.setItem('nexbank-theme',next);
+  _applyThemeBtn(next);
+}
+function _applyThemeBtn(t){
+  const i=document.getElementById('themeIcon');
+  const l=document.getElementById('themeLabel');
+  if(i)i.textContent=t==='light'?'🌙':'☀️';
+  if(l)l.textContent=t==='light'?'داكن':'فاتح';
+}
+_applyThemeBtn(document.documentElement.getAttribute('data-theme')||'dark');
 
 // Init
 window.speechSynthesis&&(window.speechSynthesis.onvoiceschanged=()=>window.speechSynthesis.getVoices());
