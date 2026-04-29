@@ -1,0 +1,13 @@
+/* ══ SHARED LIGHT THEME — Lighter Noir ══ */
+html[data-theme="light"] body{background:#14141e;color:#e8d5a0}
+html[data-theme="light"] .depth-layer::before{background:radial-gradient(ellipse 80% 50% at 60% -20%,rgba(201,168,76,.1) 0%,transparent 65%),radial-gradient(ellipse 60% 60% at -10% 90%,rgba(201,168,76,.07) 0%,transparent 60%)}
+html[data-theme="light"] .depth-layer::after{background:linear-gradient(180deg,transparent,rgba(0,0,8,.5))}
+html[data-theme="light"] .caustics{opacity:.5}
+html[data-theme="light"] .bio-1{background:radial-gradient(circle,rgba(201,168,76,.13),transparent 70%)}
+html[data-theme="light"] .bio-2{background:radial-gradient(circle,rgba(201,168,76,.1),transparent 70%)}
+html[data-theme="light"] .bio-3{background:radial-gradient(circle,rgba(201,168,76,.07),transparent 70%)}
+html[data-theme="light"] .sidebar{background:rgba(18,18,28,.98);border-left-color:rgba(201,168,76,.25)}
+html[data-theme="light"] .topbar{background:rgba(16,16,24,.97);border-bottom-color:rgba(201,168,76,.18)}
+html[data-theme="light"] .toast{background:rgba(18,18,28,.98);color:#e8d5a0;border-color:rgba(201,168,76,.28)}
+html[data-theme="light"] .toast.success{border-color:rgba(201,168,76,.6);color:#d4b860}
+html[data-theme="light"] .toast.error{border-color:rgba(180,40,20,.3);color:#c06040}

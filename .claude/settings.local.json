@@ -3,7 +3,12 @@
     "allow": [
       "Bash(node migrate-v2.js)",
       "Bash(node -e \"require\\(''''dotenv''''\\).config\\(\\); const app = require\\(''''./server''''\\); \")",
-      "Bash(node -e \":*)"
+      "Bash(node -e \":*)",
+      "Bash(awk 'NR==568, /^}/' \"c:\\\\Users\\\\mahmi\\\\Desktop\\\\smart-service-hub\\\\public\\\\pages\\\\admin.html\")",
+      "Bash(awk '/html\\\\[data-theme=\"light\"\\\\]/{start=NR} /^}$/{if\\(start && NR>start\\){print start\"-\"NR; exit}}' \"c:\\\\Users\\\\mahmi\\\\Desktop\\\\smart-service-hub\\\\public\\\\pages\\\\admin.html\")",
+      "Bash(awk '/html\\\\[data-theme=\"light\"\\\\]/{start=NR} /^}$/{if\\(start && NR>start\\){print start\"-\"NR; exit}}' \"c:\\\\Users\\\\mahmi\\\\Desktop\\\\smart-service-hub\\\\public\\\\pages\\\\customer.html\")",
+      "Bash(awk '/html\\\\[data-theme=\"light\"\\\\]/{start=NR} /^    }$/{if\\(start && NR>start\\){print start\"-\"NR; exit}}' \"c:\\\\Users\\\\mahmi\\\\Desktop\\\\smart-service-hub\\\\public\\\\pages\\\\login.html\")",
+      "Bash(awk '/html\\\\[data-theme=\"light\"\\\\]/{start=NR} /^}$/{if\\(start && NR>start\\){print start\"-\"NR; exit}}' \"c:\\\\Users\\\\mahmi\\\\Desktop\\\\smart-service-hub\\\\public\\\\pages\\\\manager.html\")"
     ]
   }
 }

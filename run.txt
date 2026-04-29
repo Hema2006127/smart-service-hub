@@ -1,0 +1,8 @@
+npm start
+http://localhost:3000
+http://localhost:3000/teller
+http://localhost:3000/manager
+http://localhost:3000/admin
+http://localhost:3000/customer
+http://localhost:3000/display
+    
