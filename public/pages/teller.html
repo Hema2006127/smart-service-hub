@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>البنك الذكي — شاشة الموظف</title>
+<title>Smart Bank — Teller Screen</title>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/shared/ocean.css">
-<link rel="stylesheet" href="/shared/light.css">
+<link rel="stylesheet" href="/shared/ocean.css?v=2">
+<link rel="stylesheet" href="/shared/light.css?v=2">
+<link rel="stylesheet" href="/shared/city-bg.css?v=2">
 <style>
 /* ════ ROOT ════ */
 *{margin:0;padding:0;box-sizing:border-box}
@@ -64,7 +65,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--foam);cur
 @keyframes bioFloat3{0%,100%{transform:translate(0,0) scale(1) rotate(0deg)}50%{transform:translate(15px,20px) scale(1.1) rotate(5deg)}}
 
 /* ════ LAYOUT ════ */
-.app{position:relative;z-index:2;display:flex;height:100vh}
+.app{position:relative;z-index:10;display:flex;height:100vh;pointer-events:auto;}
 
 /* ════ SIDEBAR ════ */
 .sidebar{
@@ -600,36 +601,36 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
     <div class="sb-top">
       <div class="sb-logo">🏦</div>
       <div>
-        <div class="sb-brand-t">البنك الذكي</div>
-        <div class="sb-brand-s" id="branchName">شاشة الموظف</div>
+        <div class="sb-brand-t">Smart Bank</div>
+        <div class="sb-brand-s" id="branchName">Teller Screen</div>
       </div>
     </div>
 
     <div class="sb-user">
       <div class="sb-av" id="userAv">م</div>
       <div>
-        <div class="sb-uname" id="userName">موظف</div>
+        <div class="sb-uname" id="userName">Employee</div>
         <div class="sb-urole">TELLER</div>
       </div>
     </div>
 
     <nav class="sb-nav">
-      <div class="nav-section" data-i18n="sec_main">القائمة الرئيسية</div>
+      <div class="nav-section" data-i18n="sec_main">Main Menu</div>
       <button class="ntab active" id="tab-queue" onclick="switchTab('queue')">
         <span class="nav-icon">🎫</span>
-        <span data-i18n="nav_queue">طابور الانتظار</span>
+        <span data-i18n="nav_queue">Waiting Queue</span>
         <span class="ntab-badge" id="waitBadge" style="display:none">0</span>
       </button>
       <button class="ntab" id="tab-appts" onclick="switchTab('appts')">
         <span class="nav-icon">📅</span>
-        <span data-i18n="nav_appts">المواعيد</span>
+        <span data-i18n="nav_appts">Appointments</span>
         <span class="ntab-badge" id="apptBadge" style="display:none">0</span>
       </button>
 
-      <div class="nav-section" data-i18n="sec_tools">الأدوات</div>
+      <div class="nav-section" data-i18n="sec_tools">Tools</div>
       <a href="/display" target="_blank" class="ntab nav-lnk">
         <span class="nav-icon">📺</span>
-        شاشة العرض
+        Display Screen
       </a>
     </nav>
 
@@ -640,7 +641,7 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
 
     <div class="theme-wrap" style="display:flex;gap:6px;padding:6px 12px">
       <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" style="flex:1">
-        <span id="themeIcon">☀️</span><span id="themeLabel">الثيم الفاتح</span>
+        <span id="themeIcon">☀️</span><span id="themeLabel">Light Theme</span>
       </button>
       <button class="theme-btn" id="langBtn" onclick="toggleLang()" style="flex:0 0 44px;padding:0">
         <span id="langLabel">EN</span>
@@ -648,14 +649,14 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
     </div>
 
     <div class="sb-footer">
-      <button class="btn-logout" onclick="logout()">← <span data-i18n="logout">تسجيل الخروج</span></button>
+      <button class="btn-logout" onclick="logout()">← <span data-i18n="logout">Logout</span></button>
     </div>
   </aside>
 
   <!-- ════ MAIN ════ -->
   <div class="main">
     <div class="topbar">
-      <div class="tb-title">شاشة الموظف</div>
+      <div class="tb-title">Teller Screen</div>
       <div class="tb-right">
         <div class="live-pill"><div class="ldot"></div>LIVE</div>
       </div>
@@ -667,19 +668,19 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
       <div class="stats-row">
         <div class="sc">
           <div class="sc-icon i-tl">🎫</div>
-          <div class="sc-body"><div class="sc-n" id="statWaiting">0</div><div class="sc-l" data-i18n="stat_waiting">في الانتظار</div></div>
+          <div class="sc-body"><div class="sc-n" id="statWaiting">0</div><div class="sc-l" data-i18n="stat_waiting">Waiting</div></div>
         </div>
         <div class="sc">
           <div class="sc-icon i-gr">✅</div>
-          <div class="sc-body"><div class="sc-n" id="statDone">0</div><div class="sc-l" data-i18n="stat_served">تم خدمتهم</div></div>
+          <div class="sc-body"><div class="sc-n" id="statDone">0</div><div class="sc-l" data-i18n="stat_served">Served</div></div>
         </div>
         <div class="sc">
           <div class="sc-icon i-gd">📅</div>
-          <div class="sc-body"><div class="sc-n" id="statAppts">0</div><div class="sc-l" data-i18n="stat_appts">مواعيد اليوم</div></div>
+          <div class="sc-body"><div class="sc-n" id="statAppts">0</div><div class="sc-l" data-i18n="stat_appts">Today's Appointments</div></div>
         </div>
         <div class="sc">
           <div class="sc-icon i-pu">⬆️</div>
-          <div class="sc-body"><div class="sc-n" id="statEsc">0</div><div class="sc-l" data-i18n="stat_esc">مُحالة للمدير</div></div>
+          <div class="sc-body"><div class="sc-n" id="statEsc">0</div><div class="sc-l" data-i18n="stat_esc">Referred to Manager</div></div>
         </div>
       </div>
 
@@ -688,54 +689,54 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
         <div class="serving-hero">
           <div class="s-lbl">
             <div class="s-dot"></div>
-            يُخدم الآن
+            Serving Now
             <span class="s-timer" id="svcTimerWrap" style="display:none">⏱ <span id="timerDisp">0:00</span></span>
           </div>
           <div id="servingDisplay">
-            <div class="s-empty">لا يوجد عميل حالياً — اضغط استدعاء التالي</div>
+            <div class="s-empty">No customer currently — Click Call Next</div>
           </div>
           <div id="servingBtns" class="serving-btns">
-            <button class="btn-callnext" onclick="callNext()">استدعاء التالي ←</button>
+            <button class="btn-callnext" onclick="callNext()">Call Next ←</button>
           </div>
         </div>
 
         <div class="g2">
           <div class="card">
             <div class="ch">
-              <div class="ct">⏳ طابور الانتظار <span class="cb" id="queueCount">0</span></div>
-              <button class="btn-sm b-red-sm" onclick="resetQueue()">🔄 إعادة تعيين</button>
+              <div class="ct">⏳ Waiting Queue <span class="cb" id="queueCount">0</span></div>
+              <button class="btn-sm b-red-sm" onclick="resetQueue()">🔄 Reset تعيين</button>
             </div>
-            <div id="queueList"><div class="empty"><span class="empty-ico">⏳</span>جاري التحميل...</div></div>
+            <div id="queueList"><div class="empty"><span class="empty-ico">⏳</span>Loading...</div></div>
           </div>
 
           <div>
             <div class="card" style="margin-bottom:14px">
-              <div class="ct" style="margin-bottom:14px;font-size:13px">📊 إحصائيات اليوم</div>
+              <div class="ct" style="margin-bottom:14px;font-size:13px">📊 Today's Stats</div>
               <div class="mini-grid">
-                <div class="mini-s"><div class="mini-n" style="color:var(--teal2)" id="miniWait">0</div><div class="mini-l">انتظار</div></div>
-                <div class="mini-s"><div class="mini-n" style="color:var(--green2)" id="miniDone">0</div><div class="mini-l">خُدِموا</div></div>
-                <div class="mini-s"><div class="mini-n" style="color:var(--amber)" id="miniAppts">0</div><div class="mini-l">مواعيد</div></div>
-                <div class="mini-s"><div class="mini-n" style="color:var(--purple2)" id="miniEsc">0</div><div class="mini-l">مُحالة</div></div>
+                <div class="mini-s"><div class="mini-n" style="color:var(--teal2)" id="miniWait">0</div><div class="mini-l">Waiting</div></div>
+                <div class="mini-s"><div class="mini-n" style="color:var(--green2)" id="miniDone">0</div><div class="mini-l">Served</div></div>
+                <div class="mini-s"><div class="mini-n" style="color:var(--amber)" id="miniAppts">0</div><div class="mini-l">Appointments</div></div>
+                <div class="mini-s"><div class="mini-n" style="color:var(--purple2)" id="miniEsc">0</div><div class="mini-l">Referred</div></div>
               </div>
             </div>
 
             <div class="card" style="margin-bottom:14px">
-              <div class="ct" style="margin-bottom:14px;font-size:13px">➕ إضافة تذكرة</div>
+              <div class="ct" style="margin-bottom:14px;font-size:13px">➕ Add Ticket</div>
               <div class="add-form">
-                <input class="fi" type="text" id="newName" placeholder="اسم العميل (اختياري)"/>
-                <select class="fi" id="newService"><option value="">— اختر الخدمة —</option></select>
+                <input class="fi" type="text" id="newName" placeholder="Customer Name (Optional)"/>
+                <select class="fi" id="newService"><option value="">— Choose Service —</option></select>
                 <select class="fi" id="newPriority">
-                  <option value="normal">عادي</option>
-                  <option value="elderly">كبير السن</option>
-                  <option value="disabled">ذوي احتياجات</option>
+                  <option value="normal">Normal</option>
+                  <option value="elderly">Elderly</option>
+                  <option value="disabled">Special Needs</option>
                   <option value="vip">VIP</option>
                 </select>
-                <button class="btn-add" onclick="addTicket()">➕ إضافة للطابور</button>
+                <button class="btn-add" onclick="addTicket()">➕ Add to Queue</button>
               </div>
             </div>
 
             <div class="card">
-              <div class="ct" style="margin-bottom:12px;font-size:13px">🕐 الوقت</div>
+              <div class="ct" style="margin-bottom:12px;font-size:13px">🕐 Time</div>
               <div id="bigClock">--:--</div>
               <div id="bigDate" style="font-size:11px;color:var(--foam3);text-align:center;margin-top:7px;line-height:1.5"></div>
             </div>
@@ -747,24 +748,24 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
       <div class="panel" id="panel-appts">
         <div class="card">
           <div class="ch">
-            <div class="ct">📅 مواعيد اليوم
+            <div class="ct">📅 Today's Appointments
               <span class="cb" id="apptCountBadge">0</span>
               <span id="apptDateLabel" style="font-size:11px;font-weight:400;color:var(--foam3)"></span>
             </div>
-            <button class="btn-sm b-mute" onclick="loadAppointments()">↻ تحديث</button>
+            <button class="btn-sm b-mute" onclick="loadAppointments()">↻ Refresh</button>
           </div>
 
           <div id="activeApptBanner" class="active-banner" style="display:none">
-            <div class="ab-head"><div class="s-dot"></div>جاري خدمة موعد الآن</div>
+            <div class="ab-head"><div class="s-dot"></div>Currently serving an appointment</div>
             <div class="ab-name" id="activeApptName">—</div>
             <div class="ab-info" id="activeApptInfo">—</div>
             <div class="serving-btns" style="margin-top:14px;justify-content:flex-start">
-              <button class="btn-complete" onclick="completeAppt()">✅ إنهاء الموعد</button>
-              <button class="btn-escalate" onclick="escalateAppt()">⬆️ إحالة للمدير</button>
+              <button class="btn-complete" onclick="completeAppt()">✅ Finish Appointment</button>
+              <button class="btn-escalate" onclick="escalateAppt()">⬆️ Refer to Manager</button>
             </div>
           </div>
 
-          <div id="apptList"><div class="empty"><span class="empty-ico">📅</span>جاري التحميل...</div></div>
+          <div id="apptList"><div class="empty"><span class="empty-ico">📅</span>Loading...</div></div>
         </div>
       </div>
 
@@ -795,8 +796,8 @@ async function init() {
     try {
       const branches = await fetch('/api/branches').then(r => r.json());
       const b = branches.find(x => x.id == currentUser.branchId);
-      document.getElementById('branchName').textContent = b ? b.name : 'الفرع';
-    } catch { document.getElementById('branchName').textContent = 'الفرع'; }
+      document.getElementById('branchName').textContent = b ? b.name : 'Branch';
+    } catch { document.getElementById('branchName').textContent = 'Branch'; }
 
     startClock();
     await loadServices();
@@ -811,11 +812,11 @@ async function init() {
 function startClock() {
   function tick() {
     const now = new Date();
-    const t = now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-    const d = now.toLocaleDateString('ar-EG', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    const t = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    const d = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
     document.getElementById('navClock').textContent = t;
     document.getElementById('bigClock').textContent = t;
-    document.getElementById('navDate').textContent  = now.toLocaleDateString('ar-EG', { month: 'short', day: 'numeric' });
+    document.getElementById('navDate').textContent  = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
     document.getElementById('bigDate').textContent  = d;
   }
   tick(); setInterval(tick, 1000);
@@ -843,7 +844,7 @@ function switchTab(tab) {
   document.getElementById('tab-' + tab).classList.add('active');
   document.getElementById('panel-' + tab).classList.add('active');
   if (tab === 'appts') {
-    document.getElementById('apptDateLabel').textContent = '— ' + new Date().toLocaleDateString('ar-EG');
+    document.getElementById('apptDateLabel').textContent = '— ' + new Date().toLocaleDateString('en-US');
     loadAppointments();
   } else {
     loadQueue(currentUser?.branchId || 1);
@@ -860,12 +861,12 @@ function subscribeSSE(bid) {
       if (['new_ticket','now_serving','queue_reset','queue_empty','ticket_done','sendback'].includes(d.type)) {
         loadQueue(bid);
         if (d.type === 'new_ticket') {
-          showToast(`🎫 عميل جديد: ${d.token} — ${d.service}`, 'info');
-          if (Notification?.permission === 'granted') new Notification('عميل جديد', { body: `${d.name} — ${d.service}` });
+          showToast(`🎫 New Customer: ${d.token} — ${d.service}`, 'info');
+          if (Notification?.permission === 'granted') new Notification('New Customer', { body: `${d.name} — ${d.service}` });
           const wb = document.getElementById('waitBadge');
           wb.style.display = 'inline-flex';
         }
-        if (d.type === 'sendback') showToast(`↩️ تم إرجاع ${d.token} من المدير`, 'info');
+        if (d.type === 'sendback') showToast(`↩️ Returned ${d.token} From Manager`, 'info');
       }
     } catch {}
   };
@@ -904,30 +905,30 @@ async function loadQueue(bid) {
       if (currentServingId !== serving.id) { stopSvcTimer(); startSvcTimer(); }
       currentServingId = serving.id;
       const priTag = serving.priority >= 3 ? '<span class="pri-vip">VIP ⭐</span>' :
-                     serving.priority >= 2 ? '<span class="pri-el">أولوية</span>' : '';
+                     serving.priority >= 2 ? '<span class="pri-el">Priority</span>' : '';
       sd.innerHTML = `
         <div class="s-tk">${serving.token}</div>
         <div class="s-name">${serving.name} ${priTag}</div>
         <div class="s-svc">${serving.service}</div>`;
       sb.innerHTML = `
-        <button class="btn-complete" onclick="completeService()">✅ إنهاء الخدمة</button>
-        <button class="btn-escalate" onclick="escalateCase()">⬆️ إحالة للمدير</button>`;
+        <button class="btn-complete" onclick="completeService()">✅ Finish Service</button>
+        <button class="btn-escalate" onclick="escalateCase()">⬆️ Refer to Manager</button>`;
     } else {
       if (currentServingId) stopSvcTimer();
       currentServingId = null;
-      sd.innerHTML = '<div class="s-empty">لا يوجد عميل حالياً — اضغط استدعاء التالي</div>';
-      sb.innerHTML = `<button class="btn-callnext" onclick="callNext()">استدعاء التالي ←</button>`;
+      sd.innerHTML = '<div class="s-empty">No customer currently — Click Call Next</div>';
+      sb.innerHTML = `<button class="btn-callnext" onclick="callNext()">Call Next ←</button>`;
     }
 
     const ql = document.getElementById('queueList');
     if (!waiting.length) {
-      ql.innerHTML = '<div class="empty"><span class="empty-ico">✅</span>الطابور فاضي الآن</div>';
+      ql.innerHTML = '<div class="empty"><span class="empty-ico">✅</span>Queue is empty now</div>';
       return;
     }
     ql.innerHTML = waiting.map((t, i) => {
       const priTag = t.priority >= 3 ? '<span class="pri-vip">VIP</span>' :
-                     t.priority >= 2 ? '<span class="pri-el">أولوية</span>' : '';
-      const time = t.created_at ? new Date(t.created_at).toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' }) : '';
+                     t.priority >= 2 ? '<span class="pri-el">Priority</span>' : '';
+      const time = t.created_at ? new Date(t.created_at).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : '';
       return `<div class="qi" style="animation-delay:${i*.04}s">
         <div class="qi-rank">${i+1}</div>
         <div class="qi-tk">${t.token}</div>
@@ -936,7 +937,7 @@ async function loadQueue(bid) {
           <div class="qi-sv">${t.service}</div>
         </div>
         <div class="qi-right">
-          <span class="qi-eta">~${(i+1)*3} دقيقة</span>
+          <span class="qi-eta">~${(i+1)*3} Minute</span>
           <span class="qi-time">${time}</span>
         </div>
       </div>`;
@@ -962,7 +963,7 @@ async function addTicket() {
   const name     = document.getElementById('newName').value.trim();
   const serviceId = document.getElementById('newService').value;
   const priority = document.getElementById('newPriority').value;
-  if (!serviceId) { showToast('اختر الخدمة أولاً', 'error'); return; }
+  if (!serviceId) { showToast('Select service first', 'error'); return; }
   try {
     const res  = await fetch(`/api/queue/${bid}`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -970,12 +971,12 @@ async function addTicket() {
     });
     const data = await res.json();
     if (data.success) {
-      showToast(`${data.message} — التذكرة: ${data.token}`, 'success');
+      showToast(`${data.message} — Ticket: ${data.token}`, 'success');
       document.getElementById('newName').value = '';
       document.getElementById('newService').value = '';
       loadQueue(bid);
-    } else showToast(data.error || 'خطأ', 'error');
-  } catch { showToast('خطأ في الاتصال', 'error'); }
+    } else showToast(data.error || 'Error', 'error');
+  } catch { showToast('Connection Error', 'error'); }
 }
 
 // ── APPOINTMENTS STATS ────────────────────────────────────
@@ -1021,25 +1022,25 @@ async function loadAppointments() {
 
     const el = document.getElementById('apptList');
     if (!ta.length) {
-      el.innerHTML = '<div class="empty"><span class="empty-ico">📅</span>لا توجد مواعيد اليوم</div>';
+      el.innerHTML = '<div class="empty"><span class="empty-ico">📅</span>No appointments today</div>';
       return;
     }
-    const SL = { pending:'⏳ انتظار', confirmed:'✓ مؤكد', in_progress:'🟢 جاري', completed:'✅ مكتمل', escalated:'⬆️ عند المدير' };
+    const SL = { pending:'⏳ Waiting', confirmed:'✓ Confirmed', in_progress:'🟢 Processing', completed:'✅ Completed', escalated:'⬆️ With Manager' };
     const SC = { pending:'b-pend', confirmed:'b-conf', in_progress:'b-prog', completed:'b-done', escalated:'b-esc' };
     const CC = { in_progress:'st-inprog', escalated:'st-esc', completed:'st-done', confirmed:'st-confirmed', pending:'st-pending' };
 
     el.innerHTML = ta.map((a, i) => {
       let acts = '';
       if (a.status === 'pending' || a.status === 'confirmed') {
-        acts = `${a.status==='pending' ? `<button class="btn-sm b-conf-sm" onclick="confirmAppt(${a.id})">✓ تأكيد</button>` : ''}
-          <button class="btn-sm b-start" onclick="startAppt(${a.id},'${(a.customerName||'').replace(/'/g,"\\'")  }','${(a.service||'').replace(/'/g,"\\'")}','${a.phone||''}','${a.time||''}')">🟢 بدء الخدمة</button>`;
+        acts = `${a.status==='pending' ? `<button class="btn-sm b-conf-sm" onclick="confirmAppt(${a.id})">✓ Confirm</button>` : ''}
+          <button class="btn-sm b-start" onclick="startAppt(${a.id},'${(a.customerName||'').replace(/'/g,"\\'")  }','${(a.service||'').replace(/'/g,"\\'")}','${a.phone||''}','${a.time||''}')">🟢 Start Service</button>`;
       } else if (a.status === 'in_progress') {
-        acts = `<button class="btn-sm b-done-sm" onclick="completeAppt()">✅ إنهاء</button>
-          <button class="btn-sm b-esc-sm" onclick="escalateAppt()">⬆️ إحالة</button>`;
+        acts = `<button class="btn-sm b-done-sm" onclick="completeAppt()">✅ Finish</button>
+          <button class="btn-sm b-esc-sm" onclick="escalateAppt()">⬆️ Refer</button>`;
       } else if (a.status === 'completed') {
-        acts = `<span class="badge b-done">✅ مكتمل</span>`;
+        acts = `<span class="badge b-done">✅ Completed</span>`;
       } else if (a.status === 'escalated') {
-        acts = `<span class="badge b-esc">⬆️ عند المدير</span>`;
+        acts = `<span class="badge b-esc">⬆️ With Manager</span>`;
       }
       return `<div class="appt-card ${CC[a.status]||''}" style="animation-delay:${i*.04}s">
         <div class="arow1">
@@ -1060,22 +1061,22 @@ async function loadAppointments() {
 }
 
 // ── APPOINTMENT ACTIONS ───────────────────────────────────
-async function confirmAppt(id) { await apptStatus(id, 'confirmed', 'تم تأكيد الموعد ✓'); }
+async function confirmAppt(id) { await apptStatus(id, 'confirmed', 'Appointment confirmed ✓'); }
 
 async function startAppt(id, name, service, phone, time) {
-  if (activeApptId && activeApptId !== id) { showToast('أنهِ الموعد الحالي أولاً', 'error'); return; }
+  if (activeApptId && activeApptId !== id) { showToast('Finish current appointment first', 'error'); return; }
   await apptStatus(id, 'in_progress');
   activeApptId = id;
   document.getElementById('activeApptBanner').style.display = 'block';
   document.getElementById('activeApptName').textContent = name;
   document.getElementById('activeApptInfo').textContent = `${service} · ${phone} · ${time}`;
-  showToast(`🟢 بدأت خدمة: ${name}`, 'success');
+  showToast(`🟢 Started service: ${name}`, 'success');
   loadAppointments();
 }
 
 async function completeAppt() {
   if (!activeApptId) return;
-  await apptStatus(activeApptId, 'completed', 'تم إنهاء الموعد ✅');
+  await apptStatus(activeApptId, 'completed', 'Appointment finished ✅');
   activeApptId = null;
   document.getElementById('activeApptBanner').style.display = 'none';
   loadAppointments();
@@ -1083,8 +1084,8 @@ async function completeAppt() {
 
 async function escalateAppt() {
   if (!activeApptId) return;
-  if (!confirm('تأكيد إحالة هذا الموعد لمدير الفرع؟')) return;
-  await apptStatus(activeApptId, 'escalated', 'تم إحالة الموعد للمدير ⬆️');
+  if (!confirm('Confirm referral to branch manager?')) return;
+  await apptStatus(activeApptId, 'escalated', 'Appointment referred to manager ⬆️');
   activeApptId = null;
   document.getElementById('activeApptBanner').style.display = 'none';
   loadAppointments();
@@ -1098,8 +1099,8 @@ async function apptStatus(id, status, msg) {
     });
     const data = await res.json();
     if (data.success) { if (msg) showToast(msg, 'success'); loadAppointmentsStats(); }
-    else showToast(data.error || 'خطأ', 'error');
-  } catch { showToast('خطأ في الاتصال', 'error'); }
+    else showToast(data.error || 'Error', 'error');
+  } catch { showToast('Connection Error', 'error'); }
 }
 
 // ── QUEUE ACTIONS ─────────────────────────────────────────
@@ -1109,17 +1110,17 @@ async function completeService() {
     const data = await fetch(`/api/queue/${currentServingId}/complete`, { method: 'PUT' }).then(r=>r.json());
     if (data.success) { stopSvcTimer(); showToast(data.message, 'success'); loadQueue(); }
     else showToast(data.error, 'error');
-  } catch { showToast('خطأ في الاتصال', 'error'); }
+  } catch { showToast('Connection Error', 'error'); }
 }
 
 async function escalateCase() {
   if (!currentServingId) return;
-  if (!confirm('إحالة هذا العميل لمدير الفرع؟')) return;
+  if (!confirm('Refer this customer to branch manager?')) return;
   try {
     const data = await fetch(`/api/queue/${currentServingId}/escalate`, { method: 'PUT' }).then(r=>r.json());
     if (data.success) { stopSvcTimer(); showToast(data.message, 'success'); loadQueue(); }
     else showToast(data.error, 'error');
-  } catch { showToast('خطأ في الاتصال', 'error'); }
+  } catch { showToast('Connection Error', 'error'); }
 }
 
 async function callNext() {
@@ -1128,12 +1129,12 @@ async function callNext() {
     const data = await fetch(`/api/queue/${bid}/next`, { method: 'PUT' }).then(r=>r.json());
     if (data.success) { showToast(data.message, 'success'); loadQueue(bid); }
     else showToast(data.error, 'error');
-  } catch { showToast('خطأ في الاتصال', 'error'); }
+  } catch { showToast('Connection Error', 'error'); }
 }
 
 async function resetQueue() {
   const bid = currentUser?.branchId || 1;
-  if (!confirm('إعادة تعيين الطابور بالكامل؟')) return;
+  if (!confirm('Reset the entire queue?')) return;
   try {
     const data = await fetch(`/api/queue/${bid}/reset`, { method: 'DELETE' }).then(r=>r.json());
     if (data.success) { stopSvcTimer(); showToast(data.message, 'success'); loadQueue(bid); }
@@ -1157,13 +1158,13 @@ init();
 /* ══ LANGUAGE DATA ══════════════════════════════════════════ */
 window.PAGE_LANG={
   ar:{
-    themeLight:'الثيم الفاتح',themeDark:'الثيم الداكن',
-    sec_main:'القائمة الرئيسية',sec_tools:'الأدوات',
-    nav_queue:'الطابور',nav_appts:'المواعيد',
-    stat_waiting:'في الانتظار',stat_served:'تم خدمتهم',stat_appts:'مواعيد اليوم',stat_esc:'مُحالة للمدير',
-    panel_queue:'⏳ طابور الانتظار',panel_stats:'📊 إحصائيات اليوم',
-    btn_next:'📣 استدعاء التالي',btn_done:'✅ تم الخدمة',btn_back:'↩ إعادة',
-    logout:'تسجيل الخروج'
+    themeLight:'Light Theme',themeDark:'Dark Theme',
+    sec_main:'Main Menu',sec_tools:'Tools',
+    nav_queue:'Queue',nav_appts:'Appointments',
+    stat_waiting:'Waiting',stat_served:'Served',stat_appts:"Today's Appointments",stat_esc:'Referred to Manager',
+    panel_queue:'⏳ Waiting Queue',panel_stats:"📊 Today's Stats",
+    btn_next:'📣 Call Next',btn_done:'✅ Served',btn_back:'↩ Reset',
+    logout:'Logout'
   },
   en:{
     themeLight:'Light Theme',themeDark:'Dark Theme',
@@ -1176,7 +1177,8 @@ window.PAGE_LANG={
   }
 };
 </script>
-<script src="/shared/theme.js"></script>
-<script src="/shared/i18n.js"></script>
+<script src="/shared/theme.js?v=2"></script>
+<script src="/shared/i18n.js?v=2"></script>
+<script src="/shared/city-bg.js?v=2"></script>
 </body>
 </html>

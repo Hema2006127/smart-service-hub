@@ -13,6 +13,7 @@ const statsRoutes       = require('./routes/stats');
 const ratingsRoutes     = require('./routes/ratings');
 const auditRoutes       = require('./routes/audit');
 const scheduleRoutes    = require('./routes/schedule');
+const servicesRoutes    = require('./routes/services');
 
 const app = express();
 
@@ -90,6 +91,7 @@ app.use('/api/stats',        statsRoutes);
 app.use('/api/ratings',      ratingsRoutes);
 app.use('/api/audit',        auditRoutes);
 app.use('/api/schedule',     scheduleRoutes);
+app.use('/api/services',     servicesRoutes);
 
 // ── Page Routes ───────────────────────────────────────────────────────────────
 app.get('/login',    (req, res) => res.sendFile(path.resolve('public/pages/login.html')));

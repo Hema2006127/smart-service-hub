@@ -1,21 +1,15 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>شاشة العرض - البنك الذكي</title>
+<title>Display Screen - Smart Bank</title>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--gold:#d4af37;--green:#10b981;--blue:#3b82f6;--red:#ef4444}
 body{font-family:'Tajawal',sans-serif;background:#060c19;color:#fff;min-height:100vh;overflow:hidden;position:relative}
 
-/* Animated background */
-.bg{position:fixed;inset:0;z-index:0;pointer-events:none}
-.bg-orb{position:absolute;border-radius:50%;filter:blur(120px);animation:orb 20s ease-in-out infinite alternate}
-.bg-orb:nth-child(1){width:700px;height:700px;top:-200px;right:-100px;background:radial-gradient(circle,rgba(26,86,219,.15),transparent 70%)}
-.bg-orb:nth-child(2){width:600px;height:600px;bottom:-150px;left:-100px;background:radial-gradient(circle,rgba(212,175,55,.08),transparent 70%);animation-delay:-10s}
-@keyframes orb{0%{transform:scale(1)}100%{transform:scale(1.15) translate(20px,15px)}}
 
 .page{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column}
 
@@ -73,13 +67,23 @@ footer{background:rgba(0,0,0,.4);border-top:1px solid rgba(255,255,255,.06);padd
 
 /* Branch selector */
 .branch-select{position:fixed;top:16px;left:16px;z-index:200;background:rgba(10,18,34,.95);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:8px 12px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;cursor:pointer}
+
+/* Responsive */
+@media(max-width: 860px) {
+  header { flex-direction: column; gap: 10px; text-align: center; }
+  .header-right { text-align: center; }
+  main { grid-template-columns: 1fr; }
+  .now-serving { border-right: none; border-bottom: 1px solid rgba(16,185,129,.12); padding: 24px 20px; }
+  .queue-panel { max-height: none; }
+}
 </style>
+  <link rel="stylesheet" href="/shared/city-bg.css">
 </head>
 <body>
-<div class="bg"><div class="bg-orb"></div><div class="bg-orb"></div></div>
+
 
 <select class="branch-select" id="branchSelect" onchange="changeBranch(this.value)">
-    <option value="">اختر الفرع...</option>
+    <option value="">Choose Branch...</option>
 </select>
 
 <div class="page">
@@ -87,8 +91,8 @@ footer{background:rgba(0,0,0,.4);border-top:1px solid rgba(255,255,255,.06);padd
         <div class="logo">
             <div class="logo-icon">🏦</div>
             <div class="logo-text">
-                <h1>البنك الذكي</h1>
-                <p id="branchName">شاشة عرض الطابور</p>
+                <h1>Smart Bank</h1>
+                <p id="branchName">Queue Display Screen</p>
             </div>
         </div>
         <div class="header-right">
@@ -100,20 +104,20 @@ footer{background:rgba(0,0,0,.4);border-top:1px solid rgba(255,255,255,.06);padd
     <main>
         <!-- Now Serving -->
         <div class="now-serving">
-            <div class="now-serving-label">يُخدم الآن</div>
+            <div class="now-serving-label">Serving Now</div>
             <div class="token-display" id="tokenDisplay">---</div>
-            <div class="serving-name" id="servingName">في انتظار العملاء</div>
+            <div class="serving-name" id="servingName">Waiting for customers</div>
             <div class="serving-service" id="servingService"></div>
         </div>
 
         <!-- Queue List -->
         <div class="queue-panel">
             <div class="queue-title">
-                🎫 قائمة الانتظار
+                🎫 Queue List
                 <span id="queueCount">0</span>
             </div>
             <div id="queueList">
-                <div style="text-align:center;padding:40px;color:rgba(255,255,255,.2)">الطابور فارغ ✅</div>
+                <div style="text-align:center;padding:40px;color:rgba(255,255,255,.2)">Queue is empty ✅</div>
             </div>
         </div>
     </main>
@@ -121,7 +125,7 @@ footer{background:rgba(0,0,0,.4);border-top:1px solid rgba(255,255,255,.06);padd
     <footer>
         <div class="ticker-wrap">
             <div class="ticker-text" id="tickerText">
-                مرحباً بكم في البنك الذكي 🏦 — نسعى دائماً لتقديم أفضل خدمة ممكنة — وقت الدوام: 9 صباحاً حتى 3 مساءً — شكراً لثقتكم
+                Welcome to Smart Bank 🏦 — We always strive to provide the best possible service — Working hours: 9 AM to 3 PM — Thank you for your trust
             </div>
         </div>
     </footer>
@@ -134,8 +138,8 @@ let eventSource   = null;
 // ── Clock ──────────────────────────────────────────────────────────────────────
 function updateClock() {
     const now  = new Date();
-    document.getElementById('clock').textContent = now.toLocaleTimeString('ar-EG', { hour12: false });
-    document.getElementById('dateDisplay').textContent = now.toLocaleDateString('ar-EG', {
+    document.getElementById('clock').textContent = now.toLocaleTimeString('en-US', { hour12: false });
+    document.getElementById('dateDisplay').textContent = now.toLocaleDateString('en-US', {
         weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
     });
 }
@@ -192,7 +196,7 @@ async function loadQueue(branchId) {
             setServing(serving.token, serving.name, serving.service);
         } else {
             document.getElementById('tokenDisplay').textContent = '---';
-            document.getElementById('servingName').textContent   = 'في انتظار العملاء';
+            document.getElementById('servingName').textContent   = 'Waiting for customers';
             document.getElementById('servingService').textContent = '';
         }
 
@@ -200,12 +204,12 @@ async function loadQueue(branchId) {
         document.getElementById('queueCount').textContent = waiting.length;
         const ql = document.getElementById('queueList');
         if (waiting.length === 0) {
-            ql.innerHTML = '<div style="text-align:center;padding:40px;color:rgba(255,255,255,.2)">الطابور فارغ ✅</div>';
+            ql.innerHTML = '<div style="text-align:center;padding:40px;color:rgba(255,255,255,.2)">Queue is empty ✅</div>';
             return;
         }
         ql.innerHTML = waiting.map((t, i) => {
             const pClass = t.priority > 2 ? 'priority-vip' : t.priority > 1 ? 'priority-elderly' : '';
-            const pLabel = t.priority > 2 ? 'VIP' : t.priority > 1 ? 'أولوية' : '';
+            const pLabel = t.priority > 2 ? 'VIP' : t.priority > 1 ? 'Priority' : '';
             return `
             <div class="queue-item">
                 <div class="q-num">${i + 1}</div>
@@ -242,7 +246,7 @@ function subscribeSSE(branchId) {
             }
             if (data.type === 'queue_empty') {
                 document.getElementById('tokenDisplay').textContent = '---';
-                document.getElementById('servingName').textContent   = 'في انتظار العملاء';
+                document.getElementById('servingName').textContent   = 'Waiting for customers';
                 document.getElementById('servingService').textContent = '';
             }
             if (['new_ticket','now_serving','queue_reset','queue_empty'].includes(data.type)) {
@@ -277,5 +281,6 @@ function playChime() {
 
 loadBranches();
 </script>
+<script src="/shared/city-bg.js"></script>
 </body>
 </html>

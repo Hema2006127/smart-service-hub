@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>البنك الذكي — لوحة مدير الفرع</title>
+<title>Smart Bank — Branch Manager Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/shared/ocean.css">
-<link rel="stylesheet" href="/shared/light.css">
+<link rel="stylesheet" href="/shared/ocean.css?v=2">
+<link rel="stylesheet" href="/shared/light.css?v=2">
+<link rel="stylesheet" href="/shared/city-bg.css?v=2">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 /* ══════════════════ ROOT ══ */
@@ -39,7 +40,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--txt);min-
 @keyframes causticsDrift{0%{background-position:0 0,0 0}100%{background-position:60px 60px,-60px 60px}}
 
 /* ══ APP SHELL ══ */
-.app{position:relative;z-index:1;display:flex;min-height:100vh}
+.app{position:relative;z-index:10;display:flex;min-height:100vh;pointer-events:auto;}
 
 /* ══ SIDEBAR ══ */
 .sidebar{
@@ -398,7 +399,7 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
     <div class="sb-logo">🏦</div>
     <div>
       <div class="sb-brand-name">NexBank</div>
-      <div class="sb-brand-sub" id="branchName">جاري التحميل...</div>
+      <div class="sb-brand-sub" id="branchName">Loading...</div>
     </div>
   </div>
 
@@ -406,32 +407,32 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
     <div class="sb-user-row">
       <div class="sb-av" id="userAv">م</div>
       <div>
-        <div class="sb-uname" id="userName">مدير الفرع</div>
+        <div class="sb-uname" id="userName">Branch Manager</div>
         <div class="sb-urole">Branch Manager</div>
       </div>
     </div>
-    <div class="sb-branch">🏛️ إدارة الفرع</div>
+    <div class="sb-branch">🏛️ Branch Management</div>
   </div>
 
   <div class="sb-nav">
-    <div class="sb-nav-label" data-i18n="nav_queue">القائمة الرئيسية</div>
+    <div class="sb-nav-label" data-i18n="nav_queue">Main Menu</div>
     <button class="ntab active" id="tab-queue" onclick="switchTab('queue',this)">
-      <span class="ntab-icon">⬆️</span><span data-i18n="nav_queue">الحالات المُحالة</span>
+      <span class="ntab-icon">⬆️</span><span data-i18n="nav_queue">Referred Cases</span>
     </button>
     <button class="ntab" id="tab-appts" onclick="switchTab('appts',this)">
-      <span class="ntab-icon">📅</span><span data-i18n="nav_appts">المواعيد</span>
+      <span class="ntab-icon">📅</span><span data-i18n="nav_appts">Appointments</span>
     </button>
     <button class="ntab" id="tab-staff" onclick="switchTab('staff',this)">
-      <span class="ntab-icon">👥</span><span data-i18n="nav_staff">الموظفون</span>
+      <span class="ntab-icon">👥</span><span data-i18n="nav_staff">Staff</span>
     </button>
     <button class="ntab" id="tab-analytics" onclick="switchTab('analytics',this)">
-      <span class="ntab-icon">📊</span><span data-i18n="nav_analytics">التحليلات</span>
+      <span class="ntab-icon">📊</span><span data-i18n="nav_analytics">Analytics</span>
     </button>
     <button class="ntab" id="tab-ratings" onclick="switchTab('ratings',this)">
-      <span class="ntab-icon">⭐</span><span data-i18n="nav_ratings">التقييمات</span>
+      <span class="ntab-icon">⭐</span><span data-i18n="nav_ratings">Ratings</span>
     </button>
     <button class="ntab" id="tab-schedule" onclick="switchTab('schedule',this)">
-      <span class="ntab-icon">📆</span><span data-i18n="nav_schedule">الجداول</span>
+      <span class="ntab-icon">📆</span><span data-i18n="nav_schedule">Schedules</span>
     </button>
   </div>
 
@@ -442,7 +443,7 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
 
   <div class="theme-wrap" style="display:flex;gap:6px;padding:6px 12px">
     <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" style="flex:1">
-      <span id="themeIcon">☀️</span><span id="themeLabel">الثيم الفاتح</span>
+      <span id="themeIcon">☀️</span><span id="themeLabel">Light Theme</span>
     </button>
     <button class="theme-btn" id="langBtn" onclick="toggleLang()" style="flex:0 0 44px;padding:0">
       <span id="langLabel">EN</span>
@@ -450,7 +451,7 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
   </div>
 
   <div class="sb-logout">
-    <button onclick="logout()">← <span data-i18n="logout">خروج</span></button>
+    <button onclick="logout()">← <span data-i18n="logout">Logout</span></button>
   </div>
 </aside>
 
@@ -460,18 +461,18 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
   <!-- TOPBAR -->
   <div class="topbar">
     <div class="tb-left">
-      <div class="tb-title">لوحة مدير الفرع</div>
+      <div class="tb-title">Branch Manager Dashboard</div>
       <div class="tb-pill">Branch Manager</div>
     </div>
     <div class="tb-right">
       <div class="notif-wrap">
         <div class="notif-btn" onclick="toggleNotif()">🔔<div class="notif-dot" id="notifDot"></div></div>
         <div class="notif-panel" id="notifPanel">
-          <div class="np-head">🔔 الإشعارات <span class="np-clear" onclick="clearNotifs()">مسح الكل</span></div>
+          <div class="np-head">🔔 Notifications <span class="np-clear" onclick="clearNotifs()">Clear All</span></div>
           <div id="notifList">
-            <div class="np-item"><div class="np-dot" style="background:var(--teal)"></div><div><div class="np-text">عميل جديد في الطابور</div><div class="np-time">الآن</div></div></div>
-            <div class="np-item"><div class="np-dot" style="background:var(--ocean3)"></div><div><div class="np-text">موعد جديد محجوز — 2:30 م</div><div class="np-time">منذ 5 دقائق</div></div></div>
-            <div class="np-item"><div class="np-dot" style="background:var(--gold)"></div><div><div class="np-text">تم تأكيد موعد خالد أحمد</div><div class="np-time">منذ 12 دقيقة</div></div></div>
+            <div class="np-item"><div class="np-dot" style="background:var(--teal)"></div><div><div class="np-text">New customer in queue</div><div class="np-time">Now</div></div></div>
+            <div class="np-item"><div class="np-dot" style="background:var(--ocean3)"></div><div><div class="np-text">New appointment booked — 2:30 م</div><div class="np-time">Since 5 Mins</div></div></div>
+            <div class="np-item"><div class="np-dot" style="background:var(--gold)"></div><div><div class="np-text">Khaled Ahmed appointment confirmed</div><div class="np-time">Since 12 Minute</div></div></div>
           </div>
         </div>
       </div>
@@ -485,24 +486,24 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
     <div class="stats-row">
       <div class="sc" style="animation-delay:.04s">
         <div class="sc-icon">🎫</div>
-        <div class="sc-body"><div class="sc-n" id="sWait">—</div><div class="sc-l">في الانتظار</div></div>
+        <div class="sc-body"><div class="sc-n" id="sWait">—</div><div class="sc-l">Waiting</div></div>
       </div>
       <div class="sc" style="animation-delay:.09s">
         <div class="sc-icon">✅</div>
-        <div class="sc-body"><div class="sc-n" id="sServed">—</div><div class="sc-l">خُدِموا اليوم</div></div>
+        <div class="sc-body"><div class="sc-n" id="sServed">—</div><div class="sc-l">Served Today</div></div>
         <span class="sc-badge">↑</span>
       </div>
       <div class="sc" style="animation-delay:.14s">
         <div class="sc-icon">👥</div>
-        <div class="sc-body"><div class="sc-n" id="sStaff">—</div><div class="sc-l">موظفو الفرع</div></div>
+        <div class="sc-body"><div class="sc-n" id="sStaff">—</div><div class="sc-l">Branch Staff</div></div>
       </div>
       <div class="sc" style="animation-delay:.19s">
         <div class="sc-icon">📅</div>
-        <div class="sc-body"><div class="sc-n" id="sAppts">—</div><div class="sc-l">مواعيد اليوم</div></div>
+        <div class="sc-body"><div class="sc-n" id="sAppts">—</div><div class="sc-l">Today's Appointments</div></div>
       </div>
       <div class="sc" style="animation-delay:.24s">
         <div class="sc-icon">⏱️</div>
-        <div class="sc-body"><div class="sc-n" id="sAvg">—</div><div class="sc-l">متوسط الانتظار (د)</div></div>
+        <div class="sc-body"><div class="sc-n" id="sAvg">—</div><div class="sc-l">Avg Wait (د)</div></div>
       </div>
     </div>
 
@@ -510,23 +511,23 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
     <div class="panel active" id="panel-queue">
       <div class="card">
         <div class="ch">
-          <div class="ct">⬆️ الحالات المُحالة من الموظفين <span class="cb" id="escalatedBadge">0</span></div>
-          <button class="btn b-blue" style="font-size:13px;padding:9px 18px" onclick="loadQueue()">↻ تحديث</button>
+          <div class="ct">⬆️ Cases Referred by Tellers <span class="cb" id="escalatedBadge">0</span></div>
+          <button class="btn b-blue" style="font-size:13px;padding:9px 18px" onclick="loadQueue()">↻ Refresh</button>
         </div>
         <div id="escalatedEmpty" class="empty" style="display:none">
           <div class="empty-ico">✅</div>
-          لا توجد حالات مُحالة حالياً — كل شيء تحت السيطرة
+          No referred cases currently — Everything is under control
         </div>
         <div id="escalatedList"></div>
       </div>
 
       <div class="card" style="margin-top:0">
-        <div class="ch"><div class="ct">📊 إحصائيات الفرع السريعة</div></div>
+        <div class="ch"><div class="ct">📊 Quick Branch Stats</div></div>
         <div class="sg">
-          <div class="sbox"><div class="sv" style="color:var(--gold)" id="tdS">—</div><div class="sl">خُدِموا</div></div>
-          <div class="sbox"><div class="sv" style="color:var(--ocean3)" id="tdW">—</div><div class="sl">انتظار</div></div>
-          <div class="sbox"><div class="sv" style="color:var(--red)" id="tdEsc">—</div><div class="sl">مُحالة</div></div>
-          <div class="sbox"><div class="sv" style="color:var(--purple)" id="tdSt">—</div><div class="sl">موظفون</div></div>
+          <div class="sbox"><div class="sv" style="color:var(--gold)" id="tdS">—</div><div class="sl">Served</div></div>
+          <div class="sbox"><div class="sv" style="color:var(--ocean3)" id="tdW">—</div><div class="sl">Waiting</div></div>
+          <div class="sbox"><div class="sv" style="color:var(--red)" id="tdEsc">—</div><div class="sl">Referred</div></div>
+          <div class="sbox"><div class="sv" style="color:var(--purple)" id="tdSt">—</div><div class="sl">Staff</div></div>
           <span id="tdA" style="display:none"></span>
         </div>
       </div>
@@ -536,19 +537,19 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
     <div class="panel" id="panel-appts">
       <div class="card">
         <div class="ch">
-          <div class="ct">📅 مواعيد الفرع اليوم</div>
+          <div class="ct">📅 Branch Appointments Today</div>
           <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-            <span class="badge b-pend" id="pendCnt">0 انتظار</span>
-            <span class="badge b-ok" id="confCnt">0 مؤكد</span>
+            <span class="badge b-pend" id="pendCnt">0 Waiting</span>
+            <span class="badge b-ok" id="confCnt">0 Confirmed</span>
           </div>
         </div>
         <div class="search-wrap">
-          <input type="text" id="apptSearch" placeholder="ابحث باسم العميل أو الخدمة..." oninput="filterAppts()"/>
+          <input type="text" id="apptSearch" placeholder="Search by customer name or service..." oninput="filterAppts()"/>
         </div>
         <div class="tw">
           <table>
-            <thead><tr><th>العميل</th><th>الموبايل</th><th>الخدمة</th><th>التاريخ</th><th>الوقت</th><th>الحالة</th><th style="text-align:left">إجراءات</th></tr></thead>
-            <tbody id="appTb"><tr><td colspan="7" style="text-align:center;padding:30px;color:var(--m1)">⏳ جاري التحميل...</td></tr></tbody>
+            <thead><tr><th>Customer</th><th>Mobile</th><th>Service</th><th>Date</th><th>Time</th><th>Status</th><th style="text-align:left">Actions</th></tr></thead>
+            <tbody id="appTb"><tr><td colspan="7" style="text-align:center;padding:30px;color:var(--m1)">⏳ Loading...</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -557,27 +558,27 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
     <!-- ══ STAFF PANEL ══ -->
     <div class="panel" id="panel-staff">
       <div class="card">
-        <div class="ch"><div class="ct">➕ إضافة موظف جديد</div></div>
+        <div class="ch"><div class="ct">➕ Add New Employee</div></div>
         <div class="frow">
-          <div class="field"><label>الاسم الكامل</label><input id="stN" placeholder="محمد أحمد"/></div>
-          <div class="field"><label>اسم المستخدم</label><input id="stU" placeholder="username"/></div>
-          <div class="field"><label>كلمة المرور</label><input type="password" id="stP" placeholder="••••••••"/></div>
+          <div class="field"><label>Full Name</label><input id="stN" placeholder="John Doe"/></div>
+          <div class="field"><label>Username</label><input id="stU" placeholder="username"/></div>
+          <div class="field"><label>Password</label><input type="password" id="stP" placeholder="••••••••"/></div>
           <div class="field" style="display:flex;align-items:flex-end">
-            <button class="btn b-blue" onclick="addStaff()" style="width:100%">➕ إضافة موظف</button>
+            <button class="btn b-blue" onclick="addStaff()" style="width:100%">➕ Add Employee</button>
           </div>
         </div>
       </div>
       <div class="card">
         <div class="ch">
-          <div class="ct">👥 موظفو الفرع <span class="cb" id="staffCnt">0</span></div>
+          <div class="ct">👥 Branch Staff <span class="cb" id="staffCnt">0</span></div>
         </div>
         <div class="search-wrap">
-          <input type="text" id="staffSearch" placeholder="ابحث باسم الموظف..." oninput="filterStaff()"/>
+          <input type="text" id="staffSearch" placeholder="Search by employee name..." oninput="filterStaff()"/>
         </div>
         <div class="tw">
           <table>
-            <thead><tr><th>#</th><th>الاسم</th><th>المستخدم</th><th>الدور</th><th>الحالة</th><th style="text-align:left">إجراءات</th></tr></thead>
-            <tbody id="stTb"><tr><td colspan="6" style="text-align:center;padding:30px;color:var(--m1)">⏳ جاري التحميل...</td></tr></tbody>
+            <thead><tr><th>#</th><th>Name</th><th>User</th><th>Role</th><th>Status</th><th style="text-align:left">Actions</th></tr></thead>
+            <tbody id="stTb"><tr><td colspan="6" style="text-align:center;padding:30px;color:var(--m1)">⏳ Loading...</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -587,26 +588,26 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
     <div class="panel" id="panel-analytics">
       <div class="ag3">
         <div class="card" style="margin-bottom:0">
-          <div class="ch"><div class="ct">📈 حركة العملاء — اليوم</div></div>
+          <div class="ch"><div class="ct">📈 Customer Traffic — Today</div></div>
           <div style="position:relative;height:230px"><canvas id="hourlyChart"></canvas></div>
         </div>
         <div class="card" style="margin-bottom:0">
-          <div class="ch"><div class="ct">🗓️ آخر 7 أيام</div></div>
+          <div class="ch"><div class="ct">🗓️ Last 7 Days</div></div>
           <div style="position:relative;height:230px"><canvas id="weeklyChart"></canvas></div>
         </div>
       </div>
       <div class="ag2">
         <div class="card" style="margin-bottom:0">
-          <div class="ch"><div class="ct">📋 حالة المواعيد</div></div>
+          <div class="ch"><div class="ct">📋 Appointments Status</div></div>
           <div style="position:relative;height:200px"><canvas id="apptChart"></canvas></div>
         </div>
         <div class="card" style="margin-bottom:0">
-          <div class="ch"><div class="ct">🏆 أداء الموظفين</div></div>
+          <div class="ch"><div class="ct">🏆 Staff Performance</div></div>
           <div id="staffPerf"></div>
         </div>
       </div>
       <div class="card">
-        <div class="ch"><div class="ct">📝 سجل النشاط</div></div>
+        <div class="ch"><div class="ct">📝 Activity Log</div></div>
         <div id="actFeed"></div>
       </div>
     </div>
@@ -615,10 +616,10 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
     <div class="panel" id="panel-ratings">
       <div class="card">
         <div class="ch">
-          <div class="ct">⭐ تقييمات العملاء</div>
+          <div class="ct">⭐ Customer Ratings</div>
           <div style="display:flex;gap:8px">
-            <button onclick="exportMgrData('ratings')" style="padding:6px 14px;background:rgba(201,168,76,.12);border:1px solid var(--b2);border-radius:8px;color:var(--ocean3);font-family:inherit;font-size:12px;font-weight:700;cursor:pointer">📥 تصدير CSV</button>
-            <button onclick="loadMgrRatings()" style="padding:6px 14px;background:rgba(201,168,76,.12);border:1px solid var(--b2);border-radius:8px;color:var(--ocean3);font-family:inherit;font-size:12px;font-weight:700;cursor:pointer">↻ تحديث</button>
+            <button onclick="exportMgrData('ratings')" style="padding:6px 14px;background:rgba(201,168,76,.12);border:1px solid var(--b2);border-radius:8px;color:var(--ocean3);font-family:inherit;font-size:12px;font-weight:700;cursor:pointer">📥 Export CSV</button>
+            <button onclick="loadMgrRatings()" style="padding:6px 14px;background:rgba(201,168,76,.12);border:1px solid var(--b2);border-radius:8px;color:var(--ocean3);font-family:inherit;font-size:12px;font-weight:700;cursor:pointer">↻ Refresh</button>
           </div>
         </div>
         <div id="mgrRatingSummary" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:18px"></div>
@@ -630,13 +631,13 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
     <div class="panel" id="panel-schedule">
       <div class="card">
         <div class="ch">
-          <div class="ct">📆 جداول الموظفين</div>
+          <div class="ct">📆 Staff Schedules</div>
           <div style="display:flex;gap:8px;align-items:center">
             <select id="mgrSchedMonth" onchange="loadMgrSchedule()" style="padding:6px 10px;background:rgba(0,20,50,.6);border:1px solid var(--b1);border-radius:8px;color:var(--txt);font-family:inherit;font-size:12px">
-              <option value="1">يناير</option><option value="2">فبراير</option><option value="3">مارس</option>
-              <option value="4">أبريل</option><option value="5">مايو</option><option value="6">يونيو</option>
-              <option value="7">يوليو</option><option value="8">أغسطس</option><option value="9">سبتمبر</option>
-              <option value="10">أكتوبر</option><option value="11">نوفمبر</option><option value="12">ديسمبر</option>
+              <option value="1">January</option><option value="2">February</option><option value="3">March</option>
+              <option value="4">April</option><option value="5">May</option><option value="6">June</option>
+              <option value="7">July</option><option value="8">August</option><option value="9">September</option>
+              <option value="10">October</option><option value="11">November</option><option value="12">December</option>
             </select>
             <select id="mgrSchedYear" onchange="loadMgrSchedule()" style="padding:6px 10px;background:rgba(0,20,50,.6);border:1px solid var(--b1);border-radius:8px;color:var(--txt);font-family:inherit;font-size:12px">
               <option value="2025">2025</option><option value="2026">2026</option><option value="2027">2027</option>
@@ -656,25 +657,25 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
 <div class="modal-bg hidden" id="editStaffModal">
   <div class="modal">
     <div class="modal-head">
-      <span class="modal-title">✏️ تعديل بيانات الموظف</span>
+      <span class="modal-title">✏️ Edit Employee Data</span>
       <button class="modal-close" onclick="closeModal('editStaffModal')">✕</button>
     </div>
     <input type="hidden" id="editStaffId"/>
     <div class="frow" style="grid-template-columns:1fr 1fr">
-      <div class="field"><label>الاسم الكامل</label><input id="editStaffName" placeholder="الاسم"/></div>
-      <div class="field"><label>اسم المستخدم</label><input id="editStaffUser" placeholder="username"/></div>
-      <div class="field"><label>كلمة المرور الجديدة (اختياري)</label><input type="password" id="editStaffPass" placeholder="اتركه فارغاً للإبقاء"/></div>
+      <div class="field"><label>Full Name</label><input id="editStaffName" placeholder="Name"/></div>
+      <div class="field"><label>Username</label><input id="editStaffUser" placeholder="username"/></div>
+      <div class="field"><label>New Password (Optional)</label><input type="password" id="editStaffPass" placeholder="Leave empty to keep"/></div>
       <div class="field">
-        <label>الدور</label>
+        <label>Role</label>
         <select id="editStaffRole">
-          <option value="teller">موظف فرع</option>
-          <option value="branch_manager">مدير فرع</option>
+          <option value="teller">Branch Employee</option>
+          <option value="branch_manager">Branch Manager</option>
         </select>
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn b-red-sm" onclick="closeModal('editStaffModal')">إلغاء</button>
-      <button class="btn b-blue" onclick="saveStaff()">💾 حفظ التغييرات</button>
+      <button class="btn b-red-sm" onclick="closeModal('editStaffModal')">Cancel</button>
+      <button class="btn b-blue" onclick="saveStaff()">💾 Save Changes</button>
     </div>
   </div>
 </div>
@@ -683,27 +684,27 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
 <div class="modal-bg hidden" id="editApptModal">
   <div class="modal">
     <div class="modal-head">
-      <span class="modal-title">✏️ تعديل الموعد</span>
+      <span class="modal-title">✏️ Edit Appointment</span>
       <button class="modal-close" onclick="closeModal('editApptModal')">✕</button>
     </div>
     <input type="hidden" id="editApptId"/>
     <div class="frow" style="grid-template-columns:1fr 1fr">
-      <div class="field"><label>اسم العميل</label><input id="editApptName" placeholder="اسم العميل"/></div>
-      <div class="field"><label>رقم الموبايل</label><input id="editApptPhone" placeholder="05xxxxxxxx"/></div>
-      <div class="field"><label>الخدمة</label><input id="editApptSvc" placeholder="نوع الخدمة"/></div>
-      <div class="field"><label>التاريخ</label><input type="date" id="editApptDate"/></div>
-      <div class="field"><label>الوقت</label><input type="time" id="editApptTime"/></div>
+      <div class="field"><label>Customer Name</label><input id="editApptName" placeholder="Customer Name"/></div>
+      <div class="field"><label>Mobile Number</label><input id="editApptPhone" placeholder="05xxxxxxxx"/></div>
+      <div class="field"><label>Service</label><input id="editApptSvc" placeholder="Service Type"/></div>
+      <div class="field"><label>Date</label><input type="date" id="editApptDate"/></div>
+      <div class="field"><label>Time</label><input type="time" id="editApptTime"/></div>
       <div class="field">
-        <label>الحالة</label>
+        <label>Status</label>
         <select id="editApptStatus">
-          <option value="pending">انتظار</option>
-          <option value="confirmed">مؤكد</option>
+          <option value="pending">Waiting</option>
+          <option value="confirmed">Confirmed</option>
         </select>
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn b-red-sm" onclick="closeModal('editApptModal')">إلغاء</button>
-      <button class="btn b-blue" onclick="saveAppt()">💾 حفظ التغييرات</button>
+      <button class="btn b-red-sm" onclick="closeModal('editApptModal')">Cancel</button>
+      <button class="btn b-blue" onclick="saveAppt()">💾 Save Changes</button>
     </div>
   </div>
 </div>
@@ -717,7 +718,7 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
 let me=null, svcChartInst=null;
 let _apptData=[], _staffData=[];
 const COLORS=['#1a56db','#f59e0b','#10b981','#ef4444','#8b5cf6','#06b6d4','#f43f5e'];
-const DAYS_AR=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+const DAYS_AR=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
 // ════════════════════════════════════════
 // INIT
@@ -733,8 +734,8 @@ async function init(){
     try{
       const branches=await fetch('/api/branches').then(r=>r.json());
       const b=branches.find(x=>x.id==me.branchId);
-      document.getElementById('branchName').textContent=b?b.name:'الفرع';
-    }catch{document.getElementById('branchName').textContent='الفرع';}
+      document.getElementById('branchName').textContent=b?b.name:'Branch';
+    }catch{document.getElementById('branchName').textContent='Branch';}
     await loadQueue();
     setInterval(loadQueue,10000);
     loadStaffCount();
@@ -754,7 +755,7 @@ function updateClock(){
   const cl=document.getElementById('navClock');
   const dt=document.getElementById('navDate');
   if(cl)cl.textContent=`${hh}:${mm}:${ss}`;
-  if(dt)dt.textContent=now.toLocaleDateString('ar-EG',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  if(dt)dt.textContent=now.toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
 }
 setInterval(updateClock,1000);
 updateClock();
@@ -771,8 +772,8 @@ function subscribeSSE(branchId){
       const d=JSON.parse(e.data);
       if(d.type==='escalated'){
         loadQueue();
-        showToast(`⬆️ حالة مُحالة: ${d.token} — ${d.service}`,'info');
-        addNotif(`حالة مُحالة من الموظف: ${d.name} (${d.service})`,'#ef4444');
+        showToast(`⬆️ Referred Case: ${d.token} — ${d.service}`,'info');
+        addNotif(`Case referred by employee: ${d.name} (${d.service})`,'#ef4444');
       } else if(['ticket_done','sendback'].includes(d.type)){
         loadQueue();
       }
@@ -785,7 +786,7 @@ function addNotif(text,color){
   const list=document.getElementById('notifList');
   const item=document.createElement('div');
   item.className='np-item';
-  item.innerHTML=`<div class="np-dot" style="background:${color}"></div><div><div class="np-text">${text}</div><div class="np-time">الآن</div></div>`;
+  item.innerHTML=`<div class="np-dot" style="background:${color}"></div><div><div class="np-text">${text}</div><div class="np-time">Now</div></div>`;
   list.prepend(item);
   document.getElementById('notifDot').style.display='block';
 }
@@ -826,13 +827,13 @@ async function loadQueue(){
             <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
               <span style="font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:900;color:var(--gold)">${t.token}</span>
               <span style="font-size:14px;font-weight:700">${t.name}</span>
-              <span style="font-size:11px;background:rgba(255,77,109,.12);color:#ff8fa3;border:1px solid rgba(255,77,109,.2);padding:2px 9px;border-radius:20px;font-weight:700">مُحالة</span>
+              <span style="font-size:11px;background:rgba(255,77,109,.12);color:#ff8fa3;border:1px solid rgba(255,77,109,.2);padding:2px 9px;border-radius:20px;font-weight:700">Referred</span>
             </div>
-            <div style="font-size:12px;color:var(--m1)">${t.service} · ${new Date(t.created_at).toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'})}</div>
+            <div style="font-size:12px;color:var(--m1)">${t.service} · ${new Date(t.created_at).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})}</div>
           </div>
           <div style="display:flex;gap:8px;flex-shrink:0">
-            <button class="btn b-green-sm" onclick="resolveCase(${t.id})">✅ حل الحالة</button>
-            <button class="btn b-red-sm" onclick="sendBack(${t.id})">↩️ إرجاع للموظف</button>
+            <button class="btn b-green-sm" onclick="resolveCase(${t.id})">✅ Resolve Case</button>
+            <button class="btn b-red-sm" onclick="sendBack(${t.id})">↩️ Return to Teller</button>
           </div>
         </div>`).join('');
     }
@@ -843,25 +844,25 @@ async function resolveCase(id){
   try{
     const d=await fetch(`/api/queue/${id}/resolve`,{method:'PUT'}).then(r=>r.json());
     if(d.success){showToast('✅ '+d.message,'success');loadQueue();}
-    else showToast(d.error||'خطأ','error');
-  }catch{showToast('خطأ في الاتصال','error');}
+    else showToast(d.error||'Error','error');
+  }catch{showToast('Connection Error','error');}
 }
 
 async function sendBack(id){
   try{
     const d=await fetch(`/api/queue/${id}/sendback`,{method:'PUT'}).then(r=>r.json());
     if(d.success){showToast('↩️ '+d.message,'success');loadQueue();}
-    else showToast(d.error||'خطأ','error');
-  }catch{showToast('خطأ في الاتصال','error');}
+    else showToast(d.error||'Error','error');
+  }catch{showToast('Connection Error','error');}
 }
 
 async function resetQueue(){
-  if(!confirm('إعادة تعيين الطابور بالكامل؟'))return;
+  if(!confirm('Reset the entire queue?'))return;
   try{
     const d=await fetch(`/api/queue/${me?.branchId||1}/reset`,{method:'DELETE'}).then(r=>r.json());
     if(d.success){showToast('✅ '+d.message,'success');loadQueue();}
-    else showToast(d.error||'خطأ','error');
-  }catch{showToast('خطأ في الاتصال','error');}
+    else showToast(d.error||'Error','error');
+  }catch{showToast('Connection Error','error');}
 }
 
 // ════════════════════════════════════════
@@ -877,16 +878,16 @@ async function loadAppts(){
     const conf=_apptData.filter(a=>a.status==='confirmed').length;
     const esc=_apptData.filter(a=>a.status==='escalated').length;
     animN('sAppts',_apptData.length);animN('tdA',_apptData.length);
-    document.getElementById('pendCnt').textContent=`${pend} انتظار`;
-    document.getElementById('confCnt').textContent=`${conf} مؤكد${esc?` · ${esc} مُحال`:''}`;
-    if(esc)showToast(`⬆️ ${esc} موعد مُحال من الموظفين`,'info');
-  }catch{showToast('خطأ في تحميل المواعيد','error');}
+    document.getElementById('pendCnt').textContent=`${pend} Waiting`;
+    document.getElementById('confCnt').textContent=`${conf} Confirmed${esc?` · ${esc} Referred`:''}`;
+    if(esc)showToast(`⬆️ ${esc} Appointment referred by tellers`,'info');
+  }catch{showToast('Error loading appointments','error');}
 }
 
 function renderAppts(data){
   const tb=document.getElementById('appTb');
-  if(!data.length){tb.innerHTML='<tr><td colspan="7"><div class="empty"><div class="empty-ico">📅</div>لا توجد مواعيد</div></td></tr>';return;}
-  const slMap={pending:'⏳ انتظار',confirmed:'✓ مؤكد',in_progress:'🟢 جاري',completed:'✅ مكتمل',escalated:'⬆️ مُحال'};
+  if(!data.length){tb.innerHTML='<tr><td colspan="7"><div class="empty"><div class="empty-ico">📅</div>No appointments</div></td></tr>';return;}
+  const slMap={pending:'⏳ Waiting',confirmed:'✓ Confirmed',in_progress:'🟢 Processing',completed:'✅ Completed',escalated:'⬆️ Referred'};
   const scMap={pending:'b-pend',confirmed:'b-ok',in_progress:'b-tl',completed:'b-ok',escalated:'b-mg'};
   tb.innerHTML=data.map((a,i)=>{
     const isEsc=a.status==='escalated';
@@ -900,8 +901,8 @@ function renderAppts(data){
       <td><span class="badge ${scMap[a.status]||'b-pend'}">${slMap[a.status]||a.status}</span></td>
       <td><div class="tda">
         <button class="btn b-red-sm" style="padding:6px 10px" onclick='openEditAppt(${JSON.stringify(a)})'>✏️</button>
-        ${a.status==='pending'?`<button class="btn b-green-sm" onclick="confirmAppt(${a.id})">✓ تأكيد</button>`:''}
-        ${isEsc?`<button class="btn b-green-sm" onclick="resolveAppt(${a.id})">✅ حل</button>`:''}
+        ${a.status==='pending'?`<button class="btn b-green-sm" onclick="confirmAppt(${a.id})">✓ Confirm</button>`:''}
+        ${isEsc?`<button class="btn b-green-sm" onclick="resolveAppt(${a.id})">✅ Resolve</button>`:''}
       </div></td>
     </tr>`;
   }).join('');
@@ -910,9 +911,9 @@ function renderAppts(data){
 async function resolveAppt(id){
   try{
     const d=await fetch(`/api/appointments/${id}/status`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({status:'completed'})}).then(r=>r.json());
-    if(d.success){showToast('✅ تم حل الحالة','success');loadAppts();}
+    if(d.success){showToast('✅ Case resolved','success');loadAppts();}
     else showToast(d.error,'error');
-  }catch{showToast('خطأ','error');}
+  }catch{showToast('Error','error');}
 }
 
 function filterAppts(){
@@ -926,7 +927,7 @@ async function confirmAppt(id){
     const d=await fetch(`/api/appointments/${id}/status`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({status:'confirmed'})}).then(r=>r.json());
     if(d.success){showToast('✅ '+d.message,'success');loadAppts();}
     else showToast(d.error,'error');
-  }catch{showToast('خطأ','error');}
+  }catch{showToast('Error','error');}
 }
 
 function openEditAppt(a){
@@ -945,9 +946,9 @@ async function saveAppt(){
   const body={customerName:document.getElementById('editApptName').value.trim(),phone:document.getElementById('editApptPhone').value.trim(),service:document.getElementById('editApptSvc').value.trim(),date:document.getElementById('editApptDate').value,time:document.getElementById('editApptTime').value,status:document.getElementById('editApptStatus').value};
   try{
     const d=await fetch(`/api/appointments/${id}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(r=>r.json());
-    if(d.success){showToast('✅ تم تحديث الموعد','success');closeModal('editApptModal');loadAppts();}
-    else showToast(d.error||'خطأ','error');
-  }catch{showToast('خطأ في الاتصال','error');}
+    if(d.success){showToast('✅ Appointment Updated','success');closeModal('editApptModal');loadAppts();}
+    else showToast(d.error||'Error','error');
+  }catch{showToast('Connection Error','error');}
 }
 
 // ════════════════════════════════════════
@@ -963,21 +964,21 @@ async function loadStaff(){
     animN('sStaff',_staffData.length);animN('tdSt',_staffData.length);
     document.getElementById('staffCnt').textContent=_staffData.length;
     renderStaff(_staffData);
-  }catch{showToast('خطأ في تحميل الموظفين','error');}
+  }catch{showToast('Error loading staff','error');}
 }
 
 function renderStaff(data){
   const tb=document.getElementById('stTb');
-  if(!data.length){tb.innerHTML='<tr><td colspan="6"><div class="empty"><div class="empty-ico">👥</div>لا يوجد موظفون</div></td></tr>';return;}
+  if(!data.length){tb.innerHTML='<tr><td colspan="6"><div class="empty"><div class="empty-ico">👥</div>No employees</div></td></tr>';return;}
   tb.innerHTML=data.map((s,i)=>`
     <tr style="animation:qIn .3s ${i*.04}s ease both">
       <td style="color:var(--m1);font-size:12px">${i+1}</td>
       <td style="font-weight:800">${s.name}</td>
       <td style="color:var(--m1);font-size:12px">${s.username}</td>
-      <td><span class="badge ${s.role==='teller'?'b-tl':'b-mg'}">${s.role==='teller'?'👨‍💼 موظف':'👔 مدير'}</span></td>
-      <td><span class="badge b-ok">● نشط</span></td>
+      <td><span class="badge ${s.role==='teller'?'b-tl':'b-mg'}">${s.role==='teller'?'👨‍💼 Employee':'👔 Manager'}</span></td>
+      <td><span class="badge b-ok">● Active</span></td>
       <td><div class="tda">
-        <button class="btn b-blue" style="padding:6px 12px;font-size:12px" onclick='openEditStaff(${JSON.stringify(s)})'>✏️ تعديل</button>
+        <button class="btn b-blue" style="padding:6px 12px;font-size:12px" onclick='openEditStaff(${JSON.stringify(s)})'>✏️ Edit</button>
         <button class="btn b-red-sm" onclick="deleteStaff(${s.id},'${s.name}')">🗑️</button>
       </div></td>
     </tr>`).join('');
@@ -993,12 +994,12 @@ async function addStaff(){
   const name=document.getElementById('stN').value.trim();
   const user=document.getElementById('stU').value.trim();
   const pass=document.getElementById('stP').value.trim();
-  if(!name||!user){showToast('أدخل الاسم واسم المستخدم','error');return;}
+  if(!name||!user){showToast('Enter Name and Username','error');return;}
   try{
     const d=await fetch('/api/staff',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,username:user,password:pass||'teller123',role:'teller',branchId:me?.branchId||1})}).then(r=>r.json());
     if(d.success){showToast('✅ '+d.message,'success');document.getElementById('stN').value='';document.getElementById('stU').value='';document.getElementById('stP').value='';loadStaff();}
     else showToast(d.error,'error');
-  }catch{showToast('خطأ في الاتصال','error');}
+  }catch{showToast('Connection Error','error');}
 }
 
 function openEditStaff(s){
@@ -1017,17 +1018,17 @@ async function saveStaff(){
   if(pass)body.password=pass;
   try{
     const d=await fetch(`/api/staff/${id}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(r=>r.json());
-    if(d.success){showToast('✅ تم تحديث بيانات الموظف','success');closeModal('editStaffModal');loadStaff();}
-    else showToast(d.error||'خطأ','error');
-  }catch{showToast('خطأ في الاتصال','error');}
+    if(d.success){showToast('✅ Employee data updated','success');closeModal('editStaffModal');loadStaff();}
+    else showToast(d.error||'Error','error');
+  }catch{showToast('Connection Error','error');}
 }
 
 async function deleteStaff(id,name){
-  if(!confirm(`حذف موظف "${name}"؟`))return;
+  if(!confirm(`Delete Employee "${name}"؟`))return;
   try{
     const d=await fetch(`/api/staff/${id}`,{method:'DELETE'}).then(r=>r.json());
     if(d.success){showToast('✅ '+d.message,'success');loadStaff();}
-  }catch{showToast('خطأ','error');}
+  }catch{showToast('Error','error');}
 }
 
 // ════════════════════════════════════════
@@ -1058,13 +1059,13 @@ async function loadAnalytics(){
 function buildHourly(labels,served,waiting){
   const c=document.getElementById('hourlyChart');
   const ex=Chart.getChart(c);if(ex)ex.destroy();
-  new Chart(c.getContext('2d'),{type:'bar',data:{labels,datasets:[{label:'خُدِموا',data:served,backgroundColor:'rgba(201,168,76,.75)',borderRadius:6,borderSkipped:false},{label:'انتظار',data:waiting,backgroundColor:'rgba(201,168,76,.55)',borderRadius:6,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{ticks:{color:'rgba(255,255,255,.4)',font:{family:'Tajawal'}},grid:{color:'rgba(201,168,76,.06)'}},y:{ticks:{color:'rgba(255,255,255,.4)',font:{family:'Tajawal'}},grid:{color:'rgba(201,168,76,.06)'},beginAtZero:true}},plugins:{legend:{labels:{color:'rgba(255,255,255,.55)',font:{family:'Tajawal',weight:'700'},padding:16,boxWidth:12}},tooltip:{backgroundColor:'rgba(1,14,28,.96)',borderWidth:1,borderColor:'rgba(201,168,76,.2)',titleColor:'#fff',bodyColor:'rgba(255,255,255,.6)',padding:12,cornerRadius:10}},animation:{duration:900,easing:'easeInOutQuart'}}});
+  new Chart(c.getContext('2d'),{type:'bar',data:{labels,datasets:[{label:'Served',data:served,backgroundColor:'rgba(201,168,76,.75)',borderRadius:6,borderSkipped:false},{label:'Waiting',data:waiting,backgroundColor:'rgba(201,168,76,.55)',borderRadius:6,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{ticks:{color:'rgba(255,255,255,.4)',font:{family:'Tajawal'}},grid:{color:'rgba(201,168,76,.06)'}},y:{ticks:{color:'rgba(255,255,255,.4)',font:{family:'Tajawal'}},grid:{color:'rgba(201,168,76,.06)'},beginAtZero:true}},plugins:{legend:{labels:{color:'rgba(255,255,255,.55)',font:{family:'Tajawal',weight:'700'},padding:16,boxWidth:12}},tooltip:{backgroundColor:'rgba(1,14,28,.96)',borderWidth:1,borderColor:'rgba(201,168,76,.2)',titleColor:'#fff',bodyColor:'rgba(255,255,255,.6)',padding:12,cornerRadius:10}},animation:{duration:900,easing:'easeInOutQuart'}}});
 }
 
 function buildWeekly(labels,data){
   const c=document.getElementById('weeklyChart');
   const ex=Chart.getChart(c);if(ex)ex.destroy();
-  new Chart(c.getContext('2d'),{type:'line',data:{labels,datasets:[{label:'العملاء المخدومون',data,borderColor:'#ffd166',backgroundColor:'rgba(255,209,102,.08)',borderWidth:2.5,pointBackgroundColor:'#ffd166',pointRadius:4,tension:.4,fill:true}]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{ticks:{color:'rgba(255,255,255,.4)',font:{family:'Tajawal'}},grid:{color:'rgba(201,168,76,.06)'}},y:{ticks:{color:'rgba(255,255,255,.4)',font:{family:'Tajawal'}},grid:{color:'rgba(201,168,76,.06)'},beginAtZero:true}},plugins:{legend:{labels:{color:'rgba(255,255,255,.55)',font:{family:'Tajawal',weight:'700'}}},tooltip:{backgroundColor:'rgba(1,14,28,.96)',borderWidth:1,borderColor:'rgba(201,168,76,.2)',titleColor:'#fff',bodyColor:'rgba(255,255,255,.6)',padding:12,cornerRadius:10}},animation:{duration:1000,easing:'easeInOutQuart'}}});
+  new Chart(c.getContext('2d'),{type:'line',data:{labels,datasets:[{label:'Served Customers',data,borderColor:'#ffd166',backgroundColor:'rgba(255,209,102,.08)',borderWidth:2.5,pointBackgroundColor:'#ffd166',pointRadius:4,tension:.4,fill:true}]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{ticks:{color:'rgba(255,255,255,.4)',font:{family:'Tajawal'}},grid:{color:'rgba(201,168,76,.06)'}},y:{ticks:{color:'rgba(255,255,255,.4)',font:{family:'Tajawal'}},grid:{color:'rgba(201,168,76,.06)'},beginAtZero:true}},plugins:{legend:{labels:{color:'rgba(255,255,255,.55)',font:{family:'Tajawal',weight:'700'}}},tooltip:{backgroundColor:'rgba(1,14,28,.96)',borderWidth:1,borderColor:'rgba(201,168,76,.2)',titleColor:'#fff',bodyColor:'rgba(255,255,255,.6)',padding:12,cornerRadius:10}},animation:{duration:1000,easing:'easeInOutQuart'}}});
 }
 
 function buildApptChart(pend,conf,other){
@@ -1072,12 +1073,12 @@ function buildApptChart(pend,conf,other){
   const ex=Chart.getChart(c);if(ex)ex.destroy();
   const total=pend+conf+other;
   if(!total){c.getContext('2d').clearRect(0,0,c.width,c.height);return;}
-  new Chart(c.getContext('2d'),{type:'doughnut',data:{labels:['انتظار','مؤكد','أخرى'],datasets:[{data:[pend,conf,other],backgroundColor:['rgba(255,209,102,.8)','rgba(201,168,76,.8)','rgba(201,168,76,.5)'],borderWidth:0,hoverOffset:7}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'bottom',labels:{color:'rgba(255,255,255,.5)',font:{family:'Tajawal',size:11},padding:12}},tooltip:{backgroundColor:'rgba(1,14,28,.96)',borderWidth:1,borderColor:'rgba(201,168,76,.2)',titleColor:'#fff',bodyColor:'rgba(255,255,255,.6)',padding:12,cornerRadius:10}},animation:{duration:900}}});
+  new Chart(c.getContext('2d'),{type:'doughnut',data:{labels:['Waiting','Confirmed','Other'],datasets:[{data:[pend,conf,other],backgroundColor:['rgba(255,209,102,.8)','rgba(201,168,76,.8)','rgba(201,168,76,.5)'],borderWidth:0,hoverOffset:7}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'bottom',labels:{color:'rgba(255,255,255,.5)',font:{family:'Tajawal',size:11},padding:12}},tooltip:{backgroundColor:'rgba(1,14,28,.96)',borderWidth:1,borderColor:'rgba(201,168,76,.2)',titleColor:'#fff',bodyColor:'rgba(255,255,255,.6)',padding:12,cornerRadius:10}},animation:{duration:900}}});
 }
 
 function buildStaffPerf(staff){
   const el=document.getElementById('staffPerf');
-  if(!staff.length){el.innerHTML='<div class="empty"><div class="empty-ico">👥</div>لا يوجد موظفون</div>';return;}
+  if(!staff.length){el.innerHTML='<div class="empty"><div class="empty-ico">👥</div>No employees</div>';return;}
   el.innerHTML=staff.slice(0,5).map(s=>{
     const pct=Math.floor(Math.random()*35+60);
     const color=pct>=80?'#c9a84c':pct>=65?'#ffd166':'#ff4d6d';
@@ -1087,12 +1088,12 @@ function buildStaffPerf(staff){
 
 function buildActivityFeed(){
   const acts=[
-    {t:'تم خدمة العميل B012 بنجاح',tm:'منذ دقيقتين',c:'#c9a84c'},
-    {t:'موعد جديد محجوز — 3:00 م',tm:'منذ 6 دقائق',c:'#c9a84c'},
-    {t:'تم تأكيد موعد سارة محمود',tm:'منذ 18 دقيقة',c:'#ffd166'},
-    {t:'الموظف علي بدأ دوامه',tm:'منذ 50 دقيقة',c:'#9b72ff'},
-    {t:'إعادة تعيين الطابور الصباحي',tm:'منذ ساعة',c:'#ff4d6d'},
-    {t:'النظام يعمل بشكل طبيعي ✅',tm:'منذ ساعتين',c:'#c9a84c'},
+    {t:'Customer served B012 Successfully',tm:'2 mins ago',c:'#c9a84c'},
+    {t:'New appointment booked — 3:00 م',tm:'Since 6 Mins',c:'#c9a84c'},
+    {t:'Sarah Mahmoud appointment confirmed',tm:'Since 18 Minute',c:'#ffd166'},
+    {t:'Employee Ali started his shift',tm:'Since 50 Minute',c:'#9b72ff'},
+    {t:'Morning Queue Reset',tm:'1 hour ago',c:'#ff4d6d'},
+    {t:'System operating normally ✅',tm:'2 hours ago',c:'#c9a84c'},
   ];
   document.getElementById('actFeed').innerHTML=acts.map(a=>`<div class="feed-item"><div class="feed-d" style="background:${a.c}"></div><div><div class="feed-txt">${a.t}</div><div class="feed-tm">${a.tm}</div></div></div>`).join('');
 }
@@ -1109,7 +1110,7 @@ document.addEventListener('click',e=>{if(e.target.classList.contains('modal-bg')
 // NOTIFICATIONS
 // ════════════════════════════════════════
 function toggleNotif(){document.getElementById('notifPanel').classList.toggle('open');}
-function clearNotifs(){document.getElementById('notifList').innerHTML='<div style="text-align:center;padding:20px;color:var(--m1);font-size:13px">لا توجد إشعارات</div>';document.getElementById('notifDot').style.display='none';}
+function clearNotifs(){document.getElementById('notifList').innerHTML='<div style="text-align:center;padding:20px;color:var(--m1);font-size:13px">No notifications</div>';document.getElementById('notifDot').style.display='none';}
 document.addEventListener('click',e=>{if(!e.target.closest('.notif-wrap'))document.getElementById('notifPanel').classList.remove('open');});
 
 // ════════════════════════════════════════
@@ -1171,11 +1172,11 @@ async function loadMgrRatings() {
     if (data.summary && data.summary.length) {
       sum.innerHTML = data.summary.map(s => `
         <div style="background:rgba(201,168,76,.08);border:1px solid var(--b1);border-radius:12px;padding:14px">
-          <div style="font-size:11px;color:var(--m1);margin-bottom:6px">${s.branch_name||'الفرع'}</div>
+          <div style="font-size:11px;color:var(--m1);margin-bottom:6px">${s.branch_name||'Branch'}</div>
           <div style="font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:900;color:var(--gold)">${s.avg_rating||'—'} ⭐</div>
-          <div style="font-size:11px;color:var(--m1);margin-top:4px">${s.total} تقييم</div>
+          <div style="font-size:11px;color:var(--m1);margin-top:4px">${s.total} Rating</div>
         </div>`).join('');
-    } else { sum.innerHTML = '<div style="color:var(--m1)">لا توجد تقييمات</div>'; }
+    } else { sum.innerHTML = '<div style="color:var(--m1)">No ratings</div>'; }
     const list = document.getElementById('mgrRatingsList');
     if (data.ratings && data.ratings.length) {
       list.innerHTML = data.ratings.slice(0, 30).map(r => `
@@ -1183,11 +1184,11 @@ async function loadMgrRatings() {
           <div style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:900;color:var(--gold);width:36px">${r.rating}⭐</div>
           <div style="flex:1">
             <div style="font-size:13px;font-weight:700">${r.service||'—'}</div>
-            <div style="font-size:11px;color:var(--m1)">${new Date(r.created_at).toLocaleDateString('ar-EG')}</div>
+            <div style="font-size:11px;color:var(--m1)">${new Date(r.created_at).toLocaleDateString('en-US')}</div>
             ${r.comment?`<div style="font-size:12px;color:var(--m2);margin-top:3px">"${r.comment}"</div>`:''}
           </div>
         </div>`).join('');
-    } else { list.innerHTML = '<div style="color:var(--m1)">لا توجد تقييمات</div>'; }
+    } else { list.innerHTML = '<div style="color:var(--m1)">No ratings</div>'; }
   } catch(err) { console.error(err); }
 }
 
@@ -1210,21 +1211,21 @@ async function loadMgrSchedule() {
       <div style="background:rgba(201,168,76,.07);border:1px solid var(--b1);border-radius:12px;padding:12px">
         <div style="font-size:13px;font-weight:700;margin-bottom:8px">${s.name}</div>
         <div style="display:flex;gap:6px;flex-wrap:wrap">
-          <span style="padding:2px 8px;background:rgba(201,168,76,.15);color:var(--teal);border-radius:8px;font-size:11px">✅ ${s.working_days} عمل</span>
-          <span style="padding:2px 8px;background:rgba(255,209,102,.15);color:var(--gold);border-radius:8px;font-size:11px">🏖️ ${s.leave_days} إجازة</span>
-          <span style="padding:2px 8px;background:rgba(255,77,109,.15);color:#ff8fa3;border-radius:8px;font-size:11px">🤒 ${s.sick_days} مرض</span>
+          <span style="padding:2px 8px;background:rgba(201,168,76,.15);color:var(--teal);border-radius:8px;font-size:11px">✅ ${s.working_days} Work</span>
+          <span style="padding:2px 8px;background:rgba(255,209,102,.15);color:var(--gold);border-radius:8px;font-size:11px">🏖️ ${s.leave_days} Leave</span>
+          <span style="padding:2px 8px;background:rgba(255,77,109,.15);color:#ff8fa3;border-radius:8px;font-size:11px">🤒 ${s.sick_days} Sick</span>
         </div>
       </div>`).join('');
     const tbl = document.getElementById('mgrScheduleTable');
-    if (!sched.length) { tbl.innerHTML = '<div style="color:var(--m1);padding:20px">لا توجد بيانات</div>'; return; }
+    if (!sched.length) { tbl.innerHTML = '<div style="color:var(--m1);padding:20px">No data</div>'; return; }
     const statusStyle = {working:'background:rgba(201,168,76,.2);color:var(--teal)',leave:'background:rgba(255,209,102,.2);color:var(--gold)',sick:'background:rgba(255,77,109,.2);color:#ff8fa3',holiday:'background:rgba(155,114,255,.2);color:var(--purple)'};
-    const statusLabel = {working:'عمل',leave:'إجازة',sick:'مريض',holiday:'عطلة'};
+    const statusLabel = {working:'Work',leave:'Leave',sick:'Sick',holiday:'Holiday'};
     tbl.innerHTML = `<table style="width:100%;border-collapse:collapse">
       <thead><tr style="font-size:11px;color:var(--m1)">
-        <th style="padding:8px;text-align:right">الموظف</th>
-        <th style="padding:8px">التاريخ</th>
-        <th style="padding:8px">الحالة</th>
-        <th style="padding:8px">ملاحظة</th>
+        <th style="padding:8px;text-align:right">Employee</th>
+        <th style="padding:8px">Date</th>
+        <th style="padding:8px">Status</th>
+        <th style="padding:8px">Note</th>
       </tr></thead>
       <tbody>${sched.map(s => `
         <tr style="border-top:1px solid var(--b1)">
@@ -1246,15 +1247,15 @@ function exportMgrData(type) {
 /* ══ LANGUAGE DATA ══════════════════════════════════════════ */
 window.PAGE_LANG={
   ar:{
-    themeLight:'الثيم الفاتح',themeDark:'الثيم الداكن',
-    nav_queue:'الحالات المُحالة',nav_appts:'المواعيد',nav_staff:'الموظفون',
-    nav_analytics:'التحليلات',nav_ratings:'التقييمات',nav_schedule:'الجداول',
-    stat_waiting:'في الانتظار',stat_served:'خُدِموا اليوم',stat_staff:'موظفو الفرع',
-    stat_appts:'مواعيد اليوم',stat_avg:'متوسط الانتظار (د)',
-    panel_queue:'⬆️ الحالات المُحالة',panel_appts:'📅 مواعيد الفرع اليوم',
-    panel_staff:'👥 موظفو الفرع',panel_analytics:'📈 حركة العملاء',
-    panel_ratings:'⭐ تقييمات العملاء',panel_schedule:'📆 جداول الموظفين',
-    logout:'خروج'
+    themeLight:'Light Theme',themeDark:'Dark Theme',
+    nav_queue:'Referred Cases',nav_appts:'Appointments',nav_staff:'Staff',
+    nav_analytics:'Analytics',nav_ratings:'Ratings',nav_schedule:'Schedules',
+    stat_waiting:'Waiting',stat_served:'Served Today',stat_staff:'Branch Staff',
+    stat_appts:"Today's Appointments",stat_avg:'Avg Wait (د)',
+    panel_queue:'⬆️ Referred Cases',panel_appts:'📅 Branch Appointments Today',
+    panel_staff:'👥 Branch Staff',panel_analytics:'📈 Customer Traffic',
+    panel_ratings:'⭐ Customer Ratings',panel_schedule:'📆 Staff Schedules',
+    logout:'Logout'
   },
   en:{
     themeLight:'Light Theme',themeDark:'Dark Theme',
@@ -1269,7 +1270,8 @@ window.PAGE_LANG={
   }
 };
 </script>
-<script src="/shared/theme.js"></script>
-<script src="/shared/i18n.js"></script>
+<script src="/shared/theme.js?v=2"></script>
+<script src="/shared/i18n.js?v=2"></script>
+<script src="/shared/city-bg.js?v=2"></script>
 </body>
 </html>

@@ -1,0 +1,431 @@
+/* ── ANIMATED BACKGROUND ── */
+.mf-root {
+  font-family: 'Tajawal', sans-serif;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px 40px;
+}
+
+.mf-bg {
+  position: absolute;
+  inset: 0;
+  background: #080810;
+  overflow: hidden;
+  pointer-events: none !important;
+  z-index: 0;
+}
+.mf-bg * {
+  pointer-events: none !important;
+}
+
+/* Rain */
+.rain-canvas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.35;
+}
+
+/* Fog */
+.fog {
+  position: absolute;
+  left: -100%;
+  width: 300%;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.fog1 {
+  bottom: 15%;
+  height: 80px;
+  background: rgba(20, 20, 40, 0.6);
+  animation: fogDrift 18s linear infinite;
+}
+
+.fog2 {
+  bottom: 22%;
+  height: 50px;
+  background: rgba(15, 15, 35, 0.5);
+  animation: fogDrift 26s linear infinite reverse;
+  animation-delay: -8s;
+}
+
+/* Lamp post */
+.lamp-post {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lp-left {
+  left: 6%;
+}
+
+.lp-right {
+  right: 6%;
+}
+
+.lp-pole {
+  width: 3px;
+  height: 110px;
+  background: #1a1a2e;
+}
+
+.lp-arm {
+  width: 28px;
+  height: 3px;
+  background: #1a1a2e;
+  position: relative;
+}
+
+.lp-arm::after {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 0;
+  width: 3px;
+  height: 10px;
+  background: #1a1a2e;
+}
+
+.lp-globe {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #c9a84c;
+  position: absolute;
+  top: -18px;
+  left: -6px;
+  box-shadow: 0 0 12px 6px rgba(201, 168, 76, 0.35), 0 0 30px 12px rgba(201, 168, 76, 0.12);
+  animation: lampFlicker 4s ease-in-out infinite;
+}
+
+.lp-cone {
+  position: absolute;
+  top: 4px;
+  left: -20px;
+  width: 0;
+  height: 0;
+  border-left: 22px solid transparent;
+  border-right: 22px solid transparent;
+  border-top: 40px solid rgba(201, 168, 76, 0.08);
+  animation: lampFlicker 4s ease-in-out infinite;
+}
+
+/* Moon */
+.moon {
+  position: absolute;
+  top: 6%;
+  right: 12%;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #d4c472;
+  box-shadow: 0 0 20px 8px rgba(212, 196, 114, 0.2), 0 0 60px 20px rgba(212, 196, 114, 0.07);
+  animation: moonGlow 6s ease-in-out infinite;
+}
+
+.moon-crater {
+  position: absolute;
+  border-radius: 50%;
+  background: #c8b860;
+}
+
+/* Smoke */
+.smoke-wrap {
+  position: absolute;
+  bottom: 140px;
+}
+
+.smoke-wrap.sw1 {
+  left: 22%;
+}
+
+.smoke-wrap.sw2 {
+  left: 58%;
+}
+
+.smoke-puff {
+  position: absolute;
+  bottom: 0;
+  border-radius: 50%;
+  background: rgba(60, 60, 80, 0.5);
+  animation: smokePuff 3s ease-out infinite;
+}
+
+/* Bats */
+.bat {
+  position: absolute;
+  opacity: 0.6;
+  animation: batFly linear infinite;
+}
+
+.bat-wing {
+  display: inline-block;
+  width: 10px;
+  height: 4px;
+  border-top: 2px solid #2a2a4a;
+  border-radius: 50% 50% 0 0;
+  margin: 0 1px;
+}
+
+/* Wanted poster */
+.wanted {
+  position: absolute;
+  top: 5%;
+  left: 3%;
+  width: 64px;
+  background: #d4b896;
+  border: 2px solid #8b6914;
+  padding: 5px 4px;
+  transform: rotate(-3deg);
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+.wanted-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 7px;
+  font-weight: 900;
+  color: #5a1a0a;
+  text-align: center;
+  letter-spacing: 1px;
+  border-bottom: 1px solid #8b6914;
+  margin-bottom: 3px;
+}
+
+.wanted-face {
+  width: 100%;
+  height: 36px;
+  background: #c4a882;
+  border: 1px solid #9a7a50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 3px;
+}
+
+.wanted-sub {
+  font-size: 5px;
+  color: #6a3a18;
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* Car */
+.car-wrap {
+  position: absolute;
+  bottom: 0;
+  animation: carDrive 22s linear infinite;
+}
+
+.car-body {
+  width: 90px;
+  height: 28px;
+  background: #0d0d1a;
+  border: 1px solid #2a2a3e;
+  border-radius: 4px 12px 4px 4px;
+  position: relative;
+}
+
+.car-roof {
+  position: absolute;
+  top: -16px;
+  left: 18px;
+  width: 52px;
+  height: 16px;
+  background: #080814;
+  border: 1px solid #1e1e30;
+  border-radius: 8px 8px 0 0;
+}
+
+.car-wheel {
+  position: absolute;
+  bottom: -7px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #050508;
+  border: 2px solid #333355;
+}
+
+.car-wl {
+  left: 10px;
+}
+
+.car-wr {
+  right: 10px;
+}
+
+.car-headlight {
+  position: absolute;
+  right: -4px;
+  top: 8px;
+  width: 8px;
+  height: 6px;
+  background: #c9a84c;
+  border-radius: 0 2px 2px 0;
+  box-shadow: 0 0 10px 5px rgba(201, 168, 76, 0.25), 0 0 30px 10px rgba(201, 168, 76, 0.1);
+}
+
+.city-svg {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+/* Keyframes */
+@keyframes fogDrift {
+  from {
+    transform: translateX(0)
+  }
+
+  to {
+    transform: translateX(33.3%)
+  }
+}
+
+@keyframes lampFlicker {
+
+  0%,
+  100% {
+    opacity: 1
+  }
+
+  92% {
+    opacity: 0.7
+  }
+
+  94% {
+    opacity: 0.3
+  }
+
+  96% {
+    opacity: 0.9
+  }
+}
+
+@keyframes moonGlow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px 8px rgba(212, 196, 114, 0.2), 0 0 60px 20px rgba(212, 196, 114, 0.07)
+  }
+
+  50% {
+    box-shadow: 0 0 30px 12px rgba(212, 196, 114, 0.32), 0 0 80px 30px rgba(212, 196, 114, 0.12)
+  }
+}
+
+@keyframes smokePuff {
+  0% {
+    transform: translateY(0) scale(0.5);
+    opacity: 0.7
+  }
+
+  100% {
+    transform: translateY(-60px) scale(2.5);
+    opacity: 0
+  }
+}
+
+@keyframes batFly {
+  0% {
+    left: -5%;
+    top: 15%
+  }
+
+  25% {
+    top: 8%
+  }
+
+  50% {
+    top: 18%
+  }
+
+  75% {
+    top: 10%
+  }
+
+  100% {
+    left: 110%;
+    top: 12%
+  }
+}
+
+@keyframes carDrive {
+  from {
+    right: -120px
+  }
+
+  to {
+    right: 110%
+  }
+}
+
+@keyframes shimmerCard {
+
+  0%,
+  60% {
+    transform: translateX(-200%)
+  }
+
+  100% {
+    transform: translateX(300%)
+  }
+}
+
+@keyframes borderBlink {
+
+  0%,
+  100% {
+    border-color: rgba(201, 168, 76, 0.35)
+  }
+
+  50% {
+    border-color: rgba(201, 168, 76, 0.7)
+  }
+}
+
+@keyframes titleReveal {
+  from {
+    opacity: 0;
+    letter-spacing: 12px
+  }
+
+  to {
+    opacity: 1;
+    letter-spacing: 3px
+  }
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px)
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0)
+  }
+}
+
+@keyframes roleSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-8px)
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0)
+  }
+}

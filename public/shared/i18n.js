@@ -1,10 +1,11 @@
 /* ══ SHARED i18n SYSTEM ══ */
-let _currentLang = localStorage.getItem('nexbank-lang') || 'ar';
+let _currentLang = localStorage.getItem('nexbank-lang') || 'en';
 
 function setLang(l) {
   _currentLang = l;
   localStorage.setItem('nexbank-lang', l);
   document.documentElement.setAttribute('lang', l === 'ar' ? 'ar' : 'en');
+  document.documentElement.setAttribute('dir', l === 'ar' ? 'rtl' : 'ltr');
   // Update all data-i18n elements
   const L = (window.PAGE_LANG || {})[l] || {};
   document.querySelectorAll('[data-i18n]').forEach(el => {

@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>البنك الذكي — بوابة العملاء</title>
+<title>Smart Bank — Customer Portal</title>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/shared/ocean.css">
 <link rel="stylesheet" href="/shared/light.css">
+  <link rel="stylesheet" href="/shared/city-bg.css">
 <style>
 /* ══ ROOT ══ */
 *{margin:0;padding:0;box-sizing:border-box}
@@ -317,22 +318,18 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
 .toast.error{border-color:rgba(255,107,107,.3);color:#ff9494}
 .toast.info{border-color:rgba(201,168,76,.3);color:var(--blue2)}
 
-/* ══ RESPONSIVE — Mobile-first: 320 | 480 | 768 | 1024 | 1440 ══ */
-
-/* ── <1100px: shrink side columns ── */
+/* ══ RESPONSIVE — Mobile-first ══ */
 @media(max-width:1099px){
-  .page-wrap{grid-template-columns:260px 1fr 240px}
+  .page-wrap{grid-template-columns:1fr; grid-template-rows: auto auto auto auto;}
+  .live-col { grid-column: 1; grid-row: 3; border-left: none; border-top: 1px solid var(--border); max-height: none; }
+  .main-col { grid-column: 1; grid-row: 2; max-height: none; }
+  .game-col { grid-column: 1; grid-row: 4; border-right: none; border-top: 1px solid var(--border); max-height: none; }
 }
 
-/* ── <860px: single column, hide decorative columns ── */
-@media(max-width:859px){
-  .page-wrap{grid-template-columns:1fr}
-  .live-col,.game-col{display:none}
-}
-
-/* ── <480px: tighten all spacing ── */
 @media(max-width:479px){
   .toast{min-width:220px;max-width:92vw;padding:10px 18px;font-size:12px}
+  .row-2 { grid-template-columns: 1fr; }
+  .currency-grid { grid-template-columns: 1fr 1fr; }
 }
 
 /* ══ THEME TOGGLE BUTTON ══ */
@@ -444,7 +441,7 @@ html[data-theme="light"] .toast{background:rgba(238,222,200,.97);color:#2a1208;b
 
 <!-- ALERT -->
 <div class="alert-banner" id="alertBanner">
-  <div class="alert-main" id="alertMain">📢 الرقم B001 — يُرجى التوجه للكاونتر</div>
+  <div class="alert-main" id="alertMain">📢 The Number B001 — Please proceed to the counter</div>
   <div class="alert-sub" id="alertSub"></div>
 </div>
 
@@ -453,7 +450,7 @@ html[data-theme="light"] .toast{background:rgba(238,222,200,.97);color:#2a1208;b
   <div class="brand">
     <div class="brand-logo">🏦</div>
     <div>
-      <div class="brand-name">البنك الذكي</div>
+      <div class="brand-name">Smart Bank</div>
       <div class="brand-sub">CUSTOMER · PORTAL</div>
     </div>
   </div>
@@ -462,10 +459,10 @@ html[data-theme="light"] .toast{background:rgba(238,222,200,.97);color:#2a1208;b
     <div class="header-live"><div class="live-dot"></div><span class="live-text">LIVE</span></div>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
-    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()"><span id="themeIcon">☀️</span> <span id="themeLabel">فاتح</span></button>
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()"><span id="themeIcon">☀️</span> <span id="themeLabel">Light</span></button>
     <button onclick="toggleLang()" id="langBtn" style="padding:6px 14px;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.25);border-radius:20px;color:#e0c870;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer">EN</button>
-    <a href="/display" target="_blank" style="padding:6px 14px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2);border-radius:20px;color:#c9a84c;font-family:inherit;font-size:12px;font-weight:700;text-decoration:none">📺 شاشة العرض</a>
-    <a href="/login" class="staff-btn">دخول الموظفين ←</a>
+    <a href="/display" target="_blank" style="padding:6px 14px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2);border-radius:20px;color:#c9a84c;font-family:inherit;font-size:12px;font-weight:700;text-decoration:none">📺 Display Screen</a>
+    <a href="/login" class="staff-btn">Staff Login ←</a>
   </div>
 </header>
 
@@ -474,31 +471,31 @@ html[data-theme="light"] .toast{background:rgba(238,222,200,.97);color:#2a1208;b
   <!-- ══ RIGHT: LIVE PANEL ══ -->
   <div class="live-col">
     <div class="live-header">
-      <div class="live-title">📺 الطابور المباشر</div>
-      <button class="live-refresh" onclick="refreshLive()">↻ تحديث</button>
+      <div class="live-title">📺 Live Queue</div>
+      <button class="live-refresh" onclick="refreshLive()">↻ Refresh</button>
     </div>
-    <div class="field-wrap"><select class="styled-select" id="liveBranch" onchange="onLiveBranchChange()"><option value="">⏳ جاري التحميل...</option></select></div>
+    <div class="field-wrap"><select class="styled-select" id="liveBranch" onchange="onLiveBranchChange()"><option value="">⏳ Loading...</option></select></div>
     <div class="stats-row">
-      <div class="stat-box"><div class="stat-label">في الانتظار</div><div class="stat-val bv" id="statWaiting">—</div></div>
-      <div class="stat-box"><div class="stat-label">يُخدم الآن</div><div class="stat-val tv" id="statServing">—</div></div>
+      <div class="stat-box"><div class="stat-label">Waiting</div><div class="stat-val bv" id="statWaiting">—</div></div>
+      <div class="stat-box"><div class="stat-label">Serving Now</div><div class="stat-val tv" id="statServing">—</div></div>
     </div>
-    <div id="servingCard"><div class="empty-state"><div class="empty-icon">⏳</div>لا أحد يُخدم الآن</div></div>
-    <div class="q-title">قائمة الانتظار <span class="q-badge" id="queueCountBadge">0</span></div>
-    <div id="queueList"><div class="empty-state"><div class="empty-icon">🎫</div>الطابور فاضي الآن</div></div>
+    <div id="servingCard"><div class="empty-state"><div class="empty-icon">⏳</div>No one is being served now</div></div>
+    <div class="q-title">Waiting List <span class="q-badge" id="queueCountBadge">0</span></div>
+    <div id="queueList"><div class="empty-state"><div class="empty-icon">🎫</div>Queue is empty now</div></div>
   </div>
 
   <!-- ══ CENTER: MAIN ══ -->
   <div class="main-col">
     <div class="hero">
-      <div class="hero-tag"><span>🏦 الخدمات المصرفية الذكية</span></div>
-      <h2>أهلاً بك،<br><span>ماذا تريد اليوم؟</span></h2>
-      <p>خذ رقم انتظار أو احجز موعدك في ثوانٍ — بدون تعب</p>
+      <div class="hero-tag"><span>🏦 Smart Banking Services</span></div>
+      <h2>Welcome,<br><span>What do you want today?</span></h2>
+      <p>Take a queue number or book an appointment in seconds — Without hassle</p>
     </div>
 
     <!-- CURRENCY -->
     <div class="currency-section">
       <div class="cs-header">
-        <div class="cs-title">💱 أسعار العملات اليوم</div>
+        <div class="cs-title">💱 Today's Currency Rates</div>
         <div class="cs-date" id="curDate"></div>
       </div>
       <div class="currency-grid" id="currencyGrid"></div>
@@ -506,64 +503,64 @@ html[data-theme="light"] .toast{background:rgba(238,222,200,.97);color:#2a1208;b
 
     <!-- TABS -->
     <div class="tab-nav">
-      <button class="tab-btn active" onclick="switchTab('queue',this)">🎫 رقم انتظار</button>
-      <button class="tab-btn" onclick="switchTab('appt',this)">📅 حجز موعد</button>
-      <button class="tab-btn" onclick="switchTab('status',this)">📊 حالة الطابور</button>
+      <button class="tab-btn active" onclick="switchTab('queue',this)">🎫 Queue Number</button>
+      <button class="tab-btn" onclick="switchTab('appt',this)">📅 Book Appointment</button>
+      <button class="tab-btn" onclick="switchTab('status',this)">📊 Queue Status</button>
     </div>
 
     <!-- Panel: Queue -->
     <div class="panel active" id="panel-queue">
       <div id="queueForm">
-        <div class="field-wrap"><label class="field-label">اختر الفرع</label><select class="styled-select" id="qBranch"><option value="">⏳ جاري التحميل...</option></select></div>
-        <div class="services-title">اختر الخدمة</div>
+        <div class="field-wrap"><label class="field-label">Choose Branch</label><select class="styled-select" id="qBranch"><option value="">⏳ Loading...</option></select></div>
+        <div class="services-title">Choose Service</div>
         <div class="services-grid" id="servicesGrid"></div>
         <div class="row-2">
-          <div><label class="field-label">اسمك (اختياري)</label><input type="text" class="styled-input" id="qName" placeholder="محمد أحمد"/></div>
-          <div><label class="field-label">موبايلك (اختياري)</label><input type="text" class="styled-input" id="qPhone" placeholder="01xxxxxxxxx"/></div>
+          <div><label class="field-label">Your Name (Optional)</label><input type="text" class="styled-input" id="qName" placeholder="John Doe"/></div>
+          <div><label class="field-label">Your Mobile (Optional)</label><input type="text" class="styled-input" id="qPhone" placeholder="01xxxxxxxxx"/></div>
         </div>
         <!-- Priority Selector -->
         <div class="field-wrap" style="margin-top:14px">
-          <label class="field-label" id="lbl-priority">الأولوية</label>
+          <label class="field-label" id="lbl-priority">Priority</label>
           <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px">
             <label style="cursor:pointer;text-align:center;padding:10px 6px;border:1px solid rgba(201,168,76,.2);border-radius:12px;background:rgba(201,168,76,.05);font-size:12px;font-weight:700;transition:.2s" id="prio-normal">
-              <input type="radio" name="priority" value="normal" checked style="display:none"> 👤 عادي
+              <input type="radio" name="priority" value="normal" checked style="display:none"> 👤 Normal
             </label>
             <label style="cursor:pointer;text-align:center;padding:10px 6px;border:1px solid rgba(201,168,76,.2);border-radius:12px;background:rgba(201,168,76,.05);font-size:12px;font-weight:700;transition:.2s" id="prio-elderly">
-              <input type="radio" name="priority" value="elderly" style="display:none"> 👴 كبير سن
+              <input type="radio" name="priority" value="elderly" style="display:none"> 👴 Elderly
             </label>
             <label style="cursor:pointer;text-align:center;padding:10px 6px;border:1px solid rgba(201,168,76,.2);border-radius:12px;background:rgba(201,168,76,.05);font-size:12px;font-weight:700;transition:.2s" id="prio-disabled">
-              <input type="radio" name="priority" value="disabled" style="display:none"> ♿ إعاقة
+              <input type="radio" name="priority" value="disabled" style="display:none"> ♿ Disabled
             </label>
             <label style="cursor:pointer;text-align:center;padding:10px 6px;border:1px solid rgba(212,175,55,.3);border-radius:12px;background:rgba(212,175,55,.06);font-size:12px;font-weight:700;transition:.2s" id="prio-vip">
               <input type="radio" name="priority" value="vip" style="display:none"> ⭐ VIP
             </label>
           </div>
         </div>
-        <button class="btn-main" onclick="takeNumber()">🎫 خذ رقم انتظار الآن</button>
+        <button class="btn-main" onclick="takeNumber()">🎫 Take queue number now</button>
       </div>
       <div class="token-card" id="tokenResult">
-        <div class="token-badge"><div class="live-dot"></div><span>رقمك جاهز — في الانتظار</span></div>
+        <div class="token-badge"><div class="live-dot"></div><span>Your number is ready — Waiting</span></div>
         <div class="token-number" id="tokenNumber">A001</div>
         <div class="token-details">
-          <div class="token-detail"><div class="td-label">الخدمة</div><div class="td-val" id="tokenService">—</div></div>
-          <div class="token-detail"><div class="td-label">موقعك</div><div class="td-val blue" id="tokenPos">—</div></div>
-          <div class="token-detail"><div class="td-label">وقت متوقع</div><div class="td-val gold"><span id="tokenWait">—</span> د</div></div>
+          <div class="token-detail"><div class="td-label">Service</div><div class="td-val" id="tokenService">—</div></div>
+          <div class="token-detail"><div class="td-label">Your Location</div><div class="td-val blue" id="tokenPos">—</div></div>
+          <div class="token-detail"><div class="td-label">Expected Time</div><div class="td-val gold"><span id="tokenWait">—</span> د</div></div>
         </div>
         <!-- QR Code -->
         <div id="qrCodeWrap" style="text-align:center;margin:16px 0;display:none">
-          <div style="font-size:11px;color:rgba(216,240,255,.4);margin-bottom:8px">امسح الكود لمتابعة رقمك</div>
+          <div style="font-size:11px;color:rgba(216,240,255,.4);margin-bottom:8px">Scan the code to track your number</div>
           <div id="qrCode" style="display:inline-block;background:#fff;padding:8px;border-radius:10px"></div>
         </div>
         <div class="token-actions">
-          <button class="btn-outline" onclick="resetQueue()">← رقم جديد</button>
-          <button class="btn-main" onclick="window.print()" style="width:auto;padding:10px 18px">🖨️ طباعة</button>
+          <button class="btn-outline" onclick="resetQueue()">← New Number</button>
+          <button class="btn-main" onclick="window.print()" style="width:auto;padding:10px 18px">🖨️ Print</button>
         </div>
       </div>
 
       <!-- Rating Panel (shown after service) -->
       <div id="ratingPanel" style="display:none;margin-top:16px;background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.18);border-radius:18px;padding:22px;text-align:center">
-        <div style="font-size:16px;font-weight:900;margin-bottom:6px">كيف كانت تجربتك؟ ⭐</div>
-        <div style="font-size:12px;color:rgba(216,240,255,.5);margin-bottom:16px">تقييمك يساعدنا على تحسين خدمتنا</div>
+        <div style="font-size:16px;font-weight:900;margin-bottom:6px">How was your experience? ⭐</div>
+        <div style="font-size:12px;color:rgba(216,240,255,.5);margin-bottom:16px">Your rating helps us improve our service</div>
         <div style="display:flex;justify-content:center;gap:10px;margin-bottom:14px">
           <span class="star-btn" data-val="1" onclick="setRating(1)" style="font-size:30px;cursor:pointer;transition:.2s;filter:grayscale(1)">⭐</span>
           <span class="star-btn" data-val="2" onclick="setRating(2)" style="font-size:30px;cursor:pointer;transition:.2s;filter:grayscale(1)">⭐</span>
@@ -571,32 +568,32 @@ html[data-theme="light"] .toast{background:rgba(238,222,200,.97);color:#2a1208;b
           <span class="star-btn" data-val="4" onclick="setRating(4)" style="font-size:30px;cursor:pointer;transition:.2s;filter:grayscale(1)">⭐</span>
           <span class="star-btn" data-val="5" onclick="setRating(5)" style="font-size:30px;cursor:pointer;transition:.2s;filter:grayscale(1)">⭐</span>
         </div>
-        <textarea id="ratingComment" placeholder="تعليقك (اختياري)..." style="width:100%;background:rgba(0,0,0,.3);border:1px solid rgba(201,168,76,.2);border-radius:10px;color:#fff;font-family:inherit;font-size:13px;padding:10px;resize:none;height:70px;margin-bottom:12px"></textarea>
-        <button class="btn-main" onclick="submitRating()" style="padding:10px 28px;width:auto">إرسال التقييم</button>
+        <textarea id="ratingComment" placeholder="Your comment (Optional)..." style="width:100%;background:rgba(0,0,0,.3);border:1px solid rgba(201,168,76,.2);border-radius:10px;color:#fff;font-family:inherit;font-size:13px;padding:10px;resize:none;height:70px;margin-bottom:12px"></textarea>
+        <button class="btn-main" onclick="submitRating()" style="padding:10px 28px;width:auto">Submit Rating</button>
       </div>
     </div>
 
     <!-- Panel: Appt -->
     <div class="panel" id="panel-appt">
       <div class="appt-card">
-        <div class="appt-title">📅 حجز موعد جديد</div>
-        <div class="field-wrap"><label class="field-label">الفرع</label><select class="styled-select" id="aBranch"><option value="">⏳ جاري التحميل...</option></select></div>
-        <div class="field-wrap"><label class="field-label">الخدمة</label><select class="styled-select" id="aService"><option>فتح حساب جديد</option><option>سحب / إيداع</option><option>تحويل بنكي</option><option>طلب بطاقة</option><option>استفسار عام</option></select></div>
+        <div class="appt-title">📅 Book New Appointment</div>
+        <div class="field-wrap"><label class="field-label">Branch</label><select class="styled-select" id="aBranch"><option value="">⏳ Loading...</option></select></div>
+        <div class="field-wrap"><label class="field-label">Service</label><select class="styled-select" id="aService"><option>Open New Account</option><option>Withdraw / Deposit</option><option>Bank Transfer</option><option>Card Request</option><option>General Inquiry</option></select></div>
         <div class="row-2">
-          <div><label class="field-label">الاسم الكامل</label><input type="text" class="styled-input" id="aName" placeholder="الاسم بالكامل"/></div>
-          <div><label class="field-label">رقم الموبايل</label><input type="text" class="styled-input" id="aPhone" placeholder="01xxxxxxxxx"/></div>
+          <div><label class="field-label">Full Name</label><input type="text" class="styled-input" id="aName" placeholder="Full Name"/></div>
+          <div><label class="field-label">Mobile Number</label><input type="text" class="styled-input" id="aPhone" placeholder="01xxxxxxxxx"/></div>
         </div>
         <div class="row-2">
-          <div><label class="field-label">التاريخ</label><input type="date" class="styled-input" id="aDate"/></div>
-          <div><label class="field-label">الوقت</label><select class="styled-select" id="aTime"><option>09:00</option><option>09:30</option><option>10:00</option><option>10:30</option><option>11:00</option><option>11:30</option><option>12:00</option><option>13:00</option><option>13:30</option><option>14:00</option><option>14:30</option><option>15:00</option></select></div>
+          <div><label class="field-label">Date</label><input type="date" class="styled-input" id="aDate"/></div>
+          <div><label class="field-label">Time</label><select class="styled-select" id="aTime"><option>09:00</option><option>09:30</option><option>10:00</option><option>10:30</option><option>11:00</option><option>11:30</option><option>12:00</option><option>13:00</option><option>13:30</option><option>14:00</option><option>14:30</option><option>15:00</option></select></div>
         </div>
-        <button class="btn-main" onclick="bookAppointment()">📅 تأكيد الحجز</button>
+        <button class="btn-main" onclick="bookAppointment()">📅 Confirm Booking</button>
       </div>
     </div>
 
     <!-- Panel: Status -->
     <div class="panel" id="panel-status">
-      <div class="field-wrap"><label class="field-label">اختر الفرع</label><select class="styled-select" id="sBranch" onchange="loadStatusPanel()"><option value="">⏳ جاري التحميل...</option></select></div>
+      <div class="field-wrap"><label class="field-label">Choose Branch</label><select class="styled-select" id="sBranch" onchange="loadStatusPanel()"><option value="">⏳ Loading...</option></select></div>
       <div id="statusDisplay"></div>
     </div>
   </div>
@@ -604,7 +601,7 @@ html[data-theme="light"] .toast{background:rgba(238,222,200,.97);color:#2a1208;b
   <!-- ══ LEFT: GAME PANEL ══ -->
   <div class="game-col">
     <div class="game-header-bar">
-      <div class="game-col-title">🎮 العب وانتظر</div>
+      <div class="game-col-title">🎮 Play & Wait</div>
       <div class="game-toggle">
         <button class="gt-btn active" id="gt-snake" onclick="switchGame('snake')">🐍 Snake</button>
         <button class="gt-btn" id="gt-flappy" onclick="switchGame('flappy')">🐠 Flappy</button>
@@ -614,12 +611,12 @@ html[data-theme="light"] .toast{background:rgba(238,222,200,.97);color:#2a1208;b
     <!-- SNAKE -->
     <div class="snake-wrap" id="snakeWrap">
       <div class="game-scorebar">
-        <div class="gsi"><div class="gsi-label">نقاط</div><div class="gsi-val cv" id="snakeScore">0</div></div>
-        <div class="gsi"><div class="gsi-label">أعلى</div><div class="gsi-val gv" id="snakeBest">0</div></div>
-        <div class="gsi"><div class="gsi-label">مستوى</div><div class="gsi-val rv" id="snakeLevel">1</div></div>
-        <div class="gsi"><div class="gsi-label">حياة</div><div class="gsi-val" id="snakeLives">❤️❤️❤️</div></div>
+        <div class="gsi"><div class="gsi-label">Points</div><div class="gsi-val cv" id="snakeScore">0</div></div>
+        <div class="gsi"><div class="gsi-label">Top</div><div class="gsi-val gv" id="snakeBest">0</div></div>
+        <div class="gsi"><div class="gsi-label">Level</div><div class="gsi-val rv" id="snakeLevel">1</div></div>
+        <div class="gsi"><div class="gsi-label">Life</div><div class="gsi-val" id="snakeLives">❤️❤️❤️</div></div>
       </div>
-      <div class="game-msg" id="snakeMsg">اضغط لعبة جديدة للبدء 🐍</div>
+      <div class="game-msg" id="snakeMsg">Click New Game to start 🐍</div>
       <canvas id="snakeCanvas" width="280" height="280"></canvas>
       <div class="snake-controls">
         <div></div><button class="snake-btn" onclick="snakeDir(0,-1)">▲</button><div></div>
@@ -629,22 +626,22 @@ html[data-theme="light"] .toast{background:rgba(238,222,200,.97);color:#2a1208;b
         <div></div><button class="snake-btn" onclick="snakeDir(0,1)">▼</button><div></div>
       </div>
       <div class="game-btns">
-        <button class="btn-gp" onclick="startSnake()">🔄 جديدة</button>
+        <button class="btn-gp" onclick="startSnake()">🔄 New</button>
       </div>
     </div>
 
     <!-- FLAPPY -->
     <div class="flappy-wrap" id="flappyWrap">
       <div class="game-scorebar">
-        <div class="gsi"><div class="gsi-label">نقاط</div><div class="gsi-val cv" id="flappyScore">0</div></div>
-        <div class="gsi"><div class="gsi-label">أعلى</div><div class="gsi-val gv" id="flappyBest">0</div></div>
-        <div class="gsi"><div class="gsi-label">حالة</div><div class="gsi-val rv" id="flappyState">جاهز</div></div>
-        <div class="gsi"><div class="gsi-label">سرعة</div><div class="gsi-val" id="flappySpeed">1</div></div>
+        <div class="gsi"><div class="gsi-label">Points</div><div class="gsi-val cv" id="flappyScore">0</div></div>
+        <div class="gsi"><div class="gsi-label">Top</div><div class="gsi-val gv" id="flappyBest">0</div></div>
+        <div class="gsi"><div class="gsi-label">Status</div><div class="gsi-val rv" id="flappyState">Ready</div></div>
+        <div class="gsi"><div class="gsi-label">Speed</div><div class="gsi-val" id="flappySpeed">1</div></div>
       </div>
-      <div class="game-msg" id="flappyMsg">اضغط على الكانفاس أو Space للطيران 🐠</div>
+      <div class="game-msg" id="flappyMsg">Click on canvas or Space To fly 🐠</div>
       <canvas id="flappyCanvas" width="280" height="380" onclick="flappyJump()"></canvas>
       <div class="game-btns">
-        <button class="btn-gp" onclick="startFlappy()">🔄 جديدة</button>
+        <button class="btn-gp" onclick="startFlappy()">🔄 New</button>
       </div>
     </div>
   </div>
@@ -652,7 +649,7 @@ html[data-theme="light"] .toast{background:rgba(238,222,200,.97);color:#2a1208;b
 </div><!-- /page-wrap -->
 
 <button class="sound-btn" id="soundBtn" onclick="toggleSound()">
-  <span id="soundIcon">🔊</span><span id="soundLabel">الصوت شغال</span>
+  <span id="soundIcon">🔊</span><span id="soundLabel">Sound On</span>
 </button>
 <div class="toast" id="toast"></div>
 
@@ -660,11 +657,11 @@ html[data-theme="light"] .toast{background:rgba(238,222,200,.97);color:#2a1208;b
 // ══ LANGUAGE ══════════════════════════════════════════════════════════════════
 const LANG = {
   ar: {
-    takeNum: '🎫 خذ رقم انتظار الآن', bookAppt: '📅 تأكيد الحجز',
-    selectService: 'من فضلك اختر الخدمة', fillData: 'من فضلك أدخل كل البيانات',
-    booked: 'تم الحجز بنجاح ✅', connError: 'خطأ في الاتصال',
-    priority: 'الأولوية', normal: '👤 عادي', elderly: '👴 كبير سن',
-    disabled: '♿ إعاقة', vip: '⭐ VIP'
+    takeNum: '🎫 Take queue number now', bookAppt: '📅 Confirm Booking',
+    selectService: 'Please select a service', fillData: 'Please enter all details',
+    booked: 'Booked successfully ✅', connError: 'Connection Error',
+    priority: 'Priority', normal: '👤 Normal', elderly: '👴 Elderly',
+    disabled: '♿ Disabled', vip: '⭐ VIP'
   },
   en: {
     takeNum: '🎫 Take Queue Number', bookAppt: '📅 Book Appointment',
@@ -678,7 +675,7 @@ window.PAGE_LANG = LANG;
 let currentLang = localStorage.getItem('nexbank-lang') || 'ar';
 function toggleLang() {
   currentLang = currentLang === 'ar' ? 'en' : 'ar';
-  document.getElementById('langBtn').textContent = currentLang === 'ar' ? 'EN' : 'عر';
+  document.getElementById('langBtn').textContent = currentLang === 'ar' ? 'EN' : 'AR';
   document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
   document.documentElement.lang = currentLang;
   const L = LANG[currentLang];
@@ -718,7 +715,7 @@ function setRating(val) {
 }
 
 async function submitRating() {
-  if (!selectedRating) { showToast('من فضلك اختر تقييم', 'error'); return; }
+  if (!selectedRating) { showToast('Please select a rating', 'error'); return; }
   const comment = document.getElementById('ratingComment').value.trim();
   try {
     const res = await fetch('/api/ratings', {
@@ -728,16 +725,16 @@ async function submitRating() {
     });
     const data = await res.json();
     if (data.success) {
-      document.getElementById('ratingPanel').innerHTML = '<div style="font-size:40px;margin-bottom:10px">🙏</div><div style="font-size:16px;font-weight:900">شكراً على تقييمك!</div>';
-      showToast('شكراً! تم إرسال تقييمك', 'success');
+      document.getElementById('ratingPanel').innerHTML = '<div style="font-size:40px;margin-bottom:10px">🙏</div><div style="font-size:16px;font-weight:900">Thank you for your rating!</div>';
+      showToast('Thank you! Your rating has been submitted', 'success');
     }
-  } catch { showToast('خطأ في إرسال التقييم', 'error'); }
+  } catch { showToast('Error submitting rating', 'error'); }
 }
 
 // ══ QR CODE ═══════════════════════════════════════════════════════════════════
 function generateQR(token, service, position) {
   try {
-    const text = encodeURIComponent(`رقمك: ${token} | ${service} | موقع: ${position}`);
+    const text = encodeURIComponent(`Your Number: ${token} | ${service} | Location: ${position}`);
     const url  = `https://api.qrserver.com/v1/create-qr-code/?data=${text}&size=130x130&margin=4`;
     const wrap = document.getElementById('qrCodeWrap');
     const el   = document.getElementById('qrCode');
@@ -855,14 +852,14 @@ document.addEventListener('click',e=>{
 
 // ══ CURRENCY ══
 const CUR=[
-  {code:'USD',name:'دولار',flag:'🇺🇸',rate:52.04,prev:51.50,color:'#c9a84c'},
-  {code:'EUR',name:'يورو',flag:'🇪🇺',rate:60.70,prev:61.20,color:'#c9a84c'},
-  {code:'GBP',name:'إسترليني',flag:'🇬🇧',rate:70.19,prev:69.80,color:'#ffb347'},
-  {code:'SAR',name:'ريال',flag:'🇸🇦',rate:13.87,prev:13.70,color:'#e0c870'},
-  {code:'AED',name:'درهم',flag:'🇦🇪',rate:14.17,prev:14.00,color:'#e0c870'},
-  {code:'KWD',name:'دينار',flag:'🇰🇼',rate:170.01,prev:168.50,color:'#ffd080'},
-  {code:'JPY',name:'ين',flag:'🇯🇵',rate:0.33,prev:0.34,color:'#ff9494'},
-  {code:'CHF',name:'فرنك',flag:'🇨🇭',rate:67.17,prev:66.50,color:'#a78bfa'},
+  {code:'USD',name:'Dollar',flag:'🇺🇸',rate:52.04,prev:51.50,color:'#c9a84c'},
+  {code:'EUR',name:'Euro',flag:'🇪🇺',rate:60.70,prev:61.20,color:'#c9a84c'},
+  {code:'GBP',name:'Sterling',flag:'🇬🇧',rate:70.19,prev:69.80,color:'#ffb347'},
+  {code:'SAR',name:'Riyal',flag:'🇸🇦',rate:13.87,prev:13.70,color:'#e0c870'},
+  {code:'AED',name:'Dirham',flag:'🇦🇪',rate:14.17,prev:14.00,color:'#e0c870'},
+  {code:'KWD',name:'Dinar',flag:'🇰🇼',rate:170.01,prev:168.50,color:'#ffd080'},
+  {code:'JPY',name:'Yen',flag:'🇯🇵',rate:0.33,prev:0.34,color:'#ff9494'},
+  {code:'CHF',name:'Franc',flag:'🇨🇭',rate:67.17,prev:66.50,color:'#a78bfa'},
 ];
 function renderCurrencies(){
   const n=new Date();
@@ -897,7 +894,7 @@ setInterval(()=>{
 // ══ SOUND ══
 let soundEnabled=true;
 const audioCtx=new(window.AudioContext||window.webkitAudioContext)();
-function toggleSound(){soundEnabled=!soundEnabled;document.getElementById('soundIcon').textContent=soundEnabled?'🔊':'🔇';document.getElementById('soundLabel').textContent=soundEnabled?'الصوت شغال':'الصوت مكتوم'}
+function toggleSound(){soundEnabled=!soundEnabled;document.getElementById('soundIcon').textContent=soundEnabled?'🔊':'🔇';document.getElementById('soundLabel').textContent=soundEnabled?'Sound On':'Sound Muted'}
 function _play(freq,type,dur,vol=.22){if(!soundEnabled)return;const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.connect(g);g.connect(audioCtx.destination);o.type=type||'sine';o.frequency.setValueAtTime(freq,audioCtx.currentTime);g.gain.setValueAtTime(vol,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+dur);o.start(audioCtx.currentTime);o.stop(audioCtx.currentTime+dur)}
 function playBeep(n=2){if(!soundEnabled)return;[660,880,1100].slice(0,n).forEach((f,i)=>setTimeout(()=>_play(f,'sine',.45),i*580))}
 function playEat(){_play(660,'square',.07,.13);setTimeout(()=>_play(880,'square',.07,.13),85)}
@@ -905,8 +902,8 @@ function playDie(){[330,220,110].forEach((f,i)=>setTimeout(()=>_play(f,'sawtooth
 function playPoint(){_play(880,'sine',.12,.18)}
 function playWin(){[523,659,784,1046].forEach((f,i)=>setTimeout(()=>_play(f,'sine',.18,.2),i*110))}
 function speakArabic(t){if(!soundEnabled||!window.speechSynthesis)return;window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='ar-EG';u.rate=.85;const v=window.speechSynthesis.getVoices().find(v=>v.lang.startsWith('ar'));if(v)u.voice=v;window.speechSynthesis.speak(u)}
-function announceToken(tok){playBeep(3);setTimeout(()=>speakArabic(`يُرجى تقدم العميل صاحب الرقم ${tok} إلى الكاونتر`),1200);showBanner(tok)}
-function showBanner(tok){const b=document.getElementById('alertBanner'),isMine=myToken===tok;document.getElementById('alertMain').textContent=`📢 الرقم ${tok} — يُرجى التوجه للكاونتر`;document.getElementById('alertSub').textContent=isMine?'🎉 هذا رقمك! تفضل من فضلك':'';b.className='alert-banner show'+(isMine?' mine':'');setTimeout(()=>b.classList.remove('show'),7000)}
+function announceToken(tok){playBeep(3);setTimeout(()=>speakArabic(`Please proceed customer with number ${tok} To the Counter`),1200);showBanner(tok)}
+function showBanner(tok){const b=document.getElementById('alertBanner'),isMine=myToken===tok;document.getElementById('alertMain').textContent=`📢 The Number ${tok} — Please proceed to the counter`;document.getElementById('alertSub').textContent=isMine?'🎉 This is your number! Please go ahead':'';b.className='alert-banner show'+(isMine?' mine':'');setTimeout(()=>b.classList.remove('show'),7000)}
 
 // ══ STATE ══
 let selectedService=null,myToken=null,lastServingToken=null,pollInterval=null;
@@ -966,9 +963,9 @@ function renderLive(serving,waiting){
   document.getElementById('statServing').textContent=serving?serving.token:'—';
   document.getElementById('queueCountBadge').textContent=waiting.length;
   const sc=document.getElementById('servingCard');
-  sc.innerHTML=serving?`<div class="serving-card"><div class="sc-label"><div class="sc-dot"></div>يُخدم الآن</div><div class="sc-token">${serving.token}</div><div class="sc-name">${serving.name}</div><div class="sc-service">${serving.service}</div></div>`:'<div class="empty-state" style="padding:14px 0"><div class="empty-icon">⏳</div>لا أحد يُخدم الآن</div>';
+  sc.innerHTML=serving?`<div class="serving-card"><div class="sc-label"><div class="sc-dot"></div>Serving Now</div><div class="sc-token">${serving.token}</div><div class="sc-name">${serving.name}</div><div class="sc-service">${serving.service}</div></div>`:'<div class="empty-state" style="padding:14px 0"><div class="empty-icon">⏳</div>No one is being served now</div>';
   const ql=document.getElementById('queueList');
-  if(!waiting.length){ql.innerHTML='<div class="empty-state"><div class="empty-icon">🎫</div>الطابور فاضي ✅</div>';return}
+  if(!waiting.length){ql.innerHTML='<div class="empty-state"><div class="empty-icon">🎫</div>Queue is empty ✅</div>';return}
   ql.innerHTML=waiting.map((t,i)=>{const m=myToken===t.token;return`<div class="queue-item${m?' qi-mine':''}" style="animation-delay:${i*.04}s"><div class="qi-pos">${i+1}</div><div class="qi-token">${t.token}</div><div class="qi-info"><div class="qi-name">${t.name}</div><div class="qi-svc">${t.service}</div></div>${m?'<span class="mine-tag">⭐</span>':''}</div>`}).join('');
 }
 
@@ -978,12 +975,12 @@ async function loadBranches(){
     const opts=data.map(b=>`<option value="${b.id}">${b.name}</option>`).join('');
     ['qBranch','aBranch','sBranch','liveBranch'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=opts});
     if(data.length)startPolling(data[0].id);
-  }catch{['qBranch','aBranch','sBranch','liveBranch'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML='<option value="">تعذر التحميل</option>'})}
+  }catch{['qBranch','aBranch','sBranch','liveBranch'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML='<option value="">Failed to load</option>'})}
 }
 async function loadServices(){
   try{
     const data=await fetch('/api/queue/services').then(r=>r.json());
-    document.getElementById('servicesGrid').innerHTML=data.map((s,i)=>`<div class="svc-card" onclick="selectService(${s.id},'${s.name}',this)"><span class="svc-icon">${ICONS[i]||'🏦'}</span><div class="svc-name">${s.name}</div><div class="svc-time">⏱ ~${s.duration} دقيقة</div></div>`).join('');
+    document.getElementById('servicesGrid').innerHTML=data.map((s,i)=>`<div class="svc-card" onclick="selectService(${s.id},'${s.name}',this)"><span class="svc-icon">${ICONS[i]||'🏦'}</span><div class="svc-name">${s.name}</div><div class="svc-time">⏱ ~${s.duration} Minute</div></div>`).join('');
   }catch{}
 }
 function selectService(id,name,el){selectedService={id,name};document.querySelectorAll('.svc-card').forEach(c=>c.classList.remove('sel'));el.classList.add('sel')}
@@ -993,13 +990,13 @@ async function loadStatusPanel(){
   const id=document.getElementById('sBranch').value;if(!id)return;
   startPolling(id);const data=await fetch(`/api/queue/${id}`).then(r=>r.json()).catch(()=>[]);
   const serving=data.find(t=>t.status==='serving'),waiting=data.filter(t=>t.status==='waiting');
-  document.getElementById('statusDisplay').innerHTML=`<div style="margin-top:14px">${serving?`<div class="serving-card"><div class="sc-label"><div class="sc-dot"></div>يُخدم الآن</div><div class="sc-token">${serving.token}</div><div class="sc-name">${serving.name} — ${serving.service}</div></div>`:''}<div class="q-title" style="margin-top:14px">قائمة الانتظار <span class="q-badge">${waiting.length}</span></div>${waiting.map((t,i)=>`<div class="queue-item" style="animation-delay:${i*.04}s"><div class="qi-pos">${i+1}</div><div class="qi-token">${t.token}</div><div class="qi-info"><div class="qi-name">${t.name}</div><div class="qi-svc">${t.service}</div></div></div>`).join('')}</div>`;
+  document.getElementById('statusDisplay').innerHTML=`<div style="margin-top:14px">${serving?`<div class="serving-card"><div class="sc-label"><div class="sc-dot"></div>Serving Now</div><div class="sc-token">${serving.token}</div><div class="sc-name">${serving.name} — ${serving.service}</div></div>`:''}<div class="q-title" style="margin-top:14px">Waiting List <span class="q-badge">${waiting.length}</span></div>${waiting.map((t,i)=>`<div class="queue-item" style="animation-delay:${i*.04}s"><div class="qi-pos">${i+1}</div><div class="qi-token">${t.token}</div><div class="qi-info"><div class="qi-name">${t.name}</div><div class="qi-svc">${t.service}</div></div></div>`).join('')}</div>`;
 }
 async function takeNumber(){
   if(!selectedService){showToast(LANG[currentLang].selectService,'error');return}
   if(audioCtx.state==='suspended')audioCtx.resume();
   const branchId=document.getElementById('qBranch').value;
-  const name=document.getElementById('qName').value.trim()||'عميل';
+  const name=document.getElementById('qName').value.trim()||'Customer';
   const phone=document.getElementById('qPhone').value.trim();
   const priority=document.querySelector('input[name="priority"]:checked')?.value||'normal';
   try{
@@ -1019,7 +1016,7 @@ async function takeNumber(){
       // Generate QR code
       generateQR(data.token, selectedService.name, data.position);
       startPolling(branchId);
-      showToast('تم! رقمك جاهز 🎫','success');
+      showToast('Done! Your number is ready 🎫','success');
     } else showToast(data.error,'error');
   }catch{showToast(LANG[currentLang].connError,'error')}
 }
@@ -1034,12 +1031,12 @@ function resetQueue(){
 }
 async function bookAppointment(){
   const customerName=document.getElementById('aName').value.trim(),phone=document.getElementById('aPhone').value.trim(),service=document.getElementById('aService').value,date=document.getElementById('aDate').value,time=document.getElementById('aTime').value,branchId=document.getElementById('aBranch').value;
-  if(!customerName||!phone||!date){showToast('من فضلك أدخل كل البيانات','error');return}
+  if(!customerName||!phone||!date){showToast('Please enter all details','error');return}
   try{
     const data=await fetch('/api/appointments',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({customerName,phone,service,date,time,branchId})}).then(r=>r.json());
-    if(data.success){showToast('تم الحجز بنجاح ✅','success');document.getElementById('aName').value='';document.getElementById('aPhone').value=''}
+    if(data.success){showToast('Booked successfully ✅','success');document.getElementById('aName').value='';document.getElementById('aPhone').value=''}
     else showToast(data.error,'error');
-  }catch{showToast('خطأ في الاتصال','error')}
+  }catch{showToast('Connection Error','error')}
 }
 function switchTab(tab,el){document.querySelectorAll('.tab-btn').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));el.classList.add('active');document.getElementById('panel-'+tab).classList.add('active');if(tab==='status')loadStatusPanel()}
 function showToast(msg,type='success'){const t=document.getElementById('toast');t.textContent=msg;t.className=`toast ${type} show`;setTimeout(()=>t.classList.remove('show'),3500)}
@@ -1059,7 +1056,7 @@ function startSnake(){
   sDir={x:1,y:0};sNext={x:1,y:0};sScore=0;sLevel=1;sLives=3;
   sRunning=true;sPaused=false;sSpecial=null;sSpecialT=0;
   spawnSFood();updateSnakeUI();
-  document.getElementById('snakeMsg').textContent='🐍 ابتلع الأكل واكسب نقاط!';
+  document.getElementById('snakeMsg').textContent='🐍 Eat food and earn points!';
   const ov=document.querySelector('#snakeWrap .win-overlay');if(ov)ov.remove();
   sInt=setInterval(sStep,sSpeed());
 }
@@ -1071,8 +1068,8 @@ function sStep(){
   if(snake.some(s=>s.x===head.x&&s.y===head.y)){sLoseLife();return}
   snake.unshift(head);
   let ate=false;
-  if(sFood&&head.x===sFood.x&&head.y===sFood.y){ate=true;sScore+=sFood.pts;sFood=null;playEat();if(sScore>sBest)sBest=sScore;if(sScore%60===0){sLevel=Math.min(10,sLevel+1);clearInterval(sInt);sInt=setInterval(sStep,sSpeed());document.getElementById('snakeMsg').textContent=`🔥 مستوى ${sLevel}!`}else{document.getElementById('snakeMsg').textContent=['أحسنت! 🎯','ممتاز! ⚡','واو! 💥','خطير! 🔥'][Math.floor(Math.random()*4)]};spawnSFood()}
-  if(sSpecial&&head.x===sSpecial.x&&head.y===sSpecial.y){ate=true;sScore+=sSpecial.pts;sSpecial=null;sSpecialT=0;playWin();document.getElementById('snakeMsg').textContent='💎 مكافأة! +30'}
+  if(sFood&&head.x===sFood.x&&head.y===sFood.y){ate=true;sScore+=sFood.pts;sFood=null;playEat();if(sScore>sBest)sBest=sScore;if(sScore%60===0){sLevel=Math.min(10,sLevel+1);clearInterval(sInt);sInt=setInterval(sStep,sSpeed());document.getElementById('snakeMsg').textContent=`🔥 Level ${sLevel}!`}else{document.getElementById('snakeMsg').textContent=['Well done! 🎯','Excellent! ⚡','Wow! 💥','Dangerous! 🔥'][Math.floor(Math.random()*4)]};spawnSFood()}
+  if(sSpecial&&head.x===sSpecial.x&&head.y===sSpecial.y){ate=true;sScore+=sSpecial.pts;sSpecial=null;sSpecialT=0;playWin();document.getElementById('snakeMsg').textContent='💎 Reward! +30'}
   if(!ate)snake.pop();
   if(sSpecialT>0){sSpecialT--;if(!sSpecialT)sSpecial=null}
   if(Math.random()<.01&&!sSpecial)spawnSpecial();
@@ -1081,12 +1078,12 @@ function sStep(){
 function sLoseLife(){sLives--;playDie();
   if(sLives<=0){sRunning=false;clearInterval(sInt);setTimeout(snakeOver,700);return}
   snake=[{x:10,y:10},{x:9,y:10},{x:8,y:10}];sDir={x:1,y:0};sNext={x:1,y:0};
-  document.getElementById('snakeMsg').textContent=`💔 باقي ${sLives} ${sLives===1?'حياة':'حيوات'}`;updateSnakeUI()
+  document.getElementById('snakeMsg').textContent=`💔 Remaining ${sLives} ${sLives===1?'Life':'Lives'}`;updateSnakeUI()
 }
 function spawnSFood(){let p;do{p={x:Math.floor(Math.random()*SCOLS),y:Math.floor(Math.random()*SROWS)}}while(snake.some(s=>s.x===p.x&&s.y===p.y));const f=[{e:'🍎',pts:10},{e:'🍕',pts:15},{e:'💰',pts:20},{e:'⭐',pts:25}];sFood={...p,...f[Math.floor(Math.random()*f.length)]}}
 function spawnSpecial(){let p;do{p={x:Math.floor(Math.random()*SCOLS),y:Math.floor(Math.random()*SROWS)}}while(snake.some(s=>s.x===p.x&&s.y===p.y));sSpecial={...p,e:'💎',pts:30};sSpecialT=28}
 function snakeDir(dx,dy){if(!sRunning){startSnake();return}if(dx!==0&&sDir.x!==0)return;if(dy!==0&&sDir.y!==0)return;sNext={x:dx,y:dy}}
-function snakePause(){if(!sRunning)return;sPaused=!sPaused;document.getElementById('snakeMsg').textContent=sPaused?'⏸ متوقف':'▶ تابع!'}
+function snakePause(){if(!sRunning)return;sPaused=!sPaused;document.getElementById('snakeMsg').textContent=sPaused?'⏸ Stopped':'▶ Follow!'}
 function updateSnakeUI(){
   document.getElementById('snakeScore').textContent=sScore;
   document.getElementById('snakeBest').textContent=sBest;
@@ -1136,7 +1133,7 @@ function snakeOver(){
   const ov=document.createElement('div');ov.className='win-overlay';ov.style.position='relative';
   const cols=['#c9a84c','#c9a84c','#ffb347','#e0c870'];
   for(let i=0;i<14;i++){const p=document.createElement('div');p.className='confetti-p';p.style.cssText=`left:${Math.random()*100}%;top:0;background:${cols[i%4]};width:${5+Math.random()*6}px;height:${5+Math.random()*6}px;animation-delay:${Math.random()*.4}s;border-radius:${Math.random()>.5?'50%':'3px'}`;ov.appendChild(p)}
-  ov.innerHTML+=`<div class="win-emoji">${sScore>=sBest?'🏆':'🎮'}</div><div class="win-title">${sScore>=sBest?'رقم قياسي!':'Game Over!'}</div><div class="win-sub">نقاط: ${sScore} | مستوى: ${sLevel}</div><button class="btn-gp" onclick="startSnake()" style="position:relative;z-index:11">🔄 العب مرة تانية</button>`;
+  ov.innerHTML+=`<div class="win-emoji">${sScore>=sBest?'🏆':'🎮'}</div><div class="win-title">${sScore>=sBest?'High Score!':'Game Over!'}</div><div class="win-sub">Points: ${sScore} | Level: ${sLevel}</div><button class="btn-gp" onclick="startSnake()" style="position:relative;z-index:11">🔄 Play again</button>`;
   box.appendChild(ov);
 }
 setInterval(drawSnake,50);
@@ -1161,8 +1158,8 @@ let fFrame=0,fPipeTimer=0,fAnimReq=null;
 function startFlappy(){
   fRunning=true;fStarted=false;fScore=0;fSpeed=1;fFrame=0;fPipeTimer=0;
   fBird={x:70,y:FH/2,vy:0,r:14};fPipes=[];fParticles=[];
-  document.getElementById('flappyMsg').textContent='اضغط للطيران 🐠';
-  document.getElementById('flappyState').textContent='جاهز';
+  document.getElementById('flappyMsg').textContent='Tap to fly 🐠';
+  document.getElementById('flappyState').textContent='Ready';
   document.getElementById('flappySpeed').textContent='1';
   updateFlappyUI();
   const ov=document.querySelector('#flappyWrap .win-overlay');if(ov)ov.remove();
@@ -1171,7 +1168,7 @@ function startFlappy(){
 }
 function flappyJump(){
   if(!fRunning){startFlappy();return}
-  if(!fStarted){fStarted=true;document.getElementById('flappyState').textContent='طاير';}
+  if(!fStarted){fStarted=true;document.getElementById('flappyState').textContent='Flying';}
   if(audioCtx.state==='suspended')audioCtx.resume();
   fBird.vy=FJUMP;playEat();
   // Wing particles
@@ -1202,7 +1199,7 @@ function fLoop(){
     const bounce=Math.sin(fFrame*.07)*5;
     drawFBird(fBird.x,FH/2+bounce);
     fCtx.fillStyle='rgba(216,240,255,0.45)';fCtx.font='bold 14px Tajawal';fCtx.textAlign='center';
-    fCtx.fillText('اضغط للطيران 🐠',FW/2,FH*.8);
+    fCtx.fillText('Tap to fly 🐠',FW/2,FH*.8);
     return;
   }
 
@@ -1300,7 +1297,7 @@ function fDie(){
     const ov=document.createElement('div');ov.className='win-overlay';ov.style.position='relative';
     const cols=['#c9a84c','#c9a84c','#ffb347','#e0c870'];
     for(let i=0;i<12;i++){const p=document.createElement('div');p.className='confetti-p';p.style.cssText=`left:${Math.random()*100}%;top:0;background:${cols[i%4]};width:${4+Math.random()*6}px;height:${4+Math.random()*6}px;animation-delay:${Math.random()*.4}s;border-radius:${Math.random()>.5?'50%':'3px'}`;ov.appendChild(p)}
-    ov.innerHTML+=`<div class="win-emoji">${fScore>=fBest?'🏆':'🐠'}</div><div class="win-title">${fScore>=fBest?'رقم قياسي!':'حاول تاني!'}</div><div class="win-sub">نقاط: ${fScore}</div><button class="btn-gp" onclick="startFlappy()" style="position:relative;z-index:11">🔄 العب مرة تانية</button>`;
+    ov.innerHTML+=`<div class="win-emoji">${fScore>=fBest?'🏆':'🐠'}</div><div class="win-title">${fScore>=fBest?'High Score!':'Try again!'}</div><div class="win-sub">Points: ${fScore}</div><button class="btn-gp" onclick="startFlappy()" style="position:relative;z-index:11">🔄 Play again</button>`;
     box.appendChild(ov);
   },600);
 }
@@ -1327,5 +1324,6 @@ fLoop();
 </script>
 <script src="/shared/theme.js"></script>
 <script src="/shared/i18n.js"></script>
+<script src="/shared/city-bg.js"></script>
 </body>
 </html>

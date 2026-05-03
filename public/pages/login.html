@@ -1,92 +1,18 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NEXBANK — دخول</title>
+  <title data-i18n="page_title">NEXBANK — Login</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/shared/ocean.css">
   <link rel="stylesheet" href="/shared/light.css">
+  <link rel="stylesheet" href="/shared/city-bg.css">
   <style>
     html, body { width:100%; min-height:100%; overflow-y:auto; }
     body { font-family:'Tajawal',sans-serif; background:#0a0a0f; color:#c9a84c; }
 
-    /* ── ANIMATED BACKGROUND ── */
-    .mf-root {
-      font-family:'Tajawal',sans-serif;
-      direction:rtl;
-      min-height:100vh;
-      position:relative;
-      overflow:hidden;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:32px 16px 40px;
-    }
-    .mf-bg { position:absolute; inset:0; background:#080810; overflow:hidden; }
-
-    /* Rain */
-    .rain-canvas { position:absolute; inset:0; pointer-events:none; opacity:0.35; }
-
-    /* Fog */
-    .fog { position:absolute; left:-100%; width:300%; border-radius:50%; pointer-events:none; }
-    .fog1 { bottom:15%; height:80px; background:rgba(20,20,40,0.6); animation:fogDrift 18s linear infinite; }
-    .fog2 { bottom:22%; height:50px; background:rgba(15,15,35,0.5); animation:fogDrift 26s linear infinite reverse; animation-delay:-8s; }
-
-    /* Lamp post */
-    .lamp-post { position:absolute; bottom:0; display:flex; flex-direction:column; align-items:center; }
-    .lp-left { left:6%; }
-    .lp-right { right:6%; }
-    .lp-pole { width:3px; height:110px; background:#1a1a2e; }
-    .lp-arm { width:28px; height:3px; background:#1a1a2e; position:relative; }
-    .lp-arm::after { content:''; position:absolute; top:-10px; left:0; width:3px; height:10px; background:#1a1a2e; }
-    .lp-globe { width:14px; height:14px; border-radius:50%; background:#c9a84c; position:absolute; top:-18px; left:-6px; box-shadow:0 0 12px 6px rgba(201,168,76,0.35),0 0 30px 12px rgba(201,168,76,0.12); animation:lampFlicker 4s ease-in-out infinite; }
-    .lp-cone { position:absolute; top:4px; left:-20px; width:0; height:0; border-left:22px solid transparent; border-right:22px solid transparent; border-top:40px solid rgba(201,168,76,0.08); animation:lampFlicker 4s ease-in-out infinite; }
-
-    /* Moon */
-    .moon { position:absolute; top:6%; right:12%; width:48px; height:48px; border-radius:50%; background:#d4c472; box-shadow:0 0 20px 8px rgba(212,196,114,0.2),0 0 60px 20px rgba(212,196,114,0.07); animation:moonGlow 6s ease-in-out infinite; }
-    .moon-crater { position:absolute; border-radius:50%; background:#c8b860; }
-
-    /* Smoke */
-    .smoke-wrap { position:absolute; bottom:140px; }
-    .smoke-wrap.sw1 { left:22%; }
-    .smoke-wrap.sw2 { left:58%; }
-    .smoke-puff { position:absolute; bottom:0; border-radius:50%; background:rgba(60,60,80,0.5); animation:smokePuff 3s ease-out infinite; }
-
-    /* Bats */
-    .bat { position:absolute; opacity:0.6; animation:batFly linear infinite; }
-    .bat-wing { display:inline-block; width:10px; height:4px; border-top:2px solid #2a2a4a; border-radius:50% 50% 0 0; margin:0 1px; }
-
-    /* Wanted poster */
-    .wanted { position:absolute; top:5%; left:3%; width:64px; background:#d4b896; border:2px solid #8b6914; padding:5px 4px; transform:rotate(-3deg); box-shadow:2px 2px 8px rgba(0,0,0,0.6); }
-    .wanted-title { font-family:'Playfair Display',serif; font-size:7px; font-weight:900; color:#5a1a0a; text-align:center; letter-spacing:1px; border-bottom:1px solid #8b6914; margin-bottom:3px; }
-    .wanted-face { width:100%; height:36px; background:#c4a882; border:1px solid #9a7a50; display:flex; align-items:center; justify-content:center; margin-bottom:3px; }
-    .wanted-sub { font-size:5px; color:#6a3a18; text-align:center; font-weight:700; letter-spacing:0.5px; }
-
-    /* Car */
-    .car-wrap { position:absolute; bottom:0; animation:carDrive 22s linear infinite; }
-    .car-body { width:90px; height:28px; background:#0d0d1a; border:1px solid #2a2a3e; border-radius:4px 12px 4px 4px; position:relative; }
-    .car-roof { position:absolute; top:-16px; left:18px; width:52px; height:16px; background:#080814; border:1px solid #1e1e30; border-radius:8px 8px 0 0; }
-    .car-wheel { position:absolute; bottom:-7px; width:14px; height:14px; border-radius:50%; background:#050508; border:2px solid #333355; }
-    .car-wl { left:10px; }
-    .car-wr { right:10px; }
-    .car-headlight { position:absolute; right:-4px; top:8px; width:8px; height:6px; background:#c9a84c; border-radius:0 2px 2px 0; box-shadow:0 0 10px 5px rgba(201,168,76,0.25),0 0 30px 10px rgba(201,168,76,0.1); }
-
-    .city-svg { position:absolute; bottom:0; left:0; width:100%; }
-
-    /* Keyframes */
-    @keyframes fogDrift { from{transform:translateX(0)} to{transform:translateX(33.3%)} }
-    @keyframes lampFlicker { 0%,100%{opacity:1} 92%{opacity:0.7} 94%{opacity:0.3} 96%{opacity:0.9} }
-    @keyframes moonGlow { 0%,100%{box-shadow:0 0 20px 8px rgba(212,196,114,0.2),0 0 60px 20px rgba(212,196,114,0.07)} 50%{box-shadow:0 0 30px 12px rgba(212,196,114,0.32),0 0 80px 30px rgba(212,196,114,0.12)} }
-    @keyframes smokePuff { 0%{transform:translateY(0) scale(0.5);opacity:0.7} 100%{transform:translateY(-60px) scale(2.5);opacity:0} }
-    @keyframes batFly { 0%{left:-5%;top:15%} 25%{top:8%} 50%{top:18%} 75%{top:10%} 100%{left:110%;top:12%} }
-    @keyframes carDrive { from{right:-120px} to{right:110%} }
-    @keyframes shimmerCard { 0%,60%{transform:translateX(-200%)} 100%{transform:translateX(300%)} }
-    @keyframes borderBlink { 0%,100%{border-color:rgba(201,168,76,0.35)} 50%{border-color:rgba(201,168,76,0.7)} }
-    @keyframes titleReveal { from{opacity:0;letter-spacing:12px} to{opacity:1;letter-spacing:3px} }
-    @keyframes cardIn { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
-    @keyframes roleSlide { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:translateY(0)} }
-
+    /* ── ANIMATED BACKGROUND (Moved to city-bg.css) ── */
     /* ── MAIN CARD ── */
     .mf-card {
       position:relative;
@@ -168,8 +94,9 @@
     .mf-success-txt { font-family:'Playfair Display',serif; font-size:16px; letter-spacing:3px; }
 
     /* Theme float button */
-    .theme-float { position:fixed; top:16px; left:16px; z-index:9999; padding:7px 14px; background:rgba(201,168,76,0.08); border:1px solid rgba(201,168,76,0.25); border-radius:30px; color:#c9a84c; font-family:'Tajawal',sans-serif; font-size:11px; font-weight:700; cursor:pointer; backdrop-filter:blur(12px); transition:.22s; letter-spacing:1px; }
+    .theme-float { position:fixed; top:16px; right:16px; z-index:9999; padding:7px 14px; background:rgba(201,168,76,0.08); border:1px solid rgba(201,168,76,0.25); border-radius:30px; color:#c9a84c; font-family:'Tajawal',sans-serif; font-size:11px; font-weight:700; cursor:pointer; backdrop-filter:blur(12px); transition:.22s; letter-spacing:1px; display:flex; gap:8px; align-items:center; }
     .theme-float:hover { background:rgba(201,168,76,0.16); border-color:rgba(201,168,76,0.5); }
+    .lang-float { right: 100px; }
   </style>
   <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('nexbank-theme') || 'dark')</script>
 </head>
@@ -352,28 +279,28 @@
         <div class="mf-emblem">&#x1F3E6;</div>
         <div class="mf-title">NEXBANK</div>
         <div class="mf-divider"><div class="mf-line"></div><div class="mf-diamond"></div><div class="mf-line"></div></div>
-        <div class="mf-subtitle">البنك الذكي &mdash; النخبة الخاصة</div>
+        <div class="mf-subtitle" data-i18n="subtitle">Smart Bank &mdash; Exclusive Elite</div>
       </div>
 
       <div class="mf-roles" id="rolesBar">
-        <button class="mf-role active" onclick="setRole(this,0)" data-i18n="role0">المدير</button>
-        <button class="mf-role" onclick="setRole(this,1)" data-i18n="role1">مشرف فرع</button>
-        <button class="mf-role" onclick="setRole(this,2)" data-i18n="role2">موظف</button>
+        <button class="mf-role active" onclick="setRole(this,0)" data-i18n="role0">Manager</button>
+        <button class="mf-role" onclick="setRole(this,1)" data-i18n="role1">Branch Supervisor</button>
+        <button class="mf-role" onclick="setRole(this,2)" data-i18n="role2">Staff</button>
       </div>
 
       <div class="mf-field">
-        <label class="mf-label" data-i18n="lbl_user">الهوية الرقمية</label>
+        <label class="mf-label" data-i18n="lbl_user">Digital Identity</label>
         <div class="mf-iw">
           <span class="mf-icon">&#x1F464;</span>
-          <input class="mf-input" type="text" id="mf-user" placeholder="اسم المستخدم" autocomplete="username" data-i18n-ph="ph_user"/>
+          <input class="mf-input" type="text" id="mf-user" placeholder="Username" autocomplete="username" data-i18n-ph="ph_user"/>
         </div>
       </div>
 
       <div class="mf-field">
-        <label class="mf-label" data-i18n="lbl_pass">رمز الوصول</label>
+        <label class="mf-label" data-i18n="lbl_pass">Access Code</label>
         <div class="mf-iw">
           <span class="mf-icon">&#x1F511;</span>
-          <input class="mf-input" type="password" id="mf-pw" placeholder="كلمة المرور" autocomplete="current-password" style="padding-left:38px;padding-right:38px" data-i18n-ph="ph_pass"/>
+          <input class="mf-input" type="password" id="mf-pw" placeholder="Password" autocomplete="current-password" style="padding-left:38px;padding-right:38px" data-i18n-ph="ph_pass"/>
           <button class="pw-toggle" id="pw-btn" onclick="togglePw()" type="button">&#x1F441;</button>
         </div>
       </div>
@@ -388,16 +315,16 @@
       <a href="/customer" class="mf-cust">
         <div class="mf-cust-ico">&#x1F3E6;</div>
         <div class="mf-cust-txt">
-          <div class="mf-cust-main">أنا عميل &mdash; ادخل هنا</div>
-          <div class="mf-cust-sub">احجز موعد &middot; استعلم &middot; تابع رقمك</div>
+          <div class="mf-cust-main" data-i18n="customer_main">I am a customer &mdash; Enter here</div>
+          <div class="mf-cust-sub" data-i18n="customer_sub">Book appointment &middot; Inquire &middot; Track your number</div>
         </div>
-        <div class="mf-cust-arr">&#x25C4;&#x25C4;</div>
+        <div class="mf-cust-arr">&#x25BA;&#x25BA;</div>
       </a>
     </div>
 
     <div class="mf-success" id="mf-success">
       <div class="mf-success-icon">&#x2714;</div>
-      <div class="mf-success-txt">تم الدخول بنجاح</div>
+      <div class="mf-success-txt" data-i18n="success_msg">Logged in successfully</div>
       <div class="mf-divider" style="margin-top:12px"><div class="mf-line"></div><div class="mf-diamond"></div><div class="mf-line"></div></div>
     </div>
 
@@ -410,7 +337,8 @@
 </div><!-- /mf-root -->
 
 <!-- Theme toggle -->
-<button class="theme-float" id="themeBtn" onclick="toggleTheme()">&#x1F319; داكن</button>
+<button class="theme-float" id="themeBtn" onclick="toggleTheme()" data-i18n="themeBtn">&#x1F319; Dark</button>
+<button class="theme-float lang-float" onclick="toggleLang()" id="loginLangBtn">AR</button>
 
 <script>
   /* Password toggle */
@@ -468,40 +396,16 @@
     }
   }
 
-  /* Rain animation */
-  const canvas = document.getElementById('rainCanvas');
-  const ctx = canvas.getContext('2d');
-  let drops = [], W, H;
-  function initRain() {
-    W = canvas.offsetWidth; H = canvas.offsetHeight;
-    canvas.width = W; canvas.height = H;
-    drops = [];
-    const count = Math.floor(W / 5);
-    for (let i = 0; i < count; i++) {
-      drops.push({ x: Math.random() * W, y: Math.random() * H, len: Math.random() * 14 + 8, speed: Math.random() * 3 + 3, opacity: Math.random() * 0.25 + 0.08 });
-    }
-  }
-  function drawRain() {
-    ctx.clearRect(0, 0, W, H);
-    drops.forEach(d => {
-      ctx.beginPath(); ctx.moveTo(d.x, d.y); ctx.lineTo(d.x - d.len * 0.15, d.y + d.len);
-      ctx.strokeStyle = `rgba(140,160,200,${d.opacity})`; ctx.lineWidth = 0.6; ctx.stroke();
-      d.y += d.speed; d.x -= d.speed * 0.15;
-      if (d.y > H) { d.y = -d.len; d.x = Math.random() * W; }
-      if (d.x < 0) d.x = W;
-    });
-    requestAnimationFrame(drawRain);
-  }
-  initRain(); drawRain();
-  window.addEventListener('resize', initRain);
+
 
   /* i18n labels */
   window.PAGE_LANG = {
-    ar: { lbl_user:'الهوية الرقمية', lbl_pass:'رمز الوصول', ph_user:'اسم المستخدم', ph_pass:'كلمة المرور', btn_login:'ENTER', role0:'المدير', role1:'مشرف فرع', role2:'موظف', themeLight:'فاتح', themeDark:'داكن' },
-    en: { lbl_user:'Digital Identity', lbl_pass:'Access Code', ph_user:'Username', ph_pass:'Password', btn_login:'ENTER', role0:'Manager', role1:'Branch Supervisor', role2:'Staff', themeLight:'Light', themeDark:'Dark' }
+    ar: { page_title: 'NEXBANK — دخول', subtitle: 'البنك الذكي — النخبة الخاصة', customer_main: 'أنا عميل — ادخل هنا', customer_sub: 'احجز موعد · استعلم · تابع رقمك', success_msg: 'تم الدخول بنجاح', lbl_user:'الهوية الرقمية', lbl_pass:'رمز الوصول', ph_user:'اسم المستخدم', ph_pass:'كلمة المرور', btn_login:'ENTER', role0:'المدير', role1:'مشرف فرع', role2:'موظف', themeBtn:'🌙 داكن' },
+    en: { page_title: 'NEXBANK — Login', subtitle: 'Smart Bank — Exclusive Elite', customer_main: 'I am a customer — Enter here', customer_sub: 'Book appointment · Inquire · Track your number', success_msg: 'Logged in successfully', lbl_user:'Digital Identity', lbl_pass:'Access Code', ph_user:'Username', ph_pass:'Password', btn_login:'ENTER', role0:'Manager', role1:'Branch Supervisor', role2:'Staff', themeBtn:'🌙 Dark' }
   };
 </script>
 <script src="/shared/theme.js"></script>
 <script src="/shared/i18n.js"></script>
+<script src="/shared/city-bg.js"></script>
 </body>
 </html>
