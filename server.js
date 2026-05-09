@@ -26,7 +26,15 @@ app.set('queueEvents', queueEvents);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
+
+const pgSession = require('connect-pg-simple')(session);
+const db = require('./db');
+
 app.use(session({
+    store: new pgSession({
+        pool: db,
+        tableName: 'session'
+    }),
     secret: process.env.SESSION_SECRET || 'bank-secret-2024',
     resave: false,
     saveUninitialized: false,
