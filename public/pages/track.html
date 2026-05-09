@@ -1,180 +1,354 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Track Your Number — Smart Bank</title>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/shared/ocean.css">
-<style>
-/* Base Styles */
-* { margin:0; padding:0; box-sizing:border-box; }
-body { 
-  font-family: 'Tajawal', sans-serif; 
-  background: #0a0a0f; color: #d8f0ff; 
-  min-height: 100vh; display: flex; align-items: center; justify-content: center; 
-  padding: 20px; overflow-x: hidden; position: relative;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Track Your Number — Smart Bank</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700;900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="/shared/ocean.css">
+  <style>
+    /* Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-/* Animated Background (Ocean Theme) */
-#bgLayer { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
-#bgLayer::before {
-  content:''; position:absolute; inset:-50%; width:200%; height:200%;
-  background: radial-gradient(ellipse 30% 20% at 20% 30%, rgba(201,168,76,.07) 0%, transparent 60%),
-              radial-gradient(ellipse 25% 18% at 70% 60%, rgba(201,168,76,.06) 0%, transparent 60%);
-  animation: causticsDrift 18s ease-in-out infinite alternate; filter: blur(1px);
-}
-@keyframes causticsDrift {
-  0%{transform:translate(0,0) rotate(0deg) scale(1)}
-  100%{transform:translate(-1%,4%) rotate(3deg) scale(1.05)}
-}
-#scanLine {
-  position:fixed; left:0; right:0; height:2px; z-index:1; pointer-events:none;
-  background:linear-gradient(90deg,transparent,rgba(201,168,76,.18),rgba(201,168,76,.25),rgba(201,168,76,.18),transparent);
-  filter:blur(1px); box-shadow:0 0 12px rgba(201,168,76,.25);
-}
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background: #0a0a0f;
+      color: #d8f0ff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow-x: hidden;
+      position: relative;
+    }
 
-/* Card */
-.track-card {
-  position: relative; z-index: 2; width: 100%; max-width: 400px;
-  background: linear-gradient(135deg, rgba(201,168,76,.08), rgba(201,168,76,.03));
-  border: 1px solid rgba(201,168,76,.2); border-radius: 24px; padding: 40px 30px;
-  text-align: center; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-  box-shadow: 0 10px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(201,168,76,0.1) inset;
-  animation: fadeUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
-}
-@keyframes fadeUp { from { opacity:0; transform:translateY(20px) } to { opacity:1; transform:none } }
-.track-card::before { content:''; position:absolute; top:0; left:20%; right:20%; height:1.5px; background:linear-gradient(90deg,transparent,rgba(201,168,76,.5),transparent); }
+    /* Animated Background (Ocean Theme) */
+    #bgLayer {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
 
-.brand-icon { font-size: 40px; margin-bottom: 10px; animation: floatIcon 3s ease-in-out infinite; }
-@keyframes floatIcon { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
-.title { font-size: 20px; font-weight: 900; margin-bottom: 25px; color: #fff; letter-spacing: 0.5px; }
+    #bgLayer::before {
+      content: '';
+      position: absolute;
+      inset: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(ellipse 30% 20% at 20% 30%, rgba(201, 168, 76, .07) 0%, transparent 60%),
+        radial-gradient(ellipse 25% 18% at 70% 60%, rgba(201, 168, 76, .06) 0%, transparent 60%);
+      animation: causticsDrift 18s ease-in-out infinite alternate;
+      filter: blur(1px);
+    }
 
-.token-num { 
-  font-size: 64px; font-weight: 900; line-height: 1; margin-bottom: 30px; letter-spacing: 4px;
-  background: linear-gradient(135deg, #d4b860, #ffd080);
-  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
-  font-family: 'JetBrains Mono', monospace;
-  text-shadow: 0 0 30px rgba(201,168,76,0.2);
-}
+    @keyframes causticsDrift {
+      0% {
+        transform: translate(0, 0) rotate(0deg) scale(1)
+      }
 
-.details-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 30px; }
-.detail-item {
-  background: rgba(201,168,76,.06); border: 1px solid rgba(201,168,76,.15);
-  border-radius: 14px; padding: 14px; display: flex; align-items: center; justify-content: space-between;
-}
-.detail-label { font-size: 11px; font-weight: 700; color: rgba(216,240,255,.5); text-transform: uppercase; letter-spacing: 1px; }
-.detail-val { font-size: 15px; font-weight: 900; color: #fff; }
-.detail-val.gold { color: #ffb347; font-family: 'JetBrains Mono', monospace; }
+      100% {
+        transform: translate(-1%, 4%) rotate(3deg) scale(1.05)
+      }
+    }
 
-.refresh-btn {
-  width: 100%; padding: 14px; background: linear-gradient(135deg, #c9a84c, #d4b860);
-  color: #fff; border: none; border-radius: 14px; font-family: inherit; font-size: 15px; font-weight: 900;
-  cursor: pointer; transition: 0.3s; box-shadow: 0 0 20px rgba(201,168,76,.4);
-}
-.refresh-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 30px rgba(201,168,76,.5); }
-.refresh-btn:active { transform: translateY(0); }
+    #scanLine {
+      position: fixed;
+      left: 0;
+      right: 0;
+      height: 2px;
+      z-index: 1;
+      pointer-events: none;
+      background: linear-gradient(90deg, transparent, rgba(201, 168, 76, .18), rgba(201, 168, 76, .25), rgba(201, 168, 76, .18), transparent);
+      filter: blur(1px);
+      box-shadow: 0 0 12px rgba(201, 168, 76, .25);
+    }
 
-.loader { display:none; margin-top: 15px; font-size: 12px; color: rgba(216,240,255,.5); }
+    /* Card */
+    .track-card {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 400px;
+      background: linear-gradient(135deg, rgba(201, 168, 76, .08), rgba(201, 168, 76, .03));
+      border: 1px solid rgba(201, 168, 76, .2);
+      border-radius: 24px;
+      padding: 40px 30px;
+      text-align: center;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(201, 168, 76, 0.1) inset;
+      animation: fadeUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    }
 
-/* Theme handling */
-html[data-theme="light"] body { background: #f4e8d4; color: #2a1208; }
-html[data-theme="light"] .track-card { background: rgba(232,214,188,.94); border-color: rgba(140,80,20,.14); }
-html[data-theme="light"] .title { color: #2a1208; }
-html[data-theme="light"] .token-num { background: linear-gradient(135deg, #b06000, #8b4513); -webkit-background-clip: text; }
-html[data-theme="light"] .detail-item { background: rgba(240,228,210,.75); border-color: rgba(140,80,20,.14); }
-html[data-theme="light"] .detail-label { color: rgba(42,18,8,.52); }
-html[data-theme="light"] .detail-val { color: #2a1208; }
-html[data-theme="light"] .detail-val.gold { color: #8b4513; }
-html[data-theme="light"] .refresh-btn { background: linear-gradient(135deg, #b06000, #8b4513); }
-</style>
-<script>document.documentElement.setAttribute('data-theme',localStorage.getItem('nexbank-theme')||'dark')</script>
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px)
+      }
+
+      to {
+        opacity: 1;
+        transform: none
+      }
+    }
+
+    .track-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 20%;
+      right: 20%;
+      height: 1.5px;
+      background: linear-gradient(90deg, transparent, rgba(201, 168, 76, .5), transparent);
+    }
+
+    .brand-icon {
+      font-size: 40px;
+      margin-bottom: 10px;
+      animation: floatIcon 3s ease-in-out infinite;
+    }
+
+    @keyframes floatIcon {
+
+      0%,
+      100% {
+        transform: translateY(0)
+      }
+
+      50% {
+        transform: translateY(-8px)
+      }
+    }
+
+    .title {
+      font-size: 20px;
+      font-weight: 900;
+      margin-bottom: 25px;
+      color: #fff;
+      letter-spacing: 0.5px;
+    }
+
+    .token-num {
+      font-size: 64px;
+      font-weight: 900;
+      line-height: 1;
+      margin-bottom: 30px;
+      letter-spacing: 4px;
+      background: linear-gradient(135deg, #d4b860, #ffd080);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-family: 'JetBrains Mono', monospace;
+      text-shadow: 0 0 30px rgba(201, 168, 76, 0.2);
+    }
+
+    .details-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+
+    .detail-item {
+      background: rgba(201, 168, 76, .06);
+      border: 1px solid rgba(201, 168, 76, .15);
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .detail-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: rgba(216, 240, 255, .5);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .detail-val {
+      font-size: 15px;
+      font-weight: 900;
+      color: #fff;
+    }
+
+    .detail-val.gold {
+      color: #ffb347;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .refresh-btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #c9a84c, #d4b860);
+      color: #fff;
+      border: none;
+      border-radius: 14px;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 900;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 0 20px rgba(201, 168, 76, .4);
+    }
+
+    .refresh-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 30px rgba(201, 168, 76, .5);
+    }
+
+    .refresh-btn:active {
+      transform: translateY(0);
+    }
+
+    .loader {
+      display: none;
+      margin-top: 15px;
+      font-size: 12px;
+      color: rgba(216, 240, 255, .5);
+    }
+
+    /* Theme handling */
+    html[data-theme="light"] body {
+      background: #f4e8d4;
+      color: #2a1208;
+    }
+
+    html[data-theme="light"] .track-card {
+      background: rgba(232, 214, 188, .94);
+      border-color: rgba(140, 80, 20, .14);
+    }
+
+    html[data-theme="light"] .title {
+      color: #2a1208;
+    }
+
+    html[data-theme="light"] .token-num {
+      background: linear-gradient(135deg, #b06000, #8b4513);
+      -webkit-background-clip: text;
+    }
+
+    html[data-theme="light"] .detail-item {
+      background: rgba(240, 228, 210, .75);
+      border-color: rgba(140, 80, 20, .14);
+    }
+
+    html[data-theme="light"] .detail-label {
+      color: rgba(42, 18, 8, .52);
+    }
+
+    html[data-theme="light"] .detail-val {
+      color: #2a1208;
+    }
+
+    html[data-theme="light"] .detail-val.gold {
+      color: #8b4513;
+    }
+
+    html[data-theme="light"] .refresh-btn {
+      background: linear-gradient(135deg, #b06000, #8b4513);
+    }
+  </style>
+  <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('nexbank-theme') || 'dark')</script>
 </head>
+
 <body>
 
-<div id="bgLayer"></div>
-<div id="scanLine"></div>
+  <div id="bgLayer"></div>
+  <div id="scanLine"></div>
 
-<div class="track-card">
-  <div class="brand-icon">🏦</div>
-  <div class="title" id="txtTitle">Smart Bank — Live Tracking</div>
-  
-  <div class="token-num" id="uiToken">—</div>
-  
-  <div class="details-grid">
-    <div class="detail-item">
-      <span class="detail-label" id="txtService">Service</span>
-      <span class="detail-val" id="uiService">—</span>
+  <div class="track-card">
+    <div class="brand-icon">🏦</div>
+    <div class="title" id="txtTitle">Smart Bank — Live Tracking</div>
+
+    <div class="token-num" id="uiToken">—</div>
+
+    <div class="details-grid">
+      <div class="detail-item">
+        <span class="detail-label" id="txtService">Service</span>
+        <span class="detail-val" id="uiService">—</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label" id="txtPos">Location / Pos</span>
+        <span class="detail-val" id="uiPos">—</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label" id="txtWait">Expected Wait</span>
+        <span class="detail-val gold" id="uiWait">— min</span>
+      </div>
     </div>
-    <div class="detail-item">
-      <span class="detail-label" id="txtPos">Location / Pos</span>
-      <span class="detail-val" id="uiPos">—</span>
-    </div>
-    <div class="detail-item">
-      <span class="detail-label" id="txtWait">Expected Wait</span>
-      <span class="detail-val gold" id="uiWait">— min</span>
-    </div>
+
+    <button class="refresh-btn" onclick="refreshPage()" id="btnRefresh">↻ Update Status</button>
+    <div class="loader" id="loader">Updating...</div>
   </div>
 
-  <button class="refresh-btn" onclick="refreshPage()" id="btnRefresh">↻ Update Status</button>
-  <div class="loader" id="loader">Updating...</div>
-</div>
+  <script>
+      // SCANLINE ANIMATION
+      (function () {
+        const el = document.getElementById('scanLine');
+        let y = -4;
+        function tick() { y += 0.8; if (y > window.innerHeight + 10) y = -10; el.style.top = y + 'px'; requestAnimationFrame(tick) }
+        tick();
+      })();
 
-<script>
-// SCANLINE ANIMATION
-(function(){
-  const el=document.getElementById('scanLine');
-  let y=-4;
-  function tick(){y+=0.8;if(y>window.innerHeight+10)y=-10;el.style.top=y+'px';requestAnimationFrame(tick)}
-  tick();
-})();
+    function getParams() {
+      const params = new URLSearchParams(window.location.search);
+      return {
+        token: params.get('token') || '—',
+        service: params.get('service') || '—',
+        pos: params.get('pos') || '—',
+        time: params.get('time') || '—'
+      };
+    }
 
-function getParams() {
-  const params = new URLSearchParams(window.location.search);
-  return {
-    token: params.get('token') || '—',
-    service: params.get('service') || '—',
-    pos: params.get('pos') || '—',
-    time: params.get('time') || '—'
-  };
-}
+    function initData() {
+      const data = getParams();
+      document.getElementById('uiToken').textContent = data.token;
+      document.getElementById('uiService').textContent = data.service;
+      document.getElementById('uiPos').textContent = data.pos;
+      document.getElementById('uiWait').textContent = data.time + ' min';
 
-function initData() {
-  const data = getParams();
-  document.getElementById('uiToken').textContent = data.token;
-  document.getElementById('uiService').textContent = data.service;
-  document.getElementById('uiPos').textContent = data.pos;
-  document.getElementById('uiWait').textContent = data.time + ' min';
+      // Detect language based on simple test (or localStorage)
+      const isAr = localStorage.getItem('nexbank-lang') === 'ar' || /[\u0600-\u06FF]/.test(data.service);
+      if (isAr) {
+        document.documentElement.dir = 'rtl';
+        document.documentElement.lang = 'ar';
+        document.getElementById('txtTitle').textContent = 'تتبع رقمك مباشرة';
+        document.getElementById('txtService').textContent = 'الخدمة';
+        document.getElementById('txtPos').textContent = 'موقعك / دورك';
+        document.getElementById('txtWait').textContent = 'الوقت المتبقي';
+        document.getElementById('btnRefresh').textContent = '↻ تحديث الحالة';
+        document.getElementById('uiWait').textContent = data.time + ' د';
+      }
+    }
 
-  // Detect language based on simple test (or localStorage)
-  const isAr = localStorage.getItem('nexbank-lang') === 'ar' || /[\u0600-\u06FF]/.test(data.service);
-  if (isAr) {
-    document.documentElement.dir = 'rtl';
-    document.documentElement.lang = 'ar';
-    document.getElementById('txtTitle').textContent = 'تتبع رقمك مباشرة';
-    document.getElementById('txtService').textContent = 'الخدمة';
-    document.getElementById('txtPos').textContent = 'موقعك / دورك';
-    document.getElementById('txtWait').textContent = 'الوقت المتبقي';
-    document.getElementById('btnRefresh').textContent = '↻ تحديث الحالة';
-    document.getElementById('uiWait').textContent = data.time + ' د';
-  }
-}
+    function refreshPage() {
+      const btn = document.getElementById('btnRefresh');
+      const loader = document.getElementById('loader');
+      btn.style.opacity = '0.5';
+      loader.style.display = 'block';
 
-function refreshPage() {
-  const btn = document.getElementById('btnRefresh');
-  const loader = document.getElementById('loader');
-  btn.style.opacity = '0.5';
-  loader.style.display = 'block';
-  
-  // Real world: Fetch updated data using token from an API endpoint here
-  // For now, simulate network load
-  setTimeout(() => {
-    btn.style.opacity = '1';
-    loader.style.display = 'none';
-  }, 800);
-}
+      // Real world: Fetch updated data using token from an API endpoint here
+      // For now, simulate network load
+      setTimeout(() => {
+        btn.style.opacity = '1';
+        loader.style.display = 'none';
+      }, 800);
+    }
 
-initData();
-</script>
+    initData();
+  </script>
 </body>
+
 </html>

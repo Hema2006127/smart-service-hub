@@ -73,12 +73,12 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--foam);min
   box-shadow:0 0 12px rgba(201,168,76,.25);
 }
 
-/* ══ LAYOUT: 2-col grid ══ */
-/* RTL: col1=right(live), col2=center(main) */
+/* ══ LAYOUT: 3-col grid ══ */
+/* RTL: col1=right(live), col2=center(main), col3=left(game) */
 .page-wrap{
   position:relative;z-index:2;min-height:100vh;
   display:grid;
-  grid-template-columns:340px 1fr;
+  grid-template-columns:340px 1fr 320px;
   grid-template-rows:66px 1fr;
 }
 
@@ -252,13 +252,16 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
 .appt-card::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1px;background:linear-gradient(90deg,transparent,var(--teal),transparent)}
 .appt-title{font-size:15px;font-weight:900;margin-bottom:20px;color:#fff}
 
-/* ══ GAME PANEL INNER ══ */
-.game-panel-inner{
-  max-width: 450px; margin: 0 auto;
+/* ══ LEFT: GAME PANEL ══ */
+.game-col{
+  grid-column:3;grid-row:2;
+  background:rgba(10,10,15,.82);border-right:1px solid var(--border);
+  -webkit-backdrop-filter:blur(22px);backdrop-filter:blur(22px);
+  padding:22px 16px;overflow-y:auto;max-height:calc(100vh - 66px);
   display:flex;flex-direction:column;gap:14px;
 }
-.game-header-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.game-col-title{font-size:16px;font-weight:900;color:#fff}
+.game-header-bar{display:flex;align-items:center;justify-content:space-between}
+.game-col-title{font-size:13px;font-weight:900;color:#fff}
 .game-toggle{display:flex;gap:5px;background:var(--b1);border:1px solid var(--border);border-radius:9px;padding:3px}
 .gt-btn{padding:5px 12px;border:none;background:transparent;color:var(--foam3);font-family:inherit;font-size:11px;font-weight:800;border-radius:7px;cursor:pointer;transition:.22s}
 .gt-btn.active{background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff}
@@ -286,7 +289,7 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
 #flappyCanvas{display:block;margin:0 auto;border-radius:10px;border:1px solid rgba(201,168,76,.2);background:#0a0a0f;cursor:pointer}
 
 /* WIN OVERLAY */
-.game-panel-inner .win-overlay,.snake-wrap .win-overlay{position:absolute;inset:0;background:rgba(10,10,15,.96);display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:10px;z-index:10;animation:winPop .4s cubic-bezier(.34,1.56,.64,1) both;text-align:center;padding:20px}
+.game-col .win-overlay,.snake-wrap .win-overlay{position:absolute;inset:0;background:rgba(10,10,15,.96);display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:10px;z-index:10;animation:winPop .4s cubic-bezier(.34,1.56,.64,1) both;text-align:center;padding:20px}
 @keyframes winPop{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
 .win-emoji{font-size:48px;margin-bottom:12px;animation:winBounce 1s ease-in-out infinite}
 @keyframes winBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
@@ -317,9 +320,10 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
 
 /* ══ RESPONSIVE — Mobile-first ══ */
 @media(max-width:1099px){
-  .page-wrap{grid-template-columns:1fr; grid-template-rows: auto auto auto;}
+  .page-wrap{grid-template-columns:1fr; grid-template-rows: auto auto auto auto;}
   .live-col { grid-column: 1; grid-row: 3; border-left: none; border-top: 1px solid var(--border); max-height: none; }
   .main-col { grid-column: 1; grid-row: 2; max-height: none; }
+  .game-col { grid-column: 1; grid-row: 4; border-right: none; border-top: 1px solid var(--border); max-height: none; }
 }
 
 @media(max-width:479px){
@@ -378,6 +382,7 @@ html[data-theme="light"] .svc-card:hover{background:rgba(245,232,215,.95)}
 html[data-theme="light"] .svc-name{color:#2a1208}
 html[data-theme="light"] .appt-card{background:rgba(240,228,210,.75);border-color:rgba(140,80,20,.14)}
 html[data-theme="light"] .appt-title{color:#2a1208}
+html[data-theme="light"] .game-col{background:rgba(232,214,188,.9);border-color:rgba(140,80,20,.14)}
 html[data-theme="light"] .game-col-title{color:#2a1208}
 html[data-theme="light"] .gsi-label{color:rgba(42,18,8,.52)}
 html[data-theme="light"] .game-msg{color:rgba(42,18,8,.62)}
@@ -523,7 +528,6 @@ html[data-theme="light"] .toast{background:rgba(238,222,200,.97);color:#2a1208;b
       <button class="tab-btn active" onclick="switchTab('queue',this)">🎫 Queue Number</button>
       <button class="tab-btn" onclick="switchTab('appt',this)">📅 Book Appointment</button>
       <button class="tab-btn" onclick="switchTab('status',this)">📊 Queue Status</button>
-      <button class="tab-btn" onclick="switchTab('games',this)">🎮 Play Games</button>
     </div>
 
     <!-- Panel: Queue -->
@@ -616,56 +620,53 @@ html[data-theme="light"] .toast{background:rgba(238,222,200,.97);color:#2a1208;b
     </div>
   </div>
 
-    <!-- Panel: Games -->
-    <div class="panel" id="panel-games">
-      <div class="game-panel-inner">
-        <div class="game-header-bar">
-          <div class="game-col-title">🎮 Play & Wait</div>
-          <div class="game-toggle">
-            <button class="gt-btn active" id="gt-snake" onclick="switchGame('snake')">🐍 Snake</button>
-            <button class="gt-btn" id="gt-flappy" onclick="switchGame('flappy')">🐠 Flappy</button>
-          </div>
-        </div>
-
-        <!-- SNAKE -->
-        <div class="snake-wrap" id="snakeWrap">
-          <div class="game-scorebar">
-            <div class="gsi"><div class="gsi-label">Points</div><div class="gsi-val cv" id="snakeScore">0</div></div>
-            <div class="gsi"><div class="gsi-label">Top</div><div class="gsi-val gv" id="snakeBest">0</div></div>
-            <div class="gsi"><div class="gsi-label">Level</div><div class="gsi-val rv" id="snakeLevel">1</div></div>
-            <div class="gsi"><div class="gsi-label">Life</div><div class="gsi-val" id="snakeLives">❤️❤️❤️</div></div>
-          </div>
-          <div class="game-msg" id="snakeMsg">Click New Game to start 🐍</div>
-          <canvas id="snakeCanvas" width="280" height="280"></canvas>
-          <div class="snake-controls">
-            <div></div><button class="snake-btn" onclick="snakeDir(0,-1)">▲</button><div></div>
-            <button class="snake-btn" onclick="snakeDir(-1,0)">◄</button>
-            <button class="snake-btn" onclick="snakePause()">⏸</button>
-            <button class="snake-btn" onclick="snakeDir(1,0)">►</button>
-            <div></div><button class="snake-btn" onclick="snakeDir(0,1)">▼</button><div></div>
-          </div>
-          <div class="game-btns">
-            <button class="btn-gp" onclick="startSnake()">🔄 New</button>
-          </div>
-        </div>
-
-        <!-- FLAPPY -->
-        <div class="flappy-wrap" id="flappyWrap">
-          <div class="game-scorebar">
-            <div class="gsi"><div class="gsi-label">Points</div><div class="gsi-val cv" id="flappyScore">0</div></div>
-            <div class="gsi"><div class="gsi-label">Top</div><div class="gsi-val gv" id="flappyBest">0</div></div>
-            <div class="gsi"><div class="gsi-label">Status</div><div class="gsi-val rv" id="flappyState">Ready</div></div>
-            <div class="gsi"><div class="gsi-label">Speed</div><div class="gsi-val" id="flappySpeed">1</div></div>
-          </div>
-          <div class="game-msg" id="flappyMsg">Click on canvas or Space To fly 🐠</div>
-          <canvas id="flappyCanvas" width="280" height="380" onclick="flappyJump()"></canvas>
-          <div class="game-btns">
-            <button class="btn-gp" onclick="startFlappy()">🔄 New</button>
-          </div>
-        </div>
+  <!-- ══ LEFT: GAME PANEL ══ -->
+  <div class="game-col">
+    <div class="game-header-bar">
+      <div class="game-col-title">🎮 Play & Wait</div>
+      <div class="game-toggle">
+        <button class="gt-btn active" id="gt-snake" onclick="switchGame('snake')">🐍 Snake</button>
+        <button class="gt-btn" id="gt-flappy" onclick="switchGame('flappy')">🐠 Flappy</button>
       </div>
     </div>
-  </div><!-- /main-col -->
+
+    <!-- SNAKE -->
+    <div class="snake-wrap" id="snakeWrap">
+      <div class="game-scorebar">
+        <div class="gsi"><div class="gsi-label">Points</div><div class="gsi-val cv" id="snakeScore">0</div></div>
+        <div class="gsi"><div class="gsi-label">Top</div><div class="gsi-val gv" id="snakeBest">0</div></div>
+        <div class="gsi"><div class="gsi-label">Level</div><div class="gsi-val rv" id="snakeLevel">1</div></div>
+        <div class="gsi"><div class="gsi-label">Life</div><div class="gsi-val" id="snakeLives">❤️❤️❤️</div></div>
+      </div>
+      <div class="game-msg" id="snakeMsg">Click New Game to start 🐍</div>
+      <canvas id="snakeCanvas" width="280" height="280"></canvas>
+      <div class="snake-controls">
+        <div></div><button class="snake-btn" onclick="snakeDir(0,-1)">▲</button><div></div>
+        <button class="snake-btn" onclick="snakeDir(-1,0)">◄</button>
+        <button class="snake-btn" onclick="snakePause()">⏸</button>
+        <button class="snake-btn" onclick="snakeDir(1,0)">►</button>
+        <div></div><button class="snake-btn" onclick="snakeDir(0,1)">▼</button><div></div>
+      </div>
+      <div class="game-btns">
+        <button class="btn-gp" onclick="startSnake()">🔄 New</button>
+      </div>
+    </div>
+
+    <!-- FLAPPY -->
+    <div class="flappy-wrap" id="flappyWrap">
+      <div class="game-scorebar">
+        <div class="gsi"><div class="gsi-label">Points</div><div class="gsi-val cv" id="flappyScore">0</div></div>
+        <div class="gsi"><div class="gsi-label">Top</div><div class="gsi-val gv" id="flappyBest">0</div></div>
+        <div class="gsi"><div class="gsi-label">Status</div><div class="gsi-val rv" id="flappyState">Ready</div></div>
+        <div class="gsi"><div class="gsi-label">Speed</div><div class="gsi-val" id="flappySpeed">1</div></div>
+      </div>
+      <div class="game-msg" id="flappyMsg">Click on canvas or Space To fly 🐠</div>
+      <canvas id="flappyCanvas" width="280" height="380" onclick="flappyJump()"></canvas>
+      <div class="game-btns">
+        <button class="btn-gp" onclick="startFlappy()">🔄 New</button>
+      </div>
+    </div>
+  </div>
 
 </div><!-- /page-wrap -->
 
