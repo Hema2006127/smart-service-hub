@@ -8,6 +8,8 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Tajawal:wght@400;700;900&family=Inter:wght@400;600;700;900&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" href="/shared/ocean.css">
+    <link rel="stylesheet" href="/shared/city-bg.css">
     <style>
         * {
             margin: 0;
@@ -16,23 +18,23 @@
         }
 
         :root {
-            --bg: #f0f4ff;
-            --bg2: #e8eeff;
-            --bg3: #dde6ff;
-            --blue: #1d4ed8;
-            --blue2: #2563eb;
-            --blue3: #3b82f6;
-            --gold: #1d4ed8;
-            --gold2: #2563eb;
-            --gold3: #3b82f6;
-            --accent: #0ea5e9;
-            --foam: #0f172a;
-            --foam2: rgba(15, 23, 42, .75);
-            --foam3: rgba(15, 23, 42, .3);
-            --border: rgba(29, 78, 216, .25);
-            --glow: 0 0 30px rgba(29, 78, 216, .5), 0 0 80px rgba(29, 78, 216, .15);
-            --card-bg: rgba(255, 255, 255, 0.92);
-            --glass: rgba(255, 255, 255, 0.7);
+            --bg: #0a0a0f;
+            --bg2: #0d0d16;
+            --bg3: #0f0f1e;
+            --blue: #c9a84c;
+            --blue2: #d4b860;
+            --blue3: #e0c870;
+            --gold: #c9a84c;
+            --gold2: #d4b860;
+            --gold3: #e0c870;
+            --accent: #c9a84c;
+            --foam: #e8d5a0;
+            --foam2: rgba(232, 213, 160, .75);
+            --foam3: rgba(232, 213, 160, .3);
+            --border: rgba(201, 168, 76, .25);
+            --glow: 0 0 30px rgba(201, 168, 76, .5), 0 0 80px rgba(201, 168, 76, .15);
+            --card-bg: rgba(13, 13, 22, 0.95);
+            --glass: rgba(10, 10, 15, 0.8);
         }
 
         html,
@@ -49,7 +51,7 @@
             width: 100%;
             height: 100vh;
             position: relative;
-            background: linear-gradient(135deg, #f0f4ff 0%, #e8eeff 40%, #dde6ff 100%);
+            background: #0a0a0f;
         }
 
         .presentation::before {
@@ -57,9 +59,9 @@
             position: absolute;
             inset: 0;
             background:
-                radial-gradient(ellipse 80% 60% at 10% 20%, rgba(29, 78, 216, .07) 0%, transparent 60%),
-                radial-gradient(ellipse 60% 80% at 90% 80%, rgba(14, 165, 233, .07) 0%, transparent 60%),
-                radial-gradient(ellipse 50% 50% at 50% 50%, rgba(99, 102, 241, .04) 0%, transparent 70%);
+                radial-gradient(ellipse 80% 60% at 10% 20%, rgba(201, 168, 76, .07) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 80% at 90% 80%, rgba(212, 184, 96, .07) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 50% at 50% 50%, rgba(201, 168, 76, .04) 0%, transparent 70%);
             pointer-events: none;
             z-index: 0;
         }
@@ -109,7 +111,7 @@
             height: 600px;
             top: -150px;
             right: -100px;
-            background: radial-gradient(circle, rgba(29, 78, 216, .09), transparent 70%)
+            background: radial-gradient(circle, rgba(201, 168, 76, .09), transparent 70%)
         }
 
         .orb2 {
@@ -117,7 +119,7 @@
             height: 500px;
             bottom: -100px;
             left: -80px;
-            background: radial-gradient(circle, rgba(29, 78, 216, .06), transparent 70%);
+            background: radial-gradient(circle, rgba(201, 168, 76, .06), transparent 70%);
             animation-delay: -6s
         }
 
@@ -126,7 +128,7 @@
             height: 350px;
             top: 40%;
             left: 35%;
-            background: radial-gradient(circle, rgba(29, 78, 216, .04), transparent 70%);
+            background: radial-gradient(circle, rgba(201, 168, 76, .04), transparent 70%);
             animation-delay: -3s
         }
 
@@ -147,7 +149,7 @@
             inset: 0;
             z-index: 0;
             pointer-events: none;
-            background-image: linear-gradient(rgba(29, 78, 216, .03) 1px, transparent 1px), linear-gradient(90deg, rgba(29, 78, 216, .03) 1px, transparent 1px);
+            background-image: linear-gradient(rgba(201, 168, 76, .03) 1px, transparent 1px), linear-gradient(90deg, rgba(201, 168, 76, .03) 1px, transparent 1px);
             background-size: 60px 60px
         }
 
@@ -160,19 +162,19 @@
             display: flex;
             align-items: center;
             gap: 20px;
-            background: rgba(255, 255, 255, .95);
-            border: 1px solid rgba(29, 78, 216, .15);
+            background: rgba(13, 13, 22, .95);
+            border: 1px solid rgba(201, 168, 76, .25);
             border-radius: 60px;
             padding: 10px 28px;
             -webkit-backdrop-filter: blur(24px);
             backdrop-filter: blur(24px);
-            box-shadow: 0 8px 32px rgba(29, 78, 216, .12), 0 2px 8px rgba(0, 0, 0, .06)
+            box-shadow: 0 8px 32px rgba(0, 0, 0, .5)
         }
 
         .nav-btn {
             background: none;
-            border: 1.5px solid rgba(29, 78, 216, .3);
-            color: var(--blue);
+            border: 1.5px solid rgba(201, 168, 76, .3);
+            color: var(--gold);
             font-family: 'Inter', 'Tajawal', sans-serif;
             font-size: 12px;
             font-weight: 700;
@@ -187,10 +189,10 @@
         }
 
         .nav-btn:hover {
-            background: var(--blue);
-            color: #fff;
-            border-color: var(--blue);
-            box-shadow: 0 4px 16px rgba(29, 78, 216, .3)
+            background: var(--gold);
+            color: #000;
+            border-color: var(--gold);
+            box-shadow: 0 4px 16px rgba(201, 168, 76, .3)
         }
 
         .nav-btn:active {
@@ -221,8 +223,8 @@
             width: 10px;
             height: 10px;
             border-radius: 50%;
-            background: rgba(29, 78, 216, .1);
-            border: 2px solid rgba(29, 78, 216, .2);
+            background: rgba(201, 168, 76, .1);
+            border: 2px solid rgba(201, 168, 76, .2);
             cursor: pointer;
             transition: .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
@@ -255,7 +257,7 @@
             top: 24px;
             right: 32px;
             font-size: 11px;
-            color: rgba(29, 78, 216, .4);
+            color: rgba(201, 168, 76, .4);
             letter-spacing: 3px;
             font-weight: 700;
             opacity: .35
@@ -271,7 +273,7 @@
         .divider-line {
             flex: 1;
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(29, 78, 216, .4), transparent)
+            background: linear-gradient(90deg, transparent, rgba(201, 168, 76, .4), transparent)
         }
 
         .divider-diamond {
@@ -293,7 +295,7 @@
             position: absolute;
             width: 22px;
             height: 22px;
-            border-color: rgba(29, 78, 216, .4);
+            border-color: rgba(201, 168, 76, .4);
             border-style: solid
         }
 
@@ -2079,12 +2081,54 @@
 </head>
 
 <body>
-    <div class="bg-layer">
-        <div class="orb orb1"></div>
-        <div class="orb orb2"></div>
-        <div class="orb orb3"></div>
+    <div class="mf-bg">
+        <div class="moon">
+            <div class="moon-crater mc-1"></div>
+            <div class="moon-crater mc-2"></div>
+            <div class="moon-crater mc-3"></div>
+        </div>
+        <div class="wanted">
+            <div class="wanted-title">WANTED</div>
+            <div class="wanted-face">
+                <svg width="40" height="36" viewBox="0 0 40 36">
+                    <ellipse cx="20" cy="14" rx="10" ry="12" fill="#8a6040" />
+                    <ellipse cx="20" cy="10" rx="12" ry="6" fill="#5a3a20" />
+                    <ellipse cx="16" cy="15" rx="2" ry="2.5" fill="#3a1a0a" />
+                    <ellipse cx="24" cy="15" rx="2" ry="2.5" fill="#3a1a0a" />
+                    <path d="M16 21 Q20 24 24 21" stroke="#5a3a20" stroke-width="1" fill="none" />
+                </svg>
+            </div>
+            <div class="wanted-sub">DEAD OR ALIVE</div>
+        </div>
+        <svg class="city-svg" viewBox="0 0 680 220" preserveAspectRatio="xMidYMax meet">
+            <rect x="0" y="100" width="60" height="120" fill="#0a0a14" />
+            <rect x="20" y="80" width="30" height="20" fill="#0a0a14" />
+            <rect x="55" y="70" width="80" height="150" fill="#0c0c18" />
+            <rect x="130" y="90" width="50" height="130" fill="#08080f" />
+            <rect x="175" y="120" width="45" height="100" fill="#0a0a16" />
+            <rect x="270" y="40" width="70" height="180" fill="#0b0b18" />
+            <rect x="335" y="80" width="55" height="140" fill="#090912" />
+            <rect x="385" y="100" width="60" height="120" fill="#0a0a15" />
+            <rect x="440" y="85" width="50" height="135" fill="#08080e" />
+            <rect x="485" y="110" width="45" height="110" fill="#0b0b16" />
+            <rect x="525" y="75" width="55" height="145" fill="#0a0a14" />
+            <rect x="575" y="90" width="50" height="130" fill="#090910" />
+            <rect x="620" y="110" width="60" height="110" fill="#0a0a13" />
+            <rect x="0" y="215" width="680" height="5" fill="#0d0d1a" />
+        </svg>
+        <canvas class="rain-canvas" id="rainCanvas"></canvas>
+        <div class="fog fog1"></div>
+        <div class="fog fog2"></div>
+        <div class="lamp-post lp-left"><div class="lp-pole"></div></div>
+        <div class="lamp-post lp-right"><div class="lp-pole"></div></div>
+        <div class="car-wrap">
+            <div class="car-body">
+                <div class="car-wheel car-wl"></div>
+                <div class="car-wheel car-wr"></div>
+                <div class="car-headlight"></div>
+            </div>
+        </div>
     </div>
-    <div class="grid-bg"></div>
 
     <div class="presentation" id="presentation">
 
@@ -4206,6 +4250,7 @@
         document.getElementById('slide-' + initId).classList.add('active');
         updateUI(initId, 1);
     </script>
+    <script src="/shared/city-bg.js"></script>
 </body>
 
 </html>
