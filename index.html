@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Service Hub - Presentation</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Tajawal:wght@400;700;900&family=Inter:wght@400;600;700;900&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        :root {
+            --bg: #f0f4ff;
+            --bg2: #e8eeff;
+            --bg3: #dde6ff;
+            --blue: #1d4ed8;
+            --blue2: #2563eb;
+            --blue3: #3b82f6;
+            --gold: #1d4ed8;
+            --gold2: #2563eb;
+            --gold3: #3b82f6;
+            --accent: #0ea5e9;
+            --foam: #0f172a;
+            --foam2: rgba(15, 23, 42, .75);
+            --foam3: rgba(15, 23, 42, .3);
+            --border: rgba(29, 78, 216, .25);
+            --glow: 0 0 30px rgba(29, 78, 216, .5), 0 0 80px rgba(29, 78, 216, .15);
+            --card-bg: rgba(255,255,255,0.92);
+            --glass: rgba(255,255,255,0.7);
+        }
+
+        html,body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Tajawal', sans-serif;
+            background: var(--bg);
+            color: var(--foam)
+        }
+
+        .presentation {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            background: linear-gradient(135deg, #f0f4ff 0%, #e8eeff 40%, #dde6ff 100%);
+        }
+
+        .presentation::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 80% 60% at 10% 20%, rgba(29,78,216,.07) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 80% at 90% 80%, rgba(14,165,233,.07) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 50% at 50% 50%, rgba(99,102,241,.04) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .slide {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 80px 90px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .65s cubic-bezier(.4,0,.2,1), transform .65s cubic-bezier(.4,0,.2,1);
+            transform: translateX(80px) scale(.97);
+            z-index: 2
+        }
+
+        .slide.active {
+            opacity: 1;
+            pointer-events: all;
+            transform: translateX(0) scale(1)
+        }
+
+        .slide.prev {
+            opacity: 0;
+            transform: translateX(-80px) scale(.97)
+        }
+
+        .bg-layer {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            animation: orbFloat 12s ease-in-out infinite
+        }
+
+        .orb1 { width:600px;height:600px;top:-150px;right:-100px;background:radial-gradient(circle,rgba(29,78,216,.09),transparent 70%) }
+        .orb2 { width:500px;height:500px;bottom:-100px;left:-80px;background:radial-gradient(circle,rgba(29,78,216,.06),transparent 70%);animation-delay:-6s }
+        .orb3 { width:350px;height:350px;top:40%;left:35%;background:radial-gradient(circle,rgba(29,78,216,.04),transparent 70%);animation-delay:-3s }
+
+        @keyframes orbFloat {
+            0%,100% { transform:translate(0,0) scale(1) }
+            50% { transform:translate(20px,-20px) scale(1.08) }
+        }
+
+        .grid-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background-image: linear-gradient(rgba(29,78,216,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(29,78,216,.03) 1px,transparent 1px);
+            background-size: 60px 60px
+        }
+
+        .nav {
+            position: fixed;
+            bottom: 28px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: rgba(255,255,255,.95);
+            border: 1px solid rgba(29,78,216,.15);
+            border-radius: 60px;
+            padding: 10px 28px;
+            -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px);
+            box-shadow: 0 8px 32px rgba(29,78,216,.12),0 2px 8px rgba(0,0,0,.06)
+        }
+
+        .nav-btn {
+            background: none;
+            border: 1.5px solid rgba(29,78,216,.3);
+            color: var(--blue);
+            font-family: 'Inter','Tajawal',sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 8px 22px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all .2s ease;
+            letter-spacing: .5px;
+            display: flex;
+            align-items: center;
+            gap: 6px
+        }
+
+        .nav-btn:hover { background:var(--blue);color:#fff;border-color:var(--blue);box-shadow:0 4px 16px rgba(29,78,216,.3) }
+        .nav-btn:active { transform:scale(.95) }
+
+        .slide-counter {
+            color: var(--gold2);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            min-width: 60px;
+            text-align: center
+        }
+
+        .dots {
+            position: fixed;
+            right: 24px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 8px
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(29,78,216,.1);
+            border: 2px solid rgba(29,78,216,.2);
+            cursor: pointer;
+            transition: .4s cubic-bezier(0.175,0.885,0.32,1.275);
+            position: relative;
+        }
+
+        .dot::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border: 1px solid var(--gold);
+            border-radius: 50%;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: .3s;
+        }
+
+        .dot.active { background:var(--gold);border-color:var(--gold);transform:scale(1.3); }
+        .dot.active::before { opacity:1;transform:scale(1); }
+
+        .slide-num { position:absolute;top:24px;right:32px;font-size:11px;color:rgba(29,78,216,.4);letter-spacing:3px;font-weight:700;opacity:.35 }
+
+        .divider { display:flex;align-items:center;gap:12px;margin:16px 0 }
+        .divider-line { flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(29,78,216,.4),transparent) }
+        .divider-diamond { width:7px;height:7px;background:var(--gold);transform:rotate(45deg) }
+
+        .corners { position:absolute;inset:16px;pointer-events:none }
+        .corners::before,.corners::after { content:'';position:absolute;width:22px;height:22px;border-color:rgba(29,78,216,.4);border-style:solid }
+        .corners::before { top:0;right:0;border-width:2px 2px 0 0 }
+        .corners::after { bottom:0;left:0;border-width:0 0 2px 2px }
+        .corner-bl,.corner-tr { position:absolute;width:22px;height:22px;border-color:rgba(29,78,216,.4);border-style:solid }
+        .corner-bl { top:0;left:0;border-width:2px 0 0 2px }
+        .corner-tr { bottom:0;right:0;border-width:0 2px 2px 0 }
+
+        .card {
+            background: rgba(255,255,255,.92);
+            border: 1px solid rgba(29,78,216,.12);
+            border-radius: 20px;
+            padding: 24px;
+            -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+            position: relative;
+            overflow: hidden;
+            transition: all .3s cubic-bezier(.4,0,.2,1);
+            box-shadow: 0 4px 20px rgba(29,78,216,.06)
+        }
+
+        .card::before { content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(29,78,216,.05),transparent 60%);pointer-events:none }
+        .card:hover { border-color:rgba(29,78,216,.4);transform:translateY(-5px) scale(1.01);box-shadow:0 20px 50px rgba(29,78,216,.12) }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(29,78,216,.1);
+            border: 1px solid rgba(29,78,216,.3);
+            border-radius: 30px;
+            padding: 5px 14px;
+            font-size: 12px;
+            color: var(--gold2);
+            font-weight: 700;
+            letter-spacing: 1px
+        }
+
+        .code {
+            background: #f8fafc;
+            border: 1px solid rgba(29,78,216,.15);
+            border-radius: 10px;
+            padding: 16px 20px;
+            font-family: 'Courier New',monospace;
+            font-size: 12px;
+            color: #334155;
+            line-height: 1.8;
+            text-align: left;
+            direction: ltr;
+            overflow-x: auto
+        }
+
+        .code .kw { color:#1d4ed8 }
+        .code .str { color:#059669 }
+        .code .cm { color:rgba(30,41,59,.4) }
+
+        .tbl { width:100%;border-collapse:collapse;font-size:13px }
+        .tbl th { background:rgba(29,78,216,.1);color:var(--gold2);padding:10px 14px;border-bottom:1px solid rgba(29,78,216,.2);font-weight:900;letter-spacing:1px }
+        .tbl td { padding:10px 14px;border-bottom:1px solid rgba(29,78,216,.06);color:var(--foam2) }
+        .tbl tr:hover td { background:rgba(29,78,216,.04) }
+
+        .flow { display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center }
+        .step { background:rgba(255,255,255,.9);border:1px solid rgba(29,78,216,.25);border-radius:10px;padding:12px 18px;font-size:12px;font-weight:700;color:var(--gold2);text-align:center;position:relative }
+        .step-arrow { color:rgba(29,78,216,.4);font-size:20px }
+
+        @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:none} }
+        @keyframes glow { 0%,100%{box-shadow:var(--glow)} 50%{box-shadow:0 0 40px rgba(29,78,216,.5),0 0 80px rgba(29,78,216,.2)} }
+        @keyframes shimmer { 0%,60%{transform:translateX(-200%)} 100%{transform:translateX(300%)} }
+        @keyframes ping { 0%{transform:scale(1);opacity:.8} 100%{transform:scale(2.2);opacity:0} }
+        @keyframes slideIn { from{opacity:0;transform:translateY(30px) scale(.96)} to{opacity:1;transform:none} }
+        @keyframes popIn { 0%{opacity:0;transform:scale(.7)} 70%{transform:scale(1.05)} 100%{opacity:1;transform:scale(1)} }
+        @keyframes cardEntrance { from{opacity:0;transform:translateY(40px) rotateX(8deg)} to{opacity:1;transform:none} }
+        @keyframes pulseRing { 0%{box-shadow:0 0 0 0 rgba(29,78,216,.4)} 70%{box-shadow:0 0 0 14px rgba(29,78,216,0)} 100%{box-shadow:0 0 0 0 rgba(29,78,216,0)} }
+
+        .slide.active .anim { animation:slideIn .65s cubic-bezier(.4,0,.2,1) both }
+        .slide.active .anim:nth-child(2) { animation-delay:.1s }
+        .slide.active .anim:nth-child(3) { animation-delay:.2s }
+        .slide.active .anim:nth-child(4) { animation-delay:.3s }
+        .slide.active .anim:nth-child(5) { animation-delay:.4s }
+        .slide.active .anim:nth-child(6) { animation-delay:.5s }
+
+        /* Cover */
+        .cover-emblem { width:100px;height:100px;border-radius:50%;border:2px solid rgba(29,78,216,.5);display:flex;align-items:center;justify-content:center;font-size:44px;position:relative;animation:glow 3s ease-in-out infinite }
+        .cover-emblem::after { content:'';position:absolute;inset:-8px;border-radius:50%;border:1px solid rgba(29,78,216,.18) }
+        .cover-title { font-family:'Playfair Display',serif;font-size:52px;font-weight:900;color:var(--gold);letter-spacing:4px;text-shadow:0 0 40px rgba(29,78,216,.4);text-align:center }
+        .cover-sub { font-size:16px;color:var(--foam2);letter-spacing:3px;text-align:center;max-width:700px }
+
+        /* Team */
+        .team-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:16px;width:100%;max-width:900px }
+        .team-card { background:rgba(255,255,255,.85);border:1px solid rgba(29,78,216,.18);border-radius:14px;padding:20px;text-align:center;position:relative;overflow:hidden;transition:.3s }
+        .team-card::before { content:'';position:absolute;top:-1px;left:-1px;right:-1px;height:3px;background:linear-gradient(90deg,transparent,var(--gold),transparent) }
+        .team-card:hover { border-color:rgba(29,78,216,.4);transform:translateY(-4px);box-shadow:0 16px 40px rgba(29,78,216,.1) }
+        .team-avatar { width:60px;height:60px;border-radius:50%;background:rgba(29,78,216,.1);border:2px solid rgba(29,78,216,.35);display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 12px }
+
+        /* Responsive */
+        @media (max-width:1024px) {
+            .team-grid { grid-template-columns:repeat(2,1fr) !important; }
+            div[style*="grid-template-columns:repeat(4,1fr)"] { grid-template-columns:repeat(2,1fr) !important; }
+            div[style*="grid-template-columns:repeat(5,1fr)"] { grid-template-columns:repeat(3,1fr) !important; }
+            .slide { padding:40px !important; }
+        }
+        @media (max-width:768px) {
+            .team-grid,div[style*="display:grid"] { grid-template-columns:1fr !important;gap:12px !important; }
+            .slide { padding:20px !important;padding-top:60px !important;padding-bottom:80px !important;justify-content:flex-start !important;overflow-y:auto !important;overflow-x:hidden !important; }
+            .cover-title { font-size:32px !important;letter-spacing:1px !important; }
+            h2[style] { font-size:24px !important;margin-top:10px !important;line-height:1.4 !important; }
+            .nav { width:92% !important;justify-content:space-between !important;padding:8px 12px !important;bottom:12px !important; }
+            .nav-btn { padding:6px 12px !important;font-size:11px !important; }
+            .dots { display:none !important; }
+        }
+
+        /* Presenter Badge */
+        #presenterBadge { position:fixed;bottom:80px;left:24px;z-index:100;display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.97);border:1.5px solid var(--pb-color,#1d4ed8);border-radius:50px;padding:7px 16px 7px 7px;-webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px);box-shadow:0 4px 24px rgba(0,0,0,.1),0 0 0 4px var(--pb-glow,rgba(29,78,216,.08));transition:all .5s cubic-bezier(.4,0,.2,1); }
+        .pb-avatar { width:36px;height:36px;border-radius:50%;background:var(--pb-bg,rgba(29,78,216,.1));display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;border:1.5px solid var(--pb-color,rgba(29,78,216,.3)); }
+        .pb-info { display:flex;flex-direction:column; }
+        .pb-name { font-size:11px;font-weight:900;color:var(--pb-color,#1d4ed8);font-family:'Inter',sans-serif;line-height:1.3; }
+        .pb-role { font-size:9px;color:rgba(15,23,42,.45);font-family:'Inter',sans-serif;letter-spacing:.5px; }
+
+        #sectionLabel { position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:100;font-family:'Inter',sans-serif;font-size:10px;font-weight:700;color:var(--sl-color,#1d4ed8);letter-spacing:2.5px;text-transform:uppercase;background:rgba(255,255,255,.93);border:1px solid var(--sl-color,rgba(29,78,216,.3));border-radius:20px;padding:4px 14px;-webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);transition:all .5s ease;white-space:nowrap; }
+
+        #sectionTransition { position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0;transition:opacity .35s ease; }
+        #sectionTransition.show { opacity:1;pointer-events:all; }
+        .st-backdrop { position:absolute;inset:0;background:rgba(240,244,255,.75);-webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+        .st-card { position:relative;background:rgba(255,255,255,.98);border:2px solid var(--st-color,#1d4ed8);border-radius:28px;padding:36px 56px;text-align:center;box-shadow:0 24px 80px rgba(0,0,0,.18);transform:scale(.75);transition:transform .45s cubic-bezier(.34,1.56,.64,1);min-width:320px; }
+        #sectionTransition.show .st-card { transform:scale(1); }
+        .st-label { font-family:'Inter',sans-serif;font-size:10px;font-weight:700;color:var(--st-color,#1d4ed8);letter-spacing:3px;text-transform:uppercase;margin-bottom:10px; }
+        .st-emoji { font-size:52px;margin-bottom:10px;line-height:1; }
+        .st-name { font-family:'Playfair Display',serif;font-size:30px;font-weight:900;color:#0f172a;margin-bottom:6px;line-height:1.1; }
+        .st-role-text { font-size:12px;color:rgba(15,23,42,.45);letter-spacing:1px;font-family:'Inter',sans-serif; }
+        .st-section-name { margin-top:14px;display:inline-flex;align-items:center;gap:6px;background:var(--st-color,#1d4ed8);color:#fff;border-radius:20px;padding:5px 16px;font-size:11px;font-weight:700;font-family:'Inter',sans-serif;letter-spacing:1px; }
+
+        .dot.active { transform:scale(1.4) !important; }
+
+        #jumpPanel { position:fixed;top:50%;left:16px;transform:translateY(-50%);z-index:100;display:flex;flex-direction:column;gap:6px; }
+        .jump-btn { width:32px;height:32px;border-radius:50%;border:2px solid var(--jb-color,rgba(29,78,216,.3));background:rgba(255,255,255,.9);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .2s ease;box-shadow:0 2px 8px rgba(0,0,0,.08); }
+        .jump-btn:hover { transform:scale(1.2);border-color:var(--jb-color,#1d4ed8);box-shadow:0 4px 16px rgba(0,0,0,.15); }
+        .jump-btn.current-section { background:var(--jb-color,#1d4ed8);border-color:var(--jb-color,#1d4ed8); }
+
+        @media (max-width:768px) {
+            #presenterBadge { display:none !important; }
+            #sectionLabel { font-size:9px;padding:3px 10px; }
+            #jumpPanel { display:none !important; }
+        }
+
+        /* ══ RATING SLIDE STYLES ══ */
+        .star-btn {
+            font-size: 36px;
+            cursor: pointer;
+            transition: transform .2s, filter .2s;
+            filter: grayscale(1);
+            opacity: .4;
+            background: none;
+            border: none;
+            line-height: 1;
+        }
+        .star-btn.lit {
+            filter: grayscale(0);
+            opacity: 1;
+            transform: scale(1.15);
+        }
+        .star-btn:hover { transform: scale(1.25); }
+        .rating-result {
+            display: none;
+            margin-top: 20px;
+            padding: 18px 28px;
+            border-radius: 16px;
+            background: rgba(29,78,216,.08);
+            border: 1px solid rgba(29,78,216,.25);
+            text-align: center;
+            animation: slideIn .5s ease both;
+        }
+        .rating-result.show { display: block; }
+        .rating-label {
+            font-size: 22px;
+            font-weight: 900;
+            color: var(--gold);
+            margin-top: 6px;
+        }
+        .rating-msg {
+            font-size: 13px;
+            color: var(--foam2);
+            margin-top: 6px;
+            line-height: 1.7;
+        }
+        /* Team slide */
+        #slide-2 { padding:50px 60px 90px; }
+        .team-section-title { font-family:'Playfair Display',serif;font-size:40px;font-weight:900;color:var(--blue);letter-spacing:2px;text-align:center;margin-top:8px;line-height:1.1; }
+        .team-section-sub { font-family:'Inter',sans-serif;font-size:13px;color:var(--foam2);letter-spacing:5px;text-transform:uppercase;margin-top:6px;text-align:center; }
+        .supervisor-row { display:flex;justify-content:center;margin:28px 0 18px; }
+        .supervisor-mega-card { display:flex;align-items:center;gap:24px;background:linear-gradient(135deg,rgba(29,78,216,.08) 0%,rgba(255,255,255,.95) 100%);border:1.5px solid rgba(29,78,216,.35);border-radius:20px;padding:20px 36px;box-shadow:0 8px 30px rgba(29,78,216,.1);max-width:480px;width:100%;animation:cardEntrance .7s .05s cubic-bezier(.4,0,.2,1) both;transition:all .35s ease; }
+        .supervisor-mega-card:hover { transform:translateY(-4px);box-shadow:0 16px 40px rgba(29,78,216,.18);border-color:rgba(29,78,216,.6); }
+        .sup-avatar-wrap { position:relative;flex-shrink:0; }
+        .sup-avatar { width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,rgba(29,78,216,.12),rgba(14,165,233,.08));border:2.5px solid rgba(29,78,216,.4);display:flex;align-items:center;justify-content:center;font-size:34px;animation:pulseRing 2.5s infinite; }
+        .sup-badge { position:absolute;bottom:-4px;right:-4px;background:var(--blue);color:#fff;font-size:9px;font-weight:700;font-family:'Inter',sans-serif;padding:2px 7px;border-radius:20px;letter-spacing:.5px;border:2px solid #fff; }
+        .sup-label { font-family:'Inter',sans-serif;font-size:10px;font-weight:700;color:var(--blue2);letter-spacing:3px;text-transform:uppercase;margin-bottom:4px; }
+        .sup-name { font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--foam);line-height:1.1; }
+        .sup-role { font-family:'Inter',sans-serif;font-size:12px;color:var(--foam2);margin-top:4px; }
+        .members-grid { display:grid;grid-template-columns:repeat(5,1fr);gap:14px;max-width:960px;width:100%; }
+        .member-card { background:rgba(255,255,255,.95);border:1.5px solid rgba(29,78,216,.1);border-radius:18px;padding:20px 14px 16px;text-align:center;transition:all .35s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden;cursor:default;animation:cardEntrance .65s both;box-shadow:0 4px 16px rgba(29,78,216,.06); }
+        .member-card::before { content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--accent));border-radius:18px 18px 0 0;opacity:0;transition:opacity .3s; }
+        .member-card:hover { border-color:rgba(29,78,216,.4);transform:translateY(-8px) scale(1.02);box-shadow:0 20px 40px rgba(29,78,216,.15); }
+        .member-card:hover::before { opacity:1; }
+        .m-avatar-wrap { position:relative;margin:0 auto 14px;width:58px;height:58px; }
+        .m-avatar { width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,rgba(29,78,216,.08),rgba(14,165,233,.06));border:2px solid rgba(29,78,216,.15);display:flex;align-items:center;justify-content:center;font-size:26px;transition:all .3s; }
+        .member-card:hover .m-avatar { border-color:rgba(29,78,216,.5);background:linear-gradient(135deg,rgba(29,78,216,.14),rgba(14,165,233,.1));transform:scale(1.1); }
+        .m-number { position:absolute;top:-4px;right:-4px;width:20px;height:20px;background:var(--blue);color:#fff;border-radius:50%;font-size:9px;font-weight:900;font-family:'Inter',sans-serif;display:flex;align-items:center;justify-content:center;border:2px solid #fff; }
+        .m-name { font-family:'Playfair Display',serif;font-size:13px;font-weight:900;color:var(--foam);line-height:1.25;margin-bottom:5px; }
+        .m-role { font-family:'Inter',sans-serif;font-size:9.5px;font-weight:600;color:var(--blue2);letter-spacing:.5px;margin-bottom:6px; }
+        .m-id { font-family:'Courier New',monospace;font-size:9px;color:rgba(29,78,216,.4);background:rgba(29,78,216,.06);padding:2px 8px;border-radius:8px;display:inline-block; }
+    
+.pres-style-1 { font-family:'Playfair Display',serif;font-size:56px;color:var(--gold);margin-top:20px;text-align:center;line-height:1.1 }
+.pres-style-2 { display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:10px }
+.pres-style-3 { text-align:center;padding:14px }
+.pres-style-4 { font-size:11px;font-weight:900;color:rgba(239,68,68,.7);letter-spacing:2px;margin-bottom:6px }
+.pres-style-5 { font-size:11px;color:rgba(29,78,216,.4);margin-top:10px;letter-spacing:2px;text-align:center }
+.pres-style-6 { font-size:14px;font-weight:900;color:var(--gold2);margin-bottom:10px }
+.pres-style-7 { font-size:16px;color:var(--foam2);letter-spacing:2px;text-align:center }
+.pres-style-8 { font-family:'Playfair Display',serif;font-size:36px;color:var(--gold);text-align:center;letter-spacing:2px }
+.pres-style-9 { border-color:rgba(29,78,216,.35) }
+.pres-style-10 { animation-delay:.15s }
+.pres-style-11 { color:#fcd34d;font-weight:900 }
+.pres-style-12 { color:var(--gold2);font-size:10px }
+.pres-style-13 { font-size:11px;color:var(--foam2) }
+.pres-style-14 { font-size:15px;font-weight:900;color:var(--gold2);margin-bottom:8px }
+.pres-style-15 { width:260px;margin:12px auto 20px }
+.pres-style-16 { font-size:11px;color:var(--gold2);font-weight:700;margin-bottom:4px }
+.pres-style-17 { width:260px;margin:10px auto 20px }
+.pres-style-18 { width:260px;margin:12px auto 24px }
+.pres-style-19 { display:grid;grid-template-columns:1fr 1fr;gap:8px }
+.pres-style-20 { color:var(--gold2);font-size:12px }
+.pres-style-21 { font-size:16px;color:var(--foam2);margin-top:15px;letter-spacing:4px;font-weight:700 }
+.pres-style-22 { flex-direction:column;align-items:flex-start;gap:8px }
+.pres-style-23 { font-size:13px;color:var(--foam2);line-height:1.8 }
+.pres-style-24 { font-family:'Playfair Display',serif;font-size:32px;color:var(--gold);text-align:center }
+.pres-style-25 { font-size:15px;font-weight:900;color:var(--gold2);margin-bottom:14px }
+.pres-style-26 { width:100%;max-width:900px }
+.pres-style-27 { text-align:center }
+.pres-style-28 { width:300px;margin:10px auto 22px }
+.pres-style-29 { width:26px;height:26px;border-radius:50%;background:rgba(29,78,216,.2);border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:var(--gold);flex-shrink:0 }
+.pres-style-30 { max-width:960px;width:100% }
+.pres-style-31 { display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:960px;width:100% }
+.pres-style-32 { animation-delay:.35s }
+.pres-style-33 { color:#86efac }
+.pres-style-34 { font-size:10px }
+.pres-style-35 { margin-top:24px }
+.pres-style-36 { display:flex;align-items:center;gap:8px }
+.pres-style-37 { color:#86efac;font-weight:900 }
+.pres-style-38 { font-size:13px;font-weight:900;color:var(--gold2);margin-bottom:8px }
+.pres-style-39 { display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:800px;width:100%;margin:14px 0 }
+.pres-style-40 { display:grid;grid-template-columns:repeat(4,1fr);gap:12px }
+.pres-style-41 { grid-column:span 2 }
+.pres-style-42 { flex-direction:column;align-items:flex-start;gap:10px }
+.pres-style-43 { text-align:center;margin-top:10px;font-size:11px;color:rgba(29,78,216,.4);letter-spacing:2px }
+.pres-style-44 { color:#fcd34d }
+.pres-style-45 { font-size:12px;color:var(--foam2) }
+.pres-style-46 { font-size:11px;line-height:2 }
+.pres-style-47 { font-size:13px;font-weight:900;color:var(--foam);margin-bottom:8px }
+.pres-style-48 { font-size:13px;color:var(--foam2);letter-spacing:3px;text-align:center;margin-top:4px }
+.pres-style-49 { color:var(--gold2) }
+.pres-style-50 { text-align:center;margin-top:10px;font-size:11px;color:var(--foam2) }
+.pres-style-51 { display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:960px;width:100% }
+.pres-style-52 { animation-delay:.55s }
+.pres-style-53 { display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:8px }
+.pres-style-54 { font-size:12px;color:var(--foam2);line-height:1.9 }
+.pres-style-55 { width:300px;margin:12px auto 24px }
+.pres-style-56 { display:flex;align-items:stretch;gap:12px;justify-content:center;margin-bottom:16px }
+.pres-style-57 { font-size:11px;color:var(--foam2);margin-top:6px;line-height:1.7 }
+.pres-style-58 { font-size:11px }
+.pres-style-59 { grid-column:span 3 }
+.pres-style-60 { font-size:20px;margin-bottom:4px }
+.pres-style-61 { font-size:13px;color:rgba(29,78,216,.5);text-align:center;letter-spacing:2px }
+.pres-style-62 { font-size:13px;font-weight:900;color:var(--gold2);margin-bottom:6px }
+.pres-style-63 { animation-delay:.25s }
+.pres-style-64 { font-family:'Playfair Display',serif;font-size:34px;color:var(--gold);text-align:center;letter-spacing:2px }
+.pres-style-65 { font-size:10px;margin-bottom:12px }
+.pres-style-66 { font-family:'Playfair Display',serif;font-size:34px;color:var(--gold);text-align:center }
+.pres-style-67 { font-size:11px;color:var(--foam2);line-height:1.9 }
+.pres-style-68 { font-size:11px;color:var(--foam2);margin-top:4px }
+.pres-style-69 { font-size:12px;font-weight:900;color:var(--gold2) }
+.pres-style-70 { font-size:11px;color:var(--foam2);line-height:1.7 }
+.pres-style-71 { font-size:12px;color:var(--foam2);line-height:2 }
+.pres-style-72 { color:#f87171 }
+.pres-style-73 { font-weight:700 }
+.pres-style-74 { display:flex;align-items:center;font-size:24px;color:rgba(29,78,216,.5) }
+.pres-style-75 { font-size:36px;margin-bottom:8px }
+.pres-style-76 { width:260px;margin:16px auto }
+.pres-style-77 { display:flex;align-items:center;gap:8px;justify-content:center;margin-bottom:20px;flex-wrap:wrap }
+.pres-style-78 { display:flex;align-items:center;gap:10px }
+.pres-style-79 { font-size:10px;color:var(--foam2) }
+.pres-style-80 { flex:1;text-align:center;border-color:rgba(29,78,216,.35) }
+.pres-style-81 { animation-delay:.45s }
+.pres-style-82 { display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:960px;width:100% }
+.pres-style-83 { font-size:11px;color:var(--foam2);line-height:2 }
+.pres-style-84 { display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:960px;width:100% }
+.pres-style-85 { font-size:12px;font-weight:900;color:var(--gold2);margin-bottom:6px }
+.pres-style-86 { height:16px }
+.pres-style-87 { display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;max-width:960px;width:100% }
+.pres-style-88 { color:#93c5fd }
+.pres-style-89 { height:20px }
+.pres-style-90 { color:#93c5fd;font-weight:900 }
+.pres-style-91 { font-size:12px;font-weight:900;color:var(--gold2);margin-bottom:8px }
+.pres-style-92 { font-size:22px;margin-bottom:6px }
+.pres-style-93 { color:var(--gold) }
+.pres-style-94 { font-size:12px;font-weight:900;color:var(--gold2);margin-bottom:10px }
+.pres-style-95 { display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px }
+.pres-style-96 { font-size:12px;color:var(--gold2);margin-top:30px;letter-spacing:1px;font-weight:900;opacity:.8 }
+.pres-style-97 { font-size:13px;font-weight:900;color:var(--gold2) }
+.pres-style-98 { display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px }
+.pres-style-99 { width:260px;margin:10px auto 18px }
+.pres-style-100 { text-align:center;padding:10px;background:rgba(29,78,216,.05);border-radius:8px;font-size:11px;color:var(--gold);font-weight:700 }
+.pres-style-101 { display:flex;gap:16px;flex-wrap:wrap;justify-content:center }
+.pres-style-102 { font-size:11px;padding:6px 12px }
+.pres-style-103 { height:24px }
+.pres-style-104 { color:#1d4ed8;font-weight:900 }
+.pres-style-105 { font-size:12px;color:var(--foam2);line-height:1.8 }
+.pres-style-106 { padding:8px 12px;border-radius:10px;border-left:4px solid #34d399;background:rgba(16,185,129,.08);font-size:11px;color:#34d399;font-weight:700 }
+.pres-style-107 { padding:8px 12px;border-radius:10px;border-left:4px solid #888;background:rgba(100,100,100,.08);font-size:11px;color:#888;font-weight:700 }
+.pres-style-108 { font-size:10px;color:var(--foam2);margin-top:4px }
+.pres-style-109 { font-size:24px;margin-bottom:8px }
+.pres-style-110 { font-size:13px;font-weight:900;color:var(--gold2);margin-bottom:10px }
+.pres-style-111 { padding:8px 12px;border-radius:10px;border-left:4px solid #fbbf24;background:rgba(245,158,11,.08);font-size:11px;color:#fbbf24;font-weight:700 }
+.pres-style-112 { font-size:30px;margin-bottom:10px }
+.pres-style-113 { width:260px;margin:10px auto 16px }
+.pres-style-114 { display:flex;gap:8px;justify-content:center;margin:8px 0 }
+.pres-style-115 { display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:960px;width:100% }
+.pres-style-116 { font-size:28px;margin-bottom:8px }
+.pres-style-117 { width:260px;margin:12px auto 28px }
+.pres-style-118 { font-size:40px }
+.pres-style-119 { font-size:10px;margin-bottom:14px }
+.pres-style-120 { font-family:'Playfair Display',serif;font-size:44px;font-weight:900;color:var(--gold);letter-spacing:4px;text-align:center;text-shadow:0 0 40px rgba(29,78,216,.4) }
+.pres-style-121 { border-color:rgba(29,78,216,.35);margin-bottom:12px }
+.pres-style-122 { color:var(--gold2);font-weight:900 }
+.pres-style-123 { width:300px;margin:16px auto }
+.pres-style-124 { text-align:center;padding:10px;background:rgba(29,78,216,.05);border-radius:8px;font-size:11px;color:var(--foam2) }
+.pres-style-125 { font-size:11px;padding:6px 12px;border-color:rgba(239,68,68,.4);color:#f87171 }
+.pres-style-126 { margin-bottom:12px }
+.pres-style-127 { font-size:11px;padding:6px 12px;border-color:rgba(16,185,129,.4);color:#34d399 }
+.pres-style-128 { padding:8px 12px;border-radius:10px;border-left:4px solid #f87171;background:rgba(239,68,68,.08);font-size:11px;color:#f87171;font-weight:700 }
+.pres-style-129 { color:var(--gold);font-weight:700 }
+.pres-style-130 { font-size:13px;font-weight:900;color:var(--gold2);margin-bottom:12px }
+.pres-style-131 { font-size:11px;color:var(--foam2);line-height:1.8 }
+.pres-style-132 { font-size:11px;padding:8px 14px }
+.pres-style-133 { font-size:11px;font-weight:900;color:var(--gold2) }
+.pres-style-134 { font-size:52px;margin-bottom:6px }
+.pres-style-135 { display:grid;grid-template-columns:1fr 1fr;gap:20px;width:100%;max-width:960px }
+.pres-style-136 { display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:900px;width:100% }
+.pres-style-137 { width:260px;margin:25px auto }
+.pres-style-138 { font-size:28px;margin-bottom:10px }
+.pres-style-139 { margin-bottom:14px }
+</style>
+</head>
+
+<body>
+<div class="bg-layer">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+</div>
+<div class="grid-bg"></div>
+
+<div class="presentation" id="presentation">
+
+    <!-- ══ SLIDE 1: COVER ══ -->
+    <div class="slide active" id="slide-1">
+        <div class="corners"><div class="corner-bl"></div><div class="corner-tr"></div></div>
+        <div class="slide-num">01 / 35</div>
+        <div class="cover-emblem anim">🏦</div>
+        <div class="badge anim pres-style-35">ACADEMIC PROJECT 2024</div>
+        <h1 class="anim pres-style-1">Smart Service Hub</h1>
+        <p class="anim pres-style-21">ADVANCED QUEUE SYSTEM</p>
+        <div class="divider anim pres-style-137">
+            <div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div>
+        </div>
+        <div class="anim pres-style-2">
+            <span class="badge">🟢 Node.js + Express</span>
+            <span class="badge">🚀 Supabase PostgreSQL</span>
+            <span class="badge">⚡ Real-time SSE</span>
+            <span class="badge">💰 Currency API</span>
+        </div>
+        <div class="anim pres-style-96">
+            PRESENTED BY GROUP 10 · UNDER SUPERVISION OF DR. BASANT MOHAMED
+        </div>
+    </div>
+
+    <!-- ══ SLIDE 2: TEAM ══ -->
+    <div class="slide" id="slide-2">
+        <div class="corners"><div class="corner-bl"></div><div class="corner-tr"></div></div>
+        <div class="slide-num">02 / 35</div>
+        <div class="badge anim">GROUP 10 · 2024</div>
+        <div class="team-section-title anim">Meet The Team</div>
+        <div class="team-section-sub anim">The People Behind Smart Service Hub</div>
+        <div class="supervisor-row anim">
+            <div class="supervisor-mega-card">
+                <div class="sup-avatar-wrap"><div class="sup-avatar">👩‍🏫</div><span class="sup-badge">SUPERVISOR</span></div>
+                <div class="sup-info">
+                    <div class="sup-label">Academic Supervisor</div>
+                    <div class="sup-name">Dr. Basant Mohamed</div>
+                    <div class="sup-role">Teaching Assistant · Faculty of Computers & AI</div>
+                </div>
+            </div>
+        </div>
+        <div class="members-grid">
+            <div class="member-card pres-style-10"><div class="m-avatar-wrap"><div class="m-avatar">👨‍💻</div><span class="m-number">1</span></div><div class="m-name">Ibrahim Mohamed</div><div class="m-role">Project Lead &amp; Backend</div><div class="m-id">2006127</div></div>
+            <div class="member-card pres-style-63"><div class="m-avatar-wrap"><div class="m-avatar">🎨</div><span class="m-number">2</span></div><div class="m-name">Reem Saleh Abdelwanees</div><div class="m-role">Frontend Specialist</div><div class="m-id">2006093</div></div>
+            <div class="member-card pres-style-32"><div class="m-avatar-wrap"><div class="m-avatar">📱</div><span class="m-number">3</span></div><div class="m-name">Haneen Hossam Abdelaziz</div><div class="m-role">UI / UX Designer</div><div class="m-id">2006085</div></div>
+            <div class="member-card pres-style-81"><div class="m-avatar-wrap"><div class="m-avatar">🗄️</div><span class="m-number">4</span></div><div class="m-name">Mariam Wael Youssef</div><div class="m-role">Database Architect</div><div class="m-id">2006090</div></div>
+            <div class="member-card pres-style-52"><div class="m-avatar-wrap"><div class="m-avatar">🚀</div><span class="m-number">5</span></div><div class="m-name">Amira Helmy Said</div><div class="m-role">Full Stack Developer</div><div class="m-id">2006067</div></div>
+        </div>
+        <script>
+        document.querySelectorAll('.member-card,.supervisor-mega-card').forEach(card=>{
+            card.addEventListener('mousemove',e=>{const r=card.getBoundingClientRect();const x=(e.clientX-r.left)/r.width-.5;const y=(e.clientY-r.top)/r.height-.5;card.style.transform=`perspective(900px) rotateX(${-y*10}deg) rotateY(${x*10}deg) translateY(-8px) scale(1.02)`;});
+            card.addEventListener('mouseleave',()=>{card.style.transform='';});
+        });
+        </script>
+    </div>
+
+    <!-- ══ SLIDE 3: Project Overview ══ -->
+    <div class="slide" id="slide-3">
+        <div class="corners"><div class="corner-bl"></div><div class="corner-tr"></div></div>
+        <div class="slide-num">03 / 35</div>
+        <h2 class="anim pres-style-64">Project Overview</h2>
+        <div class="divider anim pres-style-18"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div>
+        <div class="pres-style-135">
+            <div class="card anim"><div class="pres-style-138">🎯</div><div class="pres-style-14">Objective</div><div class="pres-style-23">Integrated Smart Bank Service System — Organizes queues, allows booking, provides live display, and role-based dashboards.</div></div>
+            <div class="card anim"><div class="pres-style-138">⚠️</div><div class="pres-style-14">Problem Solved</div><div class="pres-style-23">Queue chaos, lack of transparency, and missing stats for decisions.</div></div>
+            <div class="card anim"><div class="pres-style-138">⭐</div><div class="pres-style-14">Key Features</div><div class="pres-style-23">Smart Queue with Priorities · Electronic Appointments · Live Display Screen · Multiple Roles · Service Ratings · Export CSV · Audit System.</div></div>
+            <div class="card anim"><div class="pres-style-138">💡</div><div class="pres-style-14">Benefits</div><div class="pres-style-23">Save Customer Time · Improve Staff Efficiency · Data-driven management decisions · Professional Multilingual UX.</div></div>
+        </div>
+    </div>
+
+    <!-- ══ SLIDE 5: Architecture ══ -->
+    <div class="slide" id="slide-5">
+        <div class="corners"><div class="corner-bl"></div><div class="corner-tr"></div></div>
+        <div class="slide-num">04 / 35</div>
+        <h2 class="anim pres-style-66">System Architecture</h2>
+        <div class="divider anim pres-style-18"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div>
+        <div class="anim pres-style-26">
+            <div class="pres-style-56">
+                <div class="card pres-style-80"><div class="pres-style-92">✨</div><div class="pres-style-69">CLIENT LAYER</div><div class="pres-style-57">HTML Pages<br>CSS Themes<br>Vanilla JS</div></div>
+                <div class="pres-style-74">🔹</div>
+                <div class="card pres-style-80"><div class="pres-style-92">⚙️</div><div class="pres-style-69">SERVER LAYER</div><div class="pres-style-57">Express.js Router<br>Session Middleware<br>Audit Logger</div></div>
+                <div class="pres-style-74">🔹</div>
+                <div class="card pres-style-80"><div class="pres-style-92">✨</div><div class="pres-style-69">DATA LAYER</div><div class="pres-style-57">Supabase PostgreSQL<br>pg Pool<br>SSL Connection</div></div>
+            </div>
+            <div class="pres-style-53">
+                <div class="step">auth.js</div><div class="step">queue.js</div><div class="step">appointments.js</div><div class="step">stats.js</div><div class="step">ratings.js</div>
+                <div class="step">branches.js</div><div class="step">staff.js</div><div class="step">schedule.js</div><div class="step">audit.js</div><div class="step">SSE Events</div>
+            </div>
+            <div class="pres-style-43">10 ROUTE MODULES — Each unit is independent</div>
+        </div>
+    </div>
+
+    <!-- ══ SLIDE 7: server.js ══ -->
+    <div class="slide" id="slide-7">
+        <div class="corners"><div class="corner-bl"></div><div class="corner-tr"></div></div>
+        <div class="slide-num">05 / 35</div>
+        <h2 class="anim pres-style-24">server.js — Entry Point</h2>
+        <div class="divider anim pres-style-99"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div>
+        <div class="pres-style-82">
+            <div class="code anim pres-style-58">
+                <span class="cm">// 1. Setup App</span>
+                <span class="kw">const</span> app = express();
+                app.use(express.json());
+                app.use(express.static(<span class="str">'public'</span>));
+                app.use(session({ secret, cookie }));
+
+                <span class="cm">// 2. SSE Event Bus Shared</span>
+                <span class="kw">const</span> queueEvents = <span class="kw">new</span> EventEmitter();
+                queueEvents.setMaxListeners(<span class="kw">200</span>);
+                app.set(<span class="str">'queueEvents'</span>, queueEvents);
+
+                <span class="cm">// 3. Audit Middleware</span>
+                app.use((req, res, next) => {
+                <span class="kw">if</span> (writeOps &amp;&amp; req.session?.user)
+                logAudit(user, action, details, ip);
+                next();
+                });
+            </div>
+            <div class="anim">
+                <div class="card pres-style-126">
+                    <div class="pres-style-38">👥 Registered Routes</div>
+                    <div class="pres-style-83">
+                        <code class="pres-style-93">/login</code> — Authentication<br>
+                        <code class="pres-style-93">/api/events/:branchId</code> — SSE Stream<br>
+                        <code class="pres-style-93">/api/queue</code> — The Queue<br>
+                        <code class="pres-style-93">/api/appointments</code> — Appointments<br>
+                        <code class="pres-style-93">/api/stats</code> — Statistics<br>
+                        <code class="pres-style-93">/api/schedule</code> — Shifts 🆕<br>
+                        <code class="pres-style-93">/api/audit</code> — Audit Log
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="pres-style-38">📄 Page Protection</div>
+                    <div class="pres-style-67">Pages /teller 🔹 /manager 🔹 Verifies Session Before Display.<br>If No Session 🔹 redirect For /login</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ SLIDE 16: SSE ══ -->
+    <div class="slide" id="slide-16">
+        <div class="corners"><div class="corner-bl"></div><div class="corner-tr"></div></div>
+        <div class="slide-num">06 / 35</div>
+        <h2 class="anim pres-style-24">📡 Server-Sent Events — Real-time Updates</h2>
+        <div class="divider anim pres-style-17"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div>
+        <div class="pres-style-84">
+            <div class="anim">
+                <div class="card pres-style-126">
+                    <div class="pres-style-110">Why SSE And Not WebSocket?</div>
+                    <div class="pres-style-54">🔹 SSE Simpler for 1-Way Broadcast<br>🔹 No External Library Needed<br>🔹 Works On Normal HTTP<br>🔹 Auto Reconnects on Drop<br>💪 Supports 200 Subscribers Simultaneously</div>
+                </div>
+                <div class="card">
+                    <div class="pres-style-38">Connection Error</div>
+                    <div class="pres-style-54">Auto reconnects after 5 Seconds.<br>Heartbeat Every 25 Seconds to Keep Connection Alive.</div>
+                </div>
+            </div>
+            <div class="code anim pres-style-58">
+                <span class="cm">// SSE Endpoint</span>
+                app.get(<span class="str">'/api/events/:branchId'</span>, (req, res) => {
+                res.setHeader(<span class="str">'Content-Type'</span>, <span class="str">'text/event-stream'</span>);
+                res.setHeader(<span class="str">'Cache-Control'</span>, <span class="str">'no-cache'</span>);
+                res.flushHeaders();
+
+                <span class="kw">const</span> listener = (data) => {
+                res.write(<span class="str">`data: ${JSON.stringify(data)}\n\n`</span>);
+                };
+                queueEvents.on(<span class="str">`branch:${branchId}`</span>, listener);
+
+                <span class="kw">const</span> hb = setInterval(() =>
+                res.write(<span class="str">':heartbeat\n\n'</span>), <span class="kw">25000</span>);
+
+                req.on(<span class="str">'close'</span>, () => {
+                queueEvents.off(<span class="str">`branch:${branchId}`</span>, listener);
+                clearInterval(hb);
+                });
+                });
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ SLIDE 17: API Reference ══ -->
+    <div class="slide" id="slide-17">
+        <div class="corners"><div class="corner-bl"></div><div class="corner-tr"></div></div>
+        <div class="slide-num">07 / 35</div>
+        <h2 class="anim pres-style-24">🔌 Reference API Complete</h2>
+        <div class="divider anim pres-style-113"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div>
+        <div class="anim pres-style-30">
+            <table class="tbl pres-style-58">
+                <thead><tr><th>Method</th><th>Endpoint</th><th>Description</th><th>Allowed Roles</th></tr></thead>
+                <tbody>
+                    <tr><td class="pres-style-33">POST</td><td>/login</td><td>Login</td><td>All</td></tr>
+                    <tr><td class="pres-style-88">GET</td><td>/api/queue/:branchId</td><td>Fetch Branch Queue</td><td>All</td></tr>
+                    <tr><td class="pres-style-33">POST</td><td>/api/queue/:branchId</td><td>Add Customer to Queue</td><td>All</td></tr>
+                    <tr><td class="pres-style-44">PUT</td><td>/api/queue/:branchId/next</td><td>Call Next</td><td>teller, manager, admin</td></tr>
+                    <tr><td class="pres-style-44">PUT</td><td>/api/queue/:id/escalate</td><td>Refer to Manager</td><td>teller, manager, admin</td></tr>
+                    <tr><td class="pres-style-72">DELETE</td><td>/api/queue/:branchId/reset</td><td>Clear Queue</td><td>manager, admin</td></tr>
+                    <tr><td class="pres-style-88">GET</td><td>/api/appointments</td><td>Appointments</td><td>All (Filtered)</td></tr>
+                    <tr><td class="pres-style-33">POST</td><td>/api/appointments</td><td>Book Appointment</td><td>All</td></tr>
+                    <tr><td class="pres-style-90">GET</td><td class="pres-style-73">/api/schedule/today</td><td>Daily Staff Status 🆕</td><td>teller, manager, admin</td></tr>
+                    <tr><td class="pres-style-37">POST</td><td class="pres-style-73">/api/schedule</td><td>Record/Edit Shift 🆕</td><td>manager, admin</td></tr>
+                    <tr><td class="pres-style-11">PUT</td><td class="pres-style-73">/api/schedule/request/:id</td><td>Review Leave Request 🆕</td><td>manager, admin</td></tr>
+                    <tr><td class="pres-style-88">GET</td><td>/api/stats</td><td>Statistics</td><td>manager, admin</td></tr>
+                    <tr><td class="pres-style-88">GET</td><td>/api/audit</td><td>Audit Log</td><td>admin only</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ══ NEW SLIDE A: Schedule System Overview ══ -->
+    <div class="slide" id="slide-sched-a">
+        <div class="corners"><div class="corner-bl"></div><div class="corner-tr"></div></div>
+        <div class="slide-num">08 / 35</div>
+        <h2 class="anim pres-style-66">⏱️ Shift Management System — schedule.html</h2>
+        <div class="divider anim pres-style-55"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div>
+        <div class="pres-style-87">
+            <div class="card anim">
+                <div class="pres-style-138">🎯</div>
+                <div class="pres-style-38">What It Does</div>
+                <div class="pres-style-105">
+                    🔹 Tracks every employee's daily status<br>
+                    🔹 Manager registers each employee as Working / Leave / Sick / Holiday<br>
+                    🔹 Real-time stats refresh every 30 seconds<br>
+                    🔹 Pending leave requests shown instantly
+                </div>
+            </div>
+            <div class="card anim">
+                <div class="pres-style-138">👥</div>
+                <div class="pres-style-38">Who Uses It</div>
+                <div class="pres-style-105">
+                    <span class="pres-style-104">👑 Admin</span> — Sees all branches<br>
+                    <span class="pres-style-104">🏢 Branch Manager</span> — His branch only<br>
+                    <br>
+                    🔒 Tellers cannot access this page<br>
+                    🔒 Session verification on load
+                </div>
+            </div>
+            <div class="card anim">
+                <div class="pres-style-138">📊</div>
+                <div class="pres-style-38">Live Dashboard Stats</div>
+                <div class="pres-style-105">
+                    🟢 Currently Working<br>
+                    🏖️ On Leave<br>
+                    🤒 Sick<br>
+                    ⏳ Pending Requests<br>
+                    <br>All updated automatically every 30 sec
+                </div>
+            </div>
+            <div class="card anim pres-style-59">
+                <div class="flow">
+                    <div class="step pres-style-132">🔐 Auth Check<br><span class="pres-style-79">/api/me</span></div>
+                    <div class="step-arrow">→</div>
+                    <div class="step pres-style-132">📡 Load Staff<br><span class="pres-style-79">/api/staff</span></div>
+                    <div class="step-arrow">→</div>
+                    <div class="step pres-style-132">📅 Today's Schedule<br><span class="pres-style-79">/api/schedule/today</span></div>
+                    <div class="step-arrow">→</div>
+                    <div class="step pres-style-132">📋 Leave Requests<br><span class="pres-style-79">/api/schedule/requests</span></div>
+                    <div class="step-arrow">→</div>
+                    <div class="step pres-style-132">🖥️ Render Cards<br><span class="pres-style-79">UI Update</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ NEW SLIDE B: Schedule — Employee Cards & Status ══ -->
+    <div class="slide" id="slide-sched-b">
+        <div class="corners"><div class="corner-bl"></div><div class="corner-tr"></div></div>
+        <div class="slide-num">09 / 35</div>
+        <h2 class="anim pres-style-24">⏱️ Employee Cards — Status Visual System</h2>
+        <div class="divider anim pres-style-28"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div>
+        <div class="pres-style-84">
+            <div class="anim">
+                <div class="card pres-style-139">
+                    <div class="pres-style-130">🃏 Employee Card Contents</div>
+                    <div class="pres-style-54">
+                        🔹 <strong>Avatar</strong> — First letter of employee name<br>
+                        🔹 <strong>Name</strong> — Full name<br>
+                        🔹 <strong>Role</strong> — Teller / Branch Manager<br>
+                        🔹 <strong>Branch</strong> — Assigned branch<br>
+                        🔹 <strong>Status Badge</strong> — Color coded<br>
+                        🔹 <strong>Note</strong> — Optional manager note<br>
+                        🔹 <strong>Edit button</strong> — Opens modal to change status
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="pres-style-110">🎨 Color Strip (Left Border)</div>
+                    <div class="pres-style-19">
+                        <div class="pres-style-106">🟢 Working</div>
+                        <div class="pres-style-111">🏖️ Leave</div>
+                        <div class="pres-style-128">🤒 Sick</div>
+                        <div class="pres-style-107">❓ No Data</div>
+                    </div>
+                </div>
+            </div>
+            <div class="anim">
+                <div class="code pres-style-119">
+<span class="cm">// Render employee cards</span>
+<span class="kw">function</span> renderStaff(){
+  <span class="kw">const</span> workers = staffList.filter(s=>
+    s.role !== <span class="str">'admin'</span>
+  );
+
+  workers.forEach(s => {
+    <span class="kw">const</span> st = getStatus(s.id);
+    <span class="cm">// getStatus checks schedToday array</span>
+    <span class="kw">const</span> sc = schedToday.find(
+      x => x.staff_id == s.id
+    );
+    <span class="cm">// CSS class controls colored strip</span>
+    <span class="kw">const</span> stClass = st ? `st-${st}` : <span class="str">'st-none'</span>;
+  });
+}
+
+<span class="cm">// Auto refresh every 30 seconds</span>
+setInterval(loadData, <span class="kw">30000</span>);
+                </div>
+                <div class="card pres-style-9">
+                    <div class="pres-style-110">✏️ Edit Modal Fields</div>
+                    <div class="pres-style-54">
+                        1️⃣ Select Employee (dropdown)<br>
+                        2️⃣ Select Date (defaults to today)<br>
+                        3️⃣ Select Status (Working/Leave/Sick/Holiday)<br>
+                        4️⃣ Add optional note<br>
+                        5️⃣ POST /api/schedule → DB saved
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ NEW SLIDE C: Schedule — Leave Requests ══ -->
+    <div class="slide" id="slide-sched-c">
+        <div class="corners"><div class="corner-bl"></div><div class="corner-tr"></div></div>
+        <div class="slide-num">10 / 35</div>
+        <h2 class="anim pres-style-24">📋 Leave Requests — Approve &amp; Reject</h2>
+        <div class="divider anim pres-style-28"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div>
+        <div class="pres-style-84">
+            <div class="anim">
+                <div class="card pres-style-139">
+                    <div class="pres-style-110">📋 Request Lifecycle</div>
+                    <div class="flow pres-style-22">
+                        <div class="pres-style-36"><span class="step pres-style-102">pending</span><span class="pres-style-20">🔹 New leave request submitted</span></div>
+                        <div class="pres-style-36"><span class="step pres-style-127">approved</span><span class="pres-style-20">🔹 Manager clicks ✅ Approve</span></div>
+                        <div class="pres-style-36"><span class="step pres-style-125">rejected</span><span class="pres-style-20">🔹 Manager clicks ❌ Reject</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="pres-style-110">📊 Stats Counter</div>
+                    <div class="pres-style-54">
+                        Pending count shown in top stat card<br>
+                        Only <strong>pending</strong> requests appear in the list<br>
+                        After review → auto-reload refreshes all cards
+                    </div>
+                </div>
+            </div>
+            <div class="anim">
+                <div class="code pres-style-119">
+<span class="cm">// Render pending leave requests</span>
+<span class="kw">function</span> renderReqs(){
+  <span class="kw">const</span> pending = reqList.filter(
+    r => r.status === <span class="str">'pending'</span>
+  );
+
+  pending.map(r => `
+    &lt;div class="req-card"&gt;
+      ${IC[r.type]} ${r.staff_name}
+      ${r.date} · ${r.type}
+      &lt;button onclick="reviewReq(${r.id},'approve')"&gt;
+        ✅ قبول
+      &lt;/button&gt;
+      &lt;button onclick="reviewReq(${r.id},'reject')"&gt;
+        ❌ رفض
+      &lt;/button&gt;
+    &lt;/div&gt;
+  `);
+}
+
+<span class="cm">// PUT /api/schedule/request/:id</span>
+<span class="kw">async function</span> reviewReq(id, action){
+  <span class="kw">const</span> r = await fetch(
+    <span class="str">`/api/schedule/request/${id}`</span>,
+    { method:<span class="str">'PUT'</span>, body: JSON.stringify({action}) }
+  );
+  loadData(); <span class="cm">// Refresh UI</span>
+}
+                </div>
+                <div class="card pres-style-9">
+                    <div class="pres-style-94">🗄️ DB Table — bank_schedules</div>
+                    <table class="tbl pres-style-58">
+                        <thead><tr><th>Column</th><th>Type</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td>staff_id</td><td>FK</td><td>→ bank_users.id</td></tr>
+                            <tr><td>date</td><td>date</td><td>YYYY-MM-DD</td></tr>
+                            <tr><td>status</td><td>text</td><td>working/leave/sick/holiday</td></tr>
+                            <tr><td>note</td><td>text</td><td>Optional note</td></tr>
+                            <tr><td>branch_id</td><td>FK</td><td>→ bank_branches.id</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ SLIDE 23: Schedule System (original) ══ -->
+    <div class="slide" id="slide-23">
+        <div class="corners"><div class="corner-bl"></div><div class="corner-tr"></div></div>
+        <div class="slide-num">11 / 35</div>
+        <h2 class="anim pres-style-24">🗓️ Schedule System — Backend Routes</h2>
+        <div class="divider anim pres-style-17"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div>
+        <div class="pres-style-84">
+            <div class="anim">
+                <div class="card pres-style-126">
+                    <div class="pres-style-110">🗓️ What the System Does</div>
+                    <div class="pres-style-54">
+                        🔹 Manager Sets Staff Schedule<br>
+                        🔹 Assigns Work Days and Times<br>
+                        🔹 Staff Sees Only Their Schedule<br>
+                        🔹 POST /api/schedule To Add<br>
+                        🔹 GET /api/schedule/:staffId To Fetch<br>
+                        💪 Supports Weekly and Daily
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="pres-style-110">✨ Table bank_schedules</div>
+                    <div class="pres-style-54">
+                        🔹 staff_id — Linked To bank_users<br>
+                        🔹 day_of_week (0=Sun...6=Sat)<br>
+                        🔹 start_time / end_time<br>
+                        🔹 status: working/leave/sick/holiday<br>
+                        🔹 branch_id To Check Permission
+                    </div>
+                </div>
+            </div>
+            <div class="anim">
+                <div class="code pres-style-65">
+<span class="cm">// POST /api/schedule — Save Day</span>
+router.post(<span class="str">'/'</span>, async (req, res) => {
+  <span class="kw">const</span> {staffId, date, status, note} = req.body;
+  await db.query(
+    <span class="str">`INSERT INTO bank_schedules
+     (staff_id, date, status, note, branch_id)
+     VALUES ($1,$2,$3,$4,$5)
+     ON CONFLICT (staff_id, date)
+     DO UPDATE SET status=$3, note=$4`</span>,
+    [staffId, date, status, note, branchId]
+  );
+  res.json({ success: <span class="kw">true</span> });
+});
+
+<span class="cm">// GET /api/schedule/today — All staff today</span>
+router.get(<span class="str">'/today'</span>, async (req, res) => {
+  <span class="kw">const</span> today = <span class="kw">new</span> Date().toISOString()
+    .split(<span class="str">'T'</span>)[0];
+  <span class="kw">const</span> r = await db.query(
+    <span class="str">`SELECT * FROM bank_schedules
+     WHERE date=$1 AND branch_id=$2`</span>,
+    [today, user.branchId]
+  );
+  res.json(r.rows);
+});
+                </div>
+                <div class="card pres-style-9">
+                    <div class="pres-style-91">🔗 System Integration</div>
+                    <div class="pres-style-95">
+                        <div class="pres-style-124">bank_users<br><span class="pres-style-12">Staff</span></div>
+                        <div class="pres-style-124">bank_branches<br><span class="pres-style-12">Branches</span></div>
+                        <div class="pres-style-100">bank_schedules<br><span class="pres-style-12">Shifts</span></div>
+                    </div>
+                    <div class="pres-style-50">FK: staff_id → bank_users.id | branch_id → bank_branches.id</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ SLIDE 28: How to Run ══ -->
+    <div class="slide" id="slide-28">
+        <div class="corners"><div class="corner-bl"></div><div class="corner-tr"></div></div>
+        <div class="slide-num">12 / 35</div>
+        <h2 class="anim pres-style-24">⚙️ How Project Works</h2>
+        <div class="divider anim pres-style-17"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div>
+        <div class="pres-style-84">
+            <div class="anim">
+                <div class="card pres-style-139">
+                    <div class="pres-style-130">⚡ Execution Steps</div>
+                    <div class="flow pres-style-42">
+                        <div class="pres-style-78"><div class="pres-style-29">1</div><div class="pres-style-45">Setup <code class="pres-style-93">.env</code> With Data Supabase</div></div>
+                        <div class="pres-style-78"><div class="pres-style-29">2</div><div class="pres-style-45"><code class="pres-style-93">npm install</code> — Install Packages</div></div>
+                        <div class="pres-style-78"><div class="pres-style-29">3</div><div class="pres-style-45"><code class="pres-style-93">npm start</code> — Run Server</div></div>
+                        <div class="pres-style-78"><div class="pres-style-29">4</div><div class="pres-style-45">Open <code class="pres-style-93">localhost:3000</code> In Browser</div></div>
+                        <div class="pres-style-78"><div class="pres-style-29">5</div><div class="pres-style-45">Login With admin / admin123</div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="anim">
+                <div class="card pres-style-126">
+                    <div class="pres-style-110">🔗 Links</div>
+                    <table class="tbl pres-style-58">
+                        <tbody>
+                            <tr><td>Login</td><td class="pres-style-49">localhost:3000/login</td></tr>
+                            <tr><td>Customer</td><td class="pres-style-49">localhost:3000/customer</td></tr>
+                            <tr><td>Screen</td><td class="pres-style-49">localhost:3000/display</td></tr>
+                            <tr><td>Employee</td><td class="pres-style-49">localhost:3000/teller</td></tr>
+                            <tr><td>Manager</td><td class="pres-style-49">localhost:3000/manager</td></tr>
+                            <tr><td>Shifts 🆕</td><td class="pres-style-49">localhost:3000/schedule</td></tr>
+                            <tr><td>Admin</td><td class="pres-style-49">localhost:3000/</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card">
+                    <div class="pres-style-38">🚀 Supabase</div>
+                    <div class="pres-style-67">🔹 Data Saved In PostgreSQL Cloud<br>🔹 Accessible Globally<br>🔹 Backup Automatic + Row-Level Security</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ SLIDES 4,6,25,26,18 (Mariam) ══ -->
+    <div class="slide" id="slide-4">
+        <div class="corners"><div class="corner-bl"></div><div class="corner-tr"></div></div>
+        <div class="slide-num">13 / 35</div>
+        <h2 class="anim pres-style-66">Stack Technical</h2>
+        <div class="divider anim pres-style-117"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div>
+        <div class="pres-style-136">
+            <div class="card anim pres-style-27"><div class="pres-style-75">🟢</div><div class="pres-style-97">Node.js</div><div class="pres-style-68">Runtime Environment JavaScript Server-side</div></div>
+            <div class="card anim pres-style-27"><div class="pres-style-75">⚡</div><div class="pres-style-97">Express.js 5</div><div class="pres-style-68">Framework HTTP To Build API And Page Service</div></div>
+            <div class="card anim pres-style-27"><div class="pres-style-75">🐘</div><div class="pres-style-97">Supabase PostgreSQL</div><div class="pres-style-68">Hosted Cloud Relational Database</div></div>
+            <div class="card anim pres-style-27"><div class="pres-style-75">📡</div><div class="pres-style-97">SSE Real-time</div><div class="pres-style-68">Server-Sent Events For Real-time Updates</div></div>
+            <div class="card anim pres-style-27"><div class="pres-style-75">🌐</div><div class="pres-style-97">Vanilla HTML/CSS/JS</div><div class="pres-style-68">Interfaces Without frameworks</div></div>
+            <div class="card anim pres-style-27"><div class="pres-style-75">🔐</div><div class="pres-style-97">express-session</div><div class="pres-style-68">Session Management and Secure Auth</div></div>
+            <div class="card anim pres-style-27"><div class="pres-style-75">💱</div><div class="pres-style-97">ExchangeRate-API</div><div class="pres-style-68">API Free Live Currency Rates</div></div>
+            <div class="card anim pres-style-27"><div class="pres-style-75">📷</div><div class="pres-style-97">QR Code (qrcode)</div><div class="pres-style-68">Generate QR For Ticket Number Per Customer</div></div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-6">
+        <div class="corners"><div class="corner-bl"></div><div class="corner-tr"></div></div>
+        <div class="slide-num">14 / 35</div>
+        <h2 class="anim pres-style-66">Database — Where to Store</h2>
+        <div class="divider anim pres-style-15"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div>
+        <div class="pres-style-84">
+            <div class="anim"><div class="card pres-style-9"><div class="pres-style-25">🚀 Supabase PostgreSQL</div><div class="pres-style-54">• Free Cloud PostgreSQL<br>• Connection via <code class="pres-style-93">pg</code> (node-postgres)<br>• Pool Fixed By SSL Encrypted<br>• Connection Variables Saved In <code class="pres-style-93">.env</code><br>• Supports Thousands of Concurrent Requests</div></div></div>
+            <div class="anim">
+                <table class="tbl pres-style-58">
+                    <thead><tr><th>Table</th><th>Description</th><th>Key Fields</th></tr></thead>
+                    <tbody>
+                        <tr><td>bank_users</td><td>Users</td><td>username, role, branch_id</td></tr>
+                        <tr><td>bank_branches</td><td>Branches</td><td>name, city, phone</td></tr>
+                        <tr><td>bank_queue</td><td>The Queue</td><td>token, status, priority</td></tr>
+                        <tr><td>bank_appointments</td><td>Appointments</td><td>date, time, status</td></tr>
+                        <tr><td>bank_ratings</td><td>Ratings</td><td>rating, comment</td></tr>
+                        <tr><td>bank_audit_log</td><td>Audit Log</td><td>action, user, ip</td></tr>
+                        <tr><td class="pres-style-129">bank_schedules</td><td>Shifts 🆕</td><td>staff_id, date, status</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="anim pres-style-41">
+                <div class="code">
+                    <span class="cm">// db/index.js — Connect To Supabase</span>
+                    <span class="kw">const</span> { Pool } = require(<span class="str">'pg'</span>);
+                    <span class="kw">const</span> pool = <span class="kw">new</span> Pool({ host: process.env.DB_HOST, database: process.env.DB_NAME, user: process.env.DB_USER, password: process.env.DB_PASSWORD, ssl: { rejectUnauthorized: <span class="kw">false</span> } });
+                    module.exports = pool;
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slides 25, 26, 18 — Mariam (abbreviated for clarity, same content as original) -->
+    <div class="slide" id="slide-25"><div class="corners"><div class="corner-bl"></div><div class="corner-tr"></div></div><div class="slide-num">15 / 35</div><h2 class="anim pres-style-24">✨ File Structure</h2><div class="divider anim pres-style-17"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div><div class="pres-style-84"><div class="code anim pres-style-46">smart-service-hub/<br>+-- <span class="kw">server.js</span> <span class="cm">🚪 Entry Point</span><br>+-- <span class="kw">.env</span><br>+-- <span class="str">db/</span> → index.js<br>+-- <span class="str">routes/</span><br>  +-- auth.js · queue.js · appointments.js<br>  +-- stats.js · ratings.js · branches.js<br>  +-- staff.js · schedule.js · audit.js<br>+-- <span class="str">public/pages/</span><br>  +-- login.html · customer.html<br>  +-- display.html · teller.html<br>  +-- manager.html · admin.html<br>  +-- <span class="kw">schedule.html 🆕</span><br>+-- <span class="str">shared/</span> → ocean.css · theme.js · i18n.js</div><div class="anim"><div class="card pres-style-126"><div class="pres-style-110">💻 Code Statistics</div><table class="tbl pres-style-58"><tbody><tr><td>Total Files</td><td class="pres-style-122">~21 Files</td></tr><tr><td>Largest File</td><td class="pres-style-49">admin.html (101KB)</td></tr><tr><td>Database</td><td class="pres-style-49">Supabase PostgreSQL</td></tr><tr><td>Dependencies</td><td class="pres-style-49">6 Packages Only</td></tr><tr><td>Languages</td><td class="pres-style-49">JS, HTML, CSS, SQL</td></tr></tbody></table></div><div class="card"><div class="pres-style-110">📦 package.json</div><div class="code pres-style-34"><span class="str">"dependencies"</span>: { "express":"^5.2.1", "express-session":"^1.19", "pg":"^8.20", "dotenv":"^17.3", "qrcode":"^1.5.4", "body-parser":"^2.2.2" }</div></div></div></div></div>
+
+    <div class="slide" id="slide-26"><div class="corners"><div class="corner-bl"></div><div class="corner-tr"></div></div><div class="slide-num">16 / 35</div><h2 class="anim pres-style-24">🔄 Complete Data Flow</h2><div class="divider anim pres-style-17"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div><div class="anim pres-style-30"><div class="pres-style-77"><div class="step pres-style-27">🧑‍💼<br><span class="pres-style-34">Customer</span></div><div class="step-arrow">→</div><div class="step pres-style-27">🌐<br><span class="pres-style-34">Browser</span></div><div class="step-arrow">→</div><div class="step pres-style-27">📤<br><span class="pres-style-34">HTTP POST</span></div><div class="step-arrow">→</div><div class="step pres-style-27">⚡<br><span class="pres-style-34">Express Router</span></div><div class="step-arrow">→</div><div class="step pres-style-27">🔐<br><span class="pres-style-34">Session Check</span></div><div class="step-arrow">→</div><div class="step pres-style-27">✨<br><span class="pres-style-34">Supabase DB</span></div><div class="step-arrow">→</div><div class="step pres-style-27">📥<br><span class="pres-style-34">JSON Response</span></div></div><div class="pres-style-40"><div class="card pres-style-27"><div class="pres-style-92">🔹</div><div class="pres-style-133">Zero Polling</div><div class="pres-style-108">SSE Updated Immediately</div></div><div class="card pres-style-27"><div class="pres-style-92">🔢</div><div class="pres-style-133">Atomic Counter</div><div class="pres-style-108">No Duplicate Ticket Numbers</div></div><div class="card pres-style-27"><div class="pres-style-92">📋</div><div class="pres-style-133">Auto Audit</div><div class="pres-style-108">Every Edit Auto Logged</div></div><div class="card pres-style-27"><div class="pres-style-92">☁️</div><div class="pres-style-133">Cloud DB</div><div class="pres-style-108">Supabase PostgreSQL SSL</div></div></div></div></div>
+
+    <div class="slide" id="slide-18"><div class="corners"><div class="corner-bl"></div><div class="corner-tr"></div></div><div class="slide-num">17 / 35</div><h2 class="anim pres-style-24">🔒 Roles and Security</h2><div class="divider anim pres-style-17"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div><div class="anim pres-style-30"><table class="tbl"><thead><tr><th>Role</th><th>Page</th><th>The Queue</th><th>Statistics</th><th>Shifts 🆕</th><th>Audit Log</th></tr></thead><tbody><tr><td>👑 admin</td><td>admin.html</td><td class="pres-style-33">All Branches</td><td class="pres-style-33">Complete</td><td class="pres-style-33">✅ Full</td><td class="pres-style-33">Full</td></tr><tr><td>🏢 branch_manager</td><td>/manager</td><td class="pres-style-33">His Branch</td><td class="pres-style-33">His Branch</td><td class="pres-style-33">✅ His Branch</td><td class="pres-style-44">Limited</td></tr><tr><td>🧑‍💼 teller</td><td>/teller</td><td class="pres-style-44">His Branch</td><td class="pres-style-72">✗</td><td class="pres-style-72">✗</td><td class="pres-style-72">✗</td></tr><tr><td>🙋 customer</td><td>/customer</td><td class="pres-style-44">Add + Track</td><td class="pres-style-72">✗</td><td class="pres-style-72">✗</td><td class="pres-style-72">✗</td></tr></tbody></table><div class="pres-style-98"><div class="card"><div class="pres-style-38">✨ Protection Mechanisms</div><div class="pres-style-54">🔹 bcrypt To Encrypt Passwords In DB<br>🍪 Session Cookie Encrypted server-side<br>🔹 Every Route Verifies req.session?.user</div></div><div class="card"><div class="pres-style-38">🔑 .env Variables</div><div class="code pres-style-34">DB_HOST=db.xxxx.supabase.co<br>DB_PORT=5432<br>SESSION_SECRET=bank-secret-2024<br>PORT=3000</div></div></div></div></div>
+
+    <!-- Reem slides: 8, 9, 12, 19 -->
+    <div class="slide" id="slide-8"><div class="corners"><div class="corner-bl"></div><div class="corner-tr"></div></div><div class="slide-num">18 / 35</div><h2 class="anim pres-style-24">Login Page — login.html</h2><div class="divider anim pres-style-17"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div><div class="pres-style-84"><div class="anim"><div class="card pres-style-126"><div class="pres-style-110">🆔 Unique Design Features</div><div class="pres-style-71">🔹 Animated Background: Rain + Fog + Night City<br>🔹 Moving Car Character<br>🔹 Glowing Moon with Flicker<br>🔹 Animated Flying Bats<br>🔹 Flickering Street Lights</div></div><div class="card"><div class="pres-style-110">🔐 Login Logic</div><div class="pres-style-71">🔹 3 Roles: Manager / Supervisor / Employee<br>🔹 POST /login → Verify DB<br>🔹 bcrypt To Encrypt Passwords<br>🍪 Session Cookie (httpOnly, 8h TTL)</div></div></div><div class="code anim pres-style-58"><span class="cm">// routes/auth.js</span><br><span class="kw">const</span> valid = await bcrypt.compare(password, user.rows[0].password);<br><span class="kw">if</span> (!valid) <span class="kw">return</span> res.json({ error: <span class="str">'Wrong Password'</span> });<br>req.session.user = { <span class="cm">/* id, role, branchId */</span> };<br>res.json({ success: <span class="kw">true</span>, redirect: getRedirect(role) });</div></div></div>
+
+    <div class="slide" id="slide-9"><div class="corners"><div class="corner-bl"></div><div class="corner-tr"></div></div><div class="slide-num">19 / 35</div><h2 class="anim pres-style-24">Customer Page — customer.html</h2><div class="divider anim pres-style-17"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div><div class="pres-style-84"><div class="anim"><div class="card pres-style-126"><div class="pres-style-110">🎫 Take a Number from Queue</div><div class="pres-style-54">🔹 Selects Branch + Required Service<br>🔹 Sets Priority: Normal / Elderly / Disabled / VIP<br>🔹 Receives Token Like B001 + QR Code<br>🔹 Estimated Waiting Time Displayed</div></div><div class="card"><div class="pres-style-110">📅 Pre-book Appointment</div><div class="pres-style-54">🔹 Select Date, Time, and Branch<br>🔹 POST /api/appointments<br>🔹 Instant Booking Confirmation</div></div></div><div class="anim"><div class="card pres-style-126"><div class="pres-style-110">🔹 Rate Service</div><div class="pres-style-54">🔹 Enters Ticket Number After Service<br>🔹 Rated Out Of 1 To 5 Stars<br>🔹 Adds Optional Comment</div></div><div class="card"><div class="pres-style-110">💰 Currency Rates</div><div class="pres-style-54">🔹 ExchangeRate-API Free<br>🔹 Auto-update every minute<br>🔹 Displays: USD, EUR, GBP, SAR, AED</div></div></div></div></div>
+
+    <div class="slide" id="slide-12"><div class="corners"><div class="corner-bl"></div><div class="corner-tr"></div></div><div class="slide-num">20 / 35</div><h2 class="anim pres-style-24">Display Screen — display.html</h2><div class="divider anim pres-style-17"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div><div class="pres-style-84"><div class="anim"><div class="card pres-style-121"><div class="pres-style-110">🖥️ Large Display Page</div><div class="pres-style-71">📦 Installed on Screen Near Counter<br>🔹 Displays "Currently Serving" Bold 130px<br>🔹 Queue List + Estimated Time<br>🔹 Digital Clock + Scrolling News Bar</div></div><div class="card"><div class="pres-style-110">🔔 Alert Sound</div><div class="pres-style-54">Web Audio API — 3 Ascending Tones<br>523Hz → 659Hz → 784Hz<br>No External Audio File!</div></div></div><div class="anim"><div class="card"><div class="pres-style-110">⚡ SSE + Badges</div><div class="code pres-style-34"><span class="kw">if</span> (data.type === <span class="str">'now_serving'</span>) {<br>  setServing(data.token, data.name);<br>  playChime();<br>}<br>loadQueue(branchId);</div><br><div class="pres-style-13">VIP — Gold Badge · Elderly — Blue Badge · Normal — No Badge</div></div></div></div></div>
+
+    <div class="slide" id="slide-19"><div class="corners"><div class="corner-bl"></div><div class="corner-tr"></div></div><div class="slide-num">21 / 35</div><h2 class="anim pres-style-24">🎨 Design and Theme System</h2><div class="divider anim pres-style-17"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div><div class="pres-style-84"><div class="anim"><div class="card pres-style-126"><div class="pres-style-110">🎨 ocean.css — Shared System</div><div class="pres-style-54">🔹 One CSS file used by all pages<br>🔹 CSS Custom Properties for theming<br>🔹 Moving Light Orbs (Bio Orbs)<br>🔹 Two Fonts: Playfair Display + Tajawal</div></div><div class="card"><div class="pres-style-110">☀️ Light / Dark Mode</div><div class="pres-style-54">🔹 theme.js Manages Toggling<br>🔹 Saved In localStorage<br>🔹 Applied Before Render (No Flicker)</div></div></div><div class="anim"><div class="card"><div class="pres-style-91">💬 Arabic + English Support</div><div class="pres-style-131">🔹 i18n.js — Shared Translation File<br>🔹 dir="rtl" On All Pages<br>🔹 data-i18n attributes On Elements<br>🔹 localStorage For Selected Language</div></div></div></div></div>
+
+    <!-- Haneen slides: 13, 14, 15, 24 -->
+    <div class="slide" id="slide-13"><div class="corners"><div class="corner-bl"></div><div class="corner-tr"></div></div><div class="slide-num">22 / 35</div><h2 class="anim pres-style-24">Staff Dashboard — teller.html</h2><div class="divider anim pres-style-17"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div><div class="pres-style-51"><div class="card anim"><div class="pres-style-109">🎫</div><div class="pres-style-38">Queue Management</div><div class="pres-style-131">🔹 Button "Next" To Call Next Customer<br>🔹 End Current Service<br>🔹 Real-time Update With SSE</div></div><div class="card anim"><div class="pres-style-109">⬆️</div><div class="pres-style-38">Refer to Manager</div><div class="pres-style-131">🔹 PUT /api/queue/:id/escalate<br>🔹 Status Changes To escalated<br>🔹 Appears to Manager Instantly</div></div><div class="card anim"><div class="pres-style-109">📅</div><div class="pres-style-38">Appointments</div><div class="pres-style-131">🔹 His Branch Only<br>🔹 Confirm / Cancel / Edit<br>🔹 Updated Instantly</div></div><div class="card anim"><div class="pres-style-109">🔹</div><div class="pres-style-38">Work Schedule</div><div class="pres-style-131">🔹 Sees Weekly Schedule<br>🔹 Modified by Manager</div></div><div class="card anim"><div class="pres-style-109">🔔</div><div class="pres-style-38">Notifications</div><div class="pres-style-131">🔹 Toast Success / Error Per Operation<br>🔹 Auto Update Queue</div></div><div class="card anim"><div class="pres-style-109">🛡️</div><div class="pres-style-38">Security</div><div class="pres-style-131">🔹 Sees His Branch Only<br>🍪 Session (8h TTL, httpOnly)</div></div></div></div>
+
+    <div class="slide" id="slide-14"><div class="corners"><div class="corner-bl"></div><div class="corner-tr"></div></div><div class="slide-num">23 / 35</div><h2 class="anim pres-style-24">Branch Supervisor Dashboard — manager.html</h2><div class="divider anim pres-style-17"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div><div class="pres-style-82"><div class="anim"><div class="card pres-style-126"><div class="pres-style-110">⚙️ Advanced Statistics</div><div class="pres-style-54">🔹 Total Tickets, Completed, Pending<br>🔹 Average Waiting Time<br>🔹 Top Performing Staff<br>🔹 Stats of Last 7 Days</div></div><div class="card"><div class="pres-style-110">👔 Staff Management</div><div class="pres-style-54">🔹 Add / Edit / Delete Staff<br>🔹 Assign Weekly Work Schedules<br>🔹 Shift Management via schedule.html 🆕</div></div></div><div class="anim"><div class="card pres-style-126"><div class="pres-style-110">🔄 Referred Cases</div><div class="pres-style-54">🔹 Sees All escalated statuses<br>🔹 PUT /api/queue/:id/resolve<br>🔹 PUT /api/queue/:id/sendback</div></div><div class="card"><div class="pres-style-110">📤 Export Reports</div><div class="pres-style-54">🔹 Export CSV By BOM for Arabic<br>🔹 3 Types: Queue / Appointments / Ratings</div></div></div></div></div>
+
+    <div class="slide" id="slide-15"><div class="corners"><div class="corner-bl"></div><div class="corner-tr"></div></div><div class="slide-num">24 / 35</div><h2 class="anim pres-style-24">General Manager Dashboard — admin.html</h2><div class="divider anim pres-style-17"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div><div class="pres-style-115"><div class="card anim"><div class="pres-style-92">🏢</div><div class="pres-style-85">Branch Management</div><div class="pres-style-70">Add/Edit/Delete Branches — Sees All Branches at Once</div></div><div class="card anim"><div class="pres-style-92">👥</div><div class="pres-style-85">Staff Management</div><div class="pres-style-70">Add Staff to Any Branch — Assign Roles — Change Password</div></div><div class="card anim"><div class="pres-style-92">📈</div><div class="pres-style-85">Comprehensive Statistics</div><div class="pres-style-70">All Branches + All Staff + Charts — Compare Branches</div></div><div class="card anim"><div class="pres-style-92">📋</div><div class="pres-style-85">Audit Log</div><div class="pres-style-70">Every POST/PUT/DELETE Logged — Who, When, IP</div></div><div class="card anim"><div class="pres-style-92">⏱️</div><div class="pres-style-85">Shift Management 🆕</div><div class="pres-style-70">Full access to schedule.html — All branches — Approve leave requests globally</div></div><div class="card anim"><div class="pres-style-92">📤</div><div class="pres-style-85">Comprehensive Export</div><div class="pres-style-70">CSV Complete For All Branches — With BOM For Arabic</div></div></div></div>
+
+    <div class="slide" id="slide-24"><div class="corners"><div class="corner-bl"></div><div class="corner-tr"></div></div><div class="slide-num">25 / 35</div><h2 class="anim pres-style-24">📷 QR Code Feature</h2><div class="divider anim pres-style-17"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div><div class="pres-style-84"><div class="anim"><div class="card pres-style-126"><div class="pres-style-110">What is the QR Code?</div><div class="pres-style-54">🔹 Every customer gets QR<br>🔹 Contains: Token + Service + Customer Name<br>🔹 Can be printed or saved<br>🔹 Generated by Library qrcode (npm)</div></div><div class="card"><div class="pres-style-110">📚 Library qrcode</div><div class="pres-style-54">📦 npm install qrcode<br>🔹 Generates QR As base64 Data URL<br>🔹 Displayed as Image in Browser</div></div></div><div class="code anim pres-style-34"><span class="kw">const</span> QRCode = require(<span class="str">'qrcode'</span>);<br><span class="kw">const</span> qrData = JSON.stringify({ token:<span class="str">'B001'</span>, service:<span class="str">'Deposit'</span>, name:<span class="str">'Ahmed'</span> });<br><span class="kw">const</span> qrUrl = await QRCode.toDataURL(qrData, { color: { dark:<span class="str">'#1d4ed8'</span>, light:<span class="str">'#fff'</span> }, width:200 });<br>res.json({ success:<span class="kw">true</span>, qr: qrUrl });</div></div></div>
+
+    <!-- Amira slides: 11, 10, 21, 22, 20 -->
+    <div class="slide" id="slide-11"><div class="corners"><div class="corner-bl"></div><div class="corner-tr"></div></div><div class="slide-num">26 / 35</div><h2 class="anim pres-style-24">Smart Queue System</h2><div class="divider anim pres-style-17"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div><div class="pres-style-84"><div class="anim"><div class="card pres-style-126"><div class="pres-style-110">🎫 Token System</div><div class="pres-style-54">🔹 Each branch has independent counter<br>🔹 Token: B + 3 Digits (B001, B002...)<br>🔹 Atomic increment: ON CONFLICT DO UPDATE</div></div><div class="card"><div class="pres-style-110">🔝 Priority System</div><div class="pres-style-54"><span class="pres-style-93">VIP = 3</span> — Always First<br><span class="pres-style-93">Elderly/Disabled = 2</span> — High Priority<br><span class="pres-style-93">Normal = 1</span> — By Arrival Time</div></div></div><div class="anim"><div class="card"><div class="pres-style-110">⚡ SSE Events</div><div class="pres-style-83"><code class="pres-style-93">new_ticket</code> — New Ticket<br><code class="pres-style-93">now_serving</code> — Ticket Served Now<br><code class="pres-style-93">queue_empty</code> — Queue is Empty<br><code class="pres-style-93">escalated</code> — Case Referred to Manager<br><code class="pres-style-93">queue_reset</code> — Reset</div></div></div></div></div>
+
+    <div class="slide" id="slide-10"><div class="corners"><div class="corner-bl"></div><div class="corner-tr"></div></div><div class="slide-num">27 / 35</div><h2 class="anim pres-style-24">💱 Currency API — In Detail</h2><div class="divider anim pres-style-17"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div><div class="pres-style-84"><div class="anim"><div class="card pres-style-126"><div class="pres-style-6">💱 ExchangeRate-API</div><div class="pres-style-71">Free Until 1500 Request/Month<br>Returns JSON In All Currencies<br>Updated Daily</div></div><div class="card"><div class="pres-style-38">📤 Response</div><div class="code pres-style-34">{ "base_code":"EGP", "conversion_rates":{ "USD":0.0204, "EUR":0.0188 } }</div></div></div><div class="code anim pres-style-58"><span class="kw">async function</span> fetchRates() {<br>  <span class="kw">const</span> res = await fetch(<span class="str">`.../${KEY}/latest/EGP`</span>);<br>  <span class="kw">const</span> rates = (await res.json()).conversion_rates;<br>  displayRate(<span class="str">'USD'</span>, rates.USD);<br>}<br>setInterval(fetchRates, <span class="kw">60000</span>);</div></div></div>
+
+    <div class="slide" id="slide-21"><div class="corners"><div class="corner-bl"></div><div class="corner-tr"></div></div><div class="slide-num">28 / 35</div><h2 class="anim pres-style-24">📅 Appointment System</h2><div class="divider anim pres-style-17"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div><div class="pres-style-84"><div class="anim"><div class="card pres-style-126"><div class="pres-style-110">📱 Lifecycle</div><div class="flow pres-style-22"><div class="pres-style-36"><span class="step pres-style-58">pending</span><span class="pres-style-20">🔹 New Booking</span></div><div class="pres-style-36"><span class="step pres-style-58">confirmed</span><span class="pres-style-20">🔹 Confirmed by Staff</span></div><div class="pres-style-36"><span class="step pres-style-58">done</span><span class="pres-style-20">🔹 Completed</span></div></div></div><div class="card"><div class="pres-style-110">✨ Role Visibility</div><div class="pres-style-54">🔹 admin — All Appointments<br>🔹 manager/teller — Their Branch Only</div></div></div><div class="code anim pres-style-34"><span class="kw">SELECT</span> * <span class="kw">FROM</span> bank_appointments<br><span class="kw">WHERE</span> branch_id=$1<br><span class="kw">ORDER BY</span> date, time;</div></div></div>
+
+    <div class="slide" id="slide-22"><div class="corners"><div class="corner-bl"></div><div class="corner-tr"></div></div><div class="slide-num">29 / 35</div><h2 class="anim pres-style-24">🔹 Rating System</h2><div class="divider anim pres-style-17"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div><div class="pres-style-84"><div class="anim"><div class="card pres-style-126"><div class="pres-style-110">How Customer Rates</div><div class="pres-style-71">1️⃣ Staff Ends Service<br>2️⃣ Customer Opens /customer<br>3️⃣ Selects 1-5 Stars<br>4️⃣ POST /api/ratings → DB</div></div><div class="card"><div class="pres-style-110">⭐ Analysis</div><div class="pres-style-54">Average Rating per Branch<br>Total Ratings Count<br>Displayed in Manager Dashboard</div></div></div><div class="code anim pres-style-34"><span class="kw">SELECT</span> b.name, ROUND(AVG(r.rating)::numeric,1) as avg_rating, COUNT(*) as total<br><span class="kw">FROM</span> bank_ratings r<br><span class="kw">JOIN</span> bank_branches b <span class="kw">ON</span> b.id=r.branch_id<br><span class="kw">GROUP BY</span> b.id<br><span class="kw">ORDER BY</span> avg_rating <span class="kw">DESC</span>;</div></div></div>
+
+    <div class="slide" id="slide-20"><div class="corners"><div class="corner-bl"></div><div class="corner-tr"></div></div><div class="slide-num">30 / 35</div><h2 class="anim pres-style-24">📈 Statistics and Reports</h2><div class="divider anim pres-style-17"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div><div class="pres-style-84"><div class="anim"><div class="card pres-style-126"><div class="pres-style-110">Available Data</div><div class="pres-style-54">🔹 Total Tickets per Branch<br>🔹 Best 10 Performing Staff<br>🔹 Avg Waiting Time<br>🔹 Satisfaction Rate<br>🔹 Daily Stats Last 7 Days</div></div><div class="card"><div class="pres-style-38">📤 Export CSV</div><div class="pres-style-54">🔹 BOM for Arabic in Excel<br>🔹 3 Files: queue / appointments / ratings</div></div></div><div class="code anim pres-style-34"><span class="kw">SELECT</span> service, COUNT(*) as total<br><span class="kw">FROM</span> bank_queue<br><span class="kw">WHERE</span> status=<span class="str">'done'</span><br><span class="kw">GROUP BY</span> service<br><span class="kw">ORDER BY</span> total <span class="kw">DESC</span>;</div></div></div>
+
+    <!-- Closing slides: 27, 29, 30, 31 -->
+    <div class="slide" id="slide-27"><div class="corners"><div class="corner-bl"></div><div class="corner-tr"></div></div><div class="slide-num">31 / 35</div><h2 class="anim pres-style-24">🔹 Project Highlights</h2><div class="divider anim pres-style-17"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div><div class="pres-style-115"><div class="card anim pres-style-9"><div class="pres-style-116">📡</div><div class="pres-style-38">Real-time Without WebSocket</div><div class="pres-style-131">SSE Pure — Lighter, simpler, sufficient for queues</div></div><div class="card anim pres-style-9"><div class="pres-style-116">🔒</div><div class="pres-style-38">Multi-level Role System</div><div class="pres-style-131">5 Different Roles with Precise Permissions</div></div><div class="card anim pres-style-9"><div class="pres-style-116">⏱️</div><div class="pres-style-38">Shift Management 🆕</div><div class="pres-style-131">Daily attendance tracking + leave request flow for all staff</div></div><div class="card anim pres-style-9"><div class="pres-style-116">📋</div><div class="pres-style-38">Audit Log Automatic</div><div class="pres-style-131">Every edit logged with username and IP</div></div><div class="card anim pres-style-9"><div class="pres-style-116">💱</div><div class="pres-style-38">Live Currency API</div><div class="pres-style-131">Update Every Minute — Value-added for customers</div></div><div class="card anim pres-style-9"><div class="pres-style-116">🌍</div><div class="pres-style-38">Bilingual Support</div><div class="pres-style-131">Arabic / English — RTL Full — i18n Shared</div></div></div></div>
+
+    <div class="slide" id="slide-29"><div class="corners"><div class="corner-bl"></div><div class="corner-tr"></div></div><div class="slide-num">32 / 35</div><h2 class="anim pres-style-24">💪 Challenges &amp; Solutions</h2><div class="divider anim pres-style-17"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div><div class="pres-style-31"><div class="card anim"><div class="pres-style-4">CHALLENGE</div><div class="pres-style-47">Queue Sync Between Multiple Screens</div><div class="pres-style-16">🔹 Solution:</div><div class="pres-style-13">EventEmitter Shared + SSE — Every Screen Subscribed To Branch Stream</div></div><div class="card anim"><div class="pres-style-4">CHALLENGE</div><div class="pres-style-47">Duplicate Ticket Numbers</div><div class="pres-style-16">🔹 Solution:</div><div class="pres-style-13">ON CONFLICT DO UPDATE atomic — Safe Even With Concurrent Requests</div></div><div class="card anim"><div class="pres-style-4">CHALLENGE</div><div class="pres-style-47">Shift Status Conflicts (Same Day)</div><div class="pres-style-16">🔹 Solution:</div><div class="pres-style-13">ON CONFLICT (staff_id, date) DO UPDATE — Upsert prevents duplicates per day per staff</div></div><div class="card anim"><div class="pres-style-4">CHALLENGE</div><div class="pres-style-47">Support Arabic In CSV</div><div class="pres-style-16">🔹 Solution:</div><div class="pres-style-13">BOM character (\uFEFF) At Top of File Makes Excel Recognize Encoding</div></div><div class="card anim"><div class="pres-style-4">CHALLENGE</div><div class="pres-style-47">SSE Disconnection</div><div class="pres-style-16">🔹 Solution:</div><div class="pres-style-13">eventSource.onerror → reconnect After 5 Seconds + heartbeat Every 25 Seconds</div></div><div class="card anim"><div class="pres-style-4">CHALLENGE</div><div class="pres-style-47">Sound Without Files</div><div class="pres-style-16">🔹 Solution:</div><div class="pres-style-13">Web Audio API — Mathematically generate oscillator tones</div></div></div></div>
+
+    <div class="slide" id="slide-30"><div class="corners"><div class="corner-bl"></div><div class="corner-tr"></div></div><div class="slide-num">33 / 35</div><h2 class="anim pres-style-24">🚀 Future Development</h2><div class="divider anim pres-style-17"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div><div class="pres-style-115"><div class="card anim pres-style-27"><div class="pres-style-112">📱</div><div class="pres-style-62">Mobile App</div><div class="pres-style-13">React Native Or PWA — Customer tracks number from phone</div></div><div class="card anim pres-style-27"><div class="pres-style-112">🤖</div><div class="pres-style-62">AI Wait Prediction</div><div class="pres-style-13">ML model calculates actual wait time using historical data</div></div><div class="card anim pres-style-27"><div class="pres-style-112">💬</div><div class="pres-style-62">SMS + WhatsApp</div><div class="pres-style-13">Notify Customer Before Turn Via WhatsApp Business API</div></div><div class="card anim pres-style-27"><div class="pres-style-112">📊</div><div class="pres-style-62">Shift Analytics</div><div class="pres-style-13">Monthly attendance reports + leave patterns per branch</div></div><div class="card anim pres-style-27"><div class="pres-style-112">🔑</div><div class="pres-style-62">2FA Authentication</div><div class="pres-style-13">TOTP for higher roles security</div></div><div class="card anim pres-style-27"><div class="pres-style-112">☁️</div><div class="pres-style-62">Multi-tenant SaaS</div><div class="pres-style-13">Serve Multiple Banks on Same Infrastructure</div></div></div></div>
+
+    <!-- ══ SLIDE 32: Thank You ══ -->
+    <div class="slide" id="slide-32">
+        <div class="corners"><div class="corner-bl"></div><div class="corner-tr"></div></div>
+        <div class="slide-num">34 / 35</div>
+        <div class="cover-emblem anim">🌟</div>
+        <div class="pres-style-89"></div>
+        <div class="anim pres-style-120">Thank You</div>
+        <div class="divider anim pres-style-123"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div>
+        <div class="anim pres-style-7">Smart Service Hub — Smart Bank Service Management System</div>
+        <div class="pres-style-103"></div>
+        <div class="anim pres-style-101">
+            <span class="badge">Ibrahim Mohamed — 2006127</span>
+            <span class="badge">Reem Saleh — 2006093</span>
+            <span class="badge">Haneen Hossam — 2006085</span>
+            <span class="badge">Mariam Wael — 2006090</span>
+            <span class="badge">Amira Helmy — 2006067</span>
+        </div>
+        <div class="pres-style-86"></div>
+        <div class="anim pres-style-61">Under Supervision: Basant Mohamed &nbsp;|&nbsp; EELU University</div>
+    </div>
+
+    <!-- ══ SLIDE 33: Doctor Rating ══ -->
+    <div class="slide" id="slide-rating">
+        <div class="corners"><div class="corner-bl"></div><div class="corner-tr"></div></div>
+        <div class="slide-num">35 / 35</div>
+        <div class="anim pres-style-134">👩‍🏫</div>
+        <h2 class="anim pres-style-8">Rate Dr. Basant Mohamed</h2>
+        <p class="anim pres-style-48">SUPERVISOR EVALUATION · AFTER DISCUSSION</p>
+        <div class="divider anim pres-style-76"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div>
+
+        <!-- Stars -->
+        <div class="anim pres-style-114" id="starRow">
+            <button class="star-btn" data-val="1" onclick="rateDr(1)" title="1 — Needs Improvement">⭐</button>
+            <button class="star-btn" data-val="2" onclick="rateDr(2)" title="2 — Fair">⭐</button>
+            <button class="star-btn" data-val="3" onclick="rateDr(3)" title="3 — Good">⭐</button>
+            <button class="star-btn" data-val="4" onclick="rateDr(4)" title="4 — Very Good">⭐</button>
+            <button class="star-btn" data-val="5" onclick="rateDr(5)" title="5 — Excellent">⭐</button>
+        </div>
+
+        <!-- Criteria -->
+        <div class="anim pres-style-39" id="criteriaGrid">
+            <div class="card pres-style-3">
+                <div class="pres-style-60">💡</div>
+                <div class="pres-style-133">Teaching Clarity</div>
+                <div class="pres-style-108">Clear explanation of concepts</div>
+            </div>
+            <div class="card pres-style-3">
+                <div class="pres-style-60">🤝</div>
+                <div class="pres-style-133">Helpfulness</div>
+                <div class="pres-style-108">Responsive to questions</div>
+            </div>
+            <div class="card pres-style-3">
+                <div class="pres-style-60">📚</div>
+                <div class="pres-style-133">Knowledge</div>
+                <div class="pres-style-108">Deep technical expertise</div>
+            </div>
+            <div class="card pres-style-3">
+                <div class="pres-style-60">⏰</div>
+                <div class="pres-style-133">Commitment</div>
+                <div class="pres-style-108">Punctual & organized</div>
+            </div>
+        </div>
+
+        <!-- Result area -->
+        <div class="rating-result" id="ratingResult">
+            <div id="ratingEmoji" class="pres-style-118">⭐</div>
+            <div class="rating-label" id="ratingLabel">—</div>
+            <div class="rating-msg" id="ratingMsg">—</div>
+        </div>
+
+        <div class="anim pres-style-5">
+            TAP A STAR TO SUBMIT YOUR EVALUATION
+        </div>
+
+        <script>
+        const ratingData = {
+            1: { label:'1 / 10 — Needs Improvement', msg:'Thank you for your honest feedback.', em:'💭' },
+            2: { label:'2 / 10 — Below Average',     msg:'We appreciate the feedback.', em:'📝' },
+            3: { label:'5 / 10 — Good',              msg:'Dr. Basant provided solid guidance throughout the project.', em:'👍' },
+            4: { label:'8 / 10 — Very Good',         msg:'Dr. Basant was highly supportive and knowledgeable. Great supervision!', em:'🌟' },
+            5: { label:'10 / 10 — Excellent! 🎉',    msg:'Outstanding supervisor! Dr. Basant\'s guidance was exceptional — clear, helpful, and deeply knowledgeable. A true academic inspiration!', em:'🏆' },
+        };
+        let chosen = 0;
+        function rateDr(val) {
+            chosen = val;
+            document.querySelectorAll('.star-btn').forEach((b,i) => {
+                b.classList.toggle('lit', i < val);
+            });
+            const d = ratingData[val];
+            document.getElementById('ratingEmoji').textContent = d.em;
+            document.getElementById('ratingLabel').textContent = d.label;
+            document.getElementById('ratingMsg').textContent = d.msg;
+            document.getElementById('ratingResult').classList.add('show');
+        }
+        // Hover preview
+        document.querySelectorAll('.star-btn').forEach((b,i) => {
+            b.addEventListener('mouseenter', () => {
+                if(chosen) return;
+                document.querySelectorAll('.star-btn').forEach((s,j) => s.classList.toggle('lit', j <= i));
+            });
+            b.addEventListener('mouseleave', () => {
+                if(chosen) return;
+                document.querySelectorAll('.star-btn').forEach(s => s.classList.remove('lit'));
+            });
+        });
+        </script>
+    </div>
+
+</div><!-- /presentation -->
+
+<!-- Section Transition Overlay -->
+<div id="sectionTransition">
+    <div class="st-backdrop"></div>
+    <div class="st-card">
+        <div class="st-label">Next Presenter</div>
+        <div class="st-emoji" id="stEmoji">👨‍💻</div>
+        <div class="st-name" id="stName">Ibrahim Mohamed</div>
+        <div class="st-role-text" id="stRole">Project Lead & Backend</div>
+        <div class="st-section-name" id="stSection">⚙️ Backend & API</div>
+    </div>
+</div>
+
+<div id="presenterBadge">
+    <div class="pb-avatar" id="pbAvatar">👨‍💻</div>
+    <div class="pb-info">
+        <span class="pb-name" id="pbName">Ibrahim Mohamed</span>
+        <span class="pb-role" id="pbRole">Project Lead & Backend</span>
+    </div>
+</div>
+
+<div id="sectionLabel">🎤 Introduction</div>
+<div id="jumpPanel"></div>
+
+<div class="nav">
+    <button class="nav-btn" id="prevBtn" onclick="navigate(-1)">&#9664; Prev</button>
+    <div class="slide-counter" id="counter">1 / 35</div>
+    <button class="nav-btn" id="nextBtn" onclick="navigate(1)">Next &#9654;</button>
+</div>
+
+<div class="dots" id="dotsContainer"></div>
+
+<script>
+// Ibrahim: 1,2,3,5,7,16,17,sched-a,sched-b,sched-c,23,28
+// Mariam: 4,6,25,26,18
+// Reem: 8,9,12,19
+// Haneen: 13,14,15,24
+// Amira: 11,10,21,22,20
+// Closing: 27,29,30,32,rating
+const slideOrder = [
+    1, 2, 3, 5, 7, 16, 17,
+    'sched-a', 'sched-b', 'sched-c', 23, 28,
+    4, 6, 25, 26, 18,
+    8, 9, 12, 19,
+    13, 14, 15, 24,
+    11, 10, 21, 22, 20,
+    27, 29, 30, 32, 'rating'
+];
+const TOTAL = slideOrder.length;
+
+const pInfo = {
+    1:  { name:'Ibrahim Mohamed', role:'Project Lead & Backend', color:'#1d4ed8', bg:'rgba(29,78,216,.12)', em:'👨‍💻', sec:'🎤 Introduction' },
+    2:  { name:'Ibrahim Mohamed', role:'Project Lead & Backend', color:'#1d4ed8', bg:'rgba(29,78,216,.12)', em:'👨‍💻', sec:'🎤 Introduction' },
+    3:  { name:'Ibrahim Mohamed', role:'Project Lead & Backend', color:'#1d4ed8', bg:'rgba(29,78,216,.12)', em:'👨‍💻', sec:'⚙️ Backend & API' },
+    5:  { name:'Ibrahim Mohamed', role:'Project Lead & Backend', color:'#1d4ed8', bg:'rgba(29,78,216,.12)', em:'👨‍💻', sec:'⚙️ Backend & API' },
+    7:  { name:'Ibrahim Mohamed', role:'Project Lead & Backend', color:'#1d4ed8', bg:'rgba(29,78,216,.12)', em:'👨‍💻', sec:'⚙️ Backend & API' },
+    16: { name:'Ibrahim Mohamed', role:'Project Lead & Backend', color:'#1d4ed8', bg:'rgba(29,78,216,.12)', em:'👨‍💻', sec:'⚙️ Backend & API' },
+    17: { name:'Ibrahim Mohamed', role:'Project Lead & Backend', color:'#1d4ed8', bg:'rgba(29,78,216,.12)', em:'👨‍💻', sec:'⚙️ Backend & API' },
+    'sched-a': { name:'Ibrahim Mohamed', role:'Project Lead & Backend', color:'#1d4ed8', bg:'rgba(29,78,216,.12)', em:'👨‍💻', sec:'⏱️ Shift System' },
+    'sched-b': { name:'Ibrahim Mohamed', role:'Project Lead & Backend', color:'#1d4ed8', bg:'rgba(29,78,216,.12)', em:'👨‍💻', sec:'⏱️ Shift System' },
+    'sched-c': { name:'Ibrahim Mohamed', role:'Project Lead & Backend', color:'#1d4ed8', bg:'rgba(29,78,216,.12)', em:'👨‍💻', sec:'⏱️ Shift System' },
+    23: { name:'Ibrahim Mohamed', role:'Project Lead & Backend', color:'#1d4ed8', bg:'rgba(29,78,216,.12)', em:'👨‍💻', sec:'⏱️ Shift System' },
+    28: { name:'Ibrahim Mohamed', role:'Project Lead & Backend', color:'#1d4ed8', bg:'rgba(29,78,216,.12)', em:'👨‍💻', sec:'⚙️ Backend & API' },
+    4:  { name:'Mariam Wael Youssef', role:'Database Architect', color:'#7c3aed', bg:'rgba(124,58,237,.12)', em:'🗄️', sec:'🗃️ Database & Data' },
+    6:  { name:'Mariam Wael Youssef', role:'Database Architect', color:'#7c3aed', bg:'rgba(124,58,237,.12)', em:'🗄️', sec:'🗃️ Database & Data' },
+    25: { name:'Mariam Wael Youssef', role:'Database Architect', color:'#7c3aed', bg:'rgba(124,58,237,.12)', em:'🗄️', sec:'🗃️ Database & Data' },
+    26: { name:'Mariam Wael Youssef', role:'Database Architect', color:'#7c3aed', bg:'rgba(124,58,237,.12)', em:'🗄️', sec:'🗃️ Database & Data' },
+    18: { name:'Mariam Wael Youssef', role:'Database Architect', color:'#7c3aed', bg:'rgba(124,58,237,.12)', em:'🗄️', sec:'🗃️ Database & Data' },
+    8:  { name:'Reem Saleh', role:'Frontend Specialist', color:'#db2777', bg:'rgba(219,39,119,.12)', em:'🎨', sec:'🌐 Frontend Pages' },
+    9:  { name:'Reem Saleh', role:'Frontend Specialist', color:'#db2777', bg:'rgba(219,39,119,.12)', em:'🎨', sec:'🌐 Frontend Pages' },
+    12: { name:'Reem Saleh', role:'Frontend Specialist', color:'#db2777', bg:'rgba(219,39,119,.12)', em:'🎨', sec:'🌐 Frontend Pages' },
+    19: { name:'Reem Saleh', role:'Frontend Specialist', color:'#db2777', bg:'rgba(219,39,119,.12)', em:'🎨', sec:'🌐 Frontend Pages' },
+    13: { name:'Haneen Hossam', role:'UI / UX Designer', color:'#059669', bg:'rgba(5,150,105,.12)', em:'📱', sec:'🎨 UI/UX Design' },
+    14: { name:'Haneen Hossam', role:'UI / UX Designer', color:'#059669', bg:'rgba(5,150,105,.12)', em:'📱', sec:'🎨 UI/UX Design' },
+    15: { name:'Haneen Hossam', role:'UI / UX Designer', color:'#059669', bg:'rgba(5,150,105,.12)', em:'📱', sec:'🎨 UI/UX Design' },
+    24: { name:'Haneen Hossam', role:'UI / UX Designer', color:'#059669', bg:'rgba(5,150,105,.12)', em:'📱', sec:'🎨 UI/UX Design' },
+    11: { name:'Amira Helmy Said', role:'Full Stack Developer', color:'#d97706', bg:'rgba(217,119,6,.12)', em:'🚀', sec:'⚡ Features & Systems' },
+    10: { name:'Amira Helmy Said', role:'Full Stack Developer', color:'#d97706', bg:'rgba(217,119,6,.12)', em:'🚀', sec:'⚡ Features & Systems' },
+    21: { name:'Amira Helmy Said', role:'Full Stack Developer', color:'#d97706', bg:'rgba(217,119,6,.12)', em:'🚀', sec:'⚡ Features & Systems' },
+    22: { name:'Amira Helmy Said', role:'Full Stack Developer', color:'#d97706', bg:'rgba(217,119,6,.12)', em:'🚀', sec:'⚡ Features & Systems' },
+    20: { name:'Amira Helmy Said', role:'Full Stack Developer', color:'#d97706', bg:'rgba(217,119,6,.12)', em:'🚀', sec:'⚡ Features & Systems' },
+    27: { name:'Group 10', role:'Closing', color:'#0f172a', bg:'rgba(15,23,42,.08)', em:'🌟', sec:'🏁 Closing' },
+    29: { name:'Group 10', role:'Closing', color:'#0f172a', bg:'rgba(15,23,42,.08)', em:'🌟', sec:'🏁 Closing' },
+    30: { name:'Group 10', role:'Closing', color:'#0f172a', bg:'rgba(15,23,42,.08)', em:'🌟', sec:'🏁 Closing' },
+    32: { name:'Group 10', role:'Closing', color:'#0f172a', bg:'rgba(15,23,42,.08)', em:'🌟', sec:'🏁 Closing' },
+    'rating': { name:'Dr. Basant Mohamed', role:'Academic Supervisor', color:'#0ea5e9', bg:'rgba(14,165,233,.12)', em:'👩‍🏫', sec:'⭐ Evaluation' },
+};
+
+const sections = [
+    { pos:1,  em:'👨‍💻', color:'#1d4ed8', label:'Ibrahim' },
+    { pos:13, em:'🗄️',  color:'#7c3aed', label:'Mariam' },
+    { pos:18, em:'🎨',  color:'#db2777', label:'Reem' },
+    { pos:22, em:'📱',  color:'#059669', label:'Haneen' },
+    { pos:26, em:'🚀',  color:'#d97706', label:'Amira' },
+    { pos:31, em:'🌟',  color:'#0f172a', label:'Closing' },
+    { pos:35, em:'⭐',  color:'#0ea5e9', label:'Rating' },
+];
+
+let current = 1;
+
+const jumpPanelEl = document.getElementById('jumpPanel');
+sections.forEach(s => {
+    const btn = document.createElement('button');
+    btn.className = 'jump-btn';
+    btn.textContent = s.em;
+    btn.title = s.label;
+    btn.style.setProperty('--jb-color', s.color);
+    btn.onclick = () => goTo(s.pos);
+    jumpPanelEl.appendChild(btn);
+});
+
+const dotsEl = document.getElementById('dotsContainer');
+for (let i = 1; i <= TOTAL; i++) {
+    const d = document.createElement('div');
+    const sid = slideOrder[i-1];
+    const p = pInfo[sid];
+    d.className = 'dot' + (i === 1 ? ' active' : '');
+    d.title = (p ? p.name + ' · ' : '') + 'Slide ' + i;
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+}
+
+function updateUI(slideId, pos) {
+    const p = pInfo[slideId] || { name:'Team', role:'', color:'#1d4ed8', bg:'rgba(29,78,216,.12)', em:'🌟', sec:'Presentation' };
+    document.getElementById('pbAvatar').textContent = p.em;
+    document.getElementById('pbName').textContent = p.name;
+    document.getElementById('pbRole').textContent = p.role;
+    document.getElementById('presenterBadge').style.setProperty('--pb-color', p.color);
+    document.getElementById('presenterBadge').style.setProperty('--pb-bg', p.bg);
+    document.getElementById('presenterBadge').style.setProperty('--pb-glow', p.bg);
+    const sl = document.getElementById('sectionLabel');
+    sl.textContent = p.sec;
+    sl.style.setProperty('--sl-color', p.color);
+    document.querySelectorAll('.jump-btn').forEach((btn, i) => {
+        const s = sections[i];
+        const inSection = pos >= s.pos && (i === sections.length-1 || pos < sections[i+1].pos);
+        btn.classList.toggle('current-section', inSection);
+    });
+    document.getElementById('counter').textContent = pos + ' / ' + TOTAL;
+    document.querySelectorAll('.dot').forEach((d, i) => {
+        const active = i + 1 === pos;
+        d.classList.toggle('active', active);
+        if (active && pInfo[slideOrder[i]]) {
+            d.style.background = pInfo[slideOrder[i]].color;
+            d.style.borderColor = pInfo[slideOrder[i]].color;
+        } else {
+            d.style.background = '';
+            d.style.borderColor = '';
+        }
+    });
+}
+
+function showTransition(fromPos, toPos) {
+    const fromSec = (pInfo[slideOrder[fromPos-1]] || {}).sec;
+    const toP = pInfo[slideOrder[toPos-1]];
+    if (!toP || fromSec === toP.sec) return;
+    const ov = document.getElementById('sectionTransition');
+    ov.style.setProperty('--st-color', toP.color);
+    document.getElementById('stEmoji').textContent  = toP.em;
+    document.getElementById('stName').textContent   = toP.name;
+    document.getElementById('stRole').textContent   = toP.role;
+    document.getElementById('stSection').textContent = toP.sec;
+    ov.classList.add('show');
+    setTimeout(() => ov.classList.remove('show'), 2200);
+}
+
+function goTo(n) {
+    const prevPos = current;
+    const prevId  = slideOrder[prevPos - 1];
+    const prevEl  = document.getElementById('slide-' + prevId);
+    if (prevEl) { prevEl.classList.remove('active'); prevEl.classList.add('prev'); setTimeout(() => prevEl.classList.remove('prev'), 700); }
+    current = Math.max(1, Math.min(TOTAL, n));
+    const curId = slideOrder[current - 1];
+    const curEl = document.getElementById('slide-' + curId);
+    if (curEl) curEl.classList.add('active');
+    if (prevPos !== current) showTransition(prevPos, current);
+    updateUI(curId, current);
+}
+
+function navigate(dir) { goTo(current + dir); }
+
+document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') navigate(1);
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   navigate(-1);
+    if (e.key === 'Home') goTo(1);
+    if (e.key === 'End')  goTo(TOTAL);
+});
+
+let tx = 0;
+document.addEventListener('touchstart', e => tx = e.touches[0].clientX);
+document.addEventListener('touchend', e => {
+    const dx = tx - e.changedTouches[0].clientX;
+    if (Math.abs(dx) > 50) navigate(dx > 0 ? 1 : -1);
+});
+
+const initId = slideOrder[0];
+document.getElementById('slide-' + initId).classList.add('active');
+updateUI(initId, 1);
+</script>
+</body>
+</html>

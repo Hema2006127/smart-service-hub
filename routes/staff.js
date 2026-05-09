@@ -16,13 +16,17 @@ router.get('/', async (req, res) => {
 
 // POST — إضافة موظف
 router.post('/', async (req, res) => {
-    if (!['admin','branch_manager'].includes(req.session?.user?.role))
+    const callerRole = req.session?.user?.role;
+    if (!['admin','branch_manager'].includes(callerRole))
         return res.json({ success: false, error: 'غير مصرح' });
 
     const { name, username, password, role, branchId } = req.body;
     if (!name || !username) return res.json({ success: false, error: 'الاسم واسم المستخدم مطلوبان' });
 
-    // لو مفيش password ابعته، حط default حسب الدور
+    // المدير يمكنه فقط إضافة موظفين (teller)
+    if (callerRole === 'branch_manager' && role && role !== 'teller')
+        return res.json({ success: false, error: 'مدير الفرع يمكنه إضافة موظفين فقط' });
+
     const finalPassword = (password && password.trim() !== '') ? password.trim() : 'teller123';
 
     try {
@@ -39,13 +43,24 @@ router.post('/', async (req, res) => {
 
 // PUT — تعديل موظف
 router.put('/:id', async (req, res) => {
-    if (!['admin','branch_manager'].includes(req.session?.user?.role))
+    const callerRole = req.session?.user?.role;
+    if (!['admin','branch_manager'].includes(callerRole))
         return res.json({ success: false, error: 'غير مصرح' });
 
     const { name, username, role, branchId, password } = req.body;
     if (!name || !username) return res.json({ success: false, error: 'الاسم واسم المستخدم مطلوبان' });
 
     try {
+        // مدير الفرع يمكنه تعديل موظفين (teller) فقط
+        if (callerRole === 'branch_manager') {
+            const target = await db.query('SELECT role FROM bank_users WHERE id=$1', [req.params.id]);
+            if (!target.rows.length) return res.json({ success: false, error: 'الموظف غير موجود' });
+            if (target.rows[0].role !== 'teller')
+                return res.json({ success: false, error: 'لا يمكنك تعديل هذا المستخدم' });
+            if (role && role !== 'teller')
+                return res.json({ success: false, error: 'لا يمكنك تغيير الدور' });
+        }
+
         let result;
         if (password && password.trim() !== '') {
             result = await db.query(
@@ -68,9 +83,17 @@ router.put('/:id', async (req, res) => {
 
 // DELETE — حذف موظف
 router.delete('/:id', async (req, res) => {
-    if (!['admin','branch_manager'].includes(req.session?.user?.role))
+    const callerRole = req.session?.user?.role;
+    if (!['admin','branch_manager'].includes(callerRole))
         return res.json({ success: false, error: 'غير مصرح' });
     try {
+        // مدير الفرع يمكنه حذف موظفين (teller) فقط
+        if (callerRole === 'branch_manager') {
+            const target = await db.query('SELECT role FROM bank_users WHERE id=$1', [req.params.id]);
+            if (!target.rows.length) return res.json({ success: false, error: 'الموظف غير موجود' });
+            if (target.rows[0].role !== 'teller')
+                return res.json({ success: false, error: 'لا يمكنك حذف هذا المستخدم' });
+        }
         await db.query('DELETE FROM bank_users WHERE id=$1', [req.params.id]);
         res.json({ success: true, message: 'تم الحذف 🗑️' });
     } catch (err) { res.json({ success: false, error: err.message }); }

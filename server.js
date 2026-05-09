@@ -105,6 +105,11 @@ app.get('/manager',  (req, res) => {
     if (!req.session || !req.session.user) return res.redirect('/login');
     res.sendFile(path.resolve('public/pages/manager.html'));
 });
+app.get('/shifts',   (req, res) => {
+    if (!req.session || !req.session.user) return res.redirect('/login');
+    if (!['admin', 'branch_manager'].includes(req.session.user.role)) return res.redirect('/login');
+    res.sendFile(path.resolve('public/pages/shifts.html'));
+});
 app.get('/',         (req, res) => {
     if (!req.session || !req.session.user) return res.redirect('/login');
     res.sendFile(path.resolve('public/pages/admin.html'));

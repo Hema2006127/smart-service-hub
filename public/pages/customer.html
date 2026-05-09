@@ -85,7 +85,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--foam);min
 /* ══ HEADER ══ */
 header{
   grid-column:1/-1;height:66px;
-  background:rgba(10,10,15,.94);backdrop-filter:blur(30px);
+  background:rgba(10,10,15,.94);-webkit-backdrop-filter:blur(30px);backdrop-filter:blur(30px);
   border-bottom:1px solid var(--border);
   display:flex;align-items:center;justify-content:space-between;
   padding:0 28px;position:sticky;top:0;z-index:200;
@@ -119,7 +119,7 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
 .live-col{
   grid-column:1;grid-row:2;
   background:rgba(10,10,15,.75);border-left:1px solid var(--border);
-  backdrop-filter:blur(22px);
+  -webkit-backdrop-filter:blur(22px);backdrop-filter:blur(22px);
   padding:24px 18px;overflow-y:auto;max-height:calc(100vh - 66px);
 }
 .live-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
@@ -180,7 +180,7 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
 .hero-tag{display:inline-flex;align-items:center;gap:8px;background:var(--b1);border:1px solid var(--border);border-radius:30px;padding:5px 13px;margin-bottom:14px}
 .hero-tag span{font-size:10px;font-weight:900;color:var(--blue2);letter-spacing:.5px;font-family:'JetBrains Mono',monospace}
 .hero h2{font-size:30px;font-weight:900;line-height:1.2;margin-bottom:9px;color:#fff}
-.hero h2 span{background:linear-gradient(90deg,var(--teal2),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero h2 span{background:linear-gradient(90deg,var(--teal2),var(--gold2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 .hero p{font-size:14px;color:var(--foam3);line-height:1.7}
 
 /* Currency */
@@ -239,7 +239,7 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
 .token-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.25);border-radius:30px;padding:5px 14px;margin-bottom:16px;animation:tbPulse 2.2s ease-in-out infinite}
 @keyframes tbPulse{0%,100%{box-shadow:none}50%{box-shadow:0 0 20px rgba(201,168,76,.3)}}
 .token-badge span{font-size:11px;font-weight:900;color:var(--teal2);font-family:'JetBrains Mono',monospace}
-.token-number{font-size:76px;font-weight:900;background:linear-gradient(135deg,var(--teal2),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;margin-bottom:16px;letter-spacing:5px;font-family:'JetBrains Mono',monospace}
+.token-number{font-size:76px;font-weight:900;background:linear-gradient(135deg,var(--teal2),var(--gold2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;line-height:1;margin-bottom:16px;letter-spacing:5px;font-family:'JetBrains Mono',monospace}
 .token-details{display:flex;gap:12px;justify-content:center;margin-bottom:20px;flex-wrap:wrap}
 .token-detail{background:var(--b1);border:1px solid var(--border);border-radius:10px;padding:10px 15px;text-align:center}
 .td-label{font-size:9px;color:var(--foam3);font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:4px;font-family:'JetBrains Mono',monospace}
@@ -256,7 +256,7 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
 .game-col{
   grid-column:3;grid-row:2;
   background:rgba(10,10,15,.82);border-right:1px solid var(--border);
-  backdrop-filter:blur(22px);
+  -webkit-backdrop-filter:blur(22px);backdrop-filter:blur(22px);
   padding:22px 16px;overflow-y:auto;max-height:calc(100vh - 66px);
   display:flex;flex-direction:column;gap:14px;
 }
@@ -310,9 +310,9 @@ header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px
 .alert-sub{font-size:12px;color:rgba(255,255,255,.7);margin-top:2px}
 .alert-banner.mine{background:linear-gradient(135deg,#c87000,#ffb347)}
 
-.sound-btn{position:fixed;bottom:20px;left:20px;z-index:500;background:rgba(10,10,15,.92);backdrop-filter:blur(12px);border:1px solid var(--border);border-radius:50px;padding:8px 15px;cursor:pointer;display:flex;align-items:center;gap:7px;font-family:inherit;font-size:11px;font-weight:700;color:var(--foam3);transition:.22s}
+.sound-btn{position:fixed;bottom:20px;left:20px;z-index:500;background:rgba(10,10,15,.92);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border:1px solid var(--border);border-radius:50px;padding:8px 15px;cursor:pointer;display:flex;align-items:center;gap:7px;font-family:inherit;font-size:11px;font-weight:700;color:var(--foam3);transition:.22s}
 .sound-btn:hover{border-color:var(--teal2);color:var(--teal2)}
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(10,10,15,.97);backdrop-filter:blur(22px);border:1px solid var(--border);border-radius:12px;padding:11px 24px;font-size:13px;font-weight:800;z-index:9999;transition:transform .35s cubic-bezier(.175,.885,.32,1.275);min-width:230px;text-align:center;color:var(--foam)}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(10,10,15,.97);-webkit-backdrop-filter:blur(22px);backdrop-filter:blur(22px);border:1px solid var(--border);border-radius:12px;padding:11px 24px;font-size:13px;font-weight:800;z-index:9999;transition:transform .35s cubic-bezier(.175,.885,.32,1.275);min-width:230px;text-align:center;color:var(--foam)}
 .toast.show{transform:translateX(-50%) translateY(0)}
 .toast.success{border-color:rgba(201,168,76,.3);color:var(--teal2);box-shadow:0 0 24px rgba(201,168,76,.12)}
 .toast.error{border-color:rgba(255,107,107,.3);color:#ff9494}
@@ -408,6 +408,28 @@ html[data-theme="light"] .gsi-val.rv{color:#7b2080}
 html[data-theme="light"] .snake-btn{background:rgba(140,80,20,.1);border-color:rgba(140,80,20,.22);color:#2a1208}
 html[data-theme="light"] .alert-banner{background:rgba(232,214,188,.97);border-color:rgba(140,80,20,.18);color:#2a1208}
 html[data-theme="light"] .toast{background:rgba(238,222,200,.97);color:#2a1208;border:1px solid rgba(140,80,20,.18);box-shadow:0 4px 20px rgba(80,40,0,.12)}
+
+/* ══ ACCESSIBILITY & UTILITIES ══ */
+.particle-canvas { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+.header-actions { display: flex; align-items: center; gap: 10px; }
+.lang-btn { padding: 6px 14px; background: rgba(201,168,76,.12); border: 1px solid rgba(201,168,76,.25); border-radius: 20px; color: #e0c870; font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }
+.display-link { padding: 6px 14px; background: rgba(201,168,76,.1); border: 1px solid rgba(201,168,76,.2); border-radius: 20px; color: #c9a84c; font-family: inherit; font-size: 12px; font-weight: 700; text-decoration: none; }
+.prio-section { margin-top: 14px; }
+.prio-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 8px; }
+.prio-label { cursor: pointer; text-align: center; padding: 10px 6px; border: 1px solid rgba(201,168,76,.2); border-radius: 12px; background: rgba(201,168,76,.05); font-size: 12px; font-weight: 700; transition: .2s; }
+.prio-label.vip { border-color: rgba(212,175,55,.3); background: rgba(212,175,55,.06); }
+.hidden-radio { display: none; }
+.qr-wrap { text-align: center; margin: 16px 0; display: none; }
+.qr-hint { font-size: 11px; color: rgba(216,240,255,.4); margin-bottom: 8px; }
+.qr-box { display: inline-block; background: #fff; padding: 8px; border-radius: 10px; }
+.btn-print { width: auto; padding: 10px 18px; }
+.rating-panel { display: none; margin-top: 16px; background: rgba(201,168,76,.05); border: 1px solid rgba(201,168,76,.18); border-radius: 18px; padding: 22px; text-align: center; }
+.rating-title { font-size: 16px; font-weight: 900; margin-bottom: 6px; }
+.rating-sub { font-size: 12px; color: rgba(216,240,255,.5); margin-bottom: 16px; }
+.star-row { display: flex; justify-content: center; gap: 10px; margin-bottom: 14px; }
+.star-btn { font-size: 30px; cursor: pointer; transition: .2s; filter: grayscale(1); }
+.rating-area { width: 100%; background: rgba(0,0,0,.3); border: 1px solid rgba(201,168,76,.2); border-radius: 10px; color: #fff; font-family: inherit; font-size: 13px; padding: 10px; resize: none; height: 70px; margin-bottom: 12px; }
+.btn-submit { padding: 10px 28px; width: auto; }
 </style>
 <script>document.documentElement.setAttribute('data-theme',localStorage.getItem('nexbank-theme')||'dark')</script>
 </head>
@@ -437,7 +459,7 @@ html[data-theme="light"] .toast{background:rgba(238,222,200,.97);color:#2a1208;b
 <div id="scanLine"></div>
 
 <!-- CANVAS for particles -->
-<canvas id="particleCanvas" style="position:fixed;inset:0;z-index:1;pointer-events:none"></canvas>
+<canvas id="particleCanvas" class="particle-canvas"></canvas>
 
 <!-- ALERT -->
 <div class="alert-banner" id="alertBanner">
@@ -458,10 +480,10 @@ html[data-theme="light"] .toast{background:rgba(238,222,200,.97);color:#2a1208;b
     <div id="headerClock"></div>
     <div class="header-live"><div class="live-dot"></div><span class="live-text">LIVE</span></div>
   </div>
-  <div style="display:flex;align-items:center;gap:10px">
+  <div class="header-actions">
     <button class="theme-btn" id="themeBtn" onclick="toggleTheme()"><span id="themeIcon">☀️</span> <span id="themeLabel">Light</span></button>
-    <button onclick="toggleLang()" id="langBtn" style="padding:6px 14px;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.25);border-radius:20px;color:#e0c870;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer">EN</button>
-    <a href="/display" target="_blank" style="padding:6px 14px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2);border-radius:20px;color:#c9a84c;font-family:inherit;font-size:12px;font-weight:700;text-decoration:none">📺 Display Screen</a>
+    <button onclick="toggleLang()" id="langBtn" class="lang-btn">EN</button>
+    <a href="/display" target="_blank" class="display-link">📺 Display Screen</a>
     <a href="/login" class="staff-btn">Staff Login ←</a>
   </div>
 </header>
@@ -474,7 +496,7 @@ html[data-theme="light"] .toast{background:rgba(238,222,200,.97);color:#2a1208;b
       <div class="live-title">📺 Live Queue</div>
       <button class="live-refresh" onclick="refreshLive()">↻ Refresh</button>
     </div>
-    <div class="field-wrap"><select class="styled-select" id="liveBranch" onchange="onLiveBranchChange()"><option value="">⏳ Loading...</option></select></div>
+    <div class="field-wrap"><select class="styled-select" id="liveBranch" aria-label="Choose Branch" onchange="onLiveBranchChange()"><option value="">⏳ Loading...</option></select></div>
     <div class="stats-row">
       <div class="stat-box"><div class="stat-label">Waiting</div><div class="stat-val bv" id="statWaiting">—</div></div>
       <div class="stat-box"><div class="stat-label">Serving Now</div><div class="stat-val tv" id="statServing">—</div></div>
@@ -511,28 +533,28 @@ html[data-theme="light"] .toast{background:rgba(238,222,200,.97);color:#2a1208;b
     <!-- Panel: Queue -->
     <div class="panel active" id="panel-queue">
       <div id="queueForm">
-        <div class="field-wrap"><label class="field-label">Choose Branch</label><select class="styled-select" id="qBranch"><option value="">⏳ Loading...</option></select></div>
+        <div class="field-wrap"><label class="field-label" for="qBranch">Choose Branch</label><select class="styled-select" id="qBranch" aria-label="Choose Branch"><option value="">⏳ Loading...</option></select></div>
         <div class="services-title">Choose Service</div>
         <div class="services-grid" id="servicesGrid"></div>
         <div class="row-2">
-          <div><label class="field-label">Your Name (Optional)</label><input type="text" class="styled-input" id="qName" placeholder="John Doe"/></div>
-          <div><label class="field-label">Your Mobile (Optional)</label><input type="text" class="styled-input" id="qPhone" placeholder="01xxxxxxxxx"/></div>
+          <div><label class="field-label" for="qName">Your Name (Optional)</label><input type="text" class="styled-input" id="qName" placeholder="John Doe"/></div>
+          <div><label class="field-label" for="qPhone">Your Mobile (Optional)</label><input type="text" class="styled-input" id="qPhone" placeholder="01xxxxxxxxx"/></div>
         </div>
         <!-- Priority Selector -->
-        <div class="field-wrap" style="margin-top:14px">
+        <div class="field-wrap prio-section">
           <label class="field-label" id="lbl-priority">Priority</label>
-          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px">
-            <label style="cursor:pointer;text-align:center;padding:10px 6px;border:1px solid rgba(201,168,76,.2);border-radius:12px;background:rgba(201,168,76,.05);font-size:12px;font-weight:700;transition:.2s" id="prio-normal">
-              <input type="radio" name="priority" value="normal" checked style="display:none"> 👤 Normal
+          <div class="prio-grid">
+            <label class="prio-label" id="prio-normal">
+              <input type="radio" name="priority" value="normal" checked class="hidden-radio"> 👤 Normal
             </label>
-            <label style="cursor:pointer;text-align:center;padding:10px 6px;border:1px solid rgba(201,168,76,.2);border-radius:12px;background:rgba(201,168,76,.05);font-size:12px;font-weight:700;transition:.2s" id="prio-elderly">
-              <input type="radio" name="priority" value="elderly" style="display:none"> 👴 Elderly
+            <label class="prio-label" id="prio-elderly">
+              <input type="radio" name="priority" value="elderly" class="hidden-radio"> 👴 Elderly
             </label>
-            <label style="cursor:pointer;text-align:center;padding:10px 6px;border:1px solid rgba(201,168,76,.2);border-radius:12px;background:rgba(201,168,76,.05);font-size:12px;font-weight:700;transition:.2s" id="prio-disabled">
-              <input type="radio" name="priority" value="disabled" style="display:none"> ♿ Disabled
+            <label class="prio-label" id="prio-disabled">
+              <input type="radio" name="priority" value="disabled" class="hidden-radio"> ♿ Disabled
             </label>
-            <label style="cursor:pointer;text-align:center;padding:10px 6px;border:1px solid rgba(212,175,55,.3);border-radius:12px;background:rgba(212,175,55,.06);font-size:12px;font-weight:700;transition:.2s" id="prio-vip">
-              <input type="radio" name="priority" value="vip" style="display:none"> ⭐ VIP
+            <label class="prio-label vip" id="prio-vip">
+              <input type="radio" name="priority" value="vip" class="hidden-radio"> ⭐ VIP
             </label>
           </div>
         </div>
@@ -547,29 +569,29 @@ html[data-theme="light"] .toast{background:rgba(238,222,200,.97);color:#2a1208;b
           <div class="token-detail"><div class="td-label">Expected Time</div><div class="td-val gold"><span id="tokenWait">—</span> د</div></div>
         </div>
         <!-- QR Code -->
-        <div id="qrCodeWrap" style="text-align:center;margin:16px 0;display:none">
-          <div style="font-size:11px;color:rgba(216,240,255,.4);margin-bottom:8px">Scan the code to track your number</div>
-          <div id="qrCode" style="display:inline-block;background:#fff;padding:8px;border-radius:10px"></div>
+        <div id="qrCodeWrap" class="qr-wrap">
+          <div class="qr-hint">Scan the code to track your number</div>
+          <div id="qrCode" class="qr-box"></div>
         </div>
         <div class="token-actions">
           <button class="btn-outline" onclick="resetQueue()">← New Number</button>
-          <button class="btn-main" onclick="window.print()" style="width:auto;padding:10px 18px">🖨️ Print</button>
+          <button class="btn-main btn-print" onclick="window.print()">🖨️ Print</button>
         </div>
       </div>
 
       <!-- Rating Panel (shown after service) -->
-      <div id="ratingPanel" style="display:none;margin-top:16px;background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.18);border-radius:18px;padding:22px;text-align:center">
-        <div style="font-size:16px;font-weight:900;margin-bottom:6px">How was your experience? ⭐</div>
-        <div style="font-size:12px;color:rgba(216,240,255,.5);margin-bottom:16px">Your rating helps us improve our service</div>
-        <div style="display:flex;justify-content:center;gap:10px;margin-bottom:14px">
-          <span class="star-btn" data-val="1" onclick="setRating(1)" style="font-size:30px;cursor:pointer;transition:.2s;filter:grayscale(1)">⭐</span>
-          <span class="star-btn" data-val="2" onclick="setRating(2)" style="font-size:30px;cursor:pointer;transition:.2s;filter:grayscale(1)">⭐</span>
-          <span class="star-btn" data-val="3" onclick="setRating(3)" style="font-size:30px;cursor:pointer;transition:.2s;filter:grayscale(1)">⭐</span>
-          <span class="star-btn" data-val="4" onclick="setRating(4)" style="font-size:30px;cursor:pointer;transition:.2s;filter:grayscale(1)">⭐</span>
-          <span class="star-btn" data-val="5" onclick="setRating(5)" style="font-size:30px;cursor:pointer;transition:.2s;filter:grayscale(1)">⭐</span>
+      <div id="ratingPanel" class="rating-panel">
+        <div class="rating-title">How was your experience? ⭐</div>
+        <div class="rating-sub">Your rating helps us improve our service</div>
+        <div class="star-row">
+          <span class="star-btn" data-val="1" onclick="setRating(1)">⭐</span>
+          <span class="star-btn" data-val="2" onclick="setRating(2)">⭐</span>
+          <span class="star-btn" data-val="3" onclick="setRating(3)">⭐</span>
+          <span class="star-btn" data-val="4" onclick="setRating(4)">⭐</span>
+          <span class="star-btn" data-val="5" onclick="setRating(5)">⭐</span>
         </div>
-        <textarea id="ratingComment" placeholder="Your comment (Optional)..." style="width:100%;background:rgba(0,0,0,.3);border:1px solid rgba(201,168,76,.2);border-radius:10px;color:#fff;font-family:inherit;font-size:13px;padding:10px;resize:none;height:70px;margin-bottom:12px"></textarea>
-        <button class="btn-main" onclick="submitRating()" style="padding:10px 28px;width:auto">Submit Rating</button>
+        <textarea id="ratingComment" placeholder="Your comment (Optional)..." class="rating-area"></textarea>
+        <button class="btn-main btn-submit" onclick="submitRating()">Submit Rating</button>
       </div>
     </div>
 
@@ -577,15 +599,15 @@ html[data-theme="light"] .toast{background:rgba(238,222,200,.97);color:#2a1208;b
     <div class="panel" id="panel-appt">
       <div class="appt-card">
         <div class="appt-title">📅 Book New Appointment</div>
-        <div class="field-wrap"><label class="field-label">Branch</label><select class="styled-select" id="aBranch"><option value="">⏳ Loading...</option></select></div>
-        <div class="field-wrap"><label class="field-label">Service</label><select class="styled-select" id="aService"><option>Open New Account</option><option>Withdraw / Deposit</option><option>Bank Transfer</option><option>Card Request</option><option>General Inquiry</option></select></div>
+        <div class="field-wrap"><label class="field-label" for="aBranch">Branch</label><select class="styled-select" id="aBranch" aria-label="Branch"><option value="">⏳ Loading...</option></select></div>
+        <div class="field-wrap"><label class="field-label" for="aService">Service</label><select class="styled-select" id="aService" aria-label="Service"><option>Open New Account</option><option>Withdraw / Deposit</option><option>Bank Transfer</option><option>Card Request</option><option>General Inquiry</option></select></div>
         <div class="row-2">
-          <div><label class="field-label">Full Name</label><input type="text" class="styled-input" id="aName" placeholder="Full Name"/></div>
-          <div><label class="field-label">Mobile Number</label><input type="text" class="styled-input" id="aPhone" placeholder="01xxxxxxxxx"/></div>
+          <div><label class="field-label" for="aName">Full Name</label><input type="text" class="styled-input" id="aName" placeholder="Full Name" aria-label="Full Name"/></div>
+          <div><label class="field-label" for="aPhone">Mobile Number</label><input type="text" class="styled-input" id="aPhone" placeholder="01xxxxxxxxx" aria-label="Mobile Number"/></div>
         </div>
         <div class="row-2">
-          <div><label class="field-label">Date</label><input type="date" class="styled-input" id="aDate"/></div>
-          <div><label class="field-label">Time</label><select class="styled-select" id="aTime"><option>09:00</option><option>09:30</option><option>10:00</option><option>10:30</option><option>11:00</option><option>11:30</option><option>12:00</option><option>13:00</option><option>13:30</option><option>14:00</option><option>14:30</option><option>15:00</option></select></div>
+          <div><label class="field-label" for="aDate">Date</label><input type="date" class="styled-input" id="aDate" aria-label="Date"/></div>
+          <div><label class="field-label" for="aTime">Time</label><select class="styled-select" id="aTime" aria-label="Time"><option>09:00</option><option>09:30</option><option>10:00</option><option>10:30</option><option>11:00</option><option>11:30</option><option>12:00</option><option>13:00</option><option>13:30</option><option>14:00</option><option>14:30</option><option>15:00</option></select></div>
         </div>
         <button class="btn-main" onclick="bookAppointment()">📅 Confirm Booking</button>
       </div>
@@ -593,7 +615,7 @@ html[data-theme="light"] .toast{background:rgba(238,222,200,.97);color:#2a1208;b
 
     <!-- Panel: Status -->
     <div class="panel" id="panel-status">
-      <div class="field-wrap"><label class="field-label">Choose Branch</label><select class="styled-select" id="sBranch" onchange="loadStatusPanel()"><option value="">⏳ Loading...</option></select></div>
+      <div class="field-wrap"><label class="field-label" for="sBranch">Choose Branch</label><select class="styled-select" id="sBranch" aria-label="Choose Branch" onchange="loadStatusPanel()"><option value="">⏳ Loading...</option></select></div>
       <div id="statusDisplay"></div>
     </div>
   </div>
@@ -725,7 +747,9 @@ async function submitRating() {
     });
     const data = await res.json();
     if (data.success) {
-      document.getElementById('ratingPanel').innerHTML = '<div style="font-size:40px;margin-bottom:10px">🙏</div><div style="font-size:16px;font-weight:900">Thank you for your rating!</div>';
+      document.getElementById('ratingPanel').innerHTML = `
+        <div class="fs-40 mb-10">🙏</div>
+        <div class="fs-16 fw-900">Thank you for your rating!</div>`;
       showToast('Thank you! Your rating has been submitted', 'success');
     }
   } catch { showToast('Error submitting rating', 'error'); }
@@ -738,7 +762,9 @@ function generateQR(token, service, position) {
     const url  = `https://api.qrserver.com/v1/create-qr-code/?data=${text}&size=130x130&margin=4`;
     const wrap = document.getElementById('qrCodeWrap');
     const el   = document.getElementById('qrCode');
-    el.innerHTML = `<img src="${url}" alt="QR" style="border-radius:6px;display:block" width="130" height="130" onerror="this.parentElement.parentElement.style.display='none'">`;
+    el.innerHTML = `
+      <img src="${url}" alt="QR" class="br-6 d-block" width="130" height="130" 
+           onerror="this.closest('.qr-box')?.classList.add('hidden')">`;
     wrap.style.display = 'block';
   } catch (_) {}
 }
@@ -847,6 +873,10 @@ document.addEventListener('click',e=>{
   const size=Math.max(rect.width,rect.height)*1.5;
   r.style.cssText=`width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px;background:radial-gradient(circle,rgba(201,168,76,.3),rgba(201,168,76,.15),transparent)`;
   target.style.position='relative';target.style.overflow='hidden';
+  r.style.width=size+'px'; r.style.height=size+'px';
+  r.style.left=(e.clientX-rect.left-size/2)+'px';
+  r.style.top=(e.clientY-rect.top-size/2)+'px';
+  target.classList.add('has-ripple');
   target.appendChild(r);setTimeout(()=>r.remove(),700);
 });
 
@@ -866,7 +896,12 @@ function renderCurrencies(){
   document.getElementById('curDate').textContent=`${n.getDate().toString().padStart(2,'0')}/${(n.getMonth()+1).toString().padStart(2,'0')}/${n.getFullYear()}`;
   document.getElementById('currencyGrid').innerHTML=CUR.map(c=>{
     const diff=((c.rate-c.prev)/c.prev*100).toFixed(2),up=c.rate>=c.prev;
-    return `<div class="cur-card" style="--cc:${c.color}"><span class="cur-flag">${c.flag}</span><div class="cur-code">${c.code}</div><div class="cur-rate" id="cr-${c.code}">${c.rate.toFixed(2)}</div><div class="cur-change ${up?'up':'dn'}">${up?'▲':'▼'}${Math.abs(diff)}%</div></div>`;
+    return `<div class="cur-card" data-cur="${c.code}">
+              <span class="cur-flag">${c.flag}</span>
+              <div class="cur-code">${c.code}</div>
+              <div class="cur-rate" id="cr-${c.code}">${c.rate.toFixed(2)}</div>
+              <div class="cur-change ${up?'up':'dn'}">${up?'▲':'▼'}${Math.abs(diff)}%</div>
+            </div>`;
   }).join('');
 }
 renderCurrencies();
@@ -914,15 +949,12 @@ async function startPolling(id){
   if(pollInterval)clearInterval(pollInterval);
   await fetchLive(id);
   pollInterval=setInterval(()=>fetchLive(id),8000);
-  // SSE real-time
   if(sseSource){sseSource.close();}
   sseSource=new EventSource(`/api/events/${id}`);
   sseSource.onmessage=(e)=>{
     try{
       const d=JSON.parse(e.data);
-      if(d.type==='now_serving'){fetchLive(id);}
-      if(d.type==='new_ticket'){fetchLive(id);}
-      // Show rating panel when our token is served
+      if(d.type==='now_serving'||d.type==='new_ticket')fetchLive(id);
       if(myToken&&d.type==='now_serving'&&d.token===myToken){
         setTimeout(()=>{
           const rp=document.getElementById('ratingPanel');
@@ -939,7 +971,6 @@ async function fetchLive(id){
     const data=await fetch(`/api/queue/${id}`).then(r=>r.json());
     const serving=data.find(t=>t.status==='serving'),waiting=data.filter(t=>t.status==='waiting');
     if(serving&&serving.token!==lastServingToken){if(lastServingToken!==null)announceToken(serving.token);lastServingToken=serving.token}
-    // Show rating if my token is now serving
     if(myToken&&serving&&serving.token===myToken){
       const rp=document.getElementById('ratingPanel');
       if(rp&&rp.style.display==='none')setTimeout(()=>rp.style.display='block',1500);
@@ -963,10 +994,31 @@ function renderLive(serving,waiting){
   document.getElementById('statServing').textContent=serving?serving.token:'—';
   document.getElementById('queueCountBadge').textContent=waiting.length;
   const sc=document.getElementById('servingCard');
-  sc.innerHTML=serving?`<div class="serving-card"><div class="sc-label"><div class="sc-dot"></div>Serving Now</div><div class="sc-token">${serving.token}</div><div class="sc-name">${serving.name}</div><div class="sc-service">${serving.service}</div></div>`:'<div class="empty-state" style="padding:14px 0"><div class="empty-icon">⏳</div>No one is being served now</div>';
+  sc.innerHTML=serving?`
+    <div class="serving-card">
+      <div class="sc-label"><div class="sc-dot"></div>Serving Now</div>
+      <div class="sc-token">${serving.token}</div>
+      <div class="sc-name">${serving.name}</div>
+      <div class="sc-service">${serving.service}</div>
+    </div>`:`
+    <div class="empty-state p-14-0">
+      <div class="empty-icon">⏳</div>No one is being served now
+    </div>`;
   const ql=document.getElementById('queueList');
   if(!waiting.length){ql.innerHTML='<div class="empty-state"><div class="empty-icon">🎫</div>Queue is empty ✅</div>';return}
-  ql.innerHTML=waiting.map((t,i)=>{const m=myToken===t.token;return`<div class="queue-item${m?' qi-mine':''}" style="animation-delay:${i*.04}s"><div class="qi-pos">${i+1}</div><div class="qi-token">${t.token}</div><div class="qi-info"><div class="qi-name">${t.name}</div><div class="qi-svc">${t.service}</div></div>${m?'<span class="mine-tag">⭐</span>':''}</div>`}).join('');
+  ql.innerHTML=waiting.map((t,i)=>{
+    const m=myToken===t.token;
+    return `
+      <div class="queue-item${m?' qi-mine':''} sc-ad-${i%5}">
+        <div class="qi-pos">${i+1}</div>
+        <div class="qi-token">${t.token}</div>
+        <div class="qi-info">
+          <div class="qi-name">${t.name}</div>
+          <div class="qi-svc">${t.service}</div>
+        </div>
+        ${m?'<span class="mine-tag">⭐</span>':''}
+      </div>`
+  }).join('');
 }
 
 async function loadBranches(){
@@ -990,7 +1042,12 @@ async function loadStatusPanel(){
   const id=document.getElementById('sBranch').value;if(!id)return;
   startPolling(id);const data=await fetch(`/api/queue/${id}`).then(r=>r.json()).catch(()=>[]);
   const serving=data.find(t=>t.status==='serving'),waiting=data.filter(t=>t.status==='waiting');
-  document.getElementById('statusDisplay').innerHTML=`<div style="margin-top:14px">${serving?`<div class="serving-card"><div class="sc-label"><div class="sc-dot"></div>Serving Now</div><div class="sc-token">${serving.token}</div><div class="sc-name">${serving.name} — ${serving.service}</div></div>`:''}<div class="q-title" style="margin-top:14px">Waiting List <span class="q-badge">${waiting.length}</span></div>${waiting.map((t,i)=>`<div class="queue-item" style="animation-delay:${i*.04}s"><div class="qi-pos">${i+1}</div><div class="qi-token">${t.token}</div><div class="qi-info"><div class="qi-name">${t.name}</div><div class="qi-svc">${t.service}</div></div></div>`).join('')}</div>`;
+  document.getElementById('statusDisplay').innerHTML=`
+    <div class="status-wrap">
+      ${serving?`<div class="serving-card"><div class="sc-label"><div class="sc-dot"></div>Serving Now</div><div class="sc-token">${serving.token}</div><div class="sc-name">${serving.name} — ${serving.service}</div></div>`:''}
+      <div class="q-title q-list-title">Waiting List <span class="q-badge">${waiting.length}</span></div>
+      ${waiting.map((t,i)=>`<div class="queue-item sc-ad-${i%5}"><div class="qi-pos">${i+1}</div><div class="qi-token">${t.token}</div><div class="qi-info"><div class="qi-name">${t.name}</div><div class="qi-svc">${t.service}</div></div></div>`).join('')}
+    </div>`;
 }
 async function takeNumber(){
   if(!selectedService){showToast(LANG[currentLang].selectService,'error');return}
@@ -1133,7 +1190,7 @@ function snakeOver(){
   const ov=document.createElement('div');ov.className='win-overlay';ov.style.position='relative';
   const cols=['#c9a84c','#c9a84c','#ffb347','#e0c870'];
   for(let i=0;i<14;i++){const p=document.createElement('div');p.className='confetti-p';p.style.cssText=`left:${Math.random()*100}%;top:0;background:${cols[i%4]};width:${5+Math.random()*6}px;height:${5+Math.random()*6}px;animation-delay:${Math.random()*.4}s;border-radius:${Math.random()>.5?'50%':'3px'}`;ov.appendChild(p)}
-  ov.innerHTML+=`<div class="win-emoji">${sScore>=sBest?'🏆':'🎮'}</div><div class="win-title">${sScore>=sBest?'High Score!':'Game Over!'}</div><div class="win-sub">Points: ${sScore} | Level: ${sLevel}</div><button class="btn-gp" onclick="startSnake()" style="position:relative;z-index:11">🔄 Play again</button>`;
+  ov.innerHTML+=`<div class="win-emoji">${sScore>=sBest?'🏆':'🎮'}</div><div class="win-title">${sScore>=sBest?'High Score!':'Game Over!'}</div><div class="win-sub">Points: ${sScore} | Level: ${sLevel}</div><button class="btn-gp win-overlay-inner" onclick="startSnake()">🔄 Play again</button>`;
   box.appendChild(ov);
 }
 setInterval(drawSnake,50);
@@ -1297,7 +1354,7 @@ function fDie(){
     const ov=document.createElement('div');ov.className='win-overlay';ov.style.position='relative';
     const cols=['#c9a84c','#c9a84c','#ffb347','#e0c870'];
     for(let i=0;i<12;i++){const p=document.createElement('div');p.className='confetti-p';p.style.cssText=`left:${Math.random()*100}%;top:0;background:${cols[i%4]};width:${4+Math.random()*6}px;height:${4+Math.random()*6}px;animation-delay:${Math.random()*.4}s;border-radius:${Math.random()>.5?'50%':'3px'}`;ov.appendChild(p)}
-    ov.innerHTML+=`<div class="win-emoji">${fScore>=fBest?'🏆':'🐠'}</div><div class="win-title">${fScore>=fBest?'High Score!':'Try again!'}</div><div class="win-sub">Points: ${fScore}</div><button class="btn-gp" onclick="startFlappy()" style="position:relative;z-index:11">🔄 Play again</button>`;
+    ov.innerHTML+=`<div class="win-emoji">${fScore>=fBest?'🏆':'🐠'}</div><div class="win-title">${fScore>=fBest?'High Score!':'Try again!'}</div><div class="win-sub">Points: ${fScore}</div><button class="btn-gp win-overlay-inner" onclick="startFlappy()">🔄 Play again</button>`;
     box.appendChild(ov);
   },600);
 }

@@ -96,7 +96,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--txt);min-
 
 /* ══ TOPBAR ══ */
 .topbar{
-  height:62px;background:rgba(10,10,15,.92);backdrop-filter:blur(32px);
+  height:62px;background:rgba(10,10,15,.92);-webkit-backdrop-filter:blur(32px);backdrop-filter:blur(32px);
   border-bottom:1px solid var(--b1);
   display:flex;align-items:center;justify-content:space-between;
   padding:0 28px;position:sticky;top:0;z-index:200;flex-shrink:0;
@@ -119,7 +119,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--txt);min-
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
 .notif-panel{
   position:absolute;top:calc(100% + 10px);left:0;
-  width:300px;background:rgba(1,14,28,.97);backdrop-filter:blur(24px);
+  width:300px;background:rgba(1,14,28,.97);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);
   border:1px solid var(--b2);border-radius:var(--r2);padding:16px;z-index:500;
   animation:dropIn .2s ease;display:none;
 }
@@ -255,7 +255,7 @@ tbody tr:hover td{background:rgba(201,168,76,.06)}
 .empty-ico{font-size:40px;margin-bottom:10px;opacity:.3}
 
 /* ══ MODAL ══ */
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);z-index:800;display:flex;align-items:center;justify-content:center;animation:fadeIn .2s ease}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.6);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);z-index:800;display:flex;align-items:center;justify-content:center;animation:fadeIn .2s ease}
 .modal-bg.hidden{display:none}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 .modal{background:rgba(1,14,28,.97);border:1px solid var(--b2);border-radius:var(--r3);padding:28px;width:100%;max-width:480px;animation:mIn .25s cubic-bezier(.34,1.56,.64,1);position:relative}
@@ -267,22 +267,146 @@ tbody tr:hover td{background:rgba(201,168,76,.06)}
 .modal-footer{margin-top:24px;display:flex;justify-content:flex-end;gap:10px}
 
 /* ══ TOAST ══ */
-.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(90px);background:rgba(1,14,28,.97);backdrop-filter:blur(20px);border:1px solid var(--b1);border-radius:14px;padding:14px 30px;font-size:14px;font-weight:700;z-index:9999;transition:transform .32s cubic-bezier(.175,.885,.32,1.275);min-width:260px;text-align:center}
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(90px);background:rgba(1,14,28,.97);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border:1px solid var(--b1);border-radius:14px;padding:14px 30px;font-size:14px;font-weight:700;z-index:9999;transition:transform .32s cubic-bezier(.175,.885,.32,1.275);min-width:260px;text-align:center}
 .toast.show{transform:translateX(-50%) translateY(0)}
 .toast.success{border-color:rgba(201,168,76,.4);color:var(--teal)}
 .toast.error{border-color:rgba(255,77,109,.4);color:#ff8fa3}
 .toast.info{border-color:var(--b2);color:var(--ocean3)}
 
+/* ══ ACCESSIBILITY & UTILITIES ══ */
+.rating-card-sm { background:rgba(201,168,76,.08); border:1px solid var(--b1); border-radius:12px; padding:14px; }
+.rating-branch-sm { font-size:11px; color:var(--m1); margin-bottom:6px; }
+.rating-val-lg { font-family:'JetBrains Mono',monospace; font-size:28px; font-weight:900; color:var(--gold); }
+.rating-meta-sm { font-size:11px; color:var(--m1); margin-top:4px; }
+.rating-row { display:flex; align-items:center; gap:12px; padding:10px; background:rgba(201,168,76,.04); border-radius:10px; margin-bottom:6px; border:1px solid var(--b1); }
+.rating-star-icon { font-family:'JetBrains Mono',monospace; font-size:20px; font-weight:900; color:var(--gold); width:36px; }
+.rating-svc-sm { font-size:13px; font-weight:700; }
+.rating-date-sm { font-size:11px; color:var(--m1); }
+.rating-comment-sm { font-size:12px; color:var(--m2); margin-top:3px; }
+.sched-card { background:rgba(201,168,76,.07); border:1px solid var(--b1); border-radius:12px; padding:12px; }
+.sched-name { font-size:13px; font-weight:700; margin-bottom:8px; }
+.sched-badges { display:flex; gap:6px; flex-wrap:wrap; }
+.sched-badge { padding:2px 8px; border-radius:8px; font-size:11px; }
+.sched-badge.work { background:rgba(201,168,76,.15); color:var(--teal); }
+.sched-badge.leave { background:rgba(255,209,102,.15); color:var(--gold); }
+.sched-badge.sick { background:rgba(255,77,109,.15); color:#ff8fa3; }
+.sched-table { width:100%; border-collapse:collapse; }
+.sched-thead { font-size:11px; color:var(--m1); }
+.sched-th { padding:8px; text-align:right; }
+.sched-th-mid { padding:8px; }
+.sched-tr { border-top:1px solid var(--b1); }
+.sched-td-name { padding:9px; font-size:13px; font-weight:700; }
+.sched-td-date { padding:9px; font-size:12px; }
+.sched-td-status { padding:9px; }
+.sched-status-label{padding:3px 10px;border-radius:8px;font-size:11px;font-weight:700;}
+.bg-teal-20{background:rgba(201,168,76,.2);color:var(--teal)}
+.bg-gold-20{background:rgba(255,209,102,.2);color:var(--gold)}
+.bg-red-20{background:rgba(255,77,109,.2);color:#ff8fa3}
+.bg-purple-20{background:rgba(155,114,255,.2);color:var(--purple)}
+.bg-esc{background:rgba(155,114,255,.04)}
+.esc-qi{border-color:rgba(255,77,109,.25);background:rgba(255,77,109,.04);margin-bottom:10px;padding:16px}
+.esc-icon{width:44px;height:44px;border-radius:12px;background:rgba(255,77,109,.12);color:#ff8fa3;font-size:13px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.items-center{align-items:center}
+.mb-4{margin-bottom:4px}
+.flex-shrink-0{flex-shrink:0}
+.var-b1{border-color:var(--b1)}
+.var-b2{border-color:var(--b2)}
+
+/* Animation delays */
+.sc-ad-04{animation-delay:.04s}
+.sc-ad-09{animation-delay:.09s}
+.sc-ad-14{animation-delay:.14s}
+.sc-ad-19{animation-delay:.19s}
+.sc-ad-24{animation-delay:.24s}
+.qi-ad-0{animation-delay:0s}.qi-ad-1{animation-delay:.04s}.qi-ad-2{animation-delay:.08s}.qi-ad-3{animation-delay:.12s}.qi-ad-4{animation-delay:.16s}
+.q-row-ad-0{animation:qIn .3s 0s ease both}.q-row-ad-1{animation:qIn .3s .04s ease both}.q-row-ad-2{animation:qIn .3s .08s ease both}.q-row-ad-3{animation:qIn .3s .12s ease both}
+#dot-teal{background:var(--teal)}#dot-ocean3{background:var(--ocean3)}#dot-gold{background:var(--gold)}
+.sched-td-note { padding:9px; font-size:11px; color:var(--m1); }
+.feed-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-top:6px; }
+.empty-notif { text-align:center; padding:20px; color:var(--m1); font-size:13px; }
+
 /* ══ THEME TOGGLE BUTTON ══ */
-.theme-wrap{padding:6px 12px}
-.theme-btn{
-  width:100%;padding:10px;border-radius:var(--r);cursor:pointer;
-  font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700;
-  background:rgba(201,168,76,.05);border:1px solid var(--b1);
-  color:var(--m1);transition:.25s;
-  display:flex;align-items:center;justify-content:center;gap:8px;
-}
 .theme-btn:hover{background:rgba(201,168,76,.12);color:var(--txt)}
+
+/* ══ UTILITIES ══ */
+.d-flex { display: flex; }
+.gap-6 { gap: 6px; }
+.gap-8 { gap: 8px; }
+.gap-10 { gap: 10px; }
+.flex-1 { flex: 1; }
+.flex-0-44 { flex: 0 0 44px; }
+.p-0 { padding: 0; }
+.p-16 { padding: 16px; }
+.p-20 { padding: 20px; }
+.p-30 { padding: 30px; }
+.p-6-10 { padding: 6px 10px; }
+.p-6-12 { padding: 6px 12px; }
+.p-6-14 { padding: 6px 14px; }
+.p-9-18 { padding: 9px 18px; }
+.p-14-15 { padding: 14px 15px; }
+.mt-0 { margin-top: 0; }
+.mt-12 { margin-top: 12px; }
+.mb-0 { margin-bottom: 0; }
+.mb-16 { margin-bottom: 16px; }
+.mb-18 { margin-bottom: 18px; }
+.fs-11 { font-size: 11px; }
+.fs-12 { font-size: 12px; }
+.fs-13 { font-size: 13px; }
+.fs-14 { font-size: 14px; }
+.fs-15 { font-size: 15px; }
+.fs-18 { font-size: 18px; }
+.fw-700 { font-weight: 700; }
+.fw-800 { font-weight: 800; }
+.fw-900 { font-weight: 900; }
+.h-200 { height: 200px; }
+.h-230 { height: 230px; }
+.w-100p { width: 100%; }
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.relative { position: relative; }
+.ai-fe { align-items: flex-end; }
+.jc-fe { justify-content: flex-end; }
+.br-8 { border-radius: 8px; }
+.br-11 { border-radius: 11px; }
+.br-20 { border-radius: 20px; }
+.bg-glass-60 { background: rgba(0,20,50,.6); }
+.bg-ocean-12 { background: rgba(201,168,76,.12); }
+.c-m1 { color: var(--m1); }
+.c-gold { color: var(--gold); }
+.c-ocean3 { color: var(--ocean3); }
+.hidden { display: none; }
+.grid-2 { grid-template-columns: 1fr 1fr; }
+.np-dot-green { background-color: var(--green2); }
+.np-dot-gold { background-color: var(--gold); }
+.np-dot-amber { background-color: var(--amber); }
+.np-dot-blue { background-color: var(--teal2); }
+.perf-fill-green { background: linear-gradient(90deg, var(--green2), rgba(0,255,100,.4)); }
+.perf-fill-gold { background: linear-gradient(90deg, var(--gold), rgba(200,160,50,.4)); }
+.perf-fill-amber { background: linear-gradient(90deg, var(--amber), rgba(255,180,0,.4)); }
+.perf-fill-blue { background: linear-gradient(90deg, var(--teal2), rgba(0,200,200,.4)); }
+.c-green2 { color: var(--green2); }
+.c-gold { color: var(--gold); }
+.c-amber { color: var(--amber); }
+.c-teal2 { color: var(--teal2); }
+.p-20 { padding: 20px; }
+.grid-2 { grid-template-columns: 1fr 1fr; }
+.np-dot-green { background-color: var(--green2); }
+.np-dot-gold { background-color: var(--gold); }
+.np-dot-amber { background-color: var(--amber); }
+.np-dot-blue { background-color: var(--teal2); }
+.perf-fill-green { background: linear-gradient(90deg, var(--green2), rgba(0,255,100,.4)); }
+.perf-fill-gold { background: linear-gradient(90deg, var(--gold), rgba(200,160,50,.4)); }
+.perf-fill-amber { background: linear-gradient(90deg, var(--amber), rgba(255,180,0,.4)); }
+.perf-fill-blue { background: linear-gradient(90deg, var(--teal2), rgba(0,200,200,.4)); }
+.c-green2 { color: var(--green2); }
+.c-gold { color: var(--gold); }
+.c-amber { color: var(--amber); }
+.c-teal2 { color: var(--teal2); }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.g-fill-180 { display: grid; grid-template-columns: repeat(auto-fill,minmax(180px,1fr)); gap: 12px; }
+.g-fill-200 { display: grid; grid-template-columns: repeat(auto-fill,minmax(200px,1fr)); gap: 10px; }
+.ov-x-auto { overflow-x: auto; }
+.jbm { font-family: 'JetBrains Mono', monospace; }
 
 /* ══ LIGHT THEME — Warm Amber ══ */
 html[data-theme="light"] body{background:#f4e8d4;color:#2a1208}
@@ -434,6 +558,9 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
     <button class="ntab" id="tab-schedule" onclick="switchTab('schedule',this)">
       <span class="ntab-icon">📆</span><span data-i18n="nav_schedule">Schedules</span>
     </button>
+    <button class="ntab" onclick="location.href='/shifts'">
+      <span class="ntab-icon">⏱️</span><span data-i18n="nav_shifts">Shifts Today</span>
+    </button>
   </div>
 
   <div class="sb-clock">
@@ -441,11 +568,11 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
     <div class="sb-clock-date" id="navDate">---</div>
   </div>
 
-  <div class="theme-wrap" style="display:flex;gap:6px;padding:6px 12px">
-    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" style="flex:1">
+  <div class="theme-wrap d-flex gap-6 p-6-12">
+    <button class="theme-btn flex-1" id="themeBtn" onclick="toggleTheme()">
       <span id="themeIcon">☀️</span><span id="themeLabel">Light Theme</span>
     </button>
-    <button class="theme-btn" id="langBtn" onclick="toggleLang()" style="flex:0 0 44px;padding:0">
+    <button class="theme-btn flex-0-44 p-0" id="langBtn" onclick="toggleLang()">
       <span id="langLabel">EN</span>
     </button>
   </div>
@@ -470,9 +597,9 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
         <div class="notif-panel" id="notifPanel">
           <div class="np-head">🔔 Notifications <span class="np-clear" onclick="clearNotifs()">Clear All</span></div>
           <div id="notifList">
-            <div class="np-item"><div class="np-dot" style="background:var(--teal)"></div><div><div class="np-text">New customer in queue</div><div class="np-time">Now</div></div></div>
-            <div class="np-item"><div class="np-dot" style="background:var(--ocean3)"></div><div><div class="np-text">New appointment booked — 2:30 م</div><div class="np-time">Since 5 Mins</div></div></div>
-            <div class="np-item"><div class="np-dot" style="background:var(--gold)"></div><div><div class="np-text">Khaled Ahmed appointment confirmed</div><div class="np-time">Since 12 Minute</div></div></div>
+            <div class="np-item"><div class="np-dot" id="dot-teal"></div><div><div class="np-text">New customer in queue</div><div class="np-time">Now</div></div></div>
+            <div class="np-item"><div class="np-dot" id="dot-ocean3"></div><div><div class="np-text">New appointment booked — 2:30 م</div><div class="np-time">Since 5 Mins</div></div></div>
+            <div class="np-item"><div class="np-dot" id="dot-gold"></div><div><div class="np-text">Khaled Ahmed appointment confirmed</div><div class="np-time">Since 12 Minute</div></div></div>
           </div>
         </div>
       </div>
@@ -484,24 +611,24 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
 
     <!-- ══ STATS ROW ══ -->
     <div class="stats-row">
-      <div class="sc" style="animation-delay:.04s">
+      <div class="sc sc-ad-04">
         <div class="sc-icon">🎫</div>
         <div class="sc-body"><div class="sc-n" id="sWait">—</div><div class="sc-l">Waiting</div></div>
       </div>
-      <div class="sc" style="animation-delay:.09s">
+      <div class="sc sc-ad-09">
         <div class="sc-icon">✅</div>
         <div class="sc-body"><div class="sc-n" id="sServed">—</div><div class="sc-l">Served Today</div></div>
         <span class="sc-badge">↑</span>
       </div>
-      <div class="sc" style="animation-delay:.14s">
+      <div class="sc sc-ad-14">
         <div class="sc-icon">👥</div>
         <div class="sc-body"><div class="sc-n" id="sStaff">—</div><div class="sc-l">Branch Staff</div></div>
       </div>
-      <div class="sc" style="animation-delay:.19s">
+      <div class="sc sc-ad-19">
         <div class="sc-icon">📅</div>
         <div class="sc-body"><div class="sc-n" id="sAppts">—</div><div class="sc-l">Today's Appointments</div></div>
       </div>
-      <div class="sc" style="animation-delay:.24s">
+      <div class="sc sc-ad-24">
         <div class="sc-icon">⏱️</div>
         <div class="sc-body"><div class="sc-n" id="sAvg">—</div><div class="sc-l">Avg Wait (د)</div></div>
       </div>
@@ -512,23 +639,23 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
       <div class="card">
         <div class="ch">
           <div class="ct">⬆️ Cases Referred by Tellers <span class="cb" id="escalatedBadge">0</span></div>
-          <button class="btn b-blue" style="font-size:13px;padding:9px 18px" onclick="loadQueue()">↻ Refresh</button>
+          <button class="btn b-blue fs-13 p-9-18" onclick="loadQueue()">↻ Refresh</button>
         </div>
-        <div id="escalatedEmpty" class="empty" style="display:none">
+        <div id="escalatedEmpty" class="empty hidden">
           <div class="empty-ico">✅</div>
           No referred cases currently — Everything is under control
         </div>
         <div id="escalatedList"></div>
       </div>
 
-      <div class="card" style="margin-top:0">
+      <div class="card mt-0">
         <div class="ch"><div class="ct">📊 Quick Branch Stats</div></div>
         <div class="sg">
-          <div class="sbox"><div class="sv" style="color:var(--gold)" id="tdS">—</div><div class="sl">Served</div></div>
-          <div class="sbox"><div class="sv" style="color:var(--ocean3)" id="tdW">—</div><div class="sl">Waiting</div></div>
-          <div class="sbox"><div class="sv" style="color:var(--red)" id="tdEsc">—</div><div class="sl">Referred</div></div>
-          <div class="sbox"><div class="sv" style="color:var(--purple)" id="tdSt">—</div><div class="sl">Staff</div></div>
-          <span id="tdA" style="display:none"></span>
+          <div class="sbox"><div class="sv c-gold" id="tdS">—</div><div class="sl">Served</div></div>
+          <div class="sbox"><div class="sv c-ocean3" id="tdW">—</div><div class="sl">Waiting</div></div>
+          <div class="sbox"><div class="sv c-red" id="tdEsc">—</div><div class="sl">Referred</div></div>
+          <div class="sbox"><div class="sv c-purple" id="tdSt">—</div><div class="sl">Staff</div></div>
+          <span id="tdA" class="hidden"></span>
         </div>
       </div>
     </div>
@@ -538,18 +665,18 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
       <div class="card">
         <div class="ch">
           <div class="ct">📅 Branch Appointments Today</div>
-          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <div class="d-flex gap-8 ai-fe flex-wrap">
             <span class="badge b-pend" id="pendCnt">0 Waiting</span>
             <span class="badge b-ok" id="confCnt">0 Confirmed</span>
           </div>
         </div>
         <div class="search-wrap">
-          <input type="text" id="apptSearch" placeholder="Search by customer name or service..." oninput="filterAppts()"/>
+          <input type="text" id="apptSearch" aria-label="Search Appointments" placeholder="Search by customer name or service..." oninput="filterAppts()"/>
         </div>
         <div class="tw">
           <table>
-            <thead><tr><th>Customer</th><th>Mobile</th><th>Service</th><th>Date</th><th>Time</th><th>Status</th><th style="text-align:left">Actions</th></tr></thead>
-            <tbody id="appTb"><tr><td colspan="7" style="text-align:center;padding:30px;color:var(--m1)">⏳ Loading...</td></tr></tbody>
+            <thead><tr><th>Customer</th><th>Mobile</th><th>Service</th><th>Date</th><th>Time</th><th>Status</th><th class="text-left">Actions</th></tr></thead>
+            <tbody id="appTb"><tr><td colspan="7" class="text-center p-30 c-m1">⏳ Loading...</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -560,11 +687,11 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
       <div class="card">
         <div class="ch"><div class="ct">➕ Add New Employee</div></div>
         <div class="frow">
-          <div class="field"><label>Full Name</label><input id="stN" placeholder="John Doe"/></div>
-          <div class="field"><label>Username</label><input id="stU" placeholder="username"/></div>
-          <div class="field"><label>Password</label><input type="password" id="stP" placeholder="••••••••"/></div>
-          <div class="field" style="display:flex;align-items:flex-end">
-            <button class="btn b-blue" onclick="addStaff()" style="width:100%">➕ Add Employee</button>
+          <div class="field"><label for="stN">Full Name</label><input id="stN" placeholder="John Doe" aria-label="Full Name"/></div>
+          <div class="field"><label for="stU">Username</label><input id="stU" placeholder="username" aria-label="Username"/></div>
+          <div class="field"><label for="stP">Password</label><input type="password" id="stP" placeholder="••••••••" aria-label="Password"/></div>
+          <div class="field d-flex ai-fe">
+            <button class="btn b-blue w-100p" onclick="addStaff()">➕ Add Employee</button>
           </div>
         </div>
       </div>
@@ -573,12 +700,12 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
           <div class="ct">👥 Branch Staff <span class="cb" id="staffCnt">0</span></div>
         </div>
         <div class="search-wrap">
-          <input type="text" id="staffSearch" placeholder="Search by employee name..." oninput="filterStaff()"/>
+          <input type="text" id="staffSearch" aria-label="Search Staff" placeholder="Search by employee name..." oninput="filterStaff()"/>
         </div>
         <div class="tw">
           <table>
-            <thead><tr><th>#</th><th>Name</th><th>User</th><th>Role</th><th>Status</th><th style="text-align:left">Actions</th></tr></thead>
-            <tbody id="stTb"><tr><td colspan="6" style="text-align:center;padding:30px;color:var(--m1)">⏳ Loading...</td></tr></tbody>
+            <thead><tr><th>#</th><th>Name</th><th>User</th><th>Role</th><th>Status</th><th class="text-left">Actions</th></tr></thead>
+            <tbody id="stTb"><tr><td colspan="6" class="text-center p-30 c-m1">⏳ Loading...</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -587,21 +714,21 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
     <!-- ══ ANALYTICS PANEL ══ -->
     <div class="panel" id="panel-analytics">
       <div class="ag3">
-        <div class="card" style="margin-bottom:0">
+        <div class="card mb-0">
           <div class="ch"><div class="ct">📈 Customer Traffic — Today</div></div>
-          <div style="position:relative;height:230px"><canvas id="hourlyChart"></canvas></div>
+          <div class="relative h-230"><canvas id="hourlyChart"></canvas></div>
         </div>
-        <div class="card" style="margin-bottom:0">
+        <div class="card mb-0">
           <div class="ch"><div class="ct">🗓️ Last 7 Days</div></div>
-          <div style="position:relative;height:230px"><canvas id="weeklyChart"></canvas></div>
+          <div class="relative h-230"><canvas id="weeklyChart"></canvas></div>
         </div>
       </div>
       <div class="ag2">
-        <div class="card" style="margin-bottom:0">
+        <div class="card mb-0">
           <div class="ch"><div class="ct">📋 Appointments Status</div></div>
-          <div style="position:relative;height:200px"><canvas id="apptChart"></canvas></div>
+          <div class="relative h-200"><canvas id="apptChart"></canvas></div>
         </div>
-        <div class="card" style="margin-bottom:0">
+        <div class="card mb-0">
           <div class="ch"><div class="ct">🏆 Staff Performance</div></div>
           <div id="staffPerf"></div>
         </div>
@@ -617,12 +744,12 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
       <div class="card">
         <div class="ch">
           <div class="ct">⭐ Customer Ratings</div>
-          <div style="display:flex;gap:8px">
-            <button onclick="exportMgrData('ratings')" style="padding:6px 14px;background:rgba(201,168,76,.12);border:1px solid var(--b2);border-radius:8px;color:var(--ocean3);font-family:inherit;font-size:12px;font-weight:700;cursor:pointer">📥 Export CSV</button>
-            <button onclick="loadMgrRatings()" style="padding:6px 14px;background:rgba(201,168,76,.12);border:1px solid var(--b2);border-radius:8px;color:var(--ocean3);font-family:inherit;font-size:12px;font-weight:700;cursor:pointer">↻ Refresh</button>
+          <div class="d-flex gap-8">
+            <button onclick="exportMgrData('ratings')" class="p-6-14 bg-ocean-12 var-b2 br-8 c-ocean3 jbm fs-12 fw-700 cur-ptr">📥 Export CSV</button>
+            <button onclick="loadMgrRatings()" class="p-6-14 bg-ocean-12 var-b2 br-8 c-ocean3 jbm fs-12 fw-700 cur-ptr">↻ Refresh</button>
           </div>
         </div>
-        <div id="mgrRatingSummary" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:18px"></div>
+        <div id="mgrRatingSummary" class="g-fill-180 mb-18"></div>
         <div id="mgrRatingsList"></div>
       </div>
     </div>
@@ -632,20 +759,20 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
       <div class="card">
         <div class="ch">
           <div class="ct">📆 Staff Schedules</div>
-          <div style="display:flex;gap:8px;align-items:center">
-            <select id="mgrSchedMonth" onchange="loadMgrSchedule()" style="padding:6px 10px;background:rgba(0,20,50,.6);border:1px solid var(--b1);border-radius:8px;color:var(--txt);font-family:inherit;font-size:12px">
+          <div class="d-flex gap-8 ai-fe">
+            <select id="mgrSchedMonth" aria-label="Month" onchange="loadMgrSchedule()" class="p-6-10 bg-glass-60 var-b1 br-8 fs-12">
               <option value="1">January</option><option value="2">February</option><option value="3">March</option>
               <option value="4">April</option><option value="5">May</option><option value="6">June</option>
               <option value="7">July</option><option value="8">August</option><option value="9">September</option>
               <option value="10">October</option><option value="11">November</option><option value="12">December</option>
             </select>
-            <select id="mgrSchedYear" onchange="loadMgrSchedule()" style="padding:6px 10px;background:rgba(0,20,50,.6);border:1px solid var(--b1);border-radius:8px;color:var(--txt);font-family:inherit;font-size:12px">
+            <select id="mgrSchedYear" aria-label="Year" onchange="loadMgrSchedule()" class="p-6-10 bg-glass-60 var-b1 br-8 fs-12">
               <option value="2025">2025</option><option value="2026">2026</option><option value="2027">2027</option>
             </select>
           </div>
         </div>
-        <div id="mgrScheduleSummary" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:16px"></div>
-        <div id="mgrScheduleTable" style="overflow-x:auto"></div>
+        <div id="mgrScheduleSummary" class="g-fill-200 mb-16"></div>
+        <div id="mgrScheduleTable" class="ov-x-auto"></div>
       </div>
     </div>
 
@@ -661,13 +788,13 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
       <button class="modal-close" onclick="closeModal('editStaffModal')">✕</button>
     </div>
     <input type="hidden" id="editStaffId"/>
-    <div class="frow" style="grid-template-columns:1fr 1fr">
-      <div class="field"><label>Full Name</label><input id="editStaffName" placeholder="Name"/></div>
-      <div class="field"><label>Username</label><input id="editStaffUser" placeholder="username"/></div>
-      <div class="field"><label>New Password (Optional)</label><input type="password" id="editStaffPass" placeholder="Leave empty to keep"/></div>
+    <div class="frow grid-2">
+      <div class="field"><label for="editStaffName">Full Name</label><input id="editStaffName" placeholder="Name" aria-label="Full Name"/></div>
+      <div class="field"><label for="editStaffUser">Username</label><input id="editStaffUser" placeholder="username" aria-label="Username"/></div>
+      <div class="field"><label for="editStaffPass">New Password (Optional)</label><input type="password" id="editStaffPass" placeholder="Leave empty to keep" aria-label="New Password"/></div>
       <div class="field">
-        <label>Role</label>
-        <select id="editStaffRole">
+        <label for="editStaffRole">Role</label>
+        <select id="editStaffRole" aria-label="Role">
           <option value="teller">Branch Employee</option>
           <option value="branch_manager">Branch Manager</option>
         </select>
@@ -688,15 +815,15 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
       <button class="modal-close" onclick="closeModal('editApptModal')">✕</button>
     </div>
     <input type="hidden" id="editApptId"/>
-    <div class="frow" style="grid-template-columns:1fr 1fr">
-      <div class="field"><label>Customer Name</label><input id="editApptName" placeholder="Customer Name"/></div>
-      <div class="field"><label>Mobile Number</label><input id="editApptPhone" placeholder="05xxxxxxxx"/></div>
-      <div class="field"><label>Service</label><input id="editApptSvc" placeholder="Service Type"/></div>
-      <div class="field"><label>Date</label><input type="date" id="editApptDate"/></div>
-      <div class="field"><label>Time</label><input type="time" id="editApptTime"/></div>
+    <div class="frow grid-2">
+      <div class="field"><label for="editApptName">Customer Name</label><input id="editApptName" placeholder="Customer Name" aria-label="Customer Name"/></div>
+      <div class="field"><label for="editApptPhone">Mobile Number</label><input id="editApptPhone" placeholder="05xxxxxxxx" aria-label="Mobile Number"/></div>
+      <div class="field"><label for="editApptSvc">Service</label><input id="editApptSvc" placeholder="Service Type" aria-label="Service"/></div>
+      <div class="field"><label for="editApptDate">Date</label><input type="date" id="editApptDate" aria-label="Date"/></div>
+      <div class="field"><label for="editApptTime">Time</label><input type="time" id="editApptTime" aria-label="Time"/></div>
       <div class="field">
-        <label>Status</label>
-        <select id="editApptStatus">
+        <label for="editApptStatus">Status</label>
+        <select id="editApptStatus" aria-label="Status">
           <option value="pending">Waiting</option>
           <option value="confirmed">Confirmed</option>
         </select>
@@ -786,9 +913,10 @@ function addNotif(text,color){
   const list=document.getElementById('notifList');
   const item=document.createElement('div');
   item.className='np-item';
-  item.innerHTML=`<div class="np-dot" style="background:${color}"></div><div><div class="np-text">${text}</div><div class="np-time">Now</div></div>`;
+  const dotCls = color === 'var(--green2)' ? 'np-dot-green' : color === 'var(--gold)' ? 'np-dot-gold' : 'np-dot-blue';
+  item.innerHTML=`<div class="np-dot ${dotCls}"></div><div><div class="np-text">${text}</div><div class="np-time">Now</div></div>`;
   list.prepend(item);
-  document.getElementById('notifDot').style.display='block';
+  document.getElementById('notifDot').classList.remove('hidden');
 }
 
 // ════════════════════════════════════════
@@ -816,22 +944,22 @@ async function loadQueue(){
     const emptyEl=document.getElementById('escalatedEmpty');
 
     if(!escalated.length){
-      emptyEl.style.display='block';
+      emptyEl.classList.remove('hidden');
       listEl.innerHTML='';
     } else {
-      emptyEl.style.display='none';
+      emptyEl.classList.add('hidden');
       listEl.innerHTML=escalated.map((t,i)=>`
-        <div class="qi" style="border-color:rgba(255,77,109,.25);background:rgba(255,77,109,.04);animation-delay:${i*.04}s;margin-bottom:10px;padding:16px">
-          <div style="width:44px;height:44px;border-radius:12px;background:rgba(255,77,109,.12);color:#ff8fa3;font-size:13px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0">⬆️</div>
-          <div style="flex:1">
-            <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
-              <span style="font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:900;color:var(--gold)">${t.token}</span>
-              <span style="font-size:14px;font-weight:700">${t.name}</span>
-              <span style="font-size:11px;background:rgba(255,77,109,.12);color:#ff8fa3;border:1px solid rgba(255,77,109,.2);padding:2px 9px;border-radius:20px;font-weight:700">Referred</span>
+        <div class="qi esc-qi qi-ad-${i%10}">
+          <div class="esc-icon">⬆️</div>
+          <div class="flex-1">
+            <div class="d-flex items-center gap-10 mb-4">
+              <span class="jbm fs-18 fw-900 c-gold">${t.token}</span>
+              <span class="fs-14 fw-700">${t.name}</span>
+              <span class="badge b-mg">Referred</span>
             </div>
-            <div style="font-size:12px;color:var(--m1)">${t.service} · ${new Date(t.created_at).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})}</div>
+            <div class="fs-12 c-m1">${t.service} · ${new Date(t.created_at).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})}</div>
           </div>
-          <div style="display:flex;gap:8px;flex-shrink:0">
+          <div class="d-flex gap-8 flex-shrink-0">
             <button class="btn b-green-sm" onclick="resolveCase(${t.id})">✅ Resolve Case</button>
             <button class="btn b-red-sm" onclick="sendBack(${t.id})">↩️ Return to Teller</button>
           </div>
@@ -891,16 +1019,15 @@ function renderAppts(data){
   const scMap={pending:'b-pend',confirmed:'b-ok',in_progress:'b-tl',completed:'b-ok',escalated:'b-mg'};
   tb.innerHTML=data.map((a,i)=>{
     const isEsc=a.status==='escalated';
-    const rowStyle=isEsc?'background:rgba(155,114,255,.04)':'';
-    return `<tr style="animation:qIn .3s ${i*.04}s ease both;${rowStyle}">
-      <td style="font-weight:700">${isEsc?'⬆️ ':''} ${a.customerName}</td>
-      <td style="color:var(--m1);font-size:12px">${a.phone}</td>
+    return `<tr class="q-row-ad-${i%10} ${isEsc?'bg-esc':''}">
+      <td class="fw-700">${isEsc?'⬆️ ':''} ${a.customerName}</td>
+      <td class="c-m1 fs-12">${a.phone}</td>
       <td>${a.service}</td>
-      <td style="color:var(--m1);font-size:12px">${a.date}</td>
-      <td><span style="font-family:'JetBrains Mono',monospace;color:var(--gold);font-weight:800">${a.time}</span></td>
+      <td class="c-m1 fs-12">${a.date}</td>
+      <td><span class="jbm c-gold fw-800">${a.time}</span></td>
       <td><span class="badge ${scMap[a.status]||'b-pend'}">${slMap[a.status]||a.status}</span></td>
       <td><div class="tda">
-        <button class="btn b-red-sm" style="padding:6px 10px" onclick='openEditAppt(${JSON.stringify(a)})'>✏️</button>
+        <button class="btn b-red-sm p-6-10" onclick='openEditAppt(${JSON.stringify(a)})'>✏️</button>
         ${a.status==='pending'?`<button class="btn b-green-sm" onclick="confirmAppt(${a.id})">✓ Confirm</button>`:''}
         ${isEsc?`<button class="btn b-green-sm" onclick="resolveAppt(${a.id})">✅ Resolve</button>`:''}
       </div></td>
@@ -971,14 +1098,14 @@ function renderStaff(data){
   const tb=document.getElementById('stTb');
   if(!data.length){tb.innerHTML='<tr><td colspan="6"><div class="empty"><div class="empty-ico">👥</div>No employees</div></td></tr>';return;}
   tb.innerHTML=data.map((s,i)=>`
-    <tr style="animation:qIn .3s ${i*.04}s ease both">
-      <td style="color:var(--m1);font-size:12px">${i+1}</td>
-      <td style="font-weight:800">${s.name}</td>
-      <td style="color:var(--m1);font-size:12px">${s.username}</td>
+    <tr class="q-row-ad-${i%10}">
+      <td class="c-m1 fs-12">${i+1}</td>
+      <td class="fw-800">${s.name}</td>
+      <td class="c-m1 fs-12">${s.username}</td>
       <td><span class="badge ${s.role==='teller'?'b-tl':'b-mg'}">${s.role==='teller'?'👨‍💼 Employee':'👔 Manager'}</span></td>
       <td><span class="badge b-ok">● Active</span></td>
       <td><div class="tda">
-        <button class="btn b-blue" style="padding:6px 12px;font-size:12px" onclick='openEditStaff(${JSON.stringify(s)})'>✏️ Edit</button>
+        <button class="btn b-blue p-6-12 fs-12" onclick='openEditStaff(${JSON.stringify(s)})'>✏️ Edit</button>
         <button class="btn b-red-sm" onclick="deleteStaff(${s.id},'${s.name}')">🗑️</button>
       </div></td>
     </tr>`).join('');
@@ -1081,21 +1208,30 @@ function buildStaffPerf(staff){
   if(!staff.length){el.innerHTML='<div class="empty"><div class="empty-ico">👥</div>No employees</div>';return;}
   el.innerHTML=staff.slice(0,5).map(s=>{
     const pct=Math.floor(Math.random()*35+60);
-    const color=pct>=80?'#c9a84c':pct>=65?'#ffd166':'#ff4d6d';
-    return `<div class="perf-row"><span class="perf-label">${s.name.split(' ')[0]}</span><div class="perf-track"><div class="perf-fill" style="width:${pct}%;background:linear-gradient(90deg,${color},${color}aa)"></div></div><span class="perf-pct" style="color:${color}">${pct}%</span></div>`;
+    const color=pct>=80?'var(--green2)':pct>=65?'var(--gold)':'var(--teal2)';
+    const fillCls = pct>=80?'perf-fill-green':pct>=65?'perf-fill-gold':'perf-fill-blue';
+    const textCls = pct>=80?'c-green2':pct>=65?'c-gold':'c-teal2';
+    return `<div class="perf-row"><span class="perf-label">${s.name.split(' ')[0]}</span><div class="perf-track"><div class="perf-fill ${fillCls}" id="fill-${s.id}" data-pct="${pct}"></div></div><span class="perf-pct ${textCls}">${pct}%</span></div>`;
   }).join('');
+  staff.forEach(s => {
+    const f = document.getElementById(`fill-${s.id}`);
+    if (f) f.style.width = f.dataset.pct + '%';
+  });
 }
 
 function buildActivityFeed(){
   const acts=[
-    {t:'Customer served B012 Successfully',tm:'2 mins ago',c:'#c9a84c'},
-    {t:'New appointment booked — 3:00 م',tm:'Since 6 Mins',c:'#c9a84c'},
-    {t:'Sarah Mahmoud appointment confirmed',tm:'Since 18 Minute',c:'#ffd166'},
-    {t:'Employee Ali started his shift',tm:'Since 50 Minute',c:'#9b72ff'},
+    {t:'Customer served B012 Successfully',tm:'2 mins ago',c:'var(--green2)'},
+    {t:'New appointment booked — 3:00 م',tm:'Since 6 Mins',c:'var(--green2)'},
+    {t:'Sarah Mahmoud appointment confirmed',tm:'Since 18 Minute',c:'var(--gold)'},
+    {t:'Employee Ali started his shift',tm:'Since 50 Minute',c:'var(--teal2)'},
     {t:'Morning Queue Reset',tm:'1 hour ago',c:'#ff4d6d'},
-    {t:'System operating normally ✅',tm:'2 hours ago',c:'#c9a84c'},
+    {t:'System operating normally ✅',tm:'2 hours ago',c:'var(--green2)'},
   ];
-  document.getElementById('actFeed').innerHTML=acts.map(a=>`<div class="feed-item"><div class="feed-d" style="background:${a.c}"></div><div><div class="feed-txt">${a.t}</div><div class="feed-tm">${a.tm}</div></div></div>`).join('');
+  document.getElementById('actFeed').innerHTML=acts.map(a=>{
+    const dCls = a.c === 'var(--green2)' ? 'np-dot-green' : a.c === 'var(--gold)' ? 'np-dot-gold' : 'np-dot-blue';
+    return `<div class="feed-item"><div class="feed-d feed-dot ${dCls}"></div><div><div class="feed-txt">${a.t}</div><div class="feed-tm">${a.tm}</div></div></div>`
+  }).join('');
 }
 
 // ════════════════════════════════════════
@@ -1110,7 +1246,7 @@ document.addEventListener('click',e=>{if(e.target.classList.contains('modal-bg')
 // NOTIFICATIONS
 // ════════════════════════════════════════
 function toggleNotif(){document.getElementById('notifPanel').classList.toggle('open');}
-function clearNotifs(){document.getElementById('notifList').innerHTML='<div style="text-align:center;padding:20px;color:var(--m1);font-size:13px">No notifications</div>';document.getElementById('notifDot').style.display='none';}
+function clearNotifs(){document.getElementById('notifList').innerHTML='<div class="empty-notif">No notifications</div>';document.getElementById('notifDot').classList.add('hidden');}
 document.addEventListener('click',e=>{if(!e.target.closest('.notif-wrap'))document.getElementById('notifPanel').classList.remove('open');});
 
 // ════════════════════════════════════════
@@ -1171,24 +1307,24 @@ async function loadMgrRatings() {
     const sum = document.getElementById('mgrRatingSummary');
     if (data.summary && data.summary.length) {
       sum.innerHTML = data.summary.map(s => `
-        <div style="background:rgba(201,168,76,.08);border:1px solid var(--b1);border-radius:12px;padding:14px">
-          <div style="font-size:11px;color:var(--m1);margin-bottom:6px">${s.branch_name||'Branch'}</div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:900;color:var(--gold)">${s.avg_rating||'—'} ⭐</div>
-          <div style="font-size:11px;color:var(--m1);margin-top:4px">${s.total} Rating</div>
+        <div class="rating-card-sm">
+          <div class="rating-branch-sm">${s.branch_name||'Branch'}</div>
+          <div class="rating-val-lg">${s.avg_rating||'—'} ⭐</div>
+          <div class="rating-meta-sm">${s.total} Rating</div>
         </div>`).join('');
-    } else { sum.innerHTML = '<div style="color:var(--m1)">No ratings</div>'; }
+    } else { sum.innerHTML = '<div class="empty-notif">No ratings</div>'; }
     const list = document.getElementById('mgrRatingsList');
     if (data.ratings && data.ratings.length) {
       list.innerHTML = data.ratings.slice(0, 30).map(r => `
-        <div style="display:flex;align-items:center;gap:12px;padding:10px;background:rgba(201,168,76,.04);border-radius:10px;margin-bottom:6px;border:1px solid var(--b1)">
-          <div style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:900;color:var(--gold);width:36px">${r.rating}⭐</div>
-          <div style="flex:1">
-            <div style="font-size:13px;font-weight:700">${r.service||'—'}</div>
-            <div style="font-size:11px;color:var(--m1)">${new Date(r.created_at).toLocaleDateString('en-US')}</div>
-            ${r.comment?`<div style="font-size:12px;color:var(--m2);margin-top:3px">"${r.comment}"</div>`:''}
+        <div class="rating-row">
+          <div class="rating-star-icon">${r.rating}⭐</div>
+          <div class="flex-1">
+            <div class="rating-svc-sm">${r.service||'—'}</div>
+            <div class="rating-date-sm">${new Date(r.created_at).toLocaleDateString('en-US')}</div>
+            ${r.comment?`<div class="rating-comment-sm">"${r.comment}"</div>`:''}
           </div>
         </div>`).join('');
-    } else { list.innerHTML = '<div style="color:var(--m1)">No ratings</div>'; }
+    } else { list.innerHTML = '<div class="empty-notif">No ratings</div>'; }
   } catch(err) { console.error(err); }
 }
 
@@ -1208,31 +1344,31 @@ async function loadMgrSchedule() {
     ]);
     const sumEl = document.getElementById('mgrScheduleSummary');
     sumEl.innerHTML = summary.map(s => `
-      <div style="background:rgba(201,168,76,.07);border:1px solid var(--b1);border-radius:12px;padding:12px">
-        <div style="font-size:13px;font-weight:700;margin-bottom:8px">${s.name}</div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap">
-          <span style="padding:2px 8px;background:rgba(201,168,76,.15);color:var(--teal);border-radius:8px;font-size:11px">✅ ${s.working_days} Work</span>
-          <span style="padding:2px 8px;background:rgba(255,209,102,.15);color:var(--gold);border-radius:8px;font-size:11px">🏖️ ${s.leave_days} Leave</span>
-          <span style="padding:2px 8px;background:rgba(255,77,109,.15);color:#ff8fa3;border-radius:8px;font-size:11px">🤒 ${s.sick_days} Sick</span>
+      <div class="sched-card">
+        <div class="sched-name">${s.name}</div>
+        <div class="sched-badges">
+          <span class="sched-badge work">✅ ${s.working_days} Work</span>
+          <span class="sched-badge leave">🏖️ ${s.leave_days} Leave</span>
+          <span class="sched-badge sick">🤒 ${s.sick_days} Sick</span>
         </div>
       </div>`).join('');
     const tbl = document.getElementById('mgrScheduleTable');
-    if (!sched.length) { tbl.innerHTML = '<div style="color:var(--m1);padding:20px">No data</div>'; return; }
-    const statusStyle = {working:'background:rgba(201,168,76,.2);color:var(--teal)',leave:'background:rgba(255,209,102,.2);color:var(--gold)',sick:'background:rgba(255,77,109,.2);color:#ff8fa3',holiday:'background:rgba(155,114,255,.2);color:var(--purple)'};
+    if (!sched.length) { tbl.innerHTML = '<div class="c-m1 p-20">No data</div>'; return; }
+    const statusStyle = {working:'bg-teal-20',leave:'bg-gold-20',sick:'bg-red-20',holiday:'bg-purple-20'};
     const statusLabel = {working:'Work',leave:'Leave',sick:'Sick',holiday:'Holiday'};
-    tbl.innerHTML = `<table style="width:100%;border-collapse:collapse">
-      <thead><tr style="font-size:11px;color:var(--m1)">
-        <th style="padding:8px;text-align:right">Employee</th>
-        <th style="padding:8px">Date</th>
-        <th style="padding:8px">Status</th>
-        <th style="padding:8px">Note</th>
+    tbl.innerHTML = `<table class="sched-table">
+      <thead><tr class="sched-thead">
+        <th class="sched-th">Employee</th>
+        <th class="sched-th-mid">Date</th>
+        <th class="sched-th-mid">Status</th>
+        <th class="sched-th-mid">Note</th>
       </tr></thead>
       <tbody>${sched.map(s => `
-        <tr style="border-top:1px solid var(--b1)">
-          <td style="padding:9px;font-size:13px;font-weight:700">${s.staff_name||'—'}</td>
-          <td style="padding:9px;font-size:12px">${s.date}</td>
-          <td style="padding:9px"><span style="padding:3px 10px;border-radius:8px;font-size:11px;font-weight:700;${statusStyle[s.status]||''}">${statusLabel[s.status]||s.status}</span></td>
-          <td style="padding:9px;font-size:11px;color:var(--m1)">${s.note||'—'}</td>
+        <tr class="sched-tr">
+          <td class="sched-td-name">${s.staff_name||'—'}</td>
+          <td class="sched-td-date">${s.date}</td>
+          <td class="sched-td-status"><span class="sched-status-label ${statusStyle[s.status]||''}">${statusLabel[s.status]||s.status}</span></td>
+          <td class="sched-td-note">${s.note||'—'}</td>
         </tr>`).join('')}
       </tbody></table>`;
   } catch(err) { console.error(err); }

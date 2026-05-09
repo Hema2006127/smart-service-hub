@@ -68,6 +68,8 @@ footer{background:rgba(0,0,0,.4);border-top:1px solid rgba(255,255,255,.06);padd
 /* Branch selector */
 .branch-select{position:fixed;top:16px;left:16px;z-index:200;background:rgba(10,18,34,.95);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:8px 12px;color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;cursor:pointer}
 
+.empty-state{text-align:center;padding:40px;color:rgba(255,255,255,.2)}
+
 /* Responsive */
 @media(max-width: 860px) {
   header { flex-direction: column; gap: 10px; text-align: center; }
@@ -82,7 +84,7 @@ footer{background:rgba(0,0,0,.4);border-top:1px solid rgba(255,255,255,.06);padd
 <body>
 
 
-<select class="branch-select" id="branchSelect" onchange="changeBranch(this.value)">
+<select class="branch-select" id="branchSelect" aria-label="Select Branch" onchange="changeBranch(this.value)">
     <option value="">Choose Branch...</option>
 </select>
 
@@ -117,7 +119,7 @@ footer{background:rgba(0,0,0,.4);border-top:1px solid rgba(255,255,255,.06);padd
                 <span id="queueCount">0</span>
             </div>
             <div id="queueList">
-                <div style="text-align:center;padding:40px;color:rgba(255,255,255,.2)">Queue is empty ✅</div>
+                <div class="empty-state">Queue is empty ✅</div>
             </div>
         </div>
     </main>
@@ -204,7 +206,7 @@ async function loadQueue(branchId) {
         document.getElementById('queueCount').textContent = waiting.length;
         const ql = document.getElementById('queueList');
         if (waiting.length === 0) {
-            ql.innerHTML = '<div style="text-align:center;padding:40px;color:rgba(255,255,255,.2)">Queue is empty ✅</div>';
+            ql.innerHTML = '<div class="empty-state">Queue is empty ✅</div>';
             return;
         }
         ql.innerHTML = waiting.map((t, i) => {

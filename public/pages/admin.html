@@ -38,7 +38,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--foam);cur
   width:252px;flex-shrink:0;display:flex;flex-direction:column;
   background:rgba(10,10,15,.95);
   border-left:1px solid rgba(201,168,76,.18);
-  position:relative;overflow:hidden;backdrop-filter:blur(30px);
+  position:relative;overflow:hidden;-webkit-backdrop-filter:blur(30px);backdrop-filter:blur(30px);
 }
 /* Underwater shimmer line */
 .sidebar::before{
@@ -153,7 +153,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--foam);cur
 /* TOPBAR */
 .topbar{
   height:62px;flex-shrink:0;
-  background:rgba(10,10,15,.92);backdrop-filter:blur(32px);
+  background:rgba(10,10,15,.92);-webkit-backdrop-filter:blur(32px);backdrop-filter:blur(32px);
   border-bottom:1px solid rgba(201,168,76,.14);
   padding:0 28px;display:flex;align-items:center;justify-content:space-between;
   position:relative;
@@ -401,7 +401,7 @@ tbody tr:hover{box-shadow:inset 0 0 0 1px rgba(201,168,76,.1)}
 .empty-ic{font-size:36px;margin-bottom:12px;opacity:.22;filter:grayscale(1)}
 
 /* ══ MODAL ══ */
-.modal-bg{position:fixed;inset:0;z-index:900;background:rgba(1,8,16,.88);backdrop-filter:blur(20px);display:flex;align-items:center;justify-content:center;animation:mfade .2s ease}
+.modal-bg{position:fixed;inset:0;z-index:900;background:rgba(1,8,16,.88);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);display:flex;align-items:center;justify-content:center;animation:mfade .2s ease}
 .modal-bg.hidden{display:none}
 @keyframes mfade{from{opacity:0}to{opacity:1}}
 .modal{
@@ -429,7 +429,7 @@ tbody tr:hover{box-shadow:inset 0 0 0 1px rgba(201,168,76,.1)}
 .btn-save:hover{transform:translateY(-1px);box-shadow:0 6px 30px rgba(201,168,76,.5),0 0 30px rgba(201,168,76,.2)}
 
 /* ══ TOAST ══ */
-.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(100px);background:rgba(2,18,32,.97);backdrop-filter:blur(28px);border-radius:16px;padding:14px 32px;font-size:13px;font-weight:800;z-index:9999;transition:transform .38s cubic-bezier(.34,1.56,.64,1);min-width:250px;text-align:center;font-family:'Tajawal',sans-serif}
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(100px);background:rgba(2,18,32,.97);-webkit-backdrop-filter:blur(28px);backdrop-filter:blur(28px);border-radius:16px;padding:14px 32px;font-size:13px;font-weight:800;z-index:9999;transition:transform .38s cubic-bezier(.34,1.56,.64,1);min-width:250px;text-align:center;font-family:'Tajawal',sans-serif}
 .toast.show{transform:translateX(-50%) translateY(0)}
 .toast.success{border:1px solid rgba(201,168,76,.3);color:var(--teal2);box-shadow:0 0 35px rgba(201,168,76,.18)}
 .toast.error{border:1px solid rgba(255,107,107,.3);color:#ff9494;box-shadow:0 0 35px rgba(255,107,107,.15)}
@@ -449,10 +449,6 @@ tbody tr:hover{box-shadow:inset 0 0 0 1px rgba(201,168,76,.1)}
 .qr-pos{width:28px;height:28px;border-radius:8px;background:rgba(201,168,76,.1);color:var(--aqua2);font-size:11px;font-weight:900;font-family:'JetBrains Mono',monospace;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid rgba(201,168,76,.2)}
 .qr-tok{font-weight:900;color:var(--amber);font-size:14px;width:62px;font-family:'JetBrains Mono',monospace;text-shadow:0 0 8px rgba(255,179,71,.35)}
 
-  25%{d:path("M160,40 C240,20 310,90 310,160 C310,230 250,300 180,310 C110,320 40,260 30,190 C20,120 80,60 160,40")}
-  50%{d:path("M140,60 C200,25 280,75 295,145 C310,215 265,295 195,305 C125,315 45,270 35,200 C25,130 80,95 140,60")}
-  75%{d:path("M155,45 C225,22 300,85 305,155 C310,225 258,295 185,305 C112,315 42,262 35,192 C28,122 85,68 155,45")}
-}
 
 /* ══ RESPONSIVE — Mobile-first: 320 | 480 | 768 | 1024 | 1440 ══ */
 
@@ -475,7 +471,7 @@ tbody tr:hover{box-shadow:inset 0 0 0 1px rgba(201,168,76,.1)}
   /* Dark backdrop when sidebar is open */
   .sb-overlay{
     display:none;position:fixed;inset:0;z-index:999;
-    background:rgba(0,0,0,.55);backdrop-filter:blur(2px);
+    background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);
     animation:fadeIn .25s ease;
   }
   .sb-overlay.show{display:block}
@@ -572,6 +568,125 @@ html[data-theme="light"] .toast{background:rgba(238,222,200,.98);color:#2a1208;b
 html[data-theme="light"] .toast.success{border-color:rgba(40,140,60,.35);color:#1a6e30}
 html[data-theme="light"] .toast.error{border-color:rgba(180,30,10,.3);color:#962010}
 html[data-theme="light"] .morph-blob{opacity:.04}
+
+/* ══ ACCESSIBILITY & UTILITIES ══ */
+.rating-card { background: rgba(201,168,76,.06); border: 1px solid rgba(201,168,76,.14); border-radius: 14px; padding: 16px; }
+.rating-branch { font-size: 12px; color: rgba(224,247,255,.5); margin-bottom: 8px; }
+.rating-score { font-size: 32px; font-weight: 900; color: #f5d76e; }
+.rating-score span { font-size: 18px; }
+.rating-meta { font-size: 11px; color: rgba(224,247,255,.4); margin-top: 4px; }
+.rating-item { display: flex; align-items: center; gap: 14px; padding: 12px 16px; background: rgba(255,255,255,.025); border: 1px solid rgba(255,255,255,.06); border-radius: 12px; margin-bottom: 8px; }
+.rating-val { font-size: 22px; font-weight: 900; color: #f5d76e; width: 40px; text-align: center; }
+.rating-content { flex: 1; }
+.rating-svc { font-size: 13px; font-weight: 700; }
+.rating-info { font-size: 11px; color: rgba(224,247,255,.4); }
+.rating-comment { font-size: 12px; color: rgba(224,247,255,.6); margin-top: 4px; }
+.empty-msg { color: rgba(224,247,255,.3); padding: 20px; }
+.mt-14 { margin-top: 14px; }
+
+/* ══ UTILITIES ══ */
+.flex-1 { flex: 1; }
+.w-100 { width: 100%; }
+.text-left { text-align: left; }
+.flex-wrap { flex-wrap: wrap; }
+.jc-sb { justify-content: space-between; }
+.ai-fe { align-items: flex-end; }
+.mb-8 { margin-bottom: 8px; }
+.mb-10 { margin-bottom: 10px; }
+.mb-12 { margin-bottom: 12px; }
+.mb-14 { margin-bottom: 14px; }
+.mb-18 { margin-bottom: 18px; }
+.mb-20 { margin-bottom: 20px; }
+.mb-24 { margin-bottom: 24px; }
+.gap-8 { gap: 8px; }
+.gap-10 { gap: 10px; }
+.gap-18 { gap: 18px; }
+.fs-12 { font-size: 12px; }
+.fs-13 { font-size: 13px; }
+.fs-14 { font-size: 14px; }
+.fs-18 { font-size: 18px; }
+.fw-400 { font-weight: 400; }
+.fw-700 { font-weight: 700; }
+.fw-900 { font-weight: 900; }
+.status-label.st-success { background: rgba(16,185,129,.15); color: #34d399; }
+.status-label.st-warning { background: rgba(245,158,11,.15); color: #fbbf24; }
+.status-label.st-error { background: rgba(239,68,68,.15); color: #f87171; }
+.m-post { background: rgba(16,185,129,.2); color: #34d399; }
+.m-put { background: rgba(245,158,11,.2); color: #fbbf24; }
+.m-delete { background: rgba(239,68,68,.2); color: #f87171; }
+.m-default { background: rgba(100,100,100,.2); color: #aaa; }
+.disabled-btn { opacity: 0.4; pointer-events: none; }
+.c-foam3 { color: var(--foam3); }
+.c-foam4 { color: rgba(224,247,255, .4); }
+.bg-gold-05 { background: rgba(201,168,76, .05); }
+.bg-gold-15 { background: rgba(201,168,76, .15); }
+.bg-red-1 { background: rgba(239,68,68, .1); }
+.br-8 { border-radius: 8px; }
+.br-10 { border-radius: 10px; }
+.br-12 { border-radius: 12px; }
+.br-16 { border-radius: 16px; }
+.p-8 { padding: 8px; }
+.p-14 { padding: 14px; }
+.p-20 { padding: 20px; }
+.w-220 { width: 220px; }
+.mw-540 { max-width: 540px; }
+.col-span-all { grid-column: 1 / -1; }
+.hidden { display: none; }
+.flex { display: flex; }
+.flex-c { display: flex; flex-direction: column; }
+.ai-c { align-items: center; }
+.jc-c { justify-content: center; }
+.mt-16 { margin-top: 16px; }
+.overflow-x { overflow-x: auto; }
+.grid-ratings { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; margin-bottom: 24px; }
+.grid-reports { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.grid-sched-sum { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; margin-bottom: 20px; }
+
+/* Components */
+.btn-update-v2 { padding: 8px 18px; background: rgba(201,168,76, .15); border: 1px solid rgba(201,168,76, .3); border-radius: 10px; color: #c9a84c; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
+.btn-export { padding: 8px 16px; background: rgba(201,168,76, .15); border: 1px solid rgba(201,168,76, .3); border-radius: 10px; color: #e0c870; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
+.select-sched { padding: 7px 12px; background: rgba(0,0,0, .4); border: 1px solid rgba(201,168,76, .2); border-radius: 10px; color: #fff; font-family: inherit; font-size: 13px; }
+.input-audit { padding: 8px 14px; background: rgba(0,0,0, .4); border: 1px solid rgba(201,168,76, .2); border-radius: 10px; color: #fff; font-family: inherit; font-size: 13px; width: 220px; }
+.btn-del-audit { padding: 8px 14px; background: rgba(239,68,68, .1); border: 1px solid rgba(239,68,68, .2); border-radius: 10px; color: #f87171; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
+.text-left { text-align: left; }
+.c-white { color: #fff; }
+.btn-page { padding: 7px 16px; background: rgba(201,168,76, .1); border: 1px solid rgba(201,168,76, .2); border-radius: 8px; color: #e0c870; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
+
+/* Extra JS Utilities */
+.f-mono { font-family: 'JetBrains Mono', monospace; }
+.ai-c { align-items: center; }
+.jc-sb { justify-content: space-between; }
+.p-2-8 { padding: 2px 8px; }
+.p-3-10 { padding: 3px 10px; }
+.p-10 { padding: 10px; }
+.p-10-0 { padding: 10px 0; }
+.p-10-14 { padding: 10px 14px; }
+.p-16-0 { padding: 16px 0; }
+.fs-10 { font-size: 10px; }
+.fs-11 { font-size: 11px; }
+.fs-22 { font-size: 22px; }
+.fs-26 { font-size: 26px; }
+.fs-32 { font-size: 32px; }
+.bb-white-05 { border-bottom: 1px solid rgba(255,255,255, .05); }
+.bt-white-04 { border-top: 1px solid rgba(255,255,255, .04); }
+.bg-gold-04 { background: rgba(201,168,76, .04); }
+.bg-white-02 { background: rgba(255,255,255, .02); }
+.bg-white-025 { background: rgba(255,255,255, .025); }
+.bg-green-15 { background: rgba(16,185,129, .15); }
+.bg-orange-15 { background: rgba(245,158,11, .15); }
+.bg-red-15 { background: rgba(239,68,68, .15); }
+.bg-purple-15 { background: rgba(139,92,246, .15); }
+.c-green { color: #34d399; }
+.c-orange { color: #fbbf24; }
+.c-red { color: #f87171; }
+.c-purple { color: #a78bfa; }
+.c-gold { color: #f5d76e; }
+.c-amber { color: var(--amber); }
+.br-6 { border-radius: 6px; }
+.br-11 { border-radius: 11px; }
+.br-14 { border-radius: 14px; }
+.br-20 { border-radius: 20px; }
+.pos-tag { padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 900; font-family: 'JetBrains Mono', monospace; background: rgba(201,168,76, .1); color: var(--teal2); }
 </style>
 <script>document.documentElement.setAttribute('data-theme',localStorage.getItem('nexbank-theme')||'dark')</script>
 </head>
@@ -613,6 +728,7 @@ html[data-theme="light"] .morph-blob{opacity:.04}
     <div class="nav-item" onclick="showSection('reports',this)"><span class="nav-icon">📈</span><span data-i18n="nav_reports">Advanced Reports</span></div>
     <div class="nav-section" data-i18n="sec_admin">// ADMIN</div>
     <div class="nav-item" onclick="showSection('schedule',this)"><span class="nav-icon">📆</span><span data-i18n="nav_schedule">Staff Schedules</span></div>
+    <div class="nav-item" onclick="location.href='/shifts'"><span class="nav-icon">⏱️</span><span data-i18n="nav_shifts">Shifts Today</span></div>
     <div class="nav-item" onclick="showSection('audit',this)"><span class="nav-icon">🔍</span><span data-i18n="nav_audit">Audit Log</span></div>
     <div class="nav-item" onclick="window.open('/display','_blank')"><span class="nav-icon">📺</span><span data-i18n="nav_display">Display Screen</span></div>
   </div>
@@ -632,7 +748,7 @@ html[data-theme="light"] .morph-blob{opacity:.04}
 <div class="main">
   <div class="topbar">
     <!-- Hamburger: only visible on mobile (hidden via CSS default) -->
-    <button class="btn-menu" id="btnMenu" onclick="toggleSidebar()" style="display:none" aria-label="Menu">☰</button>
+    <button class="btn-menu hidden" id="btnMenu" onclick="toggleSidebar()" aria-label="Menu Toggle">☰</button>
     <div class="tb-title" id="tbTitle">📊 Dashboard</div>
     <div class="tb-right">
       <div class="clock-display" id="clockDisplay">--:--:--</div>
@@ -655,7 +771,7 @@ html[data-theme="light"] .morph-blob{opacity:.04}
       <div class="stats">
         <div class="stat">
           <div class="stat-ic">🏢</div>
-          <div style="flex:1">
+          <div class="flex-1">
             <div class="stat-n" id="s-branches">0</div>
             <div class="stat-l">Branches</div>
           </div>
@@ -667,7 +783,7 @@ html[data-theme="light"] .morph-blob{opacity:.04}
         </div>
         <div class="stat">
           <div class="stat-ic">👥</div>
-          <div style="flex:1">
+          <div class="flex-1">
             <div class="stat-n" id="s-staff">0</div>
             <div class="stat-l">Staff</div>
           </div>
@@ -679,7 +795,7 @@ html[data-theme="light"] .morph-blob{opacity:.04}
         </div>
         <div class="stat">
           <div class="stat-ic">📅</div>
-          <div style="flex:1">
+          <div class="flex-1">
             <div class="stat-n" id="s-appts">0</div>
             <div class="stat-l">Appointments</div>
           </div>
@@ -691,7 +807,7 @@ html[data-theme="light"] .morph-blob{opacity:.04}
         </div>
         <div class="stat">
           <div class="stat-ic">🎫</div>
-          <div style="flex:1">
+          <div class="flex-1">
             <div class="stat-n" id="s-queue">0</div>
             <div class="stat-l">In Queues</div>
           </div>
@@ -741,17 +857,17 @@ html[data-theme="light"] .morph-blob{opacity:.04}
           <div class="fg"><label>Branch Name</label><input id="bName" placeholder="Maadi Branch"/></div>
           <div class="fg"><label>Location</label><input id="bLoc" placeholder="Cairo, Maadi"/></div>
           <div class="fg"><label>Phone</label><input id="bPhone" placeholder="0220001111"/></div>
-          <div class="fg" style="display:flex;align-items:flex-end"><button class="btn btn-p" onclick="addBranch()" style="width:100%">➕ Add</button></div>
+          <div class="fg flex ai-fe"><button class="btn btn-p w-100" onclick="addBranch()">➕ Add</button></div>
         </div>
       </div>
       <div class="card">
         <div class="card-head">
-          <div class="card-title">Branches List <span id="branchCount" style="color:var(--foam3);font-size:12px;font-weight:400"></span></div>
+          <div class="card-title">Branches List <span id="branchCount" class="c-foam3 fs-12 fw-400"></span></div>
           <div class="srch"><input placeholder="Search..." oninput="loadBranches(this.value)"/></div>
         </div>
         <div class="tw">
           <table>
-            <thead><tr><th>#</th><th>Name</th><th>Location</th><th>Phone</th><th>Status</th><th style="text-align:left">Actions</th></tr></thead>
+            <thead><tr><th>#</th><th>Name</th><th>Location</th><th>Phone</th><th>Status</th><th class="text-left">Actions</th></tr></thead>
             <tbody id="tBranch"><tr><td colspan="6"><div class="empty"><div class="empty-ic">⏳</div>Loading...</div></td></tr></tbody>
           </table>
         </div>
@@ -766,19 +882,19 @@ html[data-theme="light"] .morph-blob{opacity:.04}
           <div class="fg"><label>Full Name</label><input id="stName" placeholder="John Doe"/></div>
           <div class="fg"><label>Username</label><input id="stUser" placeholder="username"/></div>
           <div class="fg"><label>Password</label><input type="password" id="stPass" placeholder="Empty = teller123"/></div>
-          <div class="fg"><label>Role</label><select id="stRole"><option value="teller">Branch Employee</option><option value="branch_manager">Branch Manager</option><option value="admin">System Admin</option></select></div>
-          <div class="fg"><label>Branch</label><select id="stBranch"><option value="">No Branch</option></select></div>
-          <div class="fg" style="display:flex;align-items:flex-end"><button class="btn btn-p" onclick="addStaff()" style="width:100%">➕ Add</button></div>
+          <div class="fg"><label>Role</label><select id="stRole" aria-label="Role"><option value="teller">Branch Employee</option><option value="branch_manager">Branch Manager</option><option value="admin">System Admin</option></select></div>
+          <div class="fg"><label>Branch</label><select id="stBranch" aria-label="Branch"><option value="">No Branch</option></select></div>
+          <div class="fg flex ai-fe"><button class="btn btn-p w-100" onclick="addStaff()">➕ Add</button></div>
         </div>
       </div>
       <div class="card">
         <div class="card-head">
-          <div class="card-title">Staff List <span id="staffCount" style="color:var(--foam3);font-size:12px;font-weight:400"></span></div>
+          <div class="card-title">Staff List <span id="staffCount" class="c-foam3 fs-12 fw-400"></span></div>
           <div class="srch"><input placeholder="Search by name or user..." oninput="filterStaff(this.value)"/></div>
         </div>
         <div class="tw">
           <table>
-            <thead><tr><th>#</th><th>Name</th><th>User</th><th>Role</th><th>Branch</th><th style="text-align:left">Actions</th></tr></thead>
+            <thead><tr><th>#</th><th>Name</th><th>User</th><th>Role</th><th>Branch</th><th class="text-left">Actions</th></tr></thead>
             <tbody id="tStaff"><tr><td colspan="6"><div class="empty"><div class="empty-ic">⏳</div>Loading...</div></td></tr></tbody>
           </table>
         </div>
@@ -794,7 +910,7 @@ html[data-theme="light"] .morph-blob{opacity:.04}
         </div>
         <div class="tw">
           <table>
-            <thead><tr><th>#</th><th>Customer</th><th>Mobile</th><th>Service</th><th>Date</th><th>Time</th><th>Branch</th><th>Status</th><th style="text-align:left">Actions</th></tr></thead>
+            <thead><tr><th>#</th><th>Customer</th><th>Mobile</th><th>Service</th><th>Date</th><th>Time</th><th>Branch</th><th>Status</th><th class="text-left">Actions</th></tr></thead>
             <tbody id="tAppts"><tr><td colspan="9"><div class="empty"><div class="empty-ic">⏳</div>Loading...</div></td></tr></tbody>
           </table>
         </div>
@@ -806,40 +922,40 @@ html[data-theme="light"] .morph-blob{opacity:.04}
 
     <!-- ══ RATINGS ══ -->
     <div class="section" id="sec-ratings">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
-        <div style="font-size:18px;font-weight:900">⭐ Customer Ratings</div>
-        <button onclick="loadRatings()" style="padding:8px 18px;background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);border-radius:10px;color:#c9a84c;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer">↻ Update</button>
+      <div class="flex jc-sb ai-c mb-20">
+        <div class="fs-18 fw-900">⭐ Customer Ratings</div>
+        <button onclick="loadRatings()" class="btn-update-v2">↻ Update</button>
       </div>
-      <div id="ratingSummary" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-bottom:24px"></div>
-      <div style="font-size:14px;font-weight:900;color:rgba(224,247,255,.4);margin-bottom:14px">Recent Ratings</div>
+      <div id="ratingSummary" class="grid-ratings"></div>
+      <div class="fs-14 fw-900 c-foam4 mb-14">Recent Ratings</div>
       <div id="ratingsList"></div>
     </div>
 
     <!-- ══ REPORTS ══ -->
     <div class="section" id="sec-reports">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px">
-        <div style="font-size:18px;font-weight:900">📈 Advanced Reports</div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <button onclick="exportData('queue')"    style="padding:8px 16px;background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);border-radius:10px;color:#e0c870;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer">📥 Export Queue CSV</button>
-          <button onclick="exportData('appointments')" style="padding:8px 16px;background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);border-radius:10px;color:#e0c870;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer">📥 Export Appointments CSV</button>
-          <button onclick="exportData('ratings')"  style="padding:8px 16px;background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);border-radius:10px;color:#e0c870;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer">📥 Export Ratings CSV</button>
+      <div class="flex jc-sb ai-c mb-20 flex-wrap gap-10">
+        <div class="fs-18 fw-900">📈 Advanced Reports</div>
+        <div class="flex gap-8 flex-wrap">
+          <button onclick="exportData('queue')"    class="btn-export">📥 Export Queue CSV</button>
+          <button onclick="exportData('appointments')" class="btn-export">📥 Export Appointments CSV</button>
+          <button onclick="exportData('ratings')"  class="btn-export">📥 Export Ratings CSV</button>
         </div>
       </div>
-      <div id="advReportsWrap" style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
-        <div style="background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.12);border-radius:16px;padding:20px">
-          <div style="font-size:13px;font-weight:900;margin-bottom:14px;color:rgba(224,247,255,.6)">📅 Daily Requests (Last 7 Days)</div>
+      <div id="advReportsWrap" class="grid-reports">
+        <div class="bg-gold-05 br-16 p-20">
+          <div class="fs-13 fw-900 mb-14 c-foam4">📅 Daily Requests (Last 7 Days)</div>
           <canvas id="dailyChart" height="180"></canvas>
         </div>
-        <div style="background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.12);border-radius:16px;padding:20px">
-          <div style="font-size:13px;font-weight:900;margin-bottom:14px;color:rgba(224,247,255,.6)">🏷️ Services Distribution</div>
+        <div class="bg-gold-05 br-16 p-20">
+          <div class="fs-13 fw-900 mb-14 c-foam4">🏷️ Services Distribution</div>
           <canvas id="serviceChart" height="180"></canvas>
         </div>
-        <div style="background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.12);border-radius:16px;padding:20px">
-          <div style="font-size:13px;font-weight:900;margin-bottom:14px;color:rgba(224,247,255,.6)">⭐ Avg Rating per Branch</div>
+        <div class="bg-gold-05 br-16 p-20">
+          <div class="fs-13 fw-900 mb-14 c-foam4">⭐ Avg Rating per Branch</div>
           <canvas id="ratingChart" height="180"></canvas>
         </div>
-        <div style="background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.12);border-radius:16px;padding:20px">
-          <div style="font-size:13px;font-weight:900;margin-bottom:14px;color:rgba(224,247,255,.6)">⏱️ Avg Wait Time</div>
+        <div class="bg-gold-05 br-16 p-20">
+          <div class="fs-13 fw-900 mb-14 c-foam4">⏱️ Avg Wait Time</div>
           <div id="waitTable"></div>
         </div>
       </div>
@@ -847,40 +963,47 @@ html[data-theme="light"] .morph-blob{opacity:.04}
 
     <!-- ══ SCHEDULE ══ -->
     <div class="section" id="sec-schedule">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px">
-        <div style="font-size:18px;font-weight:900">📆 Staff Schedules</div>
-        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-          <select id="schedMonth" onchange="loadSchedule()" style="padding:7px 12px;background:rgba(0,0,0,.4);border:1px solid rgba(201,168,76,.2);border-radius:10px;color:#fff;font-family:inherit;font-size:13px">
+      <div class="flex jc-sb ai-c mb-20 flex-wrap gap-10">
+        <div class="fs-18 fw-900">📆 Staff Schedules</div>
+        <div class="flex gap-10 ai-c flex-wrap">
+          <select id="schedMonth" aria-label="Month" onchange="loadSchedule()" class="select-sched">
             <option value="1">January</option><option value="2">February</option><option value="3">March</option>
             <option value="4">April</option><option value="5">May</option><option value="6">June</option>
             <option value="7">July</option><option value="8">August</option><option value="9">September</option>
             <option value="10">October</option><option value="11">November</option><option value="12">December</option>
           </select>
-          <select id="schedYear" onchange="loadSchedule()" style="padding:7px 12px;background:rgba(0,0,0,.4);border:1px solid rgba(201,168,76,.2);border-radius:10px;color:#fff;font-family:inherit;font-size:13px">
+          <select id="schedYear" aria-label="Year" onchange="loadSchedule()" class="select-sched">
             <option value="2025">2025</option><option value="2026">2026</option><option value="2027">2027</option>
           </select>
-          <button onclick="loadSchedule()" style="padding:8px 16px;background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);border-radius:10px;color:#c9a84c;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer">↻ Update</button>
+          <button onclick="loadSchedule()" class="btn-update-v2">↻ Update</button>
+          <button onclick="openSchedModal()" class="btn btn-p p-8 fs-13">➕ Add Day</button>
         </div>
       </div>
-      <div id="scheduleSummary" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:20px"></div>
-      <div style="font-size:14px;font-weight:900;color:rgba(224,247,255,.4);margin-bottom:12px">Days Schedule</div>
-      <div id="scheduleTable" style="overflow-x:auto"></div>
+      <!-- Pending Leave Requests -->
+      <div class="mb-18">
+        <div class="fs-13 fw-900 c-foam4 mb-10">⏳ Pending Leave Requests</div>
+        <div id="schedRequests"><div class="empty p-14"><div class="empty-ic">⏳</div>Loading...</div></div>
+      </div>
+      <!-- Summary -->
+      <div id="scheduleSummary" class="grid-sched-sum"></div>
+      <div class="fs-14 fw-900 c-foam4 mb-12">Days Schedule</div>
+      <div id="scheduleTable" class="overflow-x"></div>
     </div>
 
     <!-- ══ AUDIT LOG ══ -->
     <div class="section" id="sec-audit">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px">
-        <div style="font-size:18px;font-weight:900">🔍 Audit Log</div>
-        <div style="display:flex;gap:8px">
-          <input id="auditSearch" type="text" placeholder="Search..." onkeyup="searchAudit()" style="padding:8px 14px;background:rgba(0,0,0,.4);border:1px solid rgba(201,168,76,.2);border-radius:10px;color:#fff;font-family:inherit;font-size:13px;width:220px">
-          <button onclick="clearOldAudit()" style="padding:8px 14px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:10px;color:#f87171;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer">🗑️ Delete Old</button>
+      <div class="flex jc-sb ai-c mb-20 flex-wrap gap-10">
+        <div class="fs-18 fw-900">🔍 Audit Log</div>
+        <div class="flex gap-8">
+          <input id="auditSearch" type="text" placeholder="Search..." onkeyup="searchAudit()" class="input-audit">
+          <button onclick="clearOldAudit()" class="btn-del-audit">🗑️ Delete Old</button>
         </div>
       </div>
       <div id="auditList"></div>
-      <div style="display:flex;gap:8px;margin-top:16px;justify-content:center">
-        <button id="auditPrev" onclick="auditPage--; loadAudit()" style="padding:7px 16px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2);border-radius:8px;color:#e0c870;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer">← Previous</button>
-        <span id="auditPageInfo" style="padding:7px 14px;color:rgba(224,247,255,.4);font-size:13px"></span>
-        <button id="auditNext" onclick="auditPage++; loadAudit()" style="padding:7px 16px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2);border-radius:8px;color:#e0c870;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer">Next →</button>
+      <div class="flex gap-8 mt-16 jc-c">
+        <button id="auditPrev" onclick="auditPage--; loadAudit()" class="btn-page">← Previous</button>
+        <span id="auditPageInfo" class="p-14 c-foam4 fs-13"></span>
+        <button id="auditNext" onclick="auditPage++; loadAudit()" class="btn-page">Next →</button>
       </div>
     </div>
 
@@ -894,10 +1017,10 @@ html[data-theme="light"] .morph-blob{opacity:.04}
     <div class="modal-head"><span class="modal-title">✏️ Edit Branch</span><button class="modal-x" onclick="closeModal('mBranch')">✕</button></div>
     <input type="hidden" id="mBid">
     <div class="m-grid">
-      <div class="mf"><label>Branch Name</label><input id="mBname"/></div>
-      <div class="mf"><label>Location</label><input id="mBloc"/></div>
-      <div class="mf"><label>Phone</label><input id="mBphone"/></div>
-      <div class="mf"><label>Status</label><select id="mBstatus"><option value="open">Open</option><option value="closed">Closed</option></select></div>
+      <div class="mf"><label>Branch Name</label><input id="mBname" aria-label="Branch Name" placeholder="Branch Name"/></div>
+      <div class="mf"><label>Location</label><input id="mBloc" aria-label="Location" placeholder="Location"/></div>
+      <div class="mf"><label>Phone</label><input id="mBphone" aria-label="Phone" placeholder="Phone"/></div>
+      <div class="mf"><label>Status</label><select id="mBstatus" aria-label="Status"><option value="open">Open</option><option value="closed">Closed</option></select></div>
     </div>
     <div class="modal-foot"><button class="btn-cancel" onclick="closeModal('mBranch')">Cancel</button><button class="btn-save" onclick="saveBranch()">💾 Save</button></div>
   </div>
@@ -908,30 +1031,51 @@ html[data-theme="light"] .morph-blob{opacity:.04}
     <div class="modal-head"><span class="modal-title">✏️ Edit Employee</span><button class="modal-x" onclick="closeModal('mStaff')">✕</button></div>
     <input type="hidden" id="mSid">
     <div class="m-grid g2">
-      <div class="mf"><label>Name</label><input id="mSname"/></div>
-      <div class="mf"><label>Username</label><input id="mSuser"/></div>
-      <div class="mf"><label>Role</label><select id="mSrole"><option value="teller">Branch Employee</option><option value="branch_manager">Branch Manager</option><option value="admin">System Admin</option></select></div>
-      <div class="mf"><label>Branch</label><select id="mSbranch"><option value="">No Branch</option></select></div>
-      <div class="mf" style="grid-column:1/-1"><label>New Password</label><input type="password" id="mSpass" placeholder="••••••••"/></div>
+      <div class="mf"><label>Name</label><input id="mSname" aria-label="Name" placeholder="Full Name"/></div>
+      <div class="mf"><label>Username</label><input id="mSuser" aria-label="Username" placeholder="Username"/></div>
+      <div class="mf"><label>Role</label><select id="mSrole" aria-label="Role"><option value="teller">Branch Employee</option><option value="branch_manager">Branch Manager</option><option value="admin">System Admin</option></select></div>
+      <div class="mf"><label>Branch</label><select id="mSbranch" aria-label="Branch"><option value="">No Branch</option></select></div>
+      <div class="mf col-span-all"><label>New Password</label><input type="password" id="mSpass" placeholder="••••••••" aria-label="New Password"/></div>
     </div>
     <div class="modal-foot"><button class="btn-cancel" onclick="closeModal('mStaff')">Cancel</button><button class="btn-save" onclick="saveStaff()">💾 Save</button></div>
   </div>
 </div>
 
 <div class="modal-bg hidden" id="mAppt">
-  <div class="modal" style="max-width:540px">
+  <div class="modal mw-540">
     <div class="modal-head"><span class="modal-title">✏️ Edit Appointment</span><button class="modal-x" onclick="closeModal('mAppt')">✕</button></div>
     <input type="hidden" id="mAid">
     <div class="m-grid g2">
-      <div class="mf" style="grid-column:1/-1"><label>Customer Name</label><input id="mAname"/></div>
-      <div class="mf"><label>Mobile</label><input id="mAphone"/></div>
-      <div class="mf"><label>Service</label><select id="mAsvc"><option>Open New Account</option><option>Withdraw / Deposit</option><option>Bank Transfer</option><option>Card Request</option><option>General Inquiry</option></select></div>
-      <div class="mf"><label>Date</label><input type="date" id="mAdate"/></div>
-      <div class="mf"><label>Time</label><select id="mAtime"><option>09:00</option><option>09:30</option><option>10:00</option><option>10:30</option><option>11:00</option><option>11:30</option><option>12:00</option><option>13:00</option><option>13:30</option><option>14:00</option><option>14:30</option><option>15:00</option></select></div>
-      <div class="mf"><label>Status</label><select id="mAstatus"><option value="pending">Waiting</option><option value="confirmed">Confirmed</option></select></div>
-      <div class="mf"><label>Branch</label><select id="mAbranch"><option value="">Select...</option></select></div>
+      <div class="mf col-span-all"><label>Customer Name</label><input id="mAname" aria-label="Customer Name" placeholder="Customer Name"/></div>
+      <div class="mf"><label>Mobile</label><input id="mAphone" aria-label="Mobile" placeholder="Mobile Number"/></div>
+      <div class="mf"><label>Service</label><select id="mAsvc" aria-label="Service"><option>Open New Account</option><option>Withdraw / Deposit</option><option>Bank Transfer</option><option>Card Request</option><option>General Inquiry</option></select></div>
+      <div class="mf"><label>Date</label><input type="date" id="mAdate" aria-label="Date"/></div>
+      <div class="mf"><label>Time</label><select id="mAtime" aria-label="Time"><option>09:00</option><option>09:30</option><option>10:00</option><option>10:30</option><option>11:00</option><option>11:30</option><option>12:00</option><option>13:00</option><option>13:30</option><option>14:00</option><option>14:30</option><option>15:00</option></select></div>
+      <div class="mf"><label>Status</label><select id="mAstatus" aria-label="Status"><option value="pending">Waiting</option><option value="confirmed">Confirmed</option></select></div>
+      <div class="mf"><label>Branch</label><select id="mAbranch" aria-label="Branch"><option value="">Select...</option></select></div>
     </div>
     <div class="modal-foot"><button class="btn-cancel" onclick="closeModal('mAppt')">Cancel</button><button class="btn-save" onclick="saveAppt()">💾 Save</button></div>
+  </div>
+</div>
+
+<!-- Schedule Day Modal -->
+<div class="modal-bg hidden" id="mSched">
+  <div class="modal">
+    <div class="modal-head"><span class="modal-title">📆 Register Day</span><button class="modal-x" onclick="closeModal('mSched')">✕</button></div>
+    <div class="m-grid">
+      <div class="mf"><label>Employee</label><select id="mScStaff" aria-label="Employee"><option value="">Select...</option></select></div>
+      <div class="mf"><label>Date</label><input type="date" id="mScDate" aria-label="Date"></div>
+      <div class="mf"><label>Status</label>
+        <select id="mScStatus" aria-label="Status">
+          <option value="working">✅ Working</option>
+          <option value="leave">🏖️ Leave</option>
+          <option value="sick">🤒 Sick</option>
+          <option value="holiday">📅 Holiday</option>
+        </select>
+      </div>
+      <div class="mf"><label>Note</label><input id="mScNote" placeholder="Optional..."></div>
+    </div>
+    <div class="modal-foot"><button class="btn-cancel" onclick="closeModal('mSched')">Cancel</button><button class="btn-save" onclick="saveSchedDay()">💾 Save</button></div>
   </div>
 </div>
 
@@ -947,6 +1091,7 @@ let branchesCache=[],staffCache=[],apptsCache=[],charts={};
 // ══ PARTICLE SYSTEM — Ocean Bubbles & Particles ══
 (function(){
   const canvas=document.getElementById('bgCanvas');
+  if(!canvas)return;
   const ctx=canvas.getContext('2d');
   let W,H,particles=[],bubbles=[],frame=0;
   function resize(){W=canvas.width=innerWidth;H=canvas.height=innerHeight}
@@ -1145,7 +1290,7 @@ async function loadBranches(search=''){
   document.getElementById('branchCount').textContent=`(${data.length})`;
   const tb=document.getElementById('tBranch');
   if(!data.length){tb.innerHTML='<tr><td colspan="6"><div class="empty"><div class="empty-ic">🏢</div>No branches</div></td></tr>';return;}
-  tb.innerHTML=data.map(b=>`<tr><td class="td-id">${b.id}</td><td style="font-weight:900;color:#fff">${b.name}</td><td style="color:var(--foam3)">${b.location||'—'}</td><td style="color:var(--foam3)">${b.phone||'—'}</td><td><span class="badge ${b.status==='open'?'b-open':'b-closed'}">${b.status==='open'?'● Open':'● Closed'}</span></td><td><div class="td-act"><button class="btn-edit" onclick="openEditBranch(${b.id},'${b.name}','${(b.location||'').replace(/'/g,"\\'")}','${b.phone||''}','${b.status||'open'}')">✏️ Edit</button><button class="btn-del" onclick="deleteBranch(${b.id},'${b.name}')">🗑️ Delete</button></div></td></tr>`).join('');
+  tb.innerHTML=data.map(b=>`<tr><td class="td-id">${b.id}</td><td class="fw-900 c-white">${b.name}</td><td class="c-foam3">${b.location||'—'}</td><td class="c-foam3">${b.phone||'—'}</td><td><span class="badge ${b.status==='open'?'b-open':'b-closed'}">${b.status==='open'?'● Open':'● Closed'}</span></td><td><div class="td-act"><button class="btn-edit" onclick="openEditBranch(${b.id},'${b.name}','${(b.location||'').replace(/'/g,"\\'")}','${b.phone||''}','${b.status||'open'}')">✏️ Edit</button><button class="btn-del" onclick="deleteBranch(${b.id},'${b.name}')">🗑️ Delete</button></div></td></tr>`).join('');
 }
 async function addBranch(){
   const name=document.getElementById('bName').value.trim(),loc=document.getElementById('bLoc').value.trim(),phone=document.getElementById('bPhone').value.trim();
@@ -1165,7 +1310,7 @@ function renderStaff(data){
   document.getElementById('staffCount').textContent=`(${data.length})`;
   const tb=document.getElementById('tStaff');
   if(!data.length){tb.innerHTML='<tr><td colspan="6"><div class="empty"><div class="empty-ic">👥</div>No employees</div></td></tr>';return;}
-  tb.innerHTML=data.map((s,i)=>`<tr><td class="td-id">${i+1}</td><td style="font-weight:900;color:#fff">${s.name}</td><td style="color:var(--foam3);font-family:'JetBrains Mono',monospace;font-size:12px">${s.username}</td><td><span class="badge b-${s.role}">${ROLE_MAP[s.role]||s.role}</span></td><td style="color:var(--foam3)">${getBranchName(s.branchId)}</td><td><div class="td-act"><button class="btn-edit" onclick='openEditStaff(${JSON.stringify(s)})'>✏️ Edit</button><button class="btn-del" onclick="deleteStaff(${s.id},'${s.name}')">🗑️ Delete</button></div></td></tr>`).join('');
+  tb.innerHTML=data.map((s,i)=>`<tr><td class="td-id">${i+1}</td><td class="fw-900 c-white">${s.name}</td><td class="c-foam3 f-mono fs-12">${s.username}</td><td><span class="badge b-${s.role}">${ROLE_MAP[s.role]||s.role}</span></td><td class="c-foam3">${getBranchName(s.branchId)}</td><td><div class="td-act"><button class="btn-edit" onclick='openEditStaff(${JSON.stringify(s)})'>✏️ Edit</button><button class="btn-del" onclick="deleteStaff(${s.id},'${s.name}')">🗑️ Delete</button></div></td></tr>`).join('');
 }
 function filterStaff(q){if(!q){renderStaff(staffCache);return;}renderStaff(staffCache.filter(s=>(s.name||'').includes(q)||(s.username||'').includes(q)));}
 async function addStaff(){
@@ -1185,7 +1330,7 @@ async function loadAppointments(){apptsCache=await fetch('/api/appointments').th
 function renderAppts(data){
   const tb=document.getElementById('tAppts');
   if(!data.length){tb.innerHTML='<tr><td colspan="9"><div class="empty"><div class="empty-ic">📅</div>No appointments</div></td></tr>';return;}
-  tb.innerHTML=data.map(a=>`<tr><td class="td-id">${a.id}</td><td style="font-weight:900;color:#fff">${a.customerName||a.customer_name}</td><td style="color:var(--foam3)">${a.phone}</td><td>${a.service}</td><td style="color:var(--foam3)">${a.date}</td><td style="color:var(--amber);font-weight:900;font-family:'JetBrains Mono',monospace">${a.time}</td><td style="color:var(--foam3)">${getBranchName(a.branchId||a.branch_id)}</td><td><span class="badge b-${a.status}">${a.status==='confirmed'?'● Confirmed':'○ Waiting'}</span></td><td><div class="td-act"><button class="btn-edit" onclick='openEditAppt(${JSON.stringify(a)})'>✏️</button><button class="btn-del" onclick="deleteAppt(${a.id})">🗑️</button></div></td></tr>`).join('');
+  tb.innerHTML=data.map(a=>`<tr><td class="td-id">${a.id}</td><td class="fw-900 c-white">${a.customerName||a.customer_name}</td><td class="c-foam3">${a.phone}</td><td>${a.service}</td><td class="c-foam3">${a.date}</td><td class="c-amber fw-900 f-mono">${a.time}</td><td class="c-foam3">${getBranchName(a.branchId||a.branch_id)}</td><td><span class="badge b-${a.status}">${a.status==='confirmed'?'● Confirmed':'○ Waiting'}</span></td><td><div class="td-act"><button class="btn-edit" onclick='openEditAppt(${JSON.stringify(a)})'>✏️</button><button class="btn-del" onclick="deleteAppt(${a.id})">🗑️</button></div></td></tr>`).join('');
 }
 function filterAppts(q){if(!q){renderAppts(apptsCache);return;}renderAppts(apptsCache.filter(a=>(a.customerName||a.customer_name||'').includes(q)||(a.service||'').includes(q)||(a.phone||'').includes(q)));}
 async function deleteAppt(id){const d=await fetch(`/api/appointments/${id}`,{method:'DELETE'}).then(r=>r.json());if(d.success){showToast(d.message,'success');loadAppointments();}}
@@ -1197,7 +1342,7 @@ async function loadQueues(){
   for(const b of branches){
     const q=await fetch(`/api/queue/${b.id}`).then(r=>r.json()).catch(()=>[]);
     const serving=q.find(t=>t.status==='serving');const waiting=q.filter(t=>t.status==='waiting');
-    html+=`<div class="q-branch"><div class="qb-head"><div class="qb-title">🏢 ${b.name} <span style="color:var(--foam3);font-size:11px;font-family:'JetBrains Mono',monospace">[${waiting.length} waiting]</span></div><button class="btn-reset" onclick="resetQueue(${b.id})">🔄 Reset</button></div>${serving?`<div class="q-serving"><span style="background:rgba(201,168,76,.1);color:var(--teal2);padding:3px 10px;border-radius:20px;font-size:11px;font-weight:900;font-family:'JetBrains Mono',monospace">◉ SERVING</span><span class="qs-num">${serving.token}</span><span style="font-size:13px;color:var(--foam3)">${serving.name} — ${serving.service}</span></div>`:''} ${waiting.length?waiting.map((t,i)=>`<div class="q-row"><div class="qr-pos">${i+1}</div><div class="qr-tok">${t.token}</div><div style="flex:1;font-weight:700">${t.name}</div><div style="font-size:11px;color:var(--foam3)">${t.service}</div></div>`).join(''):'<div class="empty" style="padding:16px 0">Queue is empty ✅</div>'}</div>`;
+    html+=`<div class="q-branch"><div class="qb-head"><div class="qb-title">🏢 ${b.name} <span class="c-foam3 fs-11 f-mono">[${waiting.length} waiting]</span></div><button class="btn-reset" onclick="resetQueue(${b.id})">🔄 Reset</button></div>${serving?`<div class="q-serving"><span class="pos-tag">◉ SERVING</span><span class="qs-num">${serving.token}</span><span class="fs-13 c-foam3">${serving.name} — ${serving.service}</span></div>`:''} ${waiting.length?waiting.map((t,i)=>`<div class="q-row"><div class="qr-pos">${i+1}</div><div class="qr-tok">${t.token}</div><div class="flex-1 fw-700">${t.name}</div><div class="fs-11 c-foam3">${t.service}</div></div>`).join(''):'<div class="empty p-16-0">Queue is empty ✅</div>'}</div>`;
   }
   wrap.innerHTML=html||'<div class="empty"><div class="empty-ic">🎫</div>No data</div>';
 }
@@ -1303,25 +1448,25 @@ async function loadRatings() {
     const sum = document.getElementById('ratingSummary');
     if (data.summary && data.summary.length) {
       sum.innerHTML = data.summary.map(s => `
-        <div style="background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.14);border-radius:14px;padding:16px">
-          <div style="font-size:12px;color:rgba(224,247,255,.5);margin-bottom:8px">${s.branch_name||'Not specified'}</div>
-          <div style="font-size:32px;font-weight:900;color:#f5d76e">${s.avg_rating||'—'} <span style="font-size:18px">⭐</span></div>
-          <div style="font-size:11px;color:rgba(224,247,255,.4);margin-top:4px">${s.total} Rating | ${s.five_star} Excellent</div>
+        <div class="rating-card">
+          <div class="rating-branch">${s.branch_name||'Not specified'}</div>
+          <div class="rating-score">${s.avg_rating||'—'} <span>⭐</span></div>
+          <div class="rating-meta">${s.total} Rating | ${s.five_star} Excellent</div>
         </div>`).join('');
-    } else { sum.innerHTML = '<div style="color:rgba(224,247,255,.3)">No ratings yet</div>'; }
+    } else { sum.innerHTML = '<div class="empty-msg">No ratings yet</div>'; }
     // List
     const list = document.getElementById('ratingsList');
     if (data.ratings && data.ratings.length) {
       list.innerHTML = data.ratings.map(r => `
-        <div style="display:flex;align-items:center;gap:14px;padding:12px 16px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:12px;margin-bottom:8px">
-          <div style="font-size:22px;font-weight:900;color:#f5d76e;width:40px;text-align:center">${r.rating}⭐</div>
-          <div style="flex:1">
-            <div style="font-size:13px;font-weight:700">${r.service||'—'} · ${r.token||''}</div>
-            <div style="font-size:11px;color:rgba(224,247,255,.4)">${r.branch_name||'—'} · ${new Date(r.created_at).toLocaleDateString('en-US')}</div>
-            ${r.comment?`<div style="font-size:12px;color:rgba(224,247,255,.6);margin-top:4px">"${r.comment}"</div>`:''}
+        <div class="rating-item">
+          <div class="rating-val">${r.rating}⭐</div>
+          <div class="rating-content">
+            <div class="rating-svc">${r.service||'—'} · ${r.token||''}</div>
+            <div class="rating-info">${r.branch_name||'—'} · ${new Date(r.created_at).toLocaleDateString('en-US')}</div>
+            ${r.comment?`<div class="rating-comment">"${r.comment}"</div>`:''}
           </div>
         </div>`).join('');
-    } else { list.innerHTML = '<div style="color:rgba(224,247,255,.3);padding:20px">No ratings</div>'; }
+    } else { list.innerHTML = '<div class="empty-msg">No ratings</div>'; }
   } catch(err) { console.error(err); }
 }
 
@@ -1364,12 +1509,12 @@ async function loadAdvReports() {
     const wt = document.getElementById('waitTable');
     if (data.waitStats && data.waitStats.length) {
       wt.innerHTML = data.waitStats.map(w => `
-        <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05)">
-          <span style="font-size:13px">${w.branch_name}</span>
-          <span style="color:#f5d76e;font-weight:700">${w.avg_wait_min} Minute</span>
-          <span style="color:rgba(224,247,255,.4);font-size:12px">${w.total_served} Customer</span>
+        <div class="flex jc-sb p-10-0 bb-white-05">
+          <span class="fs-13">${w.branch_name}</span>
+          <span class="c-gold fw-700">${w.avg_wait_min} Minute</span>
+          <span class="c-foam4 fs-12">${w.total_served} Customer</span>
         </div>`).join('');
-    } else { wt.innerHTML = '<div style="color:rgba(224,247,255,.3)">No data</div>'; }
+    } else { wt.innerHTML = '<div class="c-foam3">No data</div>'; }
   } catch(err) { console.error(err); }
 }
 
@@ -1387,45 +1532,94 @@ async function loadSchedule() {
   const month = document.getElementById('schedMonth').value;
   const year  = document.getElementById('schedYear').value;
   try {
-    const [sched, summary] = await Promise.all([
-      fetch(`/api/schedule?month=${month}&year=${year}`).then(r => r.json()),
-      fetch('/api/schedule/summary').then(r => r.json())
+    const [sched, summary, reqs] = await Promise.all([
+      fetch(`/api/schedule?month=${month}&year=${year}`).then(r => r.json()).catch(()=>[]),
+      fetch(`/api/schedule/summary?year=${year}`).then(r => r.json()).catch(()=>[]),
+      fetch('/api/schedule/requests').then(r => r.json()).catch(()=>[])
     ]);
+    // Pending requests
+    const reqEl = document.getElementById('schedRequests');
+    const pending = Array.isArray(reqs) ? reqs.filter(r=>r.status==='pending') : [];
+    if(!pending.length){
+      reqEl.innerHTML='<div class="c-foam3 fs-12 p-10">✅ No pending requests</div>';
+    } else {
+      const IC={leave:'🏖️',sick:'🤒',working:'✅'};
+      reqEl.innerHTML=pending.map(r=>`
+        <div class="flex ai-c gap-10 p-10-14 bg-gold-04 border-gold-01 br-11 mb-8">
+          <span class="fs-18">${IC[r.type]||'📋'}</span>
+          <div class="flex-1">
+            <div class="fs-13 fw-700">${r.staff_name||'Employee'}</div>
+            <div class="fs-11 c-foam3">${r.date} · ${{leave:'Leave',sick:'Sick',working:'Work'}[r.type]||r.type}${r.note?' · '+r.note:''}</div>
+          </div>
+          <button class="btn-edit" onclick="approveReq(${r.id},'approve')">✅ Approve</button>
+          <button class="btn-del" onclick="approveReq(${r.id},'reject')">❌ Reject</button>
+        </div>`).join('');
+    }
     // Summary
     const sumEl = document.getElementById('scheduleSummary');
-    sumEl.innerHTML = summary.map(s => `
-      <div style="background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.14);border-radius:14px;padding:14px">
-        <div style="font-size:12px;font-weight:700;margin-bottom:6px">${s.name}</div>
-        <div style="font-size:10px;color:rgba(224,247,255,.4);margin-bottom:8px">${s.branch_name||'—'}</div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <span style="padding:2px 8px;background:rgba(16,185,129,.15);color:#34d399;border-radius:10px;font-size:11px">✅ ${s.working_days} Work</span>
-          <span style="padding:2px 8px;background:rgba(245,158,11,.15);color:#fbbf24;border-radius:10px;font-size:11px">🏖️ ${s.leave_days} Leave</span>
-          <span style="padding:2px 8px;background:rgba(239,68,68,.15);color:#f87171;border-radius:10px;font-size:11px">🤒 ${s.sick_days} Sick</span>
+    const sumArr = Array.isArray(summary) ? summary : [];
+    sumEl.innerHTML = sumArr.length ? sumArr.map(s => `
+      <div class="bg-gold-06 border-gold-014 br-14 p-14">
+        <div class="fs-12 fw-700 mb-4">${s.name}</div>
+        <div class="fs-10 c-foam4 mb-8">${s.branch_name||'—'}</div>
+        <div class="flex gap-8 flex-wrap">
+          <span class="p-2-8 bg-green-15 c-green br-10 fs-11">✅ ${s.working_days} Work</span>
+          <span class="p-2-8 bg-orange-15 c-orange br-10 fs-11">🏖️ ${s.leave_days} Leave</span>
+          <span class="p-2-8 bg-red-15 c-red br-10 fs-11">🤒 ${s.sick_days} Sick</span>
         </div>
-      </div>`).join('');
+      </div>`) .join('') : '<div class="c-foam3 fs-12">No employee data</div>';
     // Table
     const tbl = document.getElementById('scheduleTable');
-    if (!sched.length) { tbl.innerHTML = '<div style="color:rgba(224,247,255,.3);padding:20px">No data for this month</div>'; return; }
+    const schedArr = Array.isArray(sched) ? sched : [];
+    if (!schedArr.length) { tbl.innerHTML = '<div class="c-foam3 p-20">No data for this month</div>'; return; }
     const statusStyle = {working:'background:rgba(16,185,129,.2);color:#34d399',leave:'background:rgba(245,158,11,.2);color:#fbbf24',sick:'background:rgba(239,68,68,.2);color:#f87171',holiday:'background:rgba(139,92,246,.2);color:#a78bfa'};
     const statusLabel = {working:'Work',leave:'Leave',sick:'Sick',holiday:'Holiday'};
-    tbl.innerHTML = `<table style="width:100%;border-collapse:collapse">
-      <thead><tr style="font-size:12px;color:rgba(224,247,255,.4)">
-        <th style="padding:10px;text-align:right">Employee</th>
-        <th style="padding:10px">Branch</th>
-        <th style="padding:10px">Date</th>
-        <th style="padding:10px">Status</th>
-        <th style="padding:10px">Note</th>
+    tbl.innerHTML = `<table class="w-100 border-collapse">
+      <thead><tr class="fs-12 c-foam4">
+        <th class="p-10 text-right">Employee</th>
+        <th class="p-10">Branch</th>
+        <th class="p-10">Date</th>
+        <th class="p-10">Status</th>
+        <th class="p-10">Note</th>
+        <th class="p-10">Actions</th>
       </tr></thead>
-      <tbody>${sched.map(s => `
-        <tr style="border-top:1px solid rgba(255,255,255,.04)">
-          <td style="padding:10px;font-size:13px;font-weight:700">${s.staff_name||'—'}</td>
-          <td style="padding:10px;font-size:12px;color:rgba(224,247,255,.5)">${s.branch_name||'—'}</td>
-          <td style="padding:10px;font-size:12px">${s.date}</td>
-          <td style="padding:10px"><span style="padding:3px 10px;border-radius:10px;font-size:11px;font-weight:700;${statusStyle[s.status]||''}">${statusLabel[s.status]||s.status}</span></td>
-          <td style="padding:10px;font-size:12px;color:rgba(224,247,255,.4)">${s.note||'—'}</td>
+      <tbody>${schedArr.map(s => `
+        <tr class="bt-white-04">
+          <td class="p-10 fs-13 fw-700">${s.staff_name||'—'}</td>
+          <td class="p-10 fs-12 c-foam4">${s.branch_name||'—'}</td>
+          <td class="p-10 fs-12">${s.date}</td>
+          <td class="p-10"><span class="p-3-10 br-10 fs-11 fw-700 ${s.status === 'working' ? 'bg-green-15 c-green' : s.status === 'leave' ? 'bg-orange-15 c-orange' : s.status === 'sick' ? 'bg-red-15 c-red' : s.status === 'holiday' ? 'bg-purple-15 c-purple' : ''}">${statusLabel[s.status]||s.status}</span></td>
+          <td class="p-10 fs-12 c-foam4">${s.note||'—'}</td>
+          <td class="p-10"><button class="btn-del" onclick="deleteSchedEntry(${s.id})">🗑️</button></td>
         </tr>`).join('')}
       </tbody></table>`;
-  } catch(err) { console.error(err); }
+  } catch(err) { console.error('loadSchedule error:',err); }
+}
+
+function openSchedModal(){
+  const sel=document.getElementById('mScStaff');
+  sel.innerHTML='<option value="">Select...</option>'+staffCache.map(s=>`<option value="${s.id}">${s.name}</option>`).join('');
+  document.getElementById('mScDate').value=new Date().toISOString().split('T')[0];
+  document.getElementById('mScNote').value='';
+  openModal('mSched');
+}
+async function saveSchedDay(){
+  const staffId=document.getElementById('mScStaff').value;
+  const date=document.getElementById('mScDate').value;
+  const status=document.getElementById('mScStatus').value;
+  const note=document.getElementById('mScNote').value;
+  if(!staffId||!date){showToast('Select employee and date','error');return;}
+  const d=await fetch('/api/schedule',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({staffId,date,status,note})}).then(r=>r.json());
+  if(d.success){showToast(d.message,'success');closeModal('mSched');loadSchedule();}else showToast(d.error,'error');
+}
+async function approveReq(id,action){
+  const d=await fetch('/api/schedule/request/'+id,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({action})}).then(r=>r.json());
+  if(d.success){showToast(d.message,'success');loadSchedule();}else showToast(d.error,'error');
+}
+async function deleteSchedEntry(id){
+  if(!confirm('Delete this entry?'))return;
+  const d=await fetch('/api/schedule/'+id,{method:'DELETE'}).then(r=>r.json());
+  if(d.success){showToast('Deleted','success');loadSchedule();}else showToast(d.error,'error');
 }
 
 // ══ AUDIT LOG ═════════════════════════════════════════════════════════════════
@@ -1439,21 +1633,22 @@ async function loadAudit() {
     const pageInfo = document.getElementById('auditPageInfo');
     const totalPages = Math.ceil(data.total / 50);
     pageInfo.textContent = `Page ${data.page} From ${totalPages} (${data.total} Record)`;
-    document.getElementById('auditPrev').style.opacity = auditPage <= 1 ? '0.4' : '1';
-    document.getElementById('auditNext').style.opacity = auditPage >= totalPages ? '0.4' : '1';
-    if (!data.logs.length) { list.innerHTML = '<div style="color:rgba(224,247,255,.3);padding:20px">No records</div>'; return; }
-    const methodColor = {POST:'rgba(16,185,129,.2)',PUT:'rgba(245,158,11,.2)',DELETE:'rgba(239,68,68,.2)'};
-    const methodText  = {POST:'#34d399',PUT:'#fbbf24',DELETE:'#f87171'};
+    
+    document.getElementById('auditPrev').classList.toggle('disabled-btn', auditPage <= 1);
+    document.getElementById('auditNext').classList.toggle('disabled-btn', auditPage >= totalPages);
+
+    if (!data.logs.length) { list.innerHTML = '<div class="c-foam3 p-20">No records</div>'; return; }
     list.innerHTML = data.logs.map(l => {
       const method = l.action.split(' ')[0];
+      const mCls = method === 'POST' ? 'm-post' : method === 'PUT' ? 'm-put' : method === 'DELETE' ? 'm-delete' : 'm-default';
       return `
-      <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:10px;margin-bottom:6px">
-        <span style="padding:2px 8px;border-radius:6px;font-size:11px;font-weight:900;font-family:monospace;background:${methodColor[method]||'rgba(100,100,100,.2)'};color:${methodText[method]||'#aaa'}">${method}</span>
-        <div style="flex:1;min-width:0">
-          <div style="font-size:12px;font-weight:700">${l.username} <span style="color:rgba(224,247,255,.4);font-weight:400">(${l.role})</span> — <span style="color:rgba(224,247,255,.5)">${l.action}</span></div>
-          ${l.details?`<div style="font-size:11px;color:rgba(224,247,255,.3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:500px">${l.details}</div>`:''}
+      <div class="flex ai-c gap-12 p-10-14 bg-white-02 border-white-05 br-10 mb-8">
+        <span class="p-2-8 br-6 fs-11 fw-900 f-mono ${mCls}">${method}</span>
+        <div class="flex-1 min-w-0">
+          <div class="fs-12 fw-700">${l.username} <span class="c-foam4 fw-400">(${l.role})</span> — <span class="c-foam3">${l.action}</span></div>
+          ${l.details?`<div class="fs-11 c-foam3 nowrap overflow-hidden text-ellipsis max-w-500">${l.details}</div>`:''}
         </div>
-        <div style="font-size:11px;color:rgba(224,247,255,.3);white-space:nowrap">${new Date(l.created_at).toLocaleString('en-US')}</div>
+        <div class="fs-11 c-foam3 nowrap">${new Date(l.created_at).toLocaleString('en-US')}</div>
       </div>`;
     }).join('');
   } catch(err) { console.error(err); }

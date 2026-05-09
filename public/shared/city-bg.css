@@ -83,6 +83,8 @@
   background: #1a1a2e;
   position: relative;
 }
+.lp-arm-l { margin-right: 14px; }
+.lp-arm-r { margin-left: 14px; }
 
 .lp-arm::after {
   content: '';
@@ -136,6 +138,9 @@
   border-radius: 50%;
   background: #c8b860;
 }
+.mc-1{width:8px;height:8px;top:10px;left:12px;opacity:0.4}
+.mc-2{width:5px;height:5px;top:22px;left:28px;opacity:0.3}
+.mc-3{width:6px;height:6px;top:30px;left:16px;opacity:0.35}
 
 /* Smoke */
 .smoke-wrap {
@@ -158,6 +163,11 @@
   background: rgba(60, 60, 80, 0.5);
   animation: smokePuff 3s ease-out infinite;
 }
+.sp-1{width:18px;height:18px;animation-delay:0s;left:0}
+.sp-2{width:14px;height:14px;animation-delay:1s;left:5px}
+.sp-3{width:20px;height:20px;animation-delay:2s;left:-3px}
+.sp-4{width:16px;height:16px;animation-delay:0.5s;left:0}
+.sp-5{width:22px;height:22px;animation-delay:1.5s;left:4px}
 
 /* Bats */
 .bat {
@@ -174,6 +184,12 @@
   border-radius: 50% 50% 0 0;
   margin: 0 1px;
 }
+.bw-body{display:inline-block;width:5px;height:4px;background:#2a2a4a;border-radius:50%}
+.bw-s{width:8px;height:3px}
+.bw-body-s{display:inline-block;width:4px;height:3px;background:#2a2a4a;border-radius:50%}
+.bat-1 { animation-duration: 14s; animation-delay: 2s; }
+.bat-2 { animation-duration: 19s; animation-delay: 8s; top: 24%; }
+.d-ib { display: inline-block; }
 
 /* Wanted poster */
 .wanted {

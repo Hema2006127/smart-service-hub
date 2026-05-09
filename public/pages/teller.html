@@ -72,7 +72,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--foam);cur
   width:252px;flex-shrink:0;display:flex;flex-direction:column;
   background:rgba(10,10,15,.95);
   border-left:1px solid rgba(201,168,76,.18);
-  position:relative;overflow:hidden;backdrop-filter:blur(30px);
+  position:relative;overflow:hidden;-webkit-backdrop-filter:blur(30px);backdrop-filter:blur(30px);
 }
 .sidebar::before{
   content:'';position:absolute;top:0;left:0;width:100%;height:100%;
@@ -186,7 +186,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--foam);cur
 /* Topbar */
 .topbar{
   height:62px;flex-shrink:0;
-  background:rgba(10,10,15,.92);backdrop-filter:blur(32px);
+  background:rgba(10,10,15,.92);-webkit-backdrop-filter:blur(32px);backdrop-filter:blur(32px);
   border-bottom:1px solid rgba(201,168,76,.14);
   padding:0 28px;display:flex;align-items:center;justify-content:space-between;
   position:relative;
@@ -461,7 +461,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--foam);cur
 .toast{
   position:fixed;bottom:26px;left:50%;
   transform:translateX(-50%) translateY(100px);
-  background:rgba(10,10,15,.96);backdrop-filter:blur(24px);
+  background:rgba(10,10,15,.96);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);
   border:1px solid rgba(201,168,76,.2);border-radius:14px;
   padding:13px 28px;font-size:14px;font-weight:700;
   z-index:9999;transition:transform .35s cubic-bezier(.175,.885,.32,1.275);
@@ -472,6 +472,17 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--foam);cur
 .toast.error{border-color:rgba(239,68,68,.4);color:#f87171}
 .toast.info{border-color:rgba(201,168,76,.4);color:var(--ocean3)}
 
+/* ══ ACCESSIBILITY & UTILITIES ══ */
+.appt-card-sm { animation-fill-mode: both; }
+.a-row-1 { display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
+.a-name-lg { font-size:14px; font-weight:900; color:#fff; }
+.a-time-sm { font-size:12px; color:var(--teal2); font-family:'JetBrains Mono',monospace; font-weight:700; }
+.a-meta-sm { display:flex; gap:12px; margin-bottom:12px; font-size:11px; color:var(--foam2); }
+.a-actions-sm { display:flex; align-items:center; justify-content:space-between; border-top:1px solid rgba(255,255,255,.03); padding-top:10px; }
+.hidden { display:none; }
+.btn-menu-sm { width:38px; height:38px; border-radius:10px; background:rgba(201,168,76,.12); border:1px solid rgba(201,168,76,.2); color:#fff; cursor:pointer; font-size:18px; display:none; align-items:center; justify-content:center; }
+.banner-active { display:none; }
+
 /* ════ RESPONSIVE ════ */
 @media(max-width:1200px){.g2{grid-template-columns:1fr}}
 @media(max-width:1024px){.stats-row{grid-template-columns:repeat(2,1fr)}}
@@ -481,6 +492,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--foam);cur
   .content{padding:16px}
   .topbar{padding:0 16px}
   .s-tk{font-size:clamp(52px,13vw,82px)}
+  .btn-menu-sm{display:flex}
 }
 @media(max-width:600px){
   .sidebar{position:fixed;inset:0 auto 0 0;z-index:100;transform:translateX(-100%);transition:.3s}
@@ -582,6 +594,52 @@ html[data-theme="light"] .toast{background:rgba(238,222,200,.98);color:#2a1208;b
 html[data-theme="light"] .toast.success{border-color:rgba(40,140,60,.35);color:#1a6e30}
 html[data-theme="light"] .toast.error{border-color:rgba(180,30,10,.35);color:#962010}
 html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06000}
+
+/* ══ UTILITIES ══ */
+.hidden { display: none; }
+.d-flex { display: flex; }
+.items-center { align-items: center; }
+.jc-center { justify-content: center; }
+.gap-4 { gap: 4px; }
+.gap-6 { gap: 6px; }
+.gap-7 { gap: 7px; }
+.gap-8 { gap: 8px; }
+.gap-10 { gap: 10px; }
+.gap-12 { gap: 12px; }
+.gap-14 { gap: 14px; }
+.flex-1 { flex: 1; }
+.flex-0-44 { flex: 0 0 44px; }
+.p-0 { padding: 0; }
+.p-6-12 { padding: 6px 12px; }
+.fs-11 { font-size: 11px; }
+.fs-12 { font-size: 12px; }
+.fs-13 { font-size: 13px; }
+.fs-14 { font-size: 14px; }
+.fs-18 { font-size: 18px; }
+.fs-19 { font-size: 19px; }
+.fs-22 { font-size: 22px; }
+.fw-400 { font-weight: 400; }
+.fw-700 { font-weight: 700; }
+.fw-800 { font-weight: 800; }
+.fw-900 { font-weight: 900; }
+.mb-4 { margin-bottom: 4px; }
+.mb-7 { margin-bottom: 7px; }
+.mb-9 { margin-bottom: 9px; }
+.mb-10 { margin-bottom: 10px; }
+.mb-12 { margin-bottom: 12px; }
+.mb-14 { margin-bottom: 14px; }
+.mt-7 { margin-top: 7px; }
+.jbm { font-family: 'JetBrains Mono', monospace; }
+.c-gold { color: var(--gold); }
+.c-teal2 { color: var(--teal2); }
+.c-green2 { color: var(--green2); }
+.c-amber { color: var(--amber); }
+.c-purple2 { color: var(--purple2); }
+.text-center { text-align: center; }
+.line-1-5 { line-height: 1.5; }
+.mr-auto { margin-right: auto; }
+.pr-4 { padding-right: 4px; }
+.qi-ad-0{animation-delay:0s}.qi-ad-1{animation-delay:.04s}.qi-ad-2{animation-delay:.08s}.qi-ad-3{animation-delay:.12s}.qi-ad-4{animation-delay:.16s}
 </style>
 <script>document.documentElement.setAttribute('data-theme',localStorage.getItem('nexbank-theme')||'dark')</script>
 </head>
@@ -619,12 +677,12 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
       <button class="ntab active" id="tab-queue" onclick="switchTab('queue')">
         <span class="nav-icon">🎫</span>
         <span data-i18n="nav_queue">Waiting Queue</span>
-        <span class="ntab-badge" id="waitBadge" style="display:none">0</span>
+        <span class="ntab-badge hidden" id="waitBadge">0</span>
       </button>
       <button class="ntab" id="tab-appts" onclick="switchTab('appts')">
         <span class="nav-icon">📅</span>
         <span data-i18n="nav_appts">Appointments</span>
-        <span class="ntab-badge" id="apptBadge" style="display:none">0</span>
+        <span class="ntab-badge hidden" id="apptBadge">0</span>
       </button>
 
       <div class="nav-section" data-i18n="sec_tools">Tools</div>
@@ -639,11 +697,11 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
       <div class="sb-clock-date" id="navDate">—</div>
     </div>
 
-    <div class="theme-wrap" style="display:flex;gap:6px;padding:6px 12px">
-      <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" style="flex:1">
+    <div class="theme-wrap d-flex gap-6 p-6-12">
+      <button class="theme-btn flex-1" id="themeBtn" onclick="toggleTheme()">
         <span id="themeIcon">☀️</span><span id="themeLabel">Light Theme</span>
       </button>
-      <button class="theme-btn" id="langBtn" onclick="toggleLang()" style="flex:0 0 44px;padding:0">
+      <button class="theme-btn flex-0-44 p-0" id="langBtn" onclick="toggleLang()">
         <span id="langLabel">EN</span>
       </button>
     </div>
@@ -656,6 +714,7 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
   <!-- ════ MAIN ════ -->
   <div class="main">
     <div class="topbar">
+      <button class="btn-menu-sm" id="btnMenu" onclick="toggleSidebar()" aria-label="Menu Toggle">☰</button>
       <div class="tb-title">Teller Screen</div>
       <div class="tb-right">
         <div class="live-pill"><div class="ldot"></div>LIVE</div>
@@ -690,7 +749,7 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
           <div class="s-lbl">
             <div class="s-dot"></div>
             Serving Now
-            <span class="s-timer" id="svcTimerWrap" style="display:none">⏱ <span id="timerDisp">0:00</span></span>
+            <span class="s-timer hidden" id="svcTimerWrap">⏱ <span id="timerDisp">0:00</span></span>
           </div>
           <div id="servingDisplay">
             <div class="s-empty">No customer currently — Click Call Next</div>
@@ -710,22 +769,22 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
           </div>
 
           <div>
-            <div class="card" style="margin-bottom:14px">
-              <div class="ct" style="margin-bottom:14px;font-size:13px">📊 Today's Stats</div>
+            <div class="card mb-14">
+              <div class="ct mb-14 fs-13">📊 Today's Stats</div>
               <div class="mini-grid">
-                <div class="mini-s"><div class="mini-n" style="color:var(--teal2)" id="miniWait">0</div><div class="mini-l">Waiting</div></div>
-                <div class="mini-s"><div class="mini-n" style="color:var(--green2)" id="miniDone">0</div><div class="mini-l">Served</div></div>
-                <div class="mini-s"><div class="mini-n" style="color:var(--amber)" id="miniAppts">0</div><div class="mini-l">Appointments</div></div>
-                <div class="mini-s"><div class="mini-n" style="color:var(--purple2)" id="miniEsc">0</div><div class="mini-l">Referred</div></div>
+                <div class="mini-s"><div class="mini-n c-teal2" id="miniWait">0</div><div class="mini-l">Waiting</div></div>
+                <div class="mini-s"><div class="mini-n c-green2" id="miniDone">0</div><div class="mini-l">Served</div></div>
+                <div class="mini-s"><div class="mini-n c-amber" id="miniAppts">0</div><div class="mini-l">Appointments</div></div>
+                <div class="mini-s"><div class="mini-n c-purple2" id="miniEsc">0</div><div class="mini-l">Referred</div></div>
               </div>
             </div>
 
-            <div class="card" style="margin-bottom:14px">
-              <div class="ct" style="margin-bottom:14px;font-size:13px">➕ Add Ticket</div>
+            <div class="card mb-14">
+              <div class="ct mb-14 fs-13">➕ Add Ticket</div>
               <div class="add-form">
-                <input class="fi" type="text" id="newName" placeholder="Customer Name (Optional)"/>
-                <select class="fi" id="newService"><option value="">— Choose Service —</option></select>
-                <select class="fi" id="newPriority">
+                <input class="fi" type="text" id="newName" aria-label="Customer Name" placeholder="Customer Name (Optional)"/>
+                <select class="fi" id="newService" aria-label="Service Type"><option value="">— Choose Service —</option></select>
+                <select class="fi" id="newPriority" aria-label="Priority Level">
                   <option value="normal">Normal</option>
                   <option value="elderly">Elderly</option>
                   <option value="disabled">Special Needs</option>
@@ -736,9 +795,9 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
             </div>
 
             <div class="card">
-              <div class="ct" style="margin-bottom:12px;font-size:13px">🕐 Time</div>
+              <div class="ct mb-12 fs-13">🕐 Time</div>
               <div id="bigClock">--:--</div>
-              <div id="bigDate" style="font-size:11px;color:var(--foam3);text-align:center;margin-top:7px;line-height:1.5"></div>
+              <div id="bigDate" class="fs-11 c-foam3 text-center mt-7 line-1-5"></div>
             </div>
           </div>
         </div>
@@ -750,16 +809,16 @@ html[data-theme="light"] .toast.info{border-color:rgba(140,80,20,.38);color:#b06
           <div class="ch">
             <div class="ct">📅 Today's Appointments
               <span class="cb" id="apptCountBadge">0</span>
-              <span id="apptDateLabel" style="font-size:11px;font-weight:400;color:var(--foam3)"></span>
+              <span id="apptDateLabel" class="fs-11 fw-400 c-foam3"></span>
             </div>
             <button class="btn-sm b-mute" onclick="loadAppointments()">↻ Refresh</button>
           </div>
 
-          <div id="activeApptBanner" class="active-banner" style="display:none">
+          <div id="activeApptBanner" class="banner-active">
             <div class="ab-head"><div class="s-dot"></div>Currently serving an appointment</div>
             <div class="ab-name" id="activeApptName">—</div>
             <div class="ab-info" id="activeApptInfo">—</div>
-            <div class="serving-btns" style="margin-top:14px;justify-content:flex-start">
+            <div class="serving-btns serving-btns-align">
               <button class="btn-complete" onclick="completeAppt()">✅ Finish Appointment</button>
               <button class="btn-escalate" onclick="escalateAppt()">⬆️ Refer to Manager</button>
             </div>
@@ -863,8 +922,7 @@ function subscribeSSE(bid) {
         if (d.type === 'new_ticket') {
           showToast(`🎫 New Customer: ${d.token} — ${d.service}`, 'info');
           if (Notification?.permission === 'granted') new Notification('New Customer', { body: `${d.name} — ${d.service}` });
-          const wb = document.getElementById('waitBadge');
-          wb.style.display = 'inline-flex';
+          document.getElementById('waitBadge').classList.remove('hidden');
         }
         if (d.type === 'sendback') showToast(`↩️ Returned ${d.token} From Manager`, 'info');
       }
@@ -894,10 +952,6 @@ async function loadQueue(bid) {
     document.getElementById('miniWait').textContent    = wc;
     document.getElementById('miniDone').textContent    = dc;
     document.getElementById('queueCount').textContent  = wc;
-
-    const wb = document.getElementById('waitBadge');
-    if (wc > 0) { wb.style.display = 'inline-flex'; wb.textContent = wc; }
-    else wb.style.display = 'none';
 
     const sd = document.getElementById('servingDisplay');
     const sb = document.getElementById('servingBtns');
@@ -929,7 +983,7 @@ async function loadQueue(bid) {
       const priTag = t.priority >= 3 ? '<span class="pri-vip">VIP</span>' :
                      t.priority >= 2 ? '<span class="pri-el">Priority</span>' : '';
       const time = t.created_at ? new Date(t.created_at).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : '';
-      return `<div class="qi" style="animation-delay:${i*.04}s">
+      return `<div class="qi qi-ad-${i%5}">
         <div class="qi-rank">${i+1}</div>
         <div class="qi-tk">${t.token}</div>
         <div class="qi-body">
@@ -937,7 +991,6 @@ async function loadQueue(bid) {
           <div class="qi-sv">${t.service}</div>
         </div>
         <div class="qi-right">
-          <span class="qi-eta">~${(i+1)*3} Minute</span>
           <span class="qi-time">${time}</span>
         </div>
       </div>`;
@@ -986,14 +1039,10 @@ async function loadAppointmentsStats() {
     const today = new Date().toLocaleDateString('en-CA');
     const ta    = data.filter(a => String(a.date||'').split('T')[0] === today);
     const esc   = ta.filter(a => a.status === 'escalated').length;
-    const pending = ta.filter(a => ['pending','confirmed','in_progress'].includes(a.status)).length;
     document.getElementById('statAppts').textContent = ta.length;
     document.getElementById('statEsc').textContent   = esc;
     document.getElementById('miniAppts').textContent = ta.length;
     document.getElementById('miniEsc').textContent   = esc;
-    const ab = document.getElementById('apptBadge');
-    if (pending > 0) { ab.style.display = 'inline-flex'; ab.textContent = pending; }
-    else ab.style.display = 'none';
   } catch {}
 }
 
@@ -1007,17 +1056,15 @@ async function loadAppointments() {
 
     document.getElementById('statAppts').textContent = ta.length;
     document.getElementById('apptCountBadge').textContent = ta.length;
-    document.getElementById('statEsc').textContent   = ta.filter(a=>a.status==='escalated').length;
 
     const inprog = ta.find(a => a.status === 'in_progress');
     if (inprog) {
-      activeApptId = inprog.id;
-      document.getElementById('activeApptBanner').style.display = 'block';
+      document.getElementById('activeApptBanner').classList.remove('hidden');
       document.getElementById('activeApptName').textContent = inprog.customerName;
       document.getElementById('activeApptInfo').textContent = `${inprog.service} · ${inprog.phone} · ${inprog.time}`;
     } else {
       activeApptId = null;
-      document.getElementById('activeApptBanner').style.display = 'none';
+      document.getElementById('activeApptBanner').classList.add('hidden');
     }
 
     const el = document.getElementById('apptList');
@@ -1042,16 +1089,16 @@ async function loadAppointments() {
       } else if (a.status === 'escalated') {
         acts = `<span class="badge b-esc">⬆️ With Manager</span>`;
       }
-      return `<div class="appt-card ${CC[a.status]||''}" style="animation-delay:${i*.04}s">
-        <div class="arow1">
-          <span class="a-name">${a.customerName}</span>
-          <span class="a-time">🕐 ${a.time}</span>
+      return `<div class="appt-card ${CC[a.status]||''} appt-card-sm qi-ad-${i%5}">
+        <div class="a-row-1">
+          <span class="a-name-lg">${a.customerName}</span>
+          <span class="a-time-sm">🕐 ${a.time}</span>
         </div>
-        <div class="a-meta">
+        <div class="a-meta-sm">
           <span>🛎️ ${a.service}</span>
           <span>📞 ${a.phone}</span>
         </div>
-        <div class="a-actions">
+        <div class="a-actions-sm">
           <span class="badge ${SC[a.status]||'b-pend'}">${SL[a.status]||a.status}</span>
           ${acts}
         </div>
@@ -1067,7 +1114,7 @@ async function startAppt(id, name, service, phone, time) {
   if (activeApptId && activeApptId !== id) { showToast('Finish current appointment first', 'error'); return; }
   await apptStatus(id, 'in_progress');
   activeApptId = id;
-  document.getElementById('activeApptBanner').style.display = 'block';
+  document.getElementById('activeApptBanner').classList.remove('hidden');
   document.getElementById('activeApptName').textContent = name;
   document.getElementById('activeApptInfo').textContent = `${service} · ${phone} · ${time}`;
   showToast(`🟢 Started service: ${name}`, 'success');
@@ -1078,7 +1125,7 @@ async function completeAppt() {
   if (!activeApptId) return;
   await apptStatus(activeApptId, 'completed', 'Appointment finished ✅');
   activeApptId = null;
-  document.getElementById('activeApptBanner').style.display = 'none';
+  document.getElementById('activeApptBanner').classList.add('hidden');
   loadAppointments();
 }
 
@@ -1087,7 +1134,7 @@ async function escalateAppt() {
   if (!confirm('Confirm referral to branch manager?')) return;
   await apptStatus(activeApptId, 'escalated', 'Appointment referred to manager ⬆️');
   activeApptId = null;
-  document.getElementById('activeApptBanner').style.display = 'none';
+  document.getElementById('activeApptBanner').classList.add('hidden');
   loadAppointments();
 }
 

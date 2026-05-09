@@ -3,9 +3,9 @@ const bgHtml = `<div class="mf-bg">
 
     <!-- Moon -->
     <div class="moon">
-      <div class="moon-crater" style="width:8px;height:8px;top:10px;left:12px;opacity:0.4"></div>
-      <div class="moon-crater" style="width:5px;height:5px;top:22px;left:28px;opacity:0.3"></div>
-      <div class="moon-crater" style="width:6px;height:6px;top:30px;left:16px;opacity:0.35"></div>
+      <div class="moon-crater mc-1"></div>
+      <div class="moon-crater mc-2"></div>
+      <div class="moon-crater mc-3"></div>
     </div>
 
     <!-- Wanted poster -->
@@ -116,14 +116,14 @@ const bgHtml = `<div class="mf-bg">
 
     <!-- Lamp posts -->
     <div class="lamp-post lp-left">
-      <div class="lp-arm" style="margin-right:14px;position:relative">
+      <div class="lp-arm lp-arm-l">
         <div class="lp-globe"></div>
         <div class="lp-cone"></div>
       </div>
       <div class="lp-pole"></div>
     </div>
     <div class="lamp-post lp-right">
-      <div class="lp-arm" style="margin-left:14px;position:relative">
+      <div class="lp-arm lp-arm-r">
         <div class="lp-globe"></div>
         <div class="lp-cone"></div>
       </div>
@@ -132,21 +132,21 @@ const bgHtml = `<div class="mf-bg">
 
     <!-- Smoke -->
     <div class="smoke-wrap sw1">
-      <div class="smoke-puff" style="width:18px;height:18px;animation-delay:0s;left:0"></div>
-      <div class="smoke-puff" style="width:14px;height:14px;animation-delay:1s;left:5px"></div>
-      <div class="smoke-puff" style="width:20px;height:20px;animation-delay:2s;left:-3px"></div>
+      <div class="smoke-puff sp-1"></div>
+      <div class="smoke-puff sp-2"></div>
+      <div class="smoke-puff sp-3"></div>
     </div>
     <div class="smoke-wrap sw2">
-      <div class="smoke-puff" style="width:16px;height:16px;animation-delay:0.5s;left:0"></div>
-      <div class="smoke-puff" style="width:22px;height:22px;animation-delay:1.5s;left:4px"></div>
+      <div class="smoke-puff sp-4"></div>
+      <div class="smoke-puff sp-5"></div>
     </div>
 
     <!-- Flying bats -->
-    <div class="bat" style="animation-duration:14s;animation-delay:2s">
-      <div class="bat-wing"></div><div style="display:inline-block;width:5px;height:4px;background:#2a2a4a;border-radius:50%"></div><div class="bat-wing"></div>
+    <div class="bat bat-1">
+      <div class="bat-wing"></div><div class="bw-body"></div><div class="bat-wing"></div>
     </div>
-    <div class="bat" style="animation-duration:19s;animation-delay:8s;top:24%">
-      <div class="bat-wing" style="width:8px;height:3px"></div><div style="display:inline-block;width:4px;height:3px;background:#2a2a4a;border-radius:50%"></div><div class="bat-wing" style="width:8px;height:3px"></div>
+    <div class="bat bat-2">
+      <div class="bat-wing bw-s"></div><div class="bw-body-s"></div><div class="bat-wing bw-s"></div>
     </div>
 
     <!-- Car -->

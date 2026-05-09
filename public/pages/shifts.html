@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Smart Bank — الورديات</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a0f;--gold:#c9a84c;--gold2:#d4b860;--foam:rgba(224,247,255,.85);--foam3:rgba(224,247,255,.3);--green2:#34d399;--amber:#fbbf24;}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--foam)}
+.app{display:flex;height:100vh}
+.sidebar{width:230px;flex-shrink:0;background:rgba(10,10,15,.97);border-left:1px solid rgba(201,168,76,.2);display:flex;flex-direction:column;padding:16px 0}
+.sb-top{display:flex;align-items:center;gap:10px;padding:0 16px 16px;border-bottom:1px solid rgba(201,168,76,.12);margin-bottom:8px}
+.sb-ic{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-size:18px}
+.sb-tt{font-size:13px;font-weight:900;color:#fff}
+.sb-ss{font-size:9px;color:var(--gold2);font-family:'JetBrains Mono',monospace}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 16px;cursor:pointer;color:var(--foam3);font-size:13px;font-weight:700;transition:.2s;border-right:2px solid transparent}
+.nav-item:hover{color:var(--foam);background:rgba(201,168,76,.05)}
+.nav-item.active{color:var(--gold2);border-right-color:var(--gold);background:rgba(201,168,76,.08)}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{height:58px;flex-shrink:0;background:rgba(10,10,15,.95);border-bottom:1px solid rgba(201,168,76,.15);padding:0 22px;display:flex;align-items:center;justify-content:space-between}
+.tb-t{font-size:14px;font-weight:900;color:#fff}
+.live{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--gold2);font-family:'JetBrains Mono',monospace}
+.ldot{width:7px;height:7px;border-radius:50%;background:#00e676;box-shadow:0 0 8px #00e676;animation:lp 2s infinite}
+@keyframes lp{0%,100%{transform:scale(1)}50%{transform:scale(1.5)}}
+.content{flex:1;overflow-y:auto;padding:20px 22px}
+.content::-webkit-scrollbar{width:4px}
+.content::-webkit-scrollbar-thumb{background:rgba(201,168,76,.3);border-radius:4px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.stat{padding:18px;border-radius:14px;background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.12);display:flex;align-items:center;gap:12px;transition:.3s}
+.stat:hover{border-color:var(--gold);transform:translateY(-2px)}
+.stat-ic{width:44px;height:44px;border-radius:12px;background:rgba(201,168,76,.1);display:flex;align-items:center;justify-content:center;font-size:20px}
+.stat-n{font-size:26px;font-weight:900;color:#fff;font-family:'JetBrains Mono',monospace}
+.stat-l{font-size:10px;color:var(--foam3);font-weight:700;text-transform:uppercase;margin-top:2px}
+.sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.sec-t{font-size:14px;font-weight:900;color:#fff}
+.emp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-bottom:20px}
+.emp-card{background:rgba(10,10,15,.7);border:1px solid rgba(201,168,76,.14);border-radius:14px;padding:14px;position:relative;overflow:hidden;transition:.3s}
+.emp-card:hover{border-color:var(--gold);box-shadow:0 6px 22px rgba(0,0,0,.5)}
+.emp-card::before{content:'';position:absolute;top:0;right:0;width:3px;height:100%;background:var(--ec,#555)}
+.emp-card.st-working { --ec: var(--green2); }
+.emp-card.st-leave { --ec: var(--amber); }
+.emp-card.st-off { --ec: #888; }
+.emp-card.st-sick { --ec: #ff6666; }
+.emp-card.st-none { --ec: #555; }
+.emp-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.emp-av{width:40px;height:40px;border-radius:50%;border:2px solid rgba(201,168,76,.3);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;background:rgba(201,168,76,.1);color:var(--gold2);flex-shrink:0}
+.emp-name{font-size:13px;font-weight:900;color:#fff}
+.emp-role{font-size:10px;color:var(--foam3);font-family:'JetBrains Mono',monospace}
+.badge{padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700}
+.b-working{background:rgba(16,185,129,.15);color:#34d399;border:1px solid rgba(16,185,129,.25)}
+.b-leave{background:rgba(245,158,11,.15);color:#fbbf24;border:1px solid rgba(245,158,11,.25)}
+.badge.b-off{background:rgba(255,255,255,.1);color:#888}
+.badge.b-sick{background:rgba(255,100,100,.15);color:#ff6666}
+.b-holiday{background:rgba(139,92,246,.15);color:#a78bfa;border:1px solid rgba(139,92,246,.25)}
+.b-nodata{background:rgba(100,100,100,.1);color:#777;border:1px solid rgba(100,100,100,.2)}
+.emp-footer{display:flex;gap:6px}
+.btn-sm{flex:1;padding:6px;border-radius:9px;border:1px solid rgba(201,168,76,.2);background:rgba(201,168,76,.06);color:var(--gold2);font-size:11px;font-family:'Tajawal',sans-serif;font-weight:700;cursor:pointer;transition:.2s}
+.btn-sm:hover{background:rgba(201,168,76,.15)}
+.btn-sm.ok{border-color:rgba(16,185,129,.25);color:#34d399;background:rgba(16,185,129,.07)}
+.btn-sm.ok:hover{background:rgba(16,185,129,.18)}
+.btn-sm.no{border-color:rgba(239,68,68,.2);color:#f87171;background:rgba(239,68,68,.06)}
+.btn-sm.no:hover{background:rgba(239,68,68,.15)}
+.req-card{background:rgba(201,168,76,.04);border:1px solid rgba(201,168,76,.1);border-radius:12px;padding:12px;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.modal-bg{position:fixed;inset:0;z-index:900;background:rgba(0,0,0,.8);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:.25s}
+.modal-bg.show{opacity:1;pointer-events:all}
+.modal{background:#0f0f1e;border:1px solid rgba(201,168,76,.25);border-radius:20px;padding:26px;width:100%;max-width:420px;transform:translateY(20px);transition:.25s}
+.modal-bg.show .modal{transform:translateY(0)}
+.modal-t{font-size:14px;font-weight:900;color:var(--gold2);margin-bottom:18px}
+.mf{margin-bottom:12px}
+.mf label{display:block;font-size:10px;color:var(--gold2);margin-bottom:5px;font-weight:700;text-transform:uppercase}
+.mf select,.mf input{width:100%;padding:9px 11px;background:rgba(201,168,76,.04);border:1px solid rgba(201,168,76,.15);border-radius:9px;color:#fff;font-family:'Tajawal',sans-serif;font-size:13px;outline:none}
+.mf select option{background:#0f0f1e}
+.mf select:focus,.mf input:focus{border-color:var(--gold)}
+.modal-btns{display:flex;gap:8px;justify-content:flex-end;margin-top:18px}
+.btn-save{padding:8px 20px;background:linear-gradient(135deg,var(--gold),var(--gold2));border:none;border-radius:9px;color:#fff;font-weight:900;font-family:'Tajawal',sans-serif;cursor:pointer;font-size:13px}
+.btn-cancel{padding:8px 16px;background:transparent;border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.55);border-radius:9px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:13px}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(5,15,30,.97);border-radius:12px;padding:11px 26px;font-size:13px;font-weight:700;z-index:9999;transition:transform .35s;min-width:200px;text-align:center;pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.success{border:1px solid rgba(201,168,76,.35);color:var(--gold2)}
+.toast.error{border:1px solid rgba(239,68,68,.35);color:#f87171}
+.empty{text-align:center;padding:32px;color:var(--foam3);font-size:13px}
+.empty-ic{font-size:30px;margin-bottom:8px;opacity:.25}
+
+/* ══ UTILITIES ══ */
+.hidden { display: none; }
+.d-flex { display: flex; }
+.items-center { align-items: center; }
+.gap-8 { gap: 8px; }
+.gap-10 { gap: 10px; }
+.gap-14 { gap: 14px; }
+.flex-1 { flex: 1; }
+.fs-10 { font-size: 10px; }
+.fs-11 { font-size: 11px; }
+.fs-12 { font-size: 12px; }
+.fs-13 { font-size: 13px; }
+.fs-22 { font-size: 22px; }
+.fw-700 { font-weight: 700; }
+.p-6-13 { padding: 6px 13px; }
+.p-7-15 { padding: 7px 15px; }
+.c-foam3 { color: var(--foam3); }
+.jbm { font-family: 'JetBrains Mono', monospace; }
+.bg-ocean-15 { background: rgba(201,168,76,.15); }
+.border-ocean-30 { border: 1px solid rgba(201,168,76,.3); }
+.mb-9 { margin-bottom: 9px; }
+.pr-4 { padding-right: 4px; }
+.opacity-25 { opacity: 0.25; }
+.c-ocean3 { color: var(--gold2); }
+.c-foam-25 { color: rgba(224,247,255,.25); }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="sidebar">
+    <div class="sb-top">
+      <div class="sb-ic">⏱️</div>
+      <div><div class="sb-tt">Smart Bank</div><div class="sb-ss">SHIFTS</div></div>
+    </div>
+    <div class="nav-item hidden" id="navAdmin" onclick="location.href='/'">⬅️ لوحة الأدمن</div>
+    <div class="nav-item hidden" id="navManager" onclick="location.href='/manager'">⬅️ لوحة المدير</div>
+    <div class="nav-item active">⏱️ الورديات اليوم</div>
+  </div>
+  <div class="main">
+    <div class="topbar">
+      <div class="d-flex items-center gap-14">
+        <button class="btn-cancel" style="padding:4px 10px; font-size:12px; margin-left:10px; border-color:rgba(201,168,76,.3); color:var(--gold2);" onclick="history.back()">⬅️ رجوع</button>
+        <div class="tb-t">⏱️ إدارة الورديات والجداول</div>
+      </div>
+      <div class="d-flex items-center gap-14">
+        <div id="todayDate" class="fs-12 c-foam3 jbm"></div>
+        <div class="live"><div class="ldot"></div>LIVE</div>
+      </div>
+    </div>
+    <div class="content">
+      <!-- Stats -->
+      <div class="stats">
+        <div class="stat"><div class="stat-ic">🟢</div><div><div class="stat-n" id="sActive">-</div><div class="stat-l">يعملون</div></div></div>
+        <div class="stat"><div class="stat-ic">🏖️</div><div><div class="stat-n" id="sLeave">-</div><div class="stat-l">إجازة</div></div></div>
+        <div class="stat"><div class="stat-ic">🤒</div><div><div class="stat-n" id="sSick">-</div><div class="stat-l">مريض</div></div></div>
+        <div class="stat"><div class="stat-ic">⏳</div><div><div class="stat-n" id="sPending">-</div><div class="stat-l">طلبات معلقة</div></div></div>
+      </div>
+      <!-- Employees Today -->
+      <div class="sec-head">
+        <div class="sec-t">👥 الموظفون اليوم</div>
+        <button class="btn-save fs-12 p-7-15" onclick="openAdd()">➕ تسجيل يوم</button>
+      </div>
+      <div class="emp-grid" id="empGrid">
+        <div class="empty"><div class="empty-ic">⏳</div>جاري التحميل...</div>
+      </div>
+      <!-- Leave Requests -->
+      <div class="sec-head">
+        <div class="sec-t">📋 طلبات الإجازة المعلقة</div>
+        <button class="btn-save fs-11 p-6-13 bg-ocean-15 border-ocean-30 c-ocean3" onclick="loadData()">↻ تحديث</button>
+      </div>
+      <div id="reqList"><div class="empty"><div class="empty-ic">⏳</div>جاري التحميل...</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <div class="modal-t" id="modalT">تسجيل يوم للموظف</div>
+    <div class="mf"><label for="mStaff">الموظف</label><select id="mStaff" aria-label="Employee"></select></div>
+    <div class="mf"><label for="mDate">التاريخ</label><input type="date" id="mDate" aria-label="Date"></div>
+    <div class="mf"><label for="mStatus">الحالة</label>
+      <select id="mStatus" aria-label="Status">
+        <option value="working">✅ يعمل</option>
+        <option value="leave">🏖️ إجازة</option>
+        <option value="sick">🤒 مريض</option>
+        <option value="holiday">📅 عطلة رسمية</option>
+      </select>
+    </div>
+    <div class="mf"><label for="mNote">ملاحظة</label><input id="mNote" placeholder="اختياري..." aria-label="Note"></div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">إلغاء</button>
+      <button class="btn-save" onclick="saveDay()">💾 حفظ</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let staffList = [], schedToday = [], reqList = [], currentUser = null;
+const today = new Date().toISOString().split('T')[0];
+
+async function checkAuth() {
+  try {
+    const r = await fetch('/api/me');
+    if (!r.ok) { location.href = '/login'; return false; }
+    currentUser = await r.json();
+    if (!['admin','branch_manager'].includes(currentUser.role)) { location.href = '/login'; return false; }
+    if (currentUser.role === 'admin') document.getElementById('navAdmin').classList.remove('hidden');
+    else document.getElementById('navManager').classList.remove('hidden');
+    return true;
+  } catch { location.href = '/login'; return false; }
+}
+document.getElementById('mDate').value = today;
+document.getElementById('todayDate').textContent = new Date().toLocaleDateString('ar-EG',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+const ROLE = {teller:'صراف',branch_manager:'مدير فرع',admin:'أدمن'};
+const ST_LABEL = {working:'يعمل',leave:'إجازة',sick:'مريض',holiday:'عطلة'};
+const ST_COLOR = {working:'#34d399',leave:'#fbbf24',sick:'#f87171',holiday:'#a78bfa'};
+
+async function loadData(){
+  try{
+    const [s,sc,rq] = await Promise.all([
+      fetch('/api/staff').then(r=>r.json()).catch(()=>[]),
+      fetch('/api/schedule/today').then(r=>r.json()).catch(()=>[]),
+      fetch('/api/schedule/requests').then(r=>r.json()).catch(()=>[])
+    ]);
+    staffList = Array.isArray(s) ? s : [];
+    schedToday = Array.isArray(sc) ? sc : [];
+    reqList = Array.isArray(rq) ? rq : [];
+    renderStaff();
+    renderReqs();
+    fillSelect();
+  }catch(e){console.error('loadData error:',e);}
+}
+
+function getStatus(id){
+  const r = schedToday.find(x=>x.staff_id==id);
+  return r ? r.status : null;
+}
+
+function renderStaff(){
+  const workers = staffList.filter(s=>s.role!=='admin');
+  let active=0,leave=0,sick=0;
+  workers.forEach(s=>{
+    const st=getStatus(s.id);
+    if(st==='working') active++;
+    else if(st==='leave') leave++;
+    else if(st==='sick') sick++;
+  });
+  document.getElementById('sActive').textContent = active;
+  document.getElementById('sLeave').textContent = leave;
+  document.getElementById('sSick').textContent = sick;
+  document.getElementById('sPending').textContent = reqList.filter(r=>r.status==='pending').length;
+
+  const g = document.getElementById('empGrid');
+  if(!workers.length){
+    g.innerHTML = '<div class="empty"><div class="empty-ic">👥</div>لا يوجد موظفون</div>';
+    return;
+  }
+  g.innerHTML = workers.map(s=>{
+    const st = getStatus(s.id);
+    const sc = schedToday.find(x=>x.staff_id==s.id);
+    const stClass = st ? `st-${st}` : 'st-none';
+    const bdg = sc 
+      ? '<span class="badge b-'+st+'">'+ST_LABEL[st]+'</span>'
+      : '<span class="badge b-nodata">غير مسجل</span>';
+    const safeName = (s.name || '').replace(/'/g, "\\'");
+    return `<div class="emp-card ${stClass}">
+      <div class="emp-row">
+        <div class="emp-av">${(s.name||'?').charAt(0)}</div>
+        <div class="flex-1"><div class="emp-name">${s.name||'—'}</div><div class="emp-role">${ROLE[s.role]||s.role}${s.branch_name?' · '+s.branch_name:''}</div></div>
+        ${bdg}
+      </div>
+      ${sc&&sc.note?`<div class="fs-11 c-foam3 mb-9 pr-4">📝 ${sc.note}</div>`:''}
+      <div class="emp-footer">
+        <button class="btn-sm" onclick="editDay(${s.id}, '${safeName}')">✏️ تعديل</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderReqs(){
+  const el = document.getElementById('reqList');
+  const pending = reqList.filter(r=>r.status==='pending');
+  if(!pending.length){
+    el.innerHTML='<div class="empty"><div class="empty-ic">✅</div>لا توجد طلبات معلقة</div>';
+    return;
+  }
+  const IC = {leave:'🏖️',sick:'🤒',working:'✅'};
+  el.innerHTML = pending.map(r=>`
+    <div class="req-card">
+      <div class="fs-22">${IC[r.type]||'📋'}</div>
+      <div class="flex-1">
+        <div class="fw-700 fs-13">${r.staff_name||'موظف'}</div>
+        <div class="fs-11 c-foam3">${r.date} · ${ST_LABEL[r.type]||r.type}${r.note?' · '+r.note:''}</div>
+        <div class="fs-10 c-foam-25">${r.branch_name||''}</div>
+      </div>
+      <button class="btn-sm ok" onclick="reviewReq(${r.id},'approve')">✅ قبول</button>
+      <button class="btn-sm no" onclick="reviewReq(${r.id},'reject')">❌ رفض</button>
+    </div>`).join('');
+}
+
+function fillSelect(){
+  document.getElementById('mStaff').innerHTML =
+    staffList.filter(s=>s.role!=='admin')
+    .map(s=>`<option value="${s.id}">${s.name}</option>`).join('');
+}
+
+function openAdd(){
+  document.getElementById('modalT').textContent='تسجيل يوم للموظف';
+  document.getElementById('mDate').value=today;
+  document.getElementById('mNote').value='';
+  document.getElementById('modal').classList.add('show');
+}
+
+function editDay(id,name){
+  document.getElementById('modalT').textContent='تعديل: '+name;
+  document.getElementById('mStaff').value=id;
+  document.getElementById('mDate').value=today;
+  const sc=schedToday.find(x=>x.staff_id==id);
+  document.getElementById('mStatus').value=sc?sc.status:'working';
+  document.getElementById('mNote').value=sc?sc.note||'':'';
+  document.getElementById('modal').classList.add('show');
+}
+
+function closeModal(){document.getElementById('modal').classList.remove('show');}
+
+async function saveDay(){
+  const staffId=document.getElementById('mStaff').value;
+  const date=document.getElementById('mDate').value;
+  const status=document.getElementById('mStatus').value;
+  const note=document.getElementById('mNote').value;
+  if(!staffId||!date){toast('بيانات ناقصة','error');return;}
+  const r=await fetch('/api/schedule',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({staffId,date,status,note})}).then(x=>x.json());
+  if(r.success){toast(r.message,'success');closeModal();loadData();}
+  else toast(r.error||'خطأ','error');
+}
+
+async function reviewReq(id,action){
+  const r=await fetch('/api/schedule/request/'+id,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({action})}).then(x=>x.json());
+  if(r.success){toast(r.message,'success');loadData();}
+  else toast(r.error||'خطأ','error');
+}
+
+function toast(msg,type='success'){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast '+type+' show';
+  setTimeout(()=>t.classList.remove('show'),3200);
+}
+
+document.getElementById('modal').addEventListener('click',e=>{
+  if(e.target===e.currentTarget)closeModal();
+});
+
+// Auto-refresh every 30s
+checkAuth().then(ok => { if(ok){ loadData(); setInterval(loadData,30000); } });
+</script>
+</body>
+</html>
