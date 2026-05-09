@@ -756,10 +756,10 @@ async function submitRating() {
 }
 
 // ══ QR CODE ═══════════════════════════════════════════════════════════════════
-function generateQR(token, service, position) {
+function generateQR(token, service, position, waitTime) {
   try {
-    const text = encodeURIComponent(`Your Number: ${token} | ${service} | Location: ${position}`);
-    const url  = `https://api.qrserver.com/v1/create-qr-code/?data=${text}&size=130x130&margin=4`;
+    const trackUrl = `${window.location.origin}/pages/track.html?token=${token}&service=${encodeURIComponent(service)}&pos=${position}&time=${waitTime}`;
+    const url  = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(trackUrl)}&size=130x130&margin=4`;
     const wrap = document.getElementById('qrCodeWrap');
     const el   = document.getElementById('qrCode');
     el.innerHTML = `
@@ -1067,11 +1067,12 @@ async function takeNumber(){
       document.getElementById('tokenNumber').textContent=data.token;
       document.getElementById('tokenService').textContent=selectedService.name;
       document.getElementById('tokenPos').textContent=data.position;
-      document.getElementById('tokenWait').textContent=data.estimatedWait||(data.position*8);
+      const waitTime = data.estimatedWait||(data.position*8);
+      document.getElementById('tokenWait').textContent=waitTime;
       document.getElementById('queueForm').style.display='none';
       document.getElementById('tokenResult').style.display='block';
       // Generate QR code
-      generateQR(data.token, selectedService.name, data.position);
+      generateQR(data.token, selectedService.name, data.position, waitTime);
       startPolling(branchId);
       showToast('Done! Your number is ready 🎫','success');
     } else showToast(data.error,'error');
